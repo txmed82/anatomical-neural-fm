@@ -1,0 +1,57 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+
+# Virtual envs
+.venv/
+venv/
+
+# uv
+.uv/
+
+# Editors
+.vscode/
+.idea/
+*.swp
+.DS_Store
+
+# Data — never commit raw or processed datasets
+data/
+cache/
+*.nwb
+*.h5
+*.hdf5
+*.zarr
+*.parquet
+*.npz
+
+# Model checkpoints & runs
+checkpoints/
+runs/
+wandb/
+outputs/
+multirun/
+lightning_logs/
+*.ckpt
+*.pt
+*.pth
+*.safetensors
+
+# Local config / secrets
+.env
+.env.local
+*.local.yaml
+secrets/
+
+# Jupyter
+*.ipynb_checkpoints
+
+# Third-party reference clones (not forked into this repo)
+vendor/
