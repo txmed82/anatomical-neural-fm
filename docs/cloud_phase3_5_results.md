@@ -15,6 +15,16 @@ Configuration:
 - max runtime seconds: 7200
 - output root: `runs/phase2_cloud_a100`
 
+Dataset:
+
+- recordings: 6
+- subjects: 4 (`MFD_07`, `MFD_08`, `MFD_09`, `NR_0029`)
+- units: 5,480
+- trials: 3,728
+- build time: 110s after dependency/data setup
+- cross-animal train subjects: `MFD_07`, `MFD_08`
+- cross-animal held-out subjects: `MFD_09`, `NR_0029`
+
 ## Within-Animal Summary
 
 # Sweep analysis: within
