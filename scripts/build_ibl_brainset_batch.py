@@ -63,7 +63,7 @@ def main() -> int:
         try:
             build_recording(eid, probe, OUT_DIR)
             built += 1
-        except Exception as e:
+        except Exception:
             tb = traceback.format_exc().splitlines()[-1]
             print(f"  FAILED: {tb}")
             failures.append((eid, probe, tb))

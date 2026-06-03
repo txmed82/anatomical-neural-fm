@@ -52,7 +52,7 @@ def main() -> int:
     # Sampling intervals — what samplers use to decide where to slice
     intervals = ds.get_sampling_intervals()
     iv = intervals[rid]
-    print(f"\nSampling intervals for this recording:")
+    print("\nSampling intervals for this recording:")
     print(f"  {len(iv.start)} interval(s); total duration = {(iv.end - iv.start).sum():.1f}s")
 
     print("\nAll checks passed — HDF5 schema is consumable by torch_brain.dataset.Dataset.")

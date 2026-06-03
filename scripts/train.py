@@ -33,6 +33,12 @@ import torch.nn.functional as F  # noqa: E402
 from anatomical_poyo_smoke import (  # noqa: E402
     AnatomicalPOYO, PRIORS_PATH, TAXONOMY_PATH,
 )
+from eval_design import (  # noqa: E402
+    arm_flags,
+    build_session_vocab,
+    output_query_session_id,
+    split_recordings_by_subject,
+)
 from torch_brain.dataset import Dataset, DatasetIndex  # noqa: E402
 from torch_brain.registry import DataType, ModalitySpec  # noqa: E402
 from torch_brain.utils import create_linspace_latent_tokens  # noqa: E402
@@ -60,6 +66,10 @@ def parse_args():
                    help="Seed for the trial-level split (kept constant across training seeds).")
     p.add_argument("--holdout", nargs="*", default=None,
                    help="Subjects to hold out (animal mode only). If omitted, last 2 by name.")
+    p.add_argument("--output-query-mode", default="shared", choices=["shared", "session"],
+                   help="'shared' uses one trainable task query for all recordings, which is "
+                        "the primary cross-animal setting. 'session' preserves the original "
+                        "per-recording query for diagnostics.")
     # Model
     p.add_argument("--dim", type=int, default=64)
     p.add_argument("--depth", type=int, default=2)
@@ -91,23 +101,6 @@ def resolve_device(name: str) -> torch.device:
             return torch.device("mps")
         return torch.device("cpu")
     return torch.device(name)
-
-
-def arm_flags(arm: str) -> dict:
-    # All flags default False; only the ones needed are enabled per arm.
-    base = {"use_unit_emb": False, "use_region_emb": False,
-            "use_cell_type_emb": False, "use_waveform_emb": False}
-    flags_by_arm = {
-        "baseline":      {"use_unit_emb": True},
-        "region":        {"use_unit_emb": True, "use_region_emb": True},
-        "cell_type":     {"use_unit_emb": True, "use_cell_type_emb": True},
-        "region_ctype":  {"use_unit_emb": True, "use_region_emb": True, "use_cell_type_emb": True},
-        "pure_anatomy":  {"use_region_emb": True, "use_cell_type_emb": True},
-        "waveform":      {"use_unit_emb": True, "use_waveform_emb": True},
-        "waveform_only": {"use_waveform_emb": True},
-    }[arm]
-    base.update(flags_by_arm)
-    return base
 
 
 # -------------------------------------------------------- data & sampling
@@ -148,16 +141,6 @@ def build_vocab(ds: Dataset):
         "waveform_features": waveform_features,
         "subject_by_rid": subject_by_rid,
     }
-
-
-def split_recordings(subject_by_rid: dict, holdout: list[str] | None):
-    subjects = sorted(set(subject_by_rid.values()))
-    if holdout is None:
-        # default: last 2 subjects (by sorted name)
-        holdout = subjects[-2:] if len(subjects) >= 2 else subjects[-1:]
-    train_rids = [rid for rid, s in subject_by_rid.items() if s not in holdout]
-    eval_rids = [rid for rid, s in subject_by_rid.items() if s in holdout]
-    return train_rids, eval_rids, holdout
 
 
 def build_model(vocab, args, n_cell_types: int):
@@ -229,7 +212,8 @@ def build_inputs_for_window(model, sample, rid, t0, args):
         num_latents_per_step=args.num_latents,
     )
 
-    session_idx = model.session_emb.tokenizer([rid])[0]
+    query_session_id = output_query_session_id(rid, args.output_query_mode)
+    session_idx = model.session_emb.tokenizer([query_session_id])[0]
     # One output query at end-of-window (just before the response).
     output_session_index = np.array([session_idx], dtype=np.int64)
     output_timestamps = np.array([args.window_len * 0.95], dtype=np.float32)
@@ -270,7 +254,9 @@ def collate_batch(samples: list[dict], device: torch.device):
         latent_timestamps[b] = s["latent_timestamps"]
         output_session_index[b] = s["output_session_index"]
         output_timestamps[b] = s["output_timestamps"]
-    t = lambda x, d: torch.as_tensor(x, dtype=d, device=device)
+    def t(x, d):
+        return torch.as_tensor(x, dtype=d, device=device)
+
     return {
         "input_unit_index": t(input_unit_index, torch.long),
         "input_timestamps": t(input_timestamps, torch.float32),
@@ -381,10 +367,15 @@ def main():
     vocab = build_vocab(ds)
 
     if args.split_mode == "animal":
-        train_rids, eval_rids, holdout = split_recordings(vocab["subject_by_rid"], args.holdout)
+        animal_split = split_recordings_by_subject(vocab["subject_by_rid"], args.holdout)
+        train_rids = animal_split.train_rids
+        eval_rids = animal_split.eval_rids
         train_trials = build_trial_samples(vocab["recs"], train_rids, args.window_len)
         eval_trials = build_trial_samples(vocab["recs"], eval_rids, args.window_len)
-        split_info = {"split_mode": "animal", "holdout_subjects": holdout,
+        split_info = {"split_mode": "animal",
+                      "holdout_subjects": animal_split.holdout_subjects,
+                      "train_subjects": animal_split.train_subjects,
+                      "eval_subjects": animal_split.eval_subjects,
                       "n_train_rids": len(train_rids), "n_eval_rids": len(eval_rids)}
     else:
         # Within-animal: all recordings in both splits, trials shuffled 80/20
@@ -417,7 +408,9 @@ def main():
     n_cell_types = len(taxonomy)
     model, flags = build_model(vocab, args, n_cell_types)
     model.unit_emb.initialize_vocab(vocab["all_unit_ids"])
-    model.session_emb.initialize_vocab(vocab["session_ids"])
+    model.session_emb.initialize_vocab(
+        build_session_vocab(vocab["session_ids"], args.output_query_mode)
+    )
     model.register_unit_anatomy(vocab["all_unit_ids"], vocab["region_idx_per_unit"])
     if flags["use_cell_type_emb"]:
         model.register_unit_cell_types(

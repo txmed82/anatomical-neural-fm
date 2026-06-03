@@ -105,7 +105,7 @@ def main() -> int:
         "output_session_index": t(output_session_index, torch.long),
         "output_timestamps": t(output_timestamps, torch.float32),
     }
-    print(f"\nInput shapes:")
+    print("\nInput shapes:")
     for k, v in inputs.items():
         print(f"  {k}: {tuple(v.shape)} {v.dtype}")
 
