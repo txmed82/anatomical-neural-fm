@@ -62,13 +62,62 @@ def build_start_script(config: ClonePilotConfig) -> str:
     repo_dir = Path(config.repo_url).stem.removesuffix(".git")
     clone_url = authenticated_repo_url(config.repo_url)
     branch = shlex.quote(config.branch)
+    branch_raw = config.branch
     run_timeout = shlex.quote(str(config.max_runtime_seconds))
     build_recordings = shlex.quote(str(config.build_recordings))
     max_steps = shlex.quote(str(config.max_steps))
     eval_batches = shlex.quote(str(config.eval_batches))
     repo_dir_q = shlex.quote(repo_dir)
-    return f"""set -euo pipefail
+    return f"""set -uo pipefail
+LOG_PATH=/tmp/runpod_phase3_5.log
+REPO_DIR=/workspace/{repo_dir_q}
+touch "$LOG_PATH"
+exec > >(tee -a "$LOG_PATH") 2>&1
+
+push_artifacts() {{
+  status="$1"
+  if [ -d "$REPO_DIR/.git" ]; then
+    cd "$REPO_DIR"
+    mkdir -p docs
+    cp "$LOG_PATH" docs/cloud_phase3_5_runpod.log || true
+    cat > docs/cloud_phase3_5_results.md <<EOF
+# Cloud Phase 3-5 Results
+
+Date: $(date -u +"%Y-%m-%dT%H:%M:%SZ")
+
+RunPod target: A100 pilot.
+
+Exit status: $status
+
+Configuration:
+
+- branch: {branch_raw}
+- build recordings: {config.build_recordings}
+- max steps: {config.max_steps}
+- eval batches: {config.eval_batches}
+- max runtime seconds: {config.max_runtime_seconds}
+- output root: \`runs/phase2_cloud_a100\`
+
+## Within-Animal Summary
+
+EOF
+    cat runs/phase2_cloud_a100/within_summary.md >> docs/cloud_phase3_5_results.md 2>/dev/null || true
+    cat >> docs/cloud_phase3_5_results.md <<EOF
+
+## Cross-Animal Summary
+
+EOF
+    cat runs/phase2_cloud_a100/cross_summary.md >> docs/cloud_phase3_5_results.md 2>/dev/null || true
+
+    git add docs/cloud_phase3_5_results.md docs/cloud_phase3_5_runpod.log manifests/ibl_bwm.local.json 2>/dev/null || true
+    git commit -m "Add cloud phase 3-5 pilot results" || true
+    git push origin HEAD:{branch_raw} || true
+  fi
+}}
+
 cleanup() {{
+  status="$?"
+  push_artifacts "$status" || true
   if [ -n "${{RUNPOD_POD_ID:-}}" ] && [ -n "${{RUNPOD_API_KEY:-}}" ]; then
     python3 - <<'PY' || true
 import os
@@ -88,6 +137,7 @@ PY
 }}
 trap cleanup EXIT
 
+set -euo pipefail
 export DEBIAN_FRONTEND=noninteractive
 apt-get update
 apt-get install -y --no-install-recommends git curl ca-certificates
@@ -114,38 +164,6 @@ timeout {run_timeout} bash -lc '
   uv run python scripts/write_dataset_manifest.py
   MAX_STEPS={max_steps} EVAL_BATCHES={eval_batches} bash scripts/run_phase2_cloud_a100.sh
 '
-
-mkdir -p docs
-cat > docs/cloud_phase3_5_results.md <<'EOF'
-# Cloud Phase 3-5 Results
-
-Date: $(date -u +"%Y-%m-%dT%H:%M:%SZ")
-
-RunPod target: A100 pilot.
-
-Configuration:
-
-- branch: {config.branch}
-- build recordings: {config.build_recordings}
-- max steps: {config.max_steps}
-- eval batches: {config.eval_batches}
-- max runtime seconds: {config.max_runtime_seconds}
-- output root: `runs/phase2_cloud_a100`
-
-## Within-Animal Summary
-
-EOF
-cat runs/phase2_cloud_a100/within_summary.md >> docs/cloud_phase3_5_results.md || true
-cat >> docs/cloud_phase3_5_results.md <<'EOF'
-
-## Cross-Animal Summary
-
-EOF
-cat runs/phase2_cloud_a100/cross_summary.md >> docs/cloud_phase3_5_results.md || true
-
-git add docs/cloud_phase3_5_results.md manifests/ibl_bwm.local.json
-git commit -m "Add cloud phase 3-5 pilot results" || true
-git push origin HEAD:{branch}
 """
 
 
