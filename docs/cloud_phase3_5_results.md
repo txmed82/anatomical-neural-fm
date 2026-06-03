@@ -1,6 +1,6 @@
 # Cloud Phase 3-5 Results
 
-Date: 2026-06-03T23:44:00Z
+Date: 2026-06-03T23:58:15Z
 
 RunPod target: A100 pilot.
 
@@ -9,9 +9,9 @@ Exit status: 0
 Configuration:
 
 - branch: runpod-pilot-phases-3-5
-- build recordings: 3
-- max steps: 200
-- eval batches: 20
+- build recordings: 6
+- max steps: 600
+- eval batches: 50
 - max runtime seconds: 7200
 - output root: `runs/phase2_cloud_a100`
 
@@ -23,28 +23,28 @@ Configuration:
 
 | arm | n_seeds | mean_AUC | std | min | max | seeds |
 |---|---|---|---|---|---|---|
-| baseline | 2 | **0.611** | 0.043 | 0.581 | 0.641 | 0.641,0.581 |
-| pure_anatomy | 2 | **0.545** | 0.081 | 0.488 | 0.602 | 0.602,0.488 |
-| waveform_only | 2 | **0.563** | 0.059 | 0.521 | 0.604 | 0.604,0.521 |
+| baseline | 2 | **0.843** | 0.098 | 0.774 | 0.913 | 0.913,0.774 |
+| pure_anatomy | 2 | **0.602** | 0.041 | 0.574 | 0.631 | 0.574,0.631 |
+| waveform_only | 2 | **0.600** | 0.012 | 0.592 | 0.608 | 0.592,0.608 |
 
 ## Paired comparison: pure_anatomy − baseline
 
 | seed | baseline AUC | pure_anatomy AUC | Δ AUC |
 |---|---|---|---|
-| 0 | 0.641 | 0.602 | -0.039 |
-| 1 | 0.581 | 0.488 | -0.093 |
+| 0 | 0.913 | 0.574 | -0.339 |
+| 1 | 0.774 | 0.631 | -0.143 |
 
-**mean Δ AUC** = -0.0659    **paired SE** = 0.0269    **t** = -2.45 (df=1)    **positive seeds** = 0/2
+**mean Δ AUC** = -0.2410    **paired SE** = 0.0978    **t** = -2.46 (df=1)    **positive seeds** = 0/2
 → **Significant by t but inconsistent across seeds.**
 
 ## Paired comparison: waveform_only − baseline
 
 | seed | baseline AUC | waveform_only AUC | Δ AUC |
 |---|---|---|---|
-| 0 | 0.641 | 0.604 | -0.037 |
-| 1 | 0.581 | 0.521 | -0.059 |
+| 0 | 0.913 | 0.592 | -0.321 |
+| 1 | 0.774 | 0.608 | -0.166 |
 
-**mean Δ AUC** = -0.0479    **paired SE** = 0.0114    **t** = -4.21 (df=1)    **positive seeds** = 0/2
+**mean Δ AUC** = -0.2433    **paired SE** = 0.0774    **t** = -3.14 (df=1)    **positive seeds** = 0/2
 → **Significant by t but inconsistent across seeds.**
 
 ## Cross-Animal Summary
@@ -55,5 +55,5 @@ Configuration:
 
 | arm | n_seeds | mean_AUC | std | min | max | seeds |
 |---|---|---|---|---|---|---|
-| pure_anatomy | 2 | **0.524** | 0.029 | 0.503 | 0.545 | 0.503,0.545 |
-| waveform_only | 2 | **0.515** | 0.002 | 0.513 | 0.517 | 0.513,0.517 |
+| pure_anatomy | 2 | **0.482** | 0.040 | 0.453 | 0.510 | 0.453,0.510 |
+| waveform_only | 2 | **0.477** | 0.019 | 0.464 | 0.491 | 0.464,0.491 |
