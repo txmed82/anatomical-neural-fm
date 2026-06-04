@@ -269,8 +269,11 @@ git config user.name "RunPod Pilot"
 git config user.email "runpod-pilot@example.invalid"
 {startup_marker_block.rstrip()}
 
-curl -LsSf https://astral.sh/uv/install.sh | sh
 export PATH="$HOME/.local/bin:$PATH"
+if ! command -v uv >/dev/null 2>&1; then
+  curl -LsSf https://astral.sh/uv/install.sh | sh || python3 -m pip install --user uv
+fi
+uv --version
 export UV_LINK_MODE=copy
 export WANDB_MODE=offline
 
