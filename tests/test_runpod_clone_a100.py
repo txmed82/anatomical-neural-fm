@@ -93,3 +93,19 @@ def test_start_script_can_skip_pod_verification() -> None:
     assert "uv run pytest -q" not in script
     assert "uv run python scripts/00_ibl_smoke_test.py" not in script
     assert "uv run python scripts/build_cell_type_priors.py" in script
+
+
+def test_start_script_can_pass_build_shard_args() -> None:
+    cfg = replace(
+        config(),
+        build_extra_args="--num-shards 8 --shard-index 0 --allow-partial",
+    )
+
+    script = build_start_script(cfg)
+
+    assert (
+        "scripts/build_ibl_brainset_batch.py --manifest manifests/ibl_bwm_phase4.json "
+        "--report runs/phase2_cloud_a100/build_report.md "
+        "--num-shards 8 --shard-index 0 --allow-partial"
+    ) in script
+    assert "## Build Report" in script

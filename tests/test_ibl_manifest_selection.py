@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import json
 
-from scripts.build_ibl_brainset_batch import _manifest_insertions
+from scripts.build_ibl_brainset_batch import _manifest_insertions, select_shard
 from scripts.select_ibl_manifest import compact_insertion, select_balanced
 
 
@@ -88,3 +88,11 @@ def test_manifest_insertions_accepts_committed_schema(tmp_path) -> None:
         {"session": "eid-a", "name": "probe00"},
         {"session": "eid-b", "name": "probe01"},
     ]
+
+
+def test_select_shard_splits_manifest_contiguously() -> None:
+    rows = [{"session": f"eid-{i}", "name": "probe00"} for i in range(10)]
+
+    assert select_shard(rows, num_shards=3, shard_index=0) == rows[:3]
+    assert select_shard(rows, num_shards=3, shard_index=1) == rows[3:6]
+    assert select_shard(rows, num_shards=3, shard_index=2) == rows[6:]

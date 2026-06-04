@@ -43,6 +43,7 @@ class ClonePilotConfig:
     output_root: str
     result_doc: str
     skip_verification: bool = False
+    build_extra_args: str = ""
 
 
 def current_branch() -> str:
@@ -80,6 +81,8 @@ def build_start_script(config: ClonePilotConfig) -> str:
     sweep_script = shlex.quote(config.sweep_script)
     output_root = shlex.quote(config.output_root)
     result_doc = shlex.quote(config.result_doc)
+    build_extra_args = config.build_extra_args.strip()
+    build_extra = f" {build_extra_args}" if build_extra_args else ""
     repo_dir_q = shlex.quote(repo_dir)
     verification_block = (
         '  echo "=== skipping local verification ==="\n'
@@ -123,6 +126,16 @@ Configuration:
 - output root: \`{config.output_root}\`
 
 EOF
+    if [ -f {output_root}/build_report.md ]; then
+      cat >> {result_doc} <<EOF
+## Build Report
+
+EOF
+      cat {output_root}/build_report.md >> {result_doc} 2>/dev/null || true
+      cat >> {result_doc} <<EOF
+
+EOF
+    fi
     if [ -f {output_root}/summary.md ]; then
       cat >> {result_doc} <<EOF
 ## Summary
@@ -198,7 +211,8 @@ cat > /tmp/run_phase3_5_body.sh <<'RUNSCRIPT'
     uv run python scripts/select_ibl_manifest.py --target {build_recordings} --out {manifest_path}
   fi
   echo "=== building BrainSet data ==="
-  uv run python scripts/build_ibl_brainset_batch.py --manifest {manifest_path}
+  mkdir -p {output_root}
+  uv run python scripts/build_ibl_brainset_batch.py --manifest {manifest_path} --report {output_root}/build_report.md{build_extra}
   uv run python scripts/write_dataset_manifest.py
   echo "=== running phase 3-5 sweep ==="
   export SEEDS={seeds}
@@ -268,6 +282,8 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--name-prefix", default="anfm-a100-clone-pilot")
     p.add_argument("--skip-verification", action="store_true",
                    help="Skip pytest and the IBL smoke test on the pod after local verification.")
+    p.add_argument("--build-extra-args", default="",
+                   help="Additional arguments passed to build_ibl_brainset_batch.py.")
     p.add_argument("--dry-run", action="store_true")
     p.add_argument("--poll", action="store_true")
     return p.parse_args()
@@ -294,6 +310,7 @@ def main() -> int:
         output_root=args.output_root,
         result_doc=args.result_doc,
         skip_verification=args.skip_verification,
+        build_extra_args=args.build_extra_args,
     )
     env = load_dotenv(REPO_ROOT / ".env")
     runpod_key = require_env(env, "RUNPOD_API_KEY")
