@@ -163,3 +163,7 @@ partial. It is enough to prioritize the next spend: confirm `MFD_06` and
 `KS014` with seeds 1-2 before broadening the sweep. `MFD_06` is the strongest
 candidate because both `pure_anatomy` and `region_only` were +0.067 AUC over
 the shared null on seed 0.
+
+Follow-up: `docs/lso_matched_support80_best6_confirm_results.md` did not
+replicate the `MFD_06` lift on seeds 1-2. It shifted the strongest candidate to
+`CSH_ZAD_019`, especially `region_only`.

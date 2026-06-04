@@ -326,12 +326,28 @@ partial. It does, however, produce a cleaner candidate than the earlier
 20-recording benchmark: `MFD_06` is the first matched-cache holdout where both
 anatomy arms beat the shared null by more than +0.03 on the screen seed.
 
-Next paid run: confirm only the candidate holdouts before broadening:
+Confirmation run: confirm only the candidate holdouts before broadening:
 
 - subjects: `MFD_06 KS014 CSH_ZAD_019`
 - arms: `shared_baseline pure_anatomy region_only`
 - seeds: `1 2`
 - same 300-step/20-eval-batch budget
-- success gate: an anatomy arm keeps at least +0.03 mean delta on `MFD_06`
-  across seeds 0-2, and at least 2/3 seeds positive. Broader claims require
-  more holdouts and another seed.
+- report: `docs/lso_matched_support80_best6_confirm_results.md`
+
+Result: the seed-0 `MFD_06` lift did not replicate. Across seeds 1-2,
+`MFD_06` was approximately null (`pure_anatomy` -0.006, `region_only` -0.002).
+`KS014` was inconsistent (`region_only` -0.061, +0.080). The strongest
+remaining candidate is now `CSH_ZAD_019`:
+
+- `CSH_ZAD_019` `region_only`: +0.049 mean delta over seeds 1-2, positive in
+  2/2 seeds
+- `CSH_ZAD_019` `pure_anatomy`: +0.040 mean delta over seeds 1-2, positive in
+  2/2 seeds
+- including seed 0, `CSH_ZAD_019` `region_only` is positive in 3/3 seeds with
+  an approximate +0.044 mean delta
+
+Interpretation: this is the best current demo candidate, but still not a
+general cross-animal anatomical transfer result. The next useful step is a
+CSH_ZAD_019-focused ablation, not another broad sweep: rerun `CSH_ZAD_019`
+with region-shuffled labels or shared-region masking to test whether the lift
+depends on anatomical identity rather than another subject/session correlate.
