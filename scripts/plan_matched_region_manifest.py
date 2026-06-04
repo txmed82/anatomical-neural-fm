@@ -63,6 +63,13 @@ def write_manifest(
     }
 
 
+def manifest_from_existing(path: Path, region_granularity: str) -> dict[str, Any]:
+    manifest = json.loads(path.read_text())
+    manifest.setdefault("selection", {})
+    manifest["selection"]["region_granularity"] = region_granularity
+    return manifest
+
+
 def _as_list(values) -> list:
     return values.tolist() if hasattr(values, "tolist") else list(values)
 
@@ -237,6 +244,8 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--max-per-subject", type=int, default=4)
     p.add_argument("--min-units", type=int, default=200)
     p.add_argument("--region-granularity", default="parent", choices=["fine", "parent", "grandparent"])
+    p.add_argument("--input-manifest", type=Path, default=None,
+                   help="Score an existing candidate manifest instead of selecting a new one from Alyx.")
     p.add_argument("--data-dir", type=Path, default=REPO_ROOT / "data/brainsets/ibl_bwm")
     p.add_argument("--out-manifest", type=Path, default=REPO_ROOT / "manifests/ibl_bwm_region_matched_candidates.json")
     p.add_argument("--out-report", type=Path, default=REPO_ROOT / "docs/matched_region_manifest_plan.md")
@@ -245,11 +254,15 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> int:
     args = parse_args()
-    candidates = fetch_candidates(args.scan_limit)
-    selected = select_balanced(candidates, args.target, args.max_per_subject, args.min_units)
-    if len(selected) < args.target:
-        raise SystemExit(f"selected only {len(selected)}/{args.target}; lower filters or scan more")
-    manifest = write_manifest(selected=selected, candidates=candidates, args=args)
+    if args.input_manifest is not None:
+        manifest = manifest_from_existing(args.input_manifest, args.region_granularity)
+        selected = manifest["recordings"]
+    else:
+        candidates = fetch_candidates(args.scan_limit)
+        selected = select_balanced(candidates, args.target, args.max_per_subject, args.min_units)
+        if len(selected) < args.target:
+            raise SystemExit(f"selected only {len(selected)}/{args.target}; lower filters or scan more")
+        manifest = write_manifest(selected=selected, candidates=candidates, args=args)
     args.out_manifest.parent.mkdir(parents=True, exist_ok=True)
     args.out_manifest.write_text(json.dumps(manifest, indent=2) + "\n")
     local_subjects = summarize_local_regions(args.data_dir, args.region_granularity)

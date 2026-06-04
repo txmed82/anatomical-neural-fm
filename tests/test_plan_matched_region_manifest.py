@@ -2,6 +2,7 @@ from collections import Counter
 
 from scripts.plan_matched_region_manifest import (
     lab_counts,
+    manifest_from_existing,
     selected_subject_counts,
     support_against_others,
     write_manifest,
@@ -55,3 +56,12 @@ def test_count_helpers_are_stable():
 
     assert selected_subject_counts(rows) == Counter({"S1": 2, "S2": 1})
     assert lab_counts(rows) == Counter({"lab-a": 2, "lab-b": 1})
+
+
+def test_manifest_from_existing_overrides_region_granularity(tmp_path):
+    path = tmp_path / "manifest.json"
+    path.write_text('{"selection": {"region_granularity": "fine"}, "recordings": []}')
+
+    manifest = manifest_from_existing(path, "parent")
+
+    assert manifest["selection"]["region_granularity"] == "parent"
