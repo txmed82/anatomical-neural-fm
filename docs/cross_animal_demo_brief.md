@@ -26,6 +26,7 @@ Canonical source: `docs/csh_zad_019_signal_audit.md`. Machine-readable
 metrics: `docs/csh_zad_019_demo_metrics.json`.
 Broadening source: `docs/lso_two_holdout_shared_parent_shuffle_results.md`.
 Broadening audit: `docs/shared_parent_broadening_audit.md`.
+Parent-region support audit: `docs/parent_region_support_signal_audit.md`.
 
 ## Why This Is Real Enough To Demo
 
@@ -42,12 +43,15 @@ Broadening audit: `docs/shared_parent_broadening_audit.md`.
 - The completed two-holdout broadening result is positive for true labels and
   negative for shuffled labels in aggregate, but the true-label lift is only
   +0.016 and positive in 4/6 subject-seed pairs.
+- The weak broadening subjects are not weak because of low global parent-region
+  support; they have higher support than CSH_ZAD_019. The unresolved issue is
+  anatomical composition.
 - The claim should not be phrased as broad anatomical transfer across IBL until
   more held-out animals reproduce the stronger CSH_ZAD_019-sized effect.
 
 ## Next Experimental Gate
 
-Do not rerun the same two-holdout sweep unchanged. The next useful step is an
-analysis pass over the completed CSH_ZAD_019, KS014, and MFD_06 shared-parent
-splits to identify what separates the strong CSH_ZAD_019 signal from the weak
-broadening subjects.
+Do not rerun the same two-holdout sweep unchanged. The next paid experiment
+should either preselect holdouts whose parent-region composition resembles
+CSH_ZAD_019 or force all compared holdouts onto a common parent-region panel
+before training.

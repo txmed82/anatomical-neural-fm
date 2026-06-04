@@ -517,3 +517,15 @@ CSH_ZAD_019 effect. Do not rerun the same two-holdout sweep unchanged. The next
 no-spend step should audit why CSH_ZAD_019 is strong while KS014 and MFD_06 are
 weak, using the split diagnostics, per-parent-region support, trial balance,
 and baseline AUC variance already present in the logs.
+
+Completed no-spend audit:
+`docs/parent_region_support_signal_audit.md` uses the compact 28-recording HDF5
+cache to compute parent-region unit support and a simple per-parent stimulus-side
+spike-rate contrast. The weak broadening subjects have higher global
+parent-region support than CSH_ZAD_019 (`KS014` 96.2%, `MFD_06` 98.7%,
+`CSH_ZAD_019` 84.8%), so the broadening failure is not explained by a simple
+support-fraction deficit. The remaining issue is anatomical composition: only
+five parent regions (`BS`, `MBmot`, `cc`, `root`, `void`) are shared by all
+three strict splits. The next paid experiment should either preselect holdouts
+whose parent-region composition resembles CSH_ZAD_019 or force all compared
+holdouts onto a common parent-region panel before training.

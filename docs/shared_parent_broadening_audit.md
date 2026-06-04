@@ -38,8 +38,7 @@ Pairwise overlap:
 
 ## Next No-Spend Step
 
-Do not spend on another broadening sweep until the parent-region support
-question is resolved. The next analysis should score per-parent-region unit
-support and per-region stimulus-side signal for `CSH_ZAD_019`, `KS014`, and
-`MFD_06`, then test whether the CSH_ZAD_019 lift is concentrated in parent
-regions missing or weakly represented in the broadening holdouts.
+The parent-region support question is now quantified in
+`docs/parent_region_support_signal_audit.md`. Do not spend on another
+broadening sweep until the next candidate holdouts are selected by anatomical
+composition rather than by the current weak two-holdout result alone.
