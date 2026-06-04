@@ -39,7 +39,11 @@ def test_start_script_clones_branch_builds_data_and_pushes_results() -> None:
     assert "git clone --branch runpod-pilot-phases-3-5" in script
     assert "scripts/select_ibl_manifest.py --target 6 --out manifests/ibl_bwm_phase4.json" in script
     assert "scripts/build_ibl_brainset_batch.py --manifest manifests/ibl_bwm_phase4.json" in script
-    assert "SEEDS='0 1 2' MAX_STEPS=600 EVAL_BATCHES=50 bash scripts/run_phase2_cloud_a100.sh" in script
+    assert "cat > /tmp/run_phase3_5_body.sh <<'RUNSCRIPT'" in script
+    assert "export SEEDS='0 1 2'" in script
+    assert "export MAX_STEPS=600" in script
+    assert "export EVAL_BATCHES=50" in script
+    assert "bash scripts/run_phase2_cloud_a100.sh" in script
     assert "git push origin HEAD:runpod-pilot-phases-3-5" in script
     assert "DELETE" in script
 

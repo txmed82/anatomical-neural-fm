@@ -158,19 +158,27 @@ export PATH="$HOME/.local/bin:$PATH"
 export UV_LINK_MODE=copy
 export WANDB_MODE=offline
 
-timeout {run_timeout} bash -lc '
+cat > /tmp/run_phase3_5_body.sh <<'RUNSCRIPT'
   set -euo pipefail
+  echo "=== syncing environment ==="
   uv sync --dev
+  echo "=== running local verification ==="
   uv run pytest -q
   uv run python scripts/00_ibl_smoke_test.py
   uv run python scripts/build_cell_type_priors.py
   if [ ! -f {manifest_path} ]; then
     uv run python scripts/select_ibl_manifest.py --target {build_recordings} --out {manifest_path}
   fi
+  echo "=== building BrainSet data ==="
   uv run python scripts/build_ibl_brainset_batch.py --manifest {manifest_path}
   uv run python scripts/write_dataset_manifest.py
-  SEEDS={seeds} MAX_STEPS={max_steps} EVAL_BATCHES={eval_batches} bash scripts/run_phase2_cloud_a100.sh
-'
+  echo "=== running phase 3-5 sweep ==="
+  export SEEDS={seeds}
+  export MAX_STEPS={max_steps}
+  export EVAL_BATCHES={eval_batches}
+  bash scripts/run_phase2_cloud_a100.sh
+RUNSCRIPT
+timeout {run_timeout} bash /tmp/run_phase3_5_body.sh
 """
 
 
