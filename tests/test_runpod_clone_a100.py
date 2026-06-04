@@ -118,8 +118,8 @@ def test_start_script_can_run_data_build_only() -> None:
     assert "=== skipping cell-type priors ===" in script
     assert "uv run python scripts/build_cell_type_priors.py" not in script
     assert "=== skipping phase 3-5 sweep ===" in script
-    assert "=== pushing data-build startup marker ===" in script
-    assert "RunPod target: data-build startup marker." in script
+    assert "=== pushing data-build startup marker ===" not in script
+    assert "upload-log --local-path" in script
     assert "bash scripts/run_phase2_cloud_a100.sh" not in script
     assert "- skip cell-type priors: True" in script
     assert "- skip sweep: True" in script
