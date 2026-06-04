@@ -50,6 +50,7 @@ class ClonePilotConfig:
     s3_datacenter: str = ""
     skip_cell_type_priors: bool = False
     skip_sweep: bool = False
+    setup_mode: str = "project"
 
 
 def current_branch() -> str:
@@ -107,7 +108,17 @@ def build_start_script(config: ClonePilotConfig) -> str:
             "  uv run python scripts/00_ibl_smoke_test.py\n"
         )
     )
-    dependency_sync_command = "uv sync --no-dev" if config.skip_verification else "uv sync --dev"
+    if config.setup_mode == "minimal-data":
+        dependency_sync_command = (
+            "python3 -m pip install --user --upgrade pip\n"
+            "  python3 -m pip install --user boto3 h5py numpy one-api iblatlas temporaldata"
+        )
+        python_runner = "python3"
+        dataset_manifest_block = '  echo "=== skipping dataset manifest (minimal-data setup) ==="\n'
+    else:
+        dependency_sync_command = "uv sync --no-dev" if config.skip_verification else "uv sync --dev"
+        python_runner = "uv run python"
+        dataset_manifest_block = "  uv run python scripts/write_dataset_manifest.py\n"
     cell_type_priors_block = (
         '  echo "=== skipping cell-type priors ==="\n'
         if config.skip_cell_type_priors
@@ -155,6 +166,7 @@ Configuration:
 - eval batches: {config.eval_batches}
 - target mode: {config.target_mode}
 - sweep script: {config.sweep_script}
+- setup mode: {config.setup_mode}
 - skip cell-type priors: {config.skip_cell_type_priors}
 - skip sweep: {config.skip_sweep}
 - max runtime seconds: {config.max_runtime_seconds}
@@ -232,7 +244,7 @@ trap cleanup EXIT
 set -euo pipefail
 export DEBIAN_FRONTEND=noninteractive
 apt-get update
-apt-get install -y --no-install-recommends git curl ca-certificates
+apt-get install -y --no-install-recommends git curl ca-certificates python3-pip
 
 cd /workspace
 rm -rf {repo_dir_q}
@@ -242,10 +254,14 @@ git config user.name "RunPod Pilot"
 git config user.email "runpod-pilot@example.invalid"
 
 export PATH="$HOME/.local/bin:$PATH"
-if ! command -v uv >/dev/null 2>&1; then
+if [ "{config.setup_mode}" != "minimal-data" ] && ! command -v uv >/dev/null 2>&1; then
   curl -LsSf https://astral.sh/uv/install.sh | sh || python3 -m pip install --user uv
 fi
-uv --version
+if command -v uv >/dev/null 2>&1; then
+  uv --version
+else
+  echo "uv not installed; using python3 minimal-data setup"
+fi
 export UV_LINK_MODE=copy
 export WANDB_MODE=offline
 
@@ -253,7 +269,7 @@ cat > /tmp/run_phase3_5_body.sh <<'RUNSCRIPT'
   set -euo pipefail
   upload_log() {{
     if [ -n "{config.s3_bucket}" ]; then
-      uv run python scripts/sync_brainset_s3.py upload-log --local-path "$LOG_PATH" --key {log_key}{sync_args} || true
+      {python_runner} scripts/sync_brainset_s3.py upload-log --local-path "$LOG_PATH" --key {log_key}{sync_args} || true
     fi
   }}
   echo "=== syncing environment ==="
@@ -264,26 +280,26 @@ cat > /tmp/run_phase3_5_body.sh <<'RUNSCRIPT'
 {cell_type_priors_block.rstrip()}
   upload_log
   if [ ! -f {manifest_path} ]; then
-    uv run python scripts/select_ibl_manifest.py --target {build_recordings} --out {manifest_path}
+    {python_runner} scripts/select_ibl_manifest.py --target {build_recordings} --out {manifest_path}
   fi
   if [ -n "{config.s3_bucket}" ]; then
     echo "=== downloading cached BrainSet data ==="
-    uv run python scripts/sync_brainset_s3.py download --manifest {manifest_path}{sync_args} || true
+    {python_runner} scripts/sync_brainset_s3.py download --manifest {manifest_path}{sync_args} || true
     upload_log
   fi
   echo "=== building BrainSet data ==="
   mkdir -p {output_root}
-  uv run python scripts/build_ibl_brainset_batch.py --manifest {manifest_path} --report {output_root}/build_report.md{build_extra}
+  {python_runner} scripts/build_ibl_brainset_batch.py --manifest {manifest_path} --report {output_root}/build_report.md{build_extra}
   upload_log
   if [ -n "{config.s3_bucket}" ]; then
     echo "=== uploading built BrainSet data ==="
-    uv run python scripts/sync_brainset_s3.py upload --manifest {manifest_path}{sync_args}
+    {python_runner} scripts/sync_brainset_s3.py upload --manifest {manifest_path}{sync_args}
     upload_log
     echo "=== verifying BrainSet cache upload ==="
-    uv run python scripts/sync_brainset_s3.py verify-local --manifest {manifest_path}{sync_args} --report {output_root}/cache_audit.md
+    {python_runner} scripts/sync_brainset_s3.py verify-local --manifest {manifest_path}{sync_args} --report {output_root}/cache_audit.md
     upload_log
   fi
-  uv run python scripts/write_dataset_manifest.py
+{dataset_manifest_block.rstrip()}
   upload_log
 {sweep_block.rstrip()}
   upload_log
@@ -383,6 +399,8 @@ def parse_args() -> argparse.Namespace:
                    help="Skip ABC atlas cell-type prior construction on the pod.")
     p.add_argument("--skip-sweep", action="store_true",
                    help="Only build/sync BrainSet data and reports; do not run the sweep script.")
+    p.add_argument("--setup-mode", choices=["project", "minimal-data"], default="project",
+                   help="Dependency setup strategy. minimal-data avoids torch/project sync for cache builds.")
     p.add_argument("--dry-run", action="store_true")
     p.add_argument("--poll", action="store_true")
     return p.parse_args()
@@ -416,6 +434,7 @@ def main() -> int:
         s3_datacenter=args.s3_datacenter or (args.datacenter if args.s3_bucket else ""),
         skip_cell_type_priors=args.skip_cell_type_priors,
         skip_sweep=args.skip_sweep,
+        setup_mode=args.setup_mode,
     )
     env = load_dotenv(REPO_ROOT / ".env")
     runpod_key = require_env(env, "RUNPOD_API_KEY")

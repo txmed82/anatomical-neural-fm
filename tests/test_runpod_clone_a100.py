@@ -127,6 +127,27 @@ def test_start_script_can_run_data_build_only() -> None:
     assert "scripts/write_dataset_manifest.py" in script
 
 
+def test_start_script_can_use_minimal_data_setup() -> None:
+    cfg = replace(
+        config(),
+        skip_cell_type_priors=True,
+        skip_sweep=True,
+        setup_mode="minimal-data",
+        s3_bucket="brainset-cache",
+    )
+
+    script = build_start_script(cfg)
+
+    assert "- setup mode: minimal-data" in script
+    assert "uv sync" not in script
+    assert "python3 -m pip install --user boto3 h5py numpy one-api iblatlas temporaldata" in script
+    assert "python3 scripts/sync_brainset_s3.py download" in script
+    assert "python3 scripts/build_ibl_brainset_batch.py" in script
+    assert "python3 scripts/sync_brainset_s3.py verify-local" in script
+    assert "scripts/write_dataset_manifest.py" not in script
+    assert "=== skipping dataset manifest (minimal-data setup) ===" in script
+
+
 def test_start_script_can_pass_build_shard_args() -> None:
     cfg = replace(
         config(),
