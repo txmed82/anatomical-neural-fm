@@ -146,6 +146,16 @@ def fmt_delta(value: float | None) -> str:
     return f"{value:+.3f}"
 
 
+def display_path(path: Path) -> str:
+    path = path.expanduser()
+    if not path.is_absolute():
+        return str(path)
+    try:
+        return str(path.relative_to(REPO_ROOT))
+    except ValueError:
+        return str(path)
+
+
 def counter_keys(counter: Counter) -> str:
     if not counter:
         return "n/a"
@@ -175,9 +185,9 @@ def write_report(
     lines = [
         "# Subject-Conditioned Signal Audit",
         "",
-        f"Manifest: `{manifest_path.relative_to(REPO_ROOT)}`",
-        f"LSO result source: `{results_path.relative_to(REPO_ROOT)}`",
-        f"Local BrainSet cache: `{data_dir.relative_to(REPO_ROOT)}`",
+        f"Manifest: `{display_path(manifest_path)}`",
+        f"LSO result source: `{display_path(results_path)}`",
+        f"Local BrainSet cache: `{display_path(data_dir)}`",
         "",
         "## Coverage Status",
         "",

@@ -3,6 +3,7 @@ from pathlib import Path
 from scripts.audit_subject_signal import (
     SubjectResult,
     best_result_by_subject,
+    display_path,
     parse_lso_results,
     summarize_manifest_subjects,
 )
@@ -65,3 +66,7 @@ def test_best_result_by_subject_uses_largest_delta():
     ]
 
     assert best_result_by_subject(rows)["S1"].arm == "region_only"
+
+
+def test_display_path_accepts_relative_paths():
+    assert display_path(Path("manifests/ibl_bwm_phase4.json")) == "manifests/ibl_bwm_phase4.json"
