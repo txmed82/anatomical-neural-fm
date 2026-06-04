@@ -19,6 +19,7 @@ import json
 import math
 import sys
 import time
+from collections import Counter, defaultdict
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -79,7 +80,7 @@ def parse_args():
     p.add_argument("--latent-step", type=float, default=0.125)
     # Ablation: which conditioning channels are on
     p.add_argument("--arm", default="baseline",
-                   choices=["baseline", "region", "cell_type", "region_ctype",
+                   choices=["baseline", "shared_baseline", "region", "cell_type", "region_ctype",
                             "pure_anatomy", "waveform", "waveform_only"])
     # Optim
     p.add_argument("--batch-size", type=int, default=4)
@@ -193,6 +194,37 @@ def build_trial_samples(recs, rids: list[str], window_len: float) -> list[tuple[
             target = 0.0 if c == -1 else 1.0
             out.append((rid, float(t0), target))
     return out
+
+
+def recording_diagnostics(recs, rids: list[str]) -> list[dict]:
+    rows = []
+    for rid in sorted(rids):
+        rec = recs[rid]
+        choice = np.asarray(rec.trials.choice, dtype=np.int64) if hasattr(rec, "trials") else np.array([])
+        rows.append({
+            "recording_id": rid,
+            "subject": str(rec.subject.id),
+            "n_units": int(len(rec.units.id)),
+            "n_regions": int(len(set(rec.units.region_acronym.astype(str).tolist()))),
+            "n_trials": int(len(choice)),
+            "choice_counts": {
+                "L": int((choice == -1).sum()),
+                "R": int((choice == 1).sum()),
+                "nogo": int((choice == 0).sum()),
+            },
+        })
+    return rows
+
+
+def subject_trial_counts(trials: list[tuple[str, float, float]], subject_by_rid: dict[str, str]) -> dict:
+    counts: dict[str, Counter] = defaultdict(Counter)
+    for rid, _t0, target in trials:
+        subject = subject_by_rid[rid]
+        counts[subject]["R" if target == 1.0 else "L"] += 1
+    return {
+        subject: {"L": int(counter["L"]), "R": int(counter["R"])}
+        for subject, counter in sorted(counts.items())
+    }
 
 
 def build_inputs_for_window(model, sample, rid, t0, args):
@@ -380,6 +412,8 @@ def main():
     else:
         # Within-animal: all recordings in both splits, trials shuffled 80/20
         all_rids = list(vocab["recs"].keys())
+        train_rids = all_rids
+        eval_rids = all_rids
         all_trials = build_trial_samples(vocab["recs"], all_rids, args.window_len)
         split_rng = np.random.default_rng(args.split_seed)
         perm = split_rng.permutation(len(all_trials))
@@ -398,7 +432,11 @@ def main():
          "n_train_trials": len(train_trials),
          "n_eval_trials": len(eval_trials),
          "train_class_balance": {"L": n_train_left, "R": n_train_right},
-         "eval_class_balance": {"L": n_eval_left, "R": n_eval_right}})
+         "eval_class_balance": {"L": n_eval_left, "R": n_eval_right},
+         "train_subject_trial_counts": subject_trial_counts(train_trials, vocab["subject_by_rid"]),
+         "eval_subject_trial_counts": subject_trial_counts(eval_trials, vocab["subject_by_rid"]),
+         "train_recordings": recording_diagnostics(vocab["recs"], train_rids),
+         "eval_recordings": recording_diagnostics(vocab["recs"], eval_rids)})
     if not train_trials or not eval_trials:
         log({"event": "fatal", "msg": "no trials available in train or eval split"})
         return 1

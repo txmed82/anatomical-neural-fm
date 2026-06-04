@@ -11,7 +11,7 @@ SHARED_CHOICE_READOUT_ID = "choice_readout"
 
 # These are the primary cross-animal arms because their input tokens do not
 # depend on arbitrary held-out unit-id embeddings.
-PRIMARY_CROSS_ANIMAL_ARMS = ("pure_anatomy", "waveform_only")
+PRIMARY_CROSS_ANIMAL_ARMS = ("shared_baseline", "pure_anatomy", "waveform_only")
 
 
 @dataclass(frozen=True)
@@ -32,6 +32,7 @@ def arm_flags(arm: str) -> dict[str, bool]:
     }
     flags_by_arm = {
         "baseline": {"use_unit_emb": True},
+        "shared_baseline": {},
         "region": {"use_unit_emb": True, "use_region_emb": True},
         "cell_type": {"use_unit_emb": True, "use_cell_type_emb": True},
         "region_ctype": {

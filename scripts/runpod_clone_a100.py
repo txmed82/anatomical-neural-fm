@@ -36,6 +36,8 @@ class ClonePilotConfig:
     build_recordings: int
     max_steps: int
     eval_batches: int
+    manifest_path: str
+    seeds: str
 
 
 def current_branch() -> str:
@@ -67,6 +69,8 @@ def build_start_script(config: ClonePilotConfig) -> str:
     build_recordings = shlex.quote(str(config.build_recordings))
     max_steps = shlex.quote(str(config.max_steps))
     eval_batches = shlex.quote(str(config.eval_batches))
+    manifest_path = shlex.quote(config.manifest_path)
+    seeds = shlex.quote(config.seeds)
     repo_dir_q = shlex.quote(repo_dir)
     return f"""set -uo pipefail
 LOG_PATH=/tmp/runpod_phase3_5.log
@@ -160,9 +164,12 @@ timeout {run_timeout} bash -lc '
   uv run pytest -q
   uv run python scripts/00_ibl_smoke_test.py
   uv run python scripts/build_cell_type_priors.py
-  uv run python scripts/build_ibl_brainset_batch.py {build_recordings}
+  if [ ! -f {manifest_path} ]; then
+    uv run python scripts/select_ibl_manifest.py --target {build_recordings} --out {manifest_path}
+  fi
+  uv run python scripts/build_ibl_brainset_batch.py --manifest {manifest_path}
   uv run python scripts/write_dataset_manifest.py
-  MAX_STEPS={max_steps} EVAL_BATCHES={eval_batches} bash scripts/run_phase2_cloud_a100.sh
+  SEEDS={seeds} MAX_STEPS={max_steps} EVAL_BATCHES={eval_batches} bash scripts/run_phase2_cloud_a100.sh
 '
 """
 
@@ -214,6 +221,8 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--build-recordings", type=int, default=6)
     p.add_argument("--max-steps", type=int, default=600)
     p.add_argument("--eval-batches", type=int, default=50)
+    p.add_argument("--manifest-path", default="manifests/ibl_bwm_phase4.json")
+    p.add_argument("--seeds", default="0 1 2")
     p.add_argument("--name-prefix", default="anfm-a100-clone-pilot")
     p.add_argument("--dry-run", action="store_true")
     p.add_argument("--poll", action="store_true")
@@ -234,6 +243,8 @@ def main() -> int:
         build_recordings=args.build_recordings,
         max_steps=args.max_steps,
         eval_batches=args.eval_batches,
+        manifest_path=args.manifest_path,
+        seeds=args.seeds,
     )
     env = load_dotenv(REPO_ROOT / ".env")
     runpod_key = require_env(env, "RUNPOD_API_KEY")

@@ -23,6 +23,8 @@ def config() -> ClonePilotConfig:
         build_recordings=6,
         max_steps=600,
         eval_batches=50,
+        manifest_path="manifests/ibl_bwm_phase4.json",
+        seeds="0 1 2",
     )
 
 
@@ -35,8 +37,9 @@ def test_start_script_clones_branch_builds_data_and_pushes_results() -> None:
     script = build_start_script(config())
 
     assert "git clone --branch runpod-pilot-phases-3-5" in script
-    assert "scripts/build_ibl_brainset_batch.py 6" in script
-    assert "MAX_STEPS=600 EVAL_BATCHES=50 bash scripts/run_phase2_cloud_a100.sh" in script
+    assert "scripts/select_ibl_manifest.py --target 6 --out manifests/ibl_bwm_phase4.json" in script
+    assert "scripts/build_ibl_brainset_batch.py --manifest manifests/ibl_bwm_phase4.json" in script
+    assert "SEEDS='0 1 2' MAX_STEPS=600 EVAL_BATCHES=50 bash scripts/run_phase2_cloud_a100.sh" in script
     assert "git push origin HEAD:runpod-pilot-phases-3-5" in script
     assert "DELETE" in script
 

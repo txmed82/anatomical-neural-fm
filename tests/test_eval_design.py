@@ -72,7 +72,12 @@ def test_primary_cross_animal_arms_do_not_depend_on_unit_identity():
     for arm in PRIMARY_CROSS_ANIMAL_ARMS:
         flags = arm_flags(arm)
         assert flags["use_unit_emb"] is False
-        assert any(
-            flags[name]
-            for name in ("use_region_emb", "use_cell_type_emb", "use_waveform_emb")
-        )
+
+
+def test_shared_baseline_uses_no_unit_specific_conditioning():
+    assert arm_flags("shared_baseline") == {
+        "use_unit_emb": False,
+        "use_region_emb": False,
+        "use_cell_type_emb": False,
+        "use_waveform_emb": False,
+    }

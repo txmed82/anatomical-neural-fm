@@ -2,11 +2,14 @@
 
 Usage:
     uv run python scripts/build_ibl_brainset_batch.py [N]
+    uv run python scripts/build_ibl_brainset_batch.py --manifest manifests/ibl_bwm_phase4.json
 
 Defaults to N=3. Skips any HDF5 that already exists. Sequential for first cut.
 """
 from __future__ import annotations
 
+import argparse
+import json
 import sys
 import time
 import traceback
@@ -25,21 +28,48 @@ OUT_DIR = Path("data/brainsets/ibl_bwm")
 BWM_PROJECT = "ibl_neuropixel_brainwide_01"
 
 
+def parse_args() -> argparse.Namespace:
+    p = argparse.ArgumentParser()
+    p.add_argument("target", nargs="?", type=int, default=3)
+    p.add_argument("--manifest", type=Path, default=None,
+                   help="JSON manifest with recordings entries containing session_id/eid and probe_name/name.")
+    return p.parse_args()
+
+
+def _manifest_insertions(path: Path) -> list[dict]:
+    payload = json.loads(path.read_text())
+    rows = payload["recordings"] if isinstance(payload, dict) else payload
+    out = []
+    for row in rows:
+        eid = row.get("session_id") or row.get("eid") or row.get("session")
+        probe = row.get("probe_name") or row.get("probe") or row.get("name")
+        if not eid or not probe:
+            raise ValueError(f"bad manifest row missing session/probe: {row}")
+        out.append({"session": eid, "name": probe})
+    return out
+
+
 def main() -> int:
-    target = int(sys.argv[1]) if len(sys.argv) > 1 else 3
+    args = parse_args()
+    target = args.target
     OUT_DIR.mkdir(parents=True, exist_ok=True)
 
     ONE.setup(base_url=OPEN_ALYX, silent=True)
     one = ONE(base_url=OPEN_ALYX, username=PUBLIC_USER, password=PUBLIC_PASS)
 
-    print(f"Listing BWM probe insertions (target {target})...")
-    # Pull more than `target` so we have headroom for failures
-    insertions = one.alyx.rest(
-        "insertions", "list",
-        project=BWM_PROJECT,
-        limit=target * 4,
-    )
-    print(f"  got {len(insertions)} insertions")
+    if args.manifest is not None:
+        insertions = _manifest_insertions(args.manifest)
+        target = len(insertions)
+        print(f"Loaded fixed manifest {args.manifest} ({target} recordings)")
+    else:
+        print(f"Listing BWM probe insertions (target {target})...")
+        # Pull more than `target` so we have headroom for failures
+        insertions = one.alyx.rest(
+            "insertions", "list",
+            project=BWM_PROJECT,
+            limit=target * 4,
+        )
+        print(f"  got {len(insertions)} insertions")
 
     built = 0
     attempted = 0

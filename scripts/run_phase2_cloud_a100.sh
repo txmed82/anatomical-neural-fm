@@ -11,7 +11,7 @@ BATCH_SIZE="${BATCH_SIZE:-16}"
 DIM="${DIM:-96}"
 DEPTH="${DEPTH:-3}"
 NUM_LATENTS="${NUM_LATENTS:-24}"
-SEEDS="${SEEDS:-0 1}"
+SEEDS="${SEEDS:-0 1 2}"
 OUT_ROOT="${OUT_ROOT:-runs/phase2_cloud_a100}"
 
 COMMON_ARGS=(
@@ -52,8 +52,8 @@ run_block() {
 }
 
 mkdir -p "$OUT_ROOT"
-run_block trial "$OUT_ROOT/within" baseline pure_anatomy waveform_only
-run_block animal "$OUT_ROOT/cross" pure_anatomy waveform_only
+run_block trial "$OUT_ROOT/within" baseline shared_baseline pure_anatomy waveform_only
+run_block animal "$OUT_ROOT/cross" shared_baseline pure_anatomy waveform_only
 
 uv run python scripts/analyze_sweep.py "$OUT_ROOT/within" > "$OUT_ROOT/within_summary.md"
 uv run python scripts/analyze_sweep.py "$OUT_ROOT/cross" > "$OUT_ROOT/cross_summary.md"
