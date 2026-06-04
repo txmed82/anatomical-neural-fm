@@ -27,6 +27,7 @@ metrics: `docs/csh_zad_019_demo_metrics.json`.
 Broadening source: `docs/lso_two_holdout_shared_parent_shuffle_results.md`.
 Broadening audit: `docs/shared_parent_broadening_audit.md`.
 Parent-region support audit: `docs/parent_region_support_signal_audit.md`.
+Candidate ranking: `docs/csh_composition_candidate_ranking.md`.
 
 ## Why This Is Real Enough To Demo
 
@@ -55,3 +56,9 @@ Do not rerun the same two-holdout sweep unchanged. The next paid experiment
 should either preselect holdouts whose parent-region composition resembles
 CSH_ZAD_019 or force all compared holdouts onto a common parent-region panel
 before training.
+
+The current cheapest paid gate is a single `NR_0019` shared-parent
+true-vs-shuffled control. `NR_0019` is the closest remaining matched-cache
+subject to `CSH_ZAD_019` by parent-region composition; continue to another
+holdout only if that run produces a meaningful true-label lift over both the
+shared null and shuffled-label control.

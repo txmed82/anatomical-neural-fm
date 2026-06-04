@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
 import sys
 from collections import Counter, defaultdict
 from dataclasses import dataclass
@@ -35,6 +36,19 @@ class RegionSignal:
     @property
     def abs_delta_rate(self) -> float:
         return abs(self.delta_rate)
+
+
+@dataclass(frozen=True)
+class CandidateComposition:
+    subject: str
+    total_units: int
+    parent_regions: int
+    weighted_jaccard: float
+    cosine: float
+    ref_unit_mass_present: float
+    ref_top_mass_present: float
+    ref_top_overlap: int
+    weighted_abs_spike_delta: float
 
 
 def display_path(path: Path) -> str:
@@ -152,6 +166,64 @@ def weighted_abs_delta(signals: dict[str, RegionSignal], parents: Iterable[str] 
     if total_units == 0:
         return 0.0
     return sum(row.abs_delta_rate * row.units for row in selected) / total_units
+
+
+def weighted_jaccard(a: Counter[str], b: Counter[str]) -> float:
+    keys = set(a) | set(b)
+    denominator = sum(max(a[key], b[key]) for key in keys)
+    if denominator == 0:
+        return 0.0
+    return sum(min(a[key], b[key]) for key in keys) / denominator
+
+
+def cosine_similarity(a: Counter[str], b: Counter[str]) -> float:
+    keys = set(a) | set(b)
+    a_norm = math.sqrt(sum(a[key] ** 2 for key in keys))
+    b_norm = math.sqrt(sum(b[key] ** 2 for key in keys))
+    if a_norm == 0.0 or b_norm == 0.0:
+        return 0.0
+    return sum(a[key] * b[key] for key in keys) / (a_norm * b_norm)
+
+
+def reference_mass_present(
+    reference: Counter[str],
+    candidate: Counter[str],
+    parents: Iterable[str] | None = None,
+) -> float:
+    selected = list(parents or reference.keys())
+    total = sum(reference[parent] for parent in selected)
+    if total == 0:
+        return 0.0
+    return sum(reference[parent] for parent in selected if candidate[parent] > 0) / total
+
+
+def rank_candidate_compositions(
+    unit_counts: dict[str, Counter[str]],
+    signals: dict[str, dict[str, RegionSignal]],
+    *,
+    reference_subject: str,
+    top_n: int = 12,
+) -> list[CandidateComposition]:
+    reference = unit_counts[reference_subject]
+    ref_top = [parent for parent, _count in reference.most_common(top_n)]
+    rows = []
+    for subject, counts in unit_counts.items():
+        if subject == reference_subject:
+            continue
+        rows.append(
+            CandidateComposition(
+                subject=subject,
+                total_units=sum(counts.values()),
+                parent_regions=len(counts),
+                weighted_jaccard=weighted_jaccard(reference, counts),
+                cosine=cosine_similarity(reference, counts),
+                ref_unit_mass_present=reference_mass_present(reference, counts),
+                ref_top_mass_present=reference_mass_present(reference, counts, ref_top),
+                ref_top_overlap=len(set(ref_top) & set(counts)),
+                weighted_abs_spike_delta=weighted_abs_delta(signals.get(subject, {})),
+            )
+        )
+    return sorted(rows, key=lambda row: (row.weighted_jaccard, row.cosine), reverse=True)
 
 
 def support_summary(subject: str, counts: dict[str, Counter[str]]) -> dict:
@@ -293,6 +365,97 @@ def write_report(
     out_path.write_text("\n".join(lines))
 
 
+def write_candidate_ranking(
+    *,
+    manifest_path: Path,
+    data_dir: Path,
+    out_path: Path,
+    target_mode: str,
+    window_len: float,
+    reference_subject: str = "CSH_ZAD_019",
+) -> None:
+    ds, recording_ids = load_recordings(data_dir, manifest_path)
+    unit_counts = subject_parent_unit_counts(ds, recording_ids)
+    signals = subject_parent_signals(ds, recording_ids, window_len=window_len, target_mode=target_mode)
+    ranked = rank_candidate_compositions(unit_counts, signals, reference_subject=reference_subject)
+    reference = unit_counts[reference_subject]
+    ref_top = reference.most_common(12)
+    best = ranked[0] if ranked else None
+
+    lines = [
+        "# CSH_ZAD_019 Composition Candidate Ranking",
+        "",
+        f"Manifest: `{display_path(manifest_path)}`",
+        f"Data cache: `{display_path(data_dir)}`",
+        f"Reference holdout: `{reference_subject}`",
+        f"Target: `{target_mode}` over {window_len:.1f}s stimulus-aligned windows",
+        "",
+        "## Reference Composition",
+        "",
+        f"`{reference_subject}` has {sum(reference.values())} units across {len(reference)} parent regions.",
+        "",
+        "| parent | units | unit_mass |",
+        "|---|---:|---:|",
+    ]
+    for parent, units in ref_top:
+        lines.append(f"| {parent} | {units} | {units / sum(reference.values()):.1%} |")
+
+    lines += [
+        "",
+        "## Ranked Candidate Holdouts",
+        "",
+        (
+            "The ranking compares each possible held-out subject with `CSH_ZAD_019` using "
+            "parent-region unit-count vectors from the matched 28-recording cache. Weighted "
+            "Jaccard is the primary score because it penalizes both missing CSH regions and "
+            "large extra-region mass; cosine is a secondary shape-similarity check."
+        ),
+        "",
+        "| rank | subject | units | parents | weighted_jaccard | cosine | CSH_unit_mass_present | CSH_top12_mass_present | CSH_top12_overlap | weighted_abs_spike_delta |",
+        "|---:|---|---:|---:|---:|---:|---:|---:|---:|---:|",
+    ]
+    for idx, row in enumerate(ranked, start=1):
+        lines.append(
+            "| "
+            f"{idx} | {row.subject} | {row.total_units} | {row.parent_regions} | "
+            f"{row.weighted_jaccard:.3f} | {row.cosine:.3f} | "
+            f"{row.ref_unit_mass_present:.1%} | {row.ref_top_mass_present:.1%} | "
+            f"{row.ref_top_overlap}/12 | {row.weighted_abs_spike_delta:.3f} |"
+        )
+
+    lines += [
+        "",
+        "## Recommendation",
+        "",
+    ]
+    if best:
+        lines += [
+            (
+                f"`{best.subject}` is the best next paid holdout if the goal is to test whether "
+                "the strong CSH_ZAD_019 result generalizes to another animal with similar "
+                "parent-region composition."
+            ),
+            "",
+        ]
+    lines += [
+        (
+            "`KS014` and `MFD_06` were useful broadening controls, but this ranking explains why "
+            "rerunning them unchanged is unlikely to be the cheapest next step: they are among "
+            "the least CSH-like subjects by parent-region composition."
+        ),
+        "",
+        (
+            "Next paid gate under the budget cap: run one shared-parent true-vs-shuffled control "
+            "on the top-ranked candidate first. Continue to a second candidate only if the true "
+            "arm beats the shuffled arm and the shared null by a meaningful margin on the first "
+            "candidate. This keeps the next cloud spend small and evidence-driven."
+        ),
+        "",
+    ]
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    out_path.write_text("\n".join(lines))
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument("--manifest", type=Path, default=REPO_ROOT / "manifests/ibl_bwm_region_matched_support80_best6.json")
@@ -301,6 +464,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--csh-results", type=Path, default=REPO_ROOT / "docs/lso_csh_zad_019_shared_parent_shuffle_results.md")
     parser.add_argument("--log", type=Path, default=REPO_ROOT / "docs/cloud_phase3_5_runpod.log")
     parser.add_argument("--out", type=Path, default=REPO_ROOT / "docs/parent_region_support_signal_audit.md")
+    parser.add_argument("--ranking-out", type=Path, default=REPO_ROOT / "docs/csh_composition_candidate_ranking.md")
     parser.add_argument("--target-mode", default="stimulus_side", choices=["choice", "stimulus_side"])
     parser.add_argument("--window-len", type=float, default=1.0)
     return parser.parse_args()
@@ -318,7 +482,15 @@ def main() -> int:
         target_mode=args.target_mode,
         window_len=args.window_len,
     )
+    write_candidate_ranking(
+        manifest_path=args.manifest,
+        data_dir=args.data_dir,
+        out_path=args.ranking_out,
+        target_mode=args.target_mode,
+        window_len=args.window_len,
+    )
     print(f"wrote {args.out}")
+    print(f"wrote {args.ranking_out}")
     return 0
 
 

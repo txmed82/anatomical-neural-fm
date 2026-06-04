@@ -529,3 +529,26 @@ five parent regions (`BS`, `MBmot`, `cc`, `root`, `void`) are shared by all
 three strict splits. The next paid experiment should either preselect holdouts
 whose parent-region composition resembles CSH_ZAD_019 or force all compared
 holdouts onto a common parent-region panel before training.
+
+Completed no-spend candidate ranking:
+`docs/csh_composition_candidate_ranking.md` ranks the remaining matched-cache
+subjects by parent-region unit-count similarity to the strong `CSH_ZAD_019`
+holdout. `NR_0019` is the closest candidate by weighted Jaccard and cosine,
+while the already-tested `KS014` and `MFD_06` are among the least CSH-like
+subjects by composition.
+
+Next paid gate under the $100 hard cap:
+
+- run only `NR_0019` first under the same shared-parent true-vs-shuffled control
+- arms: `shared_baseline region_only region_shuffle`
+- seeds: `0 1 2`
+- target: `stimulus_side`
+- region filter: `shared_regions`
+- region granularity: `parent`
+- stop after `NR_0019` unless true `region_only` beats both the shared null and
+  shuffled control by a meaningful margin
+
+This is the cheapest defensible broadening step because it tests whether the
+CSH_ZAD_019 effect generalizes to the most compositionally similar held-out
+animal, instead of paying again for holdouts that the no-spend audit already
+flags as mismatched.
