@@ -440,3 +440,14 @@ that result is empty and should be treated as an aborted/non-evidence run.
 The wrapper now writes `summary.md` incrementally after completed arms/holdouts,
 so a future interrupted run should still preserve partial evidence for cleanup
 to push.
+
+Before launching that broadening run, execute:
+
+```bash
+uv run python scripts/preflight_two_holdout_runpod.py --max-dollars 10
+```
+
+The preflight does not rent a pod. It verifies that the Git branch is clean and
+synced, active RunPod pods are zero, and the estimated one-pod worst-case cost
+is below the cap. With the current 5400-second guard and a conservative
+`$1.50/hr` assumption, the estimated maximum is `$2.25`.
