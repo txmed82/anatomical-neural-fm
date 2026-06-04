@@ -2,7 +2,12 @@ from __future__ import annotations
 
 import numpy as np
 
-from scripts.train import build_inputs_for_window, build_trial_samples, shared_split_regions
+from scripts.train import (
+    build_inputs_for_window,
+    build_trial_samples,
+    region_acronym_at_granularity,
+    shared_split_regions,
+)
 
 
 class Obj:
@@ -54,6 +59,22 @@ def test_shared_split_regions_uses_train_eval_intersection() -> None:
     assert shared_split_regions(recs, ["train"], ["eval"]) == {"CA1"}
 
 
+def test_region_acronym_at_granularity_uses_allen_parent() -> None:
+    assert region_acronym_at_granularity("SSp-bfd6a", "parent") == "SSp-bfd"
+    assert region_acronym_at_granularity("PO", "parent") == "LAT"
+    assert region_acronym_at_granularity("PO", "fine") == "PO"
+
+
+def test_shared_split_regions_can_use_parent_granularity() -> None:
+    recs = {
+        "train": Obj(units=Obj(region_acronym=np.array(["PO"]))),
+        "eval": Obj(units=Obj(region_acronym=np.array(["LP"]))),
+    }
+
+    assert shared_split_regions(recs, ["train"], ["eval"], region_granularity="fine") == set()
+    assert shared_split_regions(recs, ["train"], ["eval"], region_granularity="parent") == {"LAT"}
+
+
 def test_build_inputs_for_window_filters_spikes_to_allowed_regions() -> None:
     class Tokenizer:
         def __call__(self, unit_ids):
@@ -70,7 +91,13 @@ def test_build_inputs_for_window_filters_spikes_to_allowed_regions() -> None:
             timestamps=np.array([1.0, 1.1, 1.2, 1.3], dtype=np.float32),
         ),
     )
-    args = Obj(window_len=1.0, latent_step=0.5, num_latents=1, output_query_mode="shared")
+    args = Obj(
+        window_len=1.0,
+        latent_step=0.5,
+        num_latents=1,
+        output_query_mode="shared",
+        region_granularity="fine",
+    )
 
     out = build_inputs_for_window(
         model,

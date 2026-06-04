@@ -20,6 +20,7 @@ import math
 import sys
 import time
 from collections import Counter, defaultdict
+from functools import lru_cache
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -77,6 +78,9 @@ def parse_args():
     p.add_argument("--region-filter", default="none", choices=["none", "shared_regions"],
                    help="'shared_regions' keeps only units whose region acronym appears in both "
                         "the train and held-out recordings for the current split.")
+    p.add_argument("--region-granularity", default="fine", choices=["fine", "parent", "grandparent"],
+                   help="Granularity for region embeddings and region filtering. Cell-type priors "
+                        "still use original fine acronyms with their existing ancestor fallback.")
     # Model
     p.add_argument("--dim", type=int, default=64)
     p.add_argument("--depth", type=int, default=2)
@@ -113,30 +117,80 @@ def resolve_device(name: str) -> torch.device:
 
 # -------------------------------------------------------- data & sampling
 
-def build_vocab(ds: Dataset):
+@lru_cache(maxsize=None)
+def _ancestor_acronyms(acronym: str) -> tuple[str, ...]:
+    from iblatlas.regions import BrainRegions
+    br = BrainRegions()
+    try:
+        ids = np.atleast_1d(br.acronym2id(acronym))
+    except Exception:
+        return ()
+    if len(ids) == 0:
+        return ()
+    try:
+        anc = br.ancestors(np.array([int(ids[0])]))
+    except Exception:
+        return ()
+    if hasattr(anc, "acronym"):
+        return tuple(str(a) for a in anc.acronym)
+    if isinstance(anc, dict) and "acronym" in anc:
+        return tuple(str(a) for a in anc["acronym"])
+    return ()
+
+
+def region_acronym_at_granularity(acronym: str, granularity: str) -> str:
+    if granularity == "fine":
+        return str(acronym)
+    ancestors = _ancestor_acronyms(str(acronym))
+    if not ancestors:
+        return str(acronym)
+    offset = {"parent": 2, "grandparent": 3}[granularity]
+    if len(ancestors) >= offset:
+        candidate = ancestors[-offset]
+        if candidate not in {"root", "grey"}:
+            return candidate
+    return str(acronym)
+
+
+def map_region_acronyms(acronyms, granularity: str) -> list[str]:
+    cache: dict[str, str] = {}
+    out: list[str] = []
+    for acronym in acronyms:
+        key = str(acronym)
+        if key not in cache:
+            cache[key] = region_acronym_at_granularity(key, granularity)
+        out.append(cache[key])
+    return out
+
+
+def build_vocab(ds: Dataset, region_granularity: str = "fine"):
     """Collect global unit_ids / session_ids / region info / waveform features across all recordings."""
     recs = {rid: ds.get_recording(rid) for rid in ds.recording_ids}
     all_unit_ids: list[str] = []
     all_region_acronyms: list[str] = []
-    all_region_ids: list[int] = []
+    all_region_labels: list[str] = []
+    all_fine_region_acronyms: list[str] = []
     waveform_rows: list[np.ndarray] = []
     subject_by_rid: dict[str, str] = {}
     for rid, rec in recs.items():
         prefix = f"{rid}/"
         unit_ids = [prefix + u for u in rec.units.id.astype(str).tolist()]
         all_unit_ids.extend(unit_ids)
-        all_region_acronyms.extend(rec.units.region_acronym.astype(str).tolist())
-        all_region_ids.extend(rec.units.region_id.astype(np.int64).tolist())
+        fine_acronyms = rec.units.region_acronym.astype(str).tolist()
+        region_labels = map_region_acronyms(fine_acronyms, region_granularity)
+        all_region_acronyms.extend(region_labels)
+        all_fine_region_acronyms.extend(fine_acronyms)
+        all_region_labels.extend(region_labels)
         # Per-unit waveform features: (amps, depths, peak_to_trough)
         amps = np.asarray(rec.units.amps, dtype=np.float32)
         depths = np.asarray(rec.units.depths, dtype=np.float32)
         ptt = np.asarray(rec.units.peak_to_trough, dtype=np.float32)
         waveform_rows.append(np.stack([amps, depths, ptt], axis=-1))
         subject_by_rid[rid] = str(rec.subject.id)
-    unique_region_ids = np.unique(all_region_ids)
-    region_id_to_idx = {int(r): i for i, r in enumerate(unique_region_ids)}
+    unique_region_labels = sorted(set(all_region_labels))
+    region_id_to_idx = {label: i for i, label in enumerate(unique_region_labels)}
     region_idx_per_unit = np.array(
-        [region_id_to_idx[r] for r in all_region_ids], dtype=np.int64,
+        [region_id_to_idx[r] for r in all_region_labels], dtype=np.int64,
     )
     waveform_features = np.concatenate(waveform_rows, axis=0).astype(np.float32)
     return {
@@ -145,7 +199,9 @@ def build_vocab(ds: Dataset):
         "session_ids": list(recs.keys()),
         "region_idx_per_unit": region_idx_per_unit,
         "region_acronyms": np.array(all_region_acronyms),
-        "n_regions": len(unique_region_ids),
+        "cell_type_region_acronyms": np.array(all_fine_region_acronyms),
+        "n_regions": len(unique_region_labels),
+        "region_granularity": region_granularity,
         "waveform_features": waveform_features,
         "subject_by_rid": subject_by_rid,
     }
@@ -226,15 +282,26 @@ def build_trial_samples(
     return out
 
 
-def recording_region_acronyms(recs, rids: list[str]) -> set[str]:
+def recording_region_acronyms(recs, rids: list[str], region_granularity: str = "fine") -> set[str]:
     regions: set[str] = set()
     for rid in rids:
-        regions.update(str(r) for r in recs[rid].units.region_acronym.astype(str).tolist())
+        regions.update(map_region_acronyms(
+            recs[rid].units.region_acronym.astype(str).tolist(),
+            region_granularity,
+        ))
     return regions
 
 
-def shared_split_regions(recs, train_rids: list[str], eval_rids: list[str]) -> set[str]:
-    return recording_region_acronyms(recs, train_rids) & recording_region_acronyms(recs, eval_rids)
+def shared_split_regions(
+    recs,
+    train_rids: list[str],
+    eval_rids: list[str],
+    region_granularity: str = "fine",
+) -> set[str]:
+    return (
+        recording_region_acronyms(recs, train_rids, region_granularity)
+        & recording_region_acronyms(recs, eval_rids, region_granularity)
+    )
 
 
 def recording_diagnostics(recs, rids: list[str]) -> list[dict]:
@@ -277,7 +344,7 @@ def build_inputs_for_window(model, sample, rid, t0, args, allowed_region_acronym
     spike_unit_index = np.asarray(sample.spikes.unit_index, dtype=np.int64)
     spike_timestamps = np.asarray(sample.spikes.timestamps, dtype=np.float32)
     if allowed_region_acronyms is not None:
-        unit_regions = sample.units.region_acronym.astype(str)
+        unit_regions = map_region_acronyms(sample.units.region_acronym.astype(str), args.region_granularity)
         unit_allowed = np.array([region in allowed_region_acronyms for region in unit_regions], dtype=bool)
         spike_mask = unit_allowed[spike_unit_index]
         spike_unit_index = spike_unit_index[spike_mask]
@@ -454,7 +521,7 @@ def main():
          "device": str(device)})
 
     ds = Dataset(dataset_dir=args.data_dir, keep_files_open=True)
-    vocab = build_vocab(ds)
+    vocab = build_vocab(ds, args.region_granularity)
 
     if args.split_mode == "animal":
         animal_split = split_recordings_by_subject(vocab["subject_by_rid"], args.holdout)
@@ -488,7 +555,9 @@ def main():
     allowed_region_acronyms = None
     region_filter_info = {"region_filter": args.region_filter}
     if args.region_filter == "shared_regions":
-        allowed_region_acronyms = shared_split_regions(vocab["recs"], train_rids, eval_rids)
+        allowed_region_acronyms = shared_split_regions(
+            vocab["recs"], train_rids, eval_rids, args.region_granularity,
+        )
         region_filter_info.update({
             "n_allowed_regions": len(allowed_region_acronyms),
             "allowed_regions": sorted(allowed_region_acronyms),
@@ -496,6 +565,7 @@ def main():
     log({"event": "split", "n_recordings": len(ds.recording_ids),
          **split_info,
          **region_filter_info,
+         "region_granularity": args.region_granularity,
          "target_mode": args.target_mode,
          "n_train_trials": len(train_trials),
          "n_eval_trials": len(eval_trials),
@@ -520,7 +590,7 @@ def main():
     model.register_unit_anatomy(vocab["all_unit_ids"], vocab["region_idx_per_unit"])
     if flags["use_cell_type_emb"]:
         model.register_unit_cell_types(
-            vocab["all_unit_ids"], vocab["region_acronyms"], priors_df, taxonomy,
+            vocab["all_unit_ids"], vocab["cell_type_region_acronyms"], priors_df, taxonomy,
         )
     if flags["use_waveform_emb"]:
         model.register_unit_waveform_features(
