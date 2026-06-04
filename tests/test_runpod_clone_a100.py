@@ -68,6 +68,20 @@ def test_pod_body_uses_container_disk_no_network_volume() -> None:
     assert body["env"]["GITHUB_TOKEN"] == "github"
 
 
+def test_pod_body_can_use_availability_datacenter_and_gpu_list() -> None:
+    cfg = replace(
+        config(),
+        datacenter="ANY",
+        gpu_type="NVIDIA L4,NVIDIA RTX A4000",
+    )
+
+    body = build_pod_body("pilot", cfg, "runpod", "github")
+
+    assert "dataCenterIds" not in body
+    assert body["dataCenterPriority"] == "availability"
+    assert body["gpuTypeIds"] == ["NVIDIA L4", "NVIDIA RTX A4000"]
+
+
 def test_start_script_can_run_leave_subject_out_report() -> None:
     cfg = replace(
         config(),

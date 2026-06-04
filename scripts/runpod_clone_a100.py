@@ -311,16 +311,16 @@ def build_pod_body(name: str, config: ClonePilotConfig, runpod_key: str, github_
         )
         env["BRAINSET_S3_ACCESS_KEY"] = access_key
         env["BRAINSET_S3_SECRET_KEY"] = secret_key
-    return {
+    gpu_type_ids = [gpu.strip() for gpu in config.gpu_type.split(",") if gpu.strip()]
+    body = {
         "name": name,
         "imageName": config.image_name,
         "cloudType": "SECURE",
         "computeType": "GPU",
-        "gpuTypeIds": [config.gpu_type],
+        "gpuTypeIds": gpu_type_ids,
         "gpuTypePriority": "availability",
         "gpuCount": 1,
-        "dataCenterIds": [config.datacenter],
-        "dataCenterPriority": "custom",
+        "dataCenterPriority": "availability" if config.datacenter.upper() == "ANY" else "custom",
         "containerDiskInGb": config.container_disk_gb,
         "volumeInGb": config.volume_gb,
         "volumeMountPath": "/workspace",
@@ -329,6 +329,9 @@ def build_pod_body(name: str, config: ClonePilotConfig, runpod_key: str, github_
         "env": env,
         "dockerStartCmd": ["bash", "-lc", build_start_script(config)],
     }
+    if config.datacenter.upper() != "ANY":
+        body["dataCenterIds"] = [config.datacenter]
+    return body
 
 
 def summarize_pod(pod: dict[str, Any]) -> dict[str, Any]:
@@ -345,8 +348,10 @@ def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser()
     p.add_argument("--branch", default=current_branch())
     p.add_argument("--repo-url", default="https://github.com/txmed82/anatomical-neural-fm.git")
-    p.add_argument("--datacenter", default="US-MO-1")
-    p.add_argument("--gpu-type", default="NVIDIA A100 80GB PCIe")
+    p.add_argument("--datacenter", default="US-MO-1",
+                   help="RunPod data center ID, or ANY to let RunPod pick by availability.")
+    p.add_argument("--gpu-type", default="NVIDIA A100 80GB PCIe",
+                   help="GPU type ID, or a comma-separated priority list of type IDs.")
     p.add_argument("--image-name", default="runpod/pytorch:2.4.0-py3.11-cuda12.4.1-devel-ubuntu22.04")
     p.add_argument("--container-disk-gb", type=int, default=80)
     p.add_argument("--volume-gb", type=int, default=0)
