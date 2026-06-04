@@ -270,7 +270,7 @@ EOF
 
 EOF
       cat {output_root}/summary.md >> {result_doc} 2>/dev/null || true
-    else
+    elif [ -f {output_root}/within_summary.md ] || [ -f {output_root}/cross_summary.md ]; then
       cat >> {result_doc} <<EOF
 ## Within-Animal Summary
 
@@ -282,6 +282,15 @@ EOF
 
 EOF
       cat {output_root}/cross_summary.md >> {result_doc} 2>/dev/null || true
+    else
+      cat >> {result_doc} <<EOF
+## Missing Sweep Summary
+
+No \`{config.output_root}/summary.md\`, \`within_summary.md\`, or
+\`cross_summary.md\` file was present when cleanup pushed artifacts. Treat this
+cloud result as incomplete/non-evidence even if the pod exit status is 0.
+
+EOF
     fi
 
     git add {result_doc} docs/cloud_phase3_5_runpod.log 2>/dev/null || true

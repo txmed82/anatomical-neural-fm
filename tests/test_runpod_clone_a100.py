@@ -145,6 +145,20 @@ def test_start_script_can_run_leave_subject_out_report() -> None:
     assert "export OUT_ROOT=runs/leave_subject_out_a100" in script
     assert "cat > docs/leave_subject_out_results.md" in script
     assert "runs/leave_subject_out_a100/summary.md" in script
+    assert "## Missing Sweep Summary" in script
+    assert "Treat this" in script
+
+
+def test_start_script_marks_missing_sweep_summary_as_incomplete() -> None:
+    script = build_start_script(config())
+
+    assert "elif [ -f runs/phase2_cloud_a100/within_summary.md ]" in script
+    assert "## Missing Sweep Summary" in script
+    assert (
+        "No \\`runs/phase2_cloud_a100/summary.md\\`, \\`within_summary.md\\`, or\n"
+        "\\`cross_summary.md\\` file was present"
+    ) in script
+    assert "cloud result as incomplete/non-evidence" in script
 
 
 def test_start_script_can_skip_pod_verification() -> None:
