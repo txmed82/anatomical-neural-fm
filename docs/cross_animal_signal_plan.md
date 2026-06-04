@@ -351,3 +351,34 @@ general cross-animal anatomical transfer result. The next useful step is a
 CSH_ZAD_019-focused ablation, not another broad sweep: rerun `CSH_ZAD_019`
 with region-shuffled labels or shared-region masking to test whether the lift
 depends on anatomical identity rather than another subject/session correlate.
+
+## Completed Control: CSH_ZAD_019 Region-Label Shuffle
+
+Add `--region-label-control shuffle` to `scripts/train.py`. The control
+permutes region labels across unit tokens after vocab construction, preserving
+the marginal region-label distribution but breaking the anatomy-to-unit mapping.
+
+Run:
+
+- subject: `CSH_ZAD_019`
+- arms: `shared_baseline region_only region_shuffle`
+- seeds: `0 1 2`
+- target: `stimulus_side`
+- report: `docs/lso_csh_zad_019_region_shuffle_results.md`
+
+Result:
+
+- true `region_only`: +0.042 mean delta, positive in 3/3 seeds
+- shuffled-region control: -0.012 mean delta, effectively null
+- seed deltas:
+  - true `region_only`: +0.029, +0.054, +0.044
+  - shuffled: +0.001, -0.036, +0.000
+
+Interpretation: this is the first controlled evidence that the CSH_ZAD_019
+effect depends on anatomical region identity rather than only model capacity or
+the marginal region-label distribution. It is still subject-specific, so the
+current honest claim is: "on a matched 28-recording IBL subset, one held-out
+animal shows a reproducible cross-animal region-identity transfer signal that
+collapses under shuffled anatomical labels." The next step toward a stronger
+open computational neuroscience demo is to test whether the same CSH_ZAD_019
+effect survives shared-region masking or parent-region granularity.
