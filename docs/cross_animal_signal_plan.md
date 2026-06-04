@@ -465,4 +465,11 @@ should not start if any unexpected RunPod pod already exists.
 
 Capacity note: an `ANY` datacenter create attempt with only
 `NVIDIA A100 80GB PCIe` failed before allocation because no matching instances
-were available. No pod was created and active pods remained zero.
+were available. A second attempt with both A100 variants rented a `$1.49/hr`
+pod and did start training even though the RunPod status API continued to
+report no public IP and `machineReady=false`. That attempt was manually
+terminated after several minutes because the readiness fields looked stalled,
+so it only preserved partial KS014 seed-0 evidence. Active pods returned to
+zero. Do not manually terminate future polled pods based only on those
+readiness fields; rely on the runtime guard unless cost or API state clearly
+violates the cap.
