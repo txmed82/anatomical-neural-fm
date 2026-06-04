@@ -1,3 +1,24 @@
+# Cloud Phase 3-5 Results
+
+Date: 2026-06-04T06:31:04Z
+
+RunPod target: A100 pilot.
+
+Exit status: 0
+
+Configuration:
+
+- branch: runpod-pilot-phases-3-5
+- build recordings: 20
+- max steps: 1
+- eval batches: 1
+- target mode: stimulus_side
+- sweep script: scripts/run_subject_audit_a100.sh
+- max runtime seconds: 3600
+- output root: `runs/subject_conditioned_audit_a100`
+
+## Summary
+
 # Subject-Conditioned Signal Audit
 
 Manifest: `manifests/ibl_bwm_phase4.json`
@@ -6,14 +27,7 @@ Local BrainSet cache: `data/brainsets/ibl_bwm`
 
 ## Coverage Status
 
-The 20-recording manifest contains 10 subjects. The local HDF5 cache currently covers 2 subjects and 3 recordings.
-
-Local cache subjects not present in the 20-recording manifest:
-
-- `MFD_08`
-- `MFD_09`
-
-Trial class balance and region overlap are therefore partial locally. Run this script on the same RunPod-built dataset for the full audit.
+The 20-recording manifest contains 10 subjects. The local HDF5 cache currently covers 10 subjects and 20 recordings.
 
 ## Manifest Subject Summary
 
@@ -43,8 +57,16 @@ Trial class balance and region overlap are therefore partial locally. Run this s
 
 | subject | cached_recordings | valid_target_trials | target_balance | units | regions | top_regions |
 |---|---:|---:|---|---:|---:|---|
-| MFD_08 | 2 | 1337 | L:686, R:651 | 2396 | 29 | MV:486, APN:348, CENT2:319, PARN:181, CA1:136, arb:123, CENT3:119, VISp6a:94 |
-| MFD_09 | 1 | 500 | L:261, R:239 | 1557 | 16 | PO:1014, LP:133, CA1:93, SSp-tr6a:73, SSp-tr5:59, SSp-tr4:59, CA3:54, DG-mo:31 |
+| CSHL045 | 2 | 1387 | L:667, R:720 | 1889 | 24 | CUL4 5:429, RT:223, IRN:214, int:140, MEA:137, PARN:115, SPIV:95, arb:88 |
+| DY_008 | 2 | 781 | L:405, R:376 | 1699 | 27 | PO:378, VPM:183, CA1:137, VPL:115, CP:106, SSp-bfd6a:100, LP:99, SSp-tr5:72 |
+| KS014 | 2 | 1075 | L:583, R:492 | 1336 | 22 | RN:284, SCiw:242, SCig:228, MRN:194, APN:121, SCsg:32, fp:27, MB:26 |
+| MFD_05 | 2 | 1162 | L:587, R:575 | 2356 | 32 | SPVI:308, ProS:247, arb:223, RN:184, MY:160, CENT3:156, SCig:108, MRN:106 |
+| NR_0019 | 2 | 1212 | L:597, R:615 | 1548 | 20 | VPM:372, MRN:235, VPL:201, MB:190, APN:112, ZI:79, LHA:66, VAL:61 |
+| NYU-11 | 2 | 758 | L:314, R:444 | 1728 | 31 | BMAp:270, int:237, CEAl:174, LGd-co:143, COApl:111, TH:100, CA1:98, GPe:92 |
+| PL015 | 2 | 1133 | L:519, R:614 | 1634 | 29 | CA1:495, AUDp6a:99, AUDpo5:89, VISal2/3:89, ECT2/3:81, VISal5:74, TEa5:71, ENTl5:68 |
+| SWC_038 | 2 | 1222 | L:628, R:594 | 2735 | 13 | MOs5:642, CP:474, MOs6a:445, ORBvl6a:324, MOs2/3:278, AON:191, ACB:123, DP:80 |
+| SWC_042 | 2 | 913 | L:441, R:472 | 2664 | 28 | CA3:591, LGv:244, DG-mo:237, DG-sg:222, SSp-bfd6a:153, HATA:151, void:133, SSp-bfd4:113 |
+| ZFM-01576 | 2 | 1624 | L:900, R:724 | 1626 | 30 | SIM:293, LAV:259, MOp5:123, MOp2/3:111, PVT:99, MOs6a:86, arb:83, PARN:75 |
 
 ## Interpretation
 
