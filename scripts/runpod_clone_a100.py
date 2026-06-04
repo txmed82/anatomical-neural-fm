@@ -42,6 +42,7 @@ class ClonePilotConfig:
     sweep_script: str
     output_root: str
     result_doc: str
+    skip_verification: bool = False
 
 
 def current_branch() -> str:
@@ -80,6 +81,15 @@ def build_start_script(config: ClonePilotConfig) -> str:
     output_root = shlex.quote(config.output_root)
     result_doc = shlex.quote(config.result_doc)
     repo_dir_q = shlex.quote(repo_dir)
+    verification_block = (
+        '  echo "=== skipping local verification ==="\n'
+        if config.skip_verification
+        else (
+            '  echo "=== running local verification ==="\n'
+            "  uv run pytest -q\n"
+            "  uv run python scripts/00_ibl_smoke_test.py\n"
+        )
+    )
     return f"""set -uo pipefail
 LOG_PATH=/tmp/runpod_phase3_5.log
 REPO_DIR=/workspace/{repo_dir_q}
@@ -182,9 +192,7 @@ cat > /tmp/run_phase3_5_body.sh <<'RUNSCRIPT'
   set -euo pipefail
   echo "=== syncing environment ==="
   uv sync --dev
-  echo "=== running local verification ==="
-  uv run pytest -q
-  uv run python scripts/00_ibl_smoke_test.py
+{verification_block.rstrip()}
   uv run python scripts/build_cell_type_priors.py
   if [ ! -f {manifest_path} ]; then
     uv run python scripts/select_ibl_manifest.py --target {build_recordings} --out {manifest_path}
@@ -258,6 +266,8 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--output-root", default="runs/phase2_cloud_a100")
     p.add_argument("--result-doc", default="docs/cloud_phase3_5_results.md")
     p.add_argument("--name-prefix", default="anfm-a100-clone-pilot")
+    p.add_argument("--skip-verification", action="store_true",
+                   help="Skip pytest and the IBL smoke test on the pod after local verification.")
     p.add_argument("--dry-run", action="store_true")
     p.add_argument("--poll", action="store_true")
     return p.parse_args()
@@ -283,6 +293,7 @@ def main() -> int:
         sweep_script=args.sweep_script,
         output_root=args.output_root,
         result_doc=args.result_doc,
+        skip_verification=args.skip_verification,
     )
     env = load_dotenv(REPO_ROOT / ".env")
     runpod_key = require_env(env, "RUNPOD_API_KEY")

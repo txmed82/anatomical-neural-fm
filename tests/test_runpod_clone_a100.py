@@ -82,3 +82,14 @@ def test_start_script_can_run_leave_subject_out_report() -> None:
     assert "export OUT_ROOT=runs/leave_subject_out_a100" in script
     assert "cat > docs/leave_subject_out_results.md" in script
     assert "runs/leave_subject_out_a100/summary.md" in script
+
+
+def test_start_script_can_skip_pod_verification() -> None:
+    cfg = replace(config(), skip_verification=True)
+
+    script = build_start_script(cfg)
+
+    assert "=== skipping local verification ===" in script
+    assert "uv run pytest -q" not in script
+    assert "uv run python scripts/00_ibl_smoke_test.py" not in script
+    assert "uv run python scripts/build_cell_type_priors.py" in script
