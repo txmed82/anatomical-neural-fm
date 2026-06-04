@@ -9,6 +9,7 @@ from scripts.runpod_clone_a100 import (
     authenticated_repo_url,
     build_pod_body,
     build_start_script,
+    summarize_pod,
 )
 
 
@@ -104,6 +105,29 @@ def test_pod_body_can_use_cpu_flavors() -> None:
     assert body["volumeInGb"] == 80
     assert "gpuTypeIds" not in body
     assert "gpuCount" not in body
+
+
+def test_summarize_pod_reports_provisioning_state() -> None:
+    summary = summarize_pod(
+        {
+            "id": "pod",
+            "name": "pilot",
+            "desiredStatus": "RUNNING",
+            "costPerHr": 0.06,
+            "machineId": "machine",
+            "cpuFlavorId": "cpu3c",
+            "publicIp": "",
+            "volumeInGb": 0,
+            "machine": {},
+            "lastStatusChange": "Rented by User",
+        }
+    )
+
+    assert summary["machineReady"] is False
+    assert summary["publicIp"] == ""
+    assert summary["cpuFlavorId"] == "cpu3c"
+    assert summary["volumeInGb"] == 0
+    assert summary["lastStatusChange"] == "Rented by User"
 
 
 def test_start_script_can_run_leave_subject_out_report() -> None:

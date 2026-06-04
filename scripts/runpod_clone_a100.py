@@ -419,12 +419,18 @@ def build_pod_body(name: str, config: ClonePilotConfig, runpod_key: str, github_
 
 
 def summarize_pod(pod: dict[str, Any]) -> dict[str, Any]:
+    machine = pod.get("machine") or {}
     return {
         "id": pod.get("id"),
         "name": pod.get("name"),
         "desiredStatus": pod.get("desiredStatus"),
         "costPerHr": pod.get("costPerHr"),
         "machineId": pod.get("machineId"),
+        "cpuFlavorId": pod.get("cpuFlavorId"),
+        "publicIp": pod.get("publicIp"),
+        "volumeInGb": pod.get("volumeInGb"),
+        "machineReady": bool(machine),
+        "lastStatusChange": pod.get("lastStatusChange"),
     }
 
 
@@ -472,6 +478,8 @@ def parse_args() -> argparse.Namespace:
                    help="Stop after dependency setup and first S3 log upload.")
     p.add_argument("--dry-run", action="store_true")
     p.add_argument("--poll", action="store_true")
+    p.add_argument("--max-provision-seconds", type=int, default=600,
+                   help="When polling, terminate if the pod remains rented but unprovisioned this long.")
     return p.parse_args()
 
 
@@ -541,6 +549,7 @@ def main() -> int:
     if args.poll:
         pod_id = pod["id"]
         print("Polling pod status; the pod has a self-termination trap.", flush=True)
+        provision_deadline = time.time() + args.max_provision_seconds
         while True:
             time.sleep(30)
             try:
@@ -550,6 +559,20 @@ def main() -> int:
                 break
             print(json.dumps(summarize_pod(current), indent=2), flush=True)
             if current.get("desiredStatus") in {"EXITED", "TERMINATED"}:
+                break
+            machine = current.get("machine") or {}
+            public_ip = current.get("publicIp")
+            if (
+                args.max_provision_seconds > 0
+                and time.time() > provision_deadline
+                and not machine
+                and not public_ip
+            ):
+                print(
+                    f"Pod stayed unprovisioned for {args.max_provision_seconds}s; terminating.",
+                    flush=True,
+                )
+                client.terminate_pod(pod_id)
                 break
     return 0
 
