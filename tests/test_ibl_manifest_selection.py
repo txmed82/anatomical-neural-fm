@@ -2,7 +2,10 @@ from __future__ import annotations
 
 import json
 
-from scripts.build_ibl_brainset_batch import _manifest_insertions, select_shard
+import numpy as np
+
+from scripts.build_ibl_brainset import trial_window_spike_mask
+from scripts.build_ibl_brainset_batch import _manifest_insertions, select_shard, write_report
 from scripts.select_ibl_manifest import compact_insertion, select_balanced
 
 
@@ -96,3 +99,36 @@ def test_select_shard_splits_manifest_contiguously() -> None:
     assert select_shard(rows, num_shards=3, shard_index=0) == rows[:3]
     assert select_shard(rows, num_shards=3, shard_index=1) == rows[3:6]
     assert select_shard(rows, num_shards=3, shard_index=2) == rows[6:]
+
+
+def test_trial_window_spike_mask_keeps_only_training_windows() -> None:
+    spike_times = np.array([0.9, 1.0, 1.4, 2.1, 3.0, 3.2, 4.2])
+    stim_on = np.array([1.0, np.nan, 3.0])
+
+    mask = trial_window_spike_mask(spike_times, stim_on, window_len=0.5)
+
+    assert mask.tolist() == [False, True, True, False, True, True, False]
+
+
+def test_batch_report_records_compact_build_options(tmp_path) -> None:
+    out = tmp_path / "build.md"
+
+    write_report(
+        out,
+        manifest=tmp_path / "manifest.json",
+        selected=[{"session": "eid-a", "name": "probe00"}],
+        built_rows=[],
+        failed_rows=[],
+        skipped_existing=[],
+        elapsed_seconds=1.2,
+        num_shards=1,
+        shard_index=0,
+        include_wheel=False,
+        trial_window_only=True,
+        window_len=1.25,
+    )
+
+    text = out.read_text()
+    assert "Include wheel: `False`" in text
+    assert "Trial-window-only spikes: `True`" in text
+    assert "Window length: `1.25`" in text

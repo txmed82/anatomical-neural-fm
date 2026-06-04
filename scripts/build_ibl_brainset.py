@@ -56,7 +56,30 @@ def _camel_to_snake(name: str) -> str:
     return "".join(out)
 
 
-def build_recording(eid: str, probe_name: str, out_dir: Path) -> Path:
+def trial_window_spike_mask(
+    spike_times: np.ndarray,
+    stim_on_times: np.ndarray,
+    *,
+    window_len: float,
+) -> np.ndarray:
+    """Return spikes that fall in at least one trial-aligned training window."""
+    spike_times = np.asarray(spike_times, dtype=np.float64)
+    stim_on_times = np.asarray(stim_on_times, dtype=np.float64)
+    mask = np.zeros(len(spike_times), dtype=bool)
+    for t0 in stim_on_times[np.isfinite(stim_on_times)]:
+        mask |= (spike_times >= t0) & (spike_times <= t0 + window_len)
+    return mask
+
+
+def build_recording(
+    eid: str,
+    probe_name: str,
+    out_dir: Path,
+    *,
+    include_wheel: bool = True,
+    trial_window_only: bool = False,
+    window_len: float = 1.0,
+) -> Path:
     ONE.setup(base_url=OPEN_ALYX, silent=True)
     one = ONE(base_url=OPEN_ALYX, username=PUBLIC_USER, password=PUBLIC_PASS)
 
@@ -110,28 +133,8 @@ def build_recording(eid: str, probe_name: str, out_dir: Path) -> Path:
         peak_to_trough=peak_to_trough,
     )
 
-    # Spikes — filter out-of-range/NaN clusters, sort by time
-    spike_times = np.asarray(spikes_obj["times"], dtype=np.float64)
-    spike_clusters = np.asarray(spikes_obj["clusters"], dtype=np.int64)
-    valid = (
-        np.isfinite(spike_times)
-        & (spike_clusters >= 0)
-        & (spike_clusters < n_clusters)
-    )
-    spike_times = spike_times[valid]
-    spike_clusters = spike_clusters[valid]
-    order = np.argsort(spike_times, kind="stable")
-    spike_times = spike_times[order]
-    spike_clusters = spike_clusters[order]
-
-    if len(spike_times) == 0:
-        raise ValueError(f"No valid spikes for {eid} probe {probe_name}")
-
-    spike_t_start = float(spike_times[0])
-    spike_t_end = float(spike_times[-1])
-
-    # --- Behavior: trials and wheel (session-level, "alf" collection) ---
-    print("Loading trials + wheel...")
+    # --- Behavior: trials and optional wheel (session-level, "alf" collection) ---
+    print("Loading trials...")
     trials_raw = one.load_object(eid, "trials", collection="alf")
     intervals = np.asarray(trials_raw["intervals"], dtype=np.float64)
     trial_start = intervals[:, 0]
@@ -150,17 +153,60 @@ def build_recording(eid: str, probe_name: str, out_dir: Path) -> Path:
     trials = Interval(start=trial_start, end=trial_end, **trial_kwargs)
     print(f"  trials: {len(trial_start)} (fields: {list(trial_kwargs)})")
 
-    wheel_raw = one.load_object(eid, "wheel", collection="alf")
-    wheel_times = np.asarray(wheel_raw["timestamps"], dtype=np.float64)
-    wheel_position = np.asarray(wheel_raw["position"], dtype=np.float32)
-    order = np.argsort(wheel_times, kind="stable")
-    wheel_times = wheel_times[order]
-    wheel_position = wheel_position[order]
-    print(f"  wheel: {len(wheel_times):,} samples")
+    wheel_ts = None
+    wheel_times = np.array([], dtype=np.float64)
+    wheel_position = np.array([], dtype=np.float32)
+    if include_wheel:
+        print("Loading wheel...")
+        wheel_raw = one.load_object(eid, "wheel", collection="alf")
+        wheel_times = np.asarray(wheel_raw["timestamps"], dtype=np.float64)
+        wheel_position = np.asarray(wheel_raw["position"], dtype=np.float32)
+        order = np.argsort(wheel_times, kind="stable")
+        wheel_times = wheel_times[order]
+        wheel_position = wheel_position[order]
+        print(f"  wheel: {len(wheel_times):,} samples")
+    else:
+        print("Skipping wheel (--no-wheel)")
 
-    # Union domain: cover spikes, trials, and wheel
-    domain_start = float(min(spike_t_start, trial_start.min(), wheel_times.min()))
-    domain_end = float(max(spike_t_end, trial_end.max(), wheel_times.max()))
+    # Spikes — filter out-of-range/NaN clusters, optionally down to training windows, then sort by time.
+    spike_times = np.asarray(spikes_obj["times"], dtype=np.float64)
+    spike_clusters = np.asarray(spikes_obj["clusters"], dtype=np.int64)
+    valid = (
+        np.isfinite(spike_times)
+        & (spike_clusters >= 0)
+        & (spike_clusters < n_clusters)
+    )
+    if trial_window_only:
+        window_mask = trial_window_spike_mask(
+            spike_times,
+            trial_kwargs.get("stim_on_times", trial_start),
+            window_len=window_len,
+        )
+        valid &= window_mask
+    spike_times = spike_times[valid]
+    spike_clusters = spike_clusters[valid]
+    order = np.argsort(spike_times, kind="stable")
+    spike_times = spike_times[order]
+    spike_clusters = spike_clusters[order]
+
+    if len(spike_times) == 0:
+        raise ValueError(f"No valid spikes for {eid} probe {probe_name}")
+
+    spike_t_start = float(spike_times[0])
+    spike_t_end = float(spike_times[-1])
+
+    # Union domain: cover spikes, trials, optional wheel, and compact training windows.
+    domain_start_values = [spike_t_start, float(trial_start.min())]
+    domain_end_values = [spike_t_end, float(trial_end.max())]
+    stim_on_for_domain = np.asarray(trial_kwargs.get("stim_on_times", trial_start), dtype=np.float64)
+    finite_stim_on = stim_on_for_domain[np.isfinite(stim_on_for_domain)]
+    if len(finite_stim_on):
+        domain_end_values.append(float(finite_stim_on.max() + window_len))
+    if include_wheel and len(wheel_times):
+        domain_start_values.append(float(wheel_times.min()))
+        domain_end_values.append(float(wheel_times.max()))
+    domain_start = float(min(domain_start_values))
+    domain_end = float(max(domain_end_values))
     domain = Interval(start=np.array([domain_start]), end=np.array([domain_end]))
 
     spikes_ts = IrregularTimeSeries(
@@ -168,11 +214,14 @@ def build_recording(eid: str, probe_name: str, out_dir: Path) -> Path:
         unit_index=spike_clusters,
         domain=domain,
     )
-    wheel_ts = IrregularTimeSeries(
-        timestamps=wheel_times,
-        position=wheel_position,
-        domain=domain,
-    )
+    data_kwargs = {}
+    if include_wheel:
+        wheel_ts = IrregularTimeSeries(
+            timestamps=wheel_times,
+            position=wheel_position,
+            domain=domain,
+        )
+        data_kwargs["wheel"] = wheel_ts
 
     data = Data(
         brainset=Data(id=BRAINSET_ID),
@@ -181,8 +230,8 @@ def build_recording(eid: str, probe_name: str, out_dir: Path) -> Path:
         units=units,
         spikes=spikes_ts,
         trials=trials,
-        wheel=wheel_ts,
         domain=domain,
+        **data_kwargs,
     )
 
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -196,6 +245,8 @@ def build_recording(eid: str, probe_name: str, out_dir: Path) -> Path:
     print(f"  duration={spike_t_end - spike_t_start:.1f}s  spike_rate={len(spike_times) / (spike_t_end - spike_t_start):.1f} Hz")
     print(f"  unique regions={len(set(region_acronyms.tolist()))}")
     print(f"  trials={len(trial_start)}  wheel_samples={len(wheel_times):,}")
+    if trial_window_only:
+        print(f"  compact spikes retained for {window_len:.3f}s trial windows")
     return out_path
 
 
@@ -215,16 +266,37 @@ def verify(out_path: Path) -> None:
             n_right = int((data.trials.choice == 1).sum())
             n_nogo = int((data.trials.choice == 0).sum())
             print(f"    choice counts: left={n_left}  right={n_right}  nogo={n_nogo}")
-        print(f"  wheel.timestamps      [{len(data.wheel.timestamps):,}]")
-        print(f"  wheel.position range  [{data.wheel.position.min():.2f}, {data.wheel.position.max():.2f}] rad")
+        if hasattr(data, "wheel"):
+            print(f"  wheel.timestamps      [{len(data.wheel.timestamps):,}]")
+            print(f"  wheel.position range  [{data.wheel.position.min():.2f}, {data.wheel.position.max():.2f}] rad")
+        else:
+            print("  wheel                 [omitted]")
         print(f"  domain = [{data.domain.start[0]:.2f}, {data.domain.end[-1]:.2f}]s")
 
 
 def main() -> int:
-    eid = sys.argv[1] if len(sys.argv) > 1 else "ebce500b-c530-47de-8cb1-963c552703ea"
-    probe = sys.argv[2] if len(sys.argv) > 2 else "probe00"
-    out_dir = Path("data/brainsets/ibl_bwm")
-    out_path = build_recording(eid, probe, out_dir)
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument("eid", nargs="?", default="ebce500b-c530-47de-8cb1-963c552703ea")
+    parser.add_argument("probe", nargs="?", default="probe00")
+    parser.add_argument("--out-dir", type=Path, default=Path("data/brainsets/ibl_bwm"))
+    parser.add_argument("--no-wheel", action="store_true",
+                        help="Omit wheel samples for training-only choice/stimulus decoding caches.")
+    parser.add_argument("--trial-window-only", action="store_true",
+                        help="Keep only spikes inside trial-aligned windows used by scripts/train.py.")
+    parser.add_argument("--window-len", type=float, default=1.0,
+                        help="Trial-window spike retention length for --trial-window-only.")
+    args = parser.parse_args()
+    eid = args.eid
+    probe = args.probe
+    out_path = build_recording(
+        eid,
+        probe,
+        args.out_dir,
+        include_wheel=not args.no_wheel,
+        trial_window_only=args.trial_window_only,
+        window_len=args.window_len,
+    )
     verify(out_path)
     return 0
 

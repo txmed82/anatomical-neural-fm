@@ -44,6 +44,12 @@ def parse_args() -> argparse.Namespace:
                    help="Exit successfully if at least one selected recording is available.")
     p.add_argument("--report", type=Path, default=None,
                    help="Optional markdown report summarizing selected, built, and failed recordings.")
+    p.add_argument("--no-wheel", action="store_true",
+                   help="Omit wheel samples for training-only choice/stimulus decoding caches.")
+    p.add_argument("--trial-window-only", action="store_true",
+                   help="Keep only spikes inside trial-aligned windows used by scripts/train.py.")
+    p.add_argument("--window-len", type=float, default=1.0,
+                   help="Trial-window spike retention length for --trial-window-only.")
     return p.parse_args()
 
 
@@ -82,6 +88,9 @@ def write_report(
     elapsed_seconds: float,
     num_shards: int,
     shard_index: int,
+    include_wheel: bool,
+    trial_window_only: bool,
+    window_len: float,
 ) -> None:
     lines = [
         "# IBL BrainSet Batch Build",
@@ -93,6 +102,9 @@ def write_report(
         f"Skipped existing: {len(skipped_existing)}",
         f"Failures: {len(failed_rows)}",
         f"Elapsed seconds: {elapsed_seconds:.0f}",
+        f"Include wheel: `{include_wheel}`",
+        f"Trial-window-only spikes: `{trial_window_only}`",
+        f"Window length: `{window_len}`",
         "",
         "## Available",
         "",
@@ -175,7 +187,14 @@ def main() -> int:
         attempted += 1
         print(f"\n=== [{attempted}] Building {eid} probe={probe} ===")
         try:
-            built_path = build_recording(eid, probe, OUT_DIR)
+            built_path = build_recording(
+                eid,
+                probe,
+                OUT_DIR,
+                include_wheel=not args.no_wheel,
+                trial_window_only=args.trial_window_only,
+                window_len=args.window_len,
+            )
             built += 1
             built_rows.append({"session": eid, "name": probe, "path": str(built_path)})
         except Exception:
@@ -205,6 +224,9 @@ def main() -> int:
             elapsed_seconds=dt,
             num_shards=args.num_shards,
             shard_index=args.shard_index,
+            include_wheel=not args.no_wheel,
+            trial_window_only=args.trial_window_only,
+            window_len=args.window_len,
         )
         print(f"\nWrote report {args.report}")
     if built == target:
