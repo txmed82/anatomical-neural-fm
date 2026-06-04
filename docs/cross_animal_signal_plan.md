@@ -395,6 +395,7 @@ true-vs-shuffled region-label control under stricter anatomical constraints:
 - region filter: `shared_regions`
 - region granularity: `parent`
 - report: `docs/lso_csh_zad_019_shared_parent_shuffle_results.md`
+- focused evidence audit: `docs/csh_zad_019_signal_audit.md`
 
 Result:
 
@@ -416,3 +417,23 @@ either (1) a small transfer-screen of two more matched holdouts using the same
 shared-parent true-vs-shuffled control, or (2) a publication-facing audit of the
 CSH_ZAD_019 runs that extracts per-region unit support, class balance, and
 failure modes before broadening.
+
+## Focused Evidence Audit
+
+`docs/csh_zad_019_signal_audit.md` is the current canonical evidence ladder for
+the CSH_ZAD_019 claim. It combines the matched seed-0 screen, seeds 1-2
+confirmation, fine-region shuffle control, and shared-parent shuffle control.
+
+Current claim:
+
+- `CSH_ZAD_019` `region_only` is positive in 3/3 matched-cache seeds.
+- Fine-region true labels beat shuffled labels (+0.042 vs -0.012 mean delta).
+- Shared-parent true labels also beat shuffled labels (+0.038 vs -0.012 mean
+  delta).
+- The result remains subject-specific; it is a credible demo nucleus, not yet a
+  general cross-animal effect.
+
+An initial two-holdout broadening wrapper now exists:
+`scripts/run_lso_two_holdout_shared_parent_shuffle_a100.sh`. The first cloud
+attempt produced `docs/lso_two_holdout_shared_parent_shuffle_results.md`, but
+that result is empty and should be treated as an aborted/non-evidence run.

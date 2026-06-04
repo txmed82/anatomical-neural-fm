@@ -26,3 +26,13 @@ Configuration:
 
 ## Cross-Animal Summary
 
+## Interpretation
+
+This run did not produce usable leave-subject-out summary rows. The pod created
+the result document during cleanup, but `runs/lso_two_holdout_shared_parent_shuffle/summary.md`
+was not present when artifacts were pushed, and no corresponding S3 log was
+available under the expected `docs_lso_two_holdout_shared_parent_shuffle_results`
+keys.
+
+Treat this as an aborted/empty broadening attempt, not evidence for or against
+generalization beyond `CSH_ZAD_019`.
