@@ -153,10 +153,40 @@ sweep. The rerun should downsample or mask to regions with train/eval support
 and compare `DY_008` against matched controls (`MFD_05`, `CSHL045`, `KS014`) so
 we can distinguish a real transfer signal from coverage effects.
 
+## Completed Probe: Region-Balanced LSO Rerun
+
+Run `scripts/run_lso_region_balanced_a100.sh` with:
+
+- subjects: `DY_008 MFD_05 CSHL045 KS014`
+- arms: `shared_baseline region_only pure_anatomy`
+- seeds: `0 1 2`
+- region filter: `shared_regions`
+- report: `docs/lso_region_balanced_results.md`
+
+Result: the `DY_008` effect weakened after masking to regions shared between
+train and held-out recordings, but did not disappear.
+
+- `DY_008` `pure_anatomy`: +0.022 mean delta, positive in 3/3 seeds
+- `DY_008` `region_only`: +0.023 mean delta, positive in 2/3 seeds
+- aggregate `pure_anatomy`: +0.006 mean delta, positive in 8/12 pairs
+- aggregate `region_only`: +0.014 mean delta, positive in 7/12 pairs
+
+This is not demo-grade by the earlier +0.03 threshold. It suggests that some
+of the original `DY_008` lift was coverage-sensitive, but the surviving
+positive direction means the idea is not dead. The stronger post-mask result
+was actually `KS014` `region_only` at +0.043 mean delta, though one seed was
+negative.
+
+Next decision: do not spend on simply repeating the same fine-region mask. The
+more informative next check is to compare fine acronyms against coarser atlas
+ancestor groups, because the audit showed substantial ancestor resolution in
+the CCF mapping and fine-region labels may be too sparse across animals.
+
 ## Budget Guard
 
 Hard cap from user: do not spend more than $100.
 
-The targeted multi-seed confirmation and full-dataset coverage audits completed
-under the cap and left zero pods and zero network volumes. The next paid run
-should be a narrow region-balanced LSO check, not a broad exploratory sweep.
+The targeted multi-seed confirmation, full-dataset coverage audits, and
+region-balanced LSO rerun completed under the cap and left zero pods and zero
+network volumes. The next paid run should be a narrow coarse-anatomy comparison,
+not a broad exploratory sweep.
