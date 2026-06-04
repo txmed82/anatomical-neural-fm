@@ -16,7 +16,11 @@ The workflow publishes:
 
 ```text
 ghcr.io/txmed82/anatomical-neural-fm-data-build:py311
+ttl.sh/anatomical-neural-fm-data-build-py311:24h
 ```
+
+Use the `ttl.sh` image for short RunPod tests if GHCR package visibility is not
+configured for anonymous pulls.
 
 For a local build, `docker/runpod-data-build.Dockerfile` preinstalls only the
 packages needed for public IBL HDF5 construction and S3 cache sync:
@@ -34,7 +38,7 @@ Then launch the shard with the prebuilt image and minimal setup:
 uv run python scripts/runpod_clone_a100.py --poll \
   --datacenter ANY \
   --gpu-type 'NVIDIA L4,NVIDIA RTX 4000 Ada Generation,NVIDIA RTX A4000,NVIDIA RTX A4500,NVIDIA RTX A5000,NVIDIA RTX A6000,NVIDIA GeForce RTX 4090' \
-  --image-name ghcr.io/txmed82/anatomical-neural-fm-data-build:py311 \
+  --image-name ttl.sh/anatomical-neural-fm-data-build-py311:24h \
   --container-disk-gb 80 \
   --max-runtime-seconds 1800 \
   --skip-verification \
