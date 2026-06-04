@@ -69,6 +69,11 @@ def endpoint_from_args(args: argparse.Namespace, env: dict[str, str]) -> str:
     raise SystemExit("Missing S3 endpoint; pass --endpoint-url or --datacenter.")
 
 
+def region_from_args(args: argparse.Namespace, env: dict[str, str]) -> str:
+    datacenter = args.datacenter or env_value(env, "BRAINSET_S3_DATACENTER", "RUNPOD_DATACENTER")
+    return datacenter.lower() if datacenter else "auto"
+
+
 def s3_client(args: argparse.Namespace):
     env = load_dotenv(REPO_ROOT / ".env")
     access_key = required(
@@ -84,7 +89,7 @@ def s3_client(args: argparse.Namespace):
         "s3",
         aws_access_key_id=access_key,
         aws_secret_access_key=secret_key,
-        region_name=args.datacenter or "auto",
+        region_name=region_from_args(args, env),
         endpoint_url=endpoint_url,
         config=Config(retries={"max_attempts": 5, "mode": "standard"}, read_timeout=7200),
     )

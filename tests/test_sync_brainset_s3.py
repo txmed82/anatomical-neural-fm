@@ -6,6 +6,8 @@ from scripts.sync_brainset_s3 import (
     cache_audit_rows,
     local_h5_files,
     manifest_recording_names,
+    parse_args,
+    region_from_args,
     s3_key,
     write_audit_report,
 )
@@ -71,3 +73,10 @@ def test_write_audit_report_includes_gate_counts(tmp_path) -> None:
     assert "Present: 1/3 (33.3%)" in text
     assert "`b.h5`" in text
     assert "`a.h5`" in text
+
+
+def test_region_from_args_uses_env_datacenter(monkeypatch) -> None:
+    monkeypatch.setattr("sys.argv", ["sync_brainset_s3.py", "audit"])
+    args = parse_args()
+
+    assert region_from_args(args, {"BRAINSET_S3_DATACENTER": "US-IL-1"}) == "us-il-1"
