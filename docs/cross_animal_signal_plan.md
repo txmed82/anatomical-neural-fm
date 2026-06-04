@@ -247,3 +247,21 @@ region-balanced LSO rerun, and coarse-anatomy rerun completed under the cap and
 left zero pods and zero network volumes. The matched-region candidate manifest
 was generated locally from Alyx metadata with no GPU spend. Avoid additional
 paid training until the candidate manifest has been built and region-scored.
+
+Follow-up cloud audit attempt: a 48-recording matched-region data-build/audit
+job was tried twice on RunPod A100 in `CA-MTL-3`.
+
+- first attempt: 2-hour cap, 80 GB container disk, manually stopped after the
+  pod missed the cap; no artifact was pushed
+- second attempt: 4-hour cap, 160 GB container disk, pod-side pytest/smoke
+  verification skipped, manually stopped after the pod still had not exited
+  cleanly; no artifact was pushed
+- estimated combined spend: about $8.45
+- final resource state: zero pods and zero network volumes
+
+Conclusion: building all 48 public IBL recordings inside a throwaway A100
+container is the wrong next spend. The next attempt should either split the
+candidate manifest into smaller persisted build shards, use a persistent
+RunPod volume/cache for ONE downloads, or run the data construction on cheaper
+CPU/storage before using GPU time for training. Do not launch another training
+sweep until the matched-region cache has been scored.

@@ -58,3 +58,17 @@ Missing candidate subjects in local cache: CSHL045, CSH_ZAD_019, DY_009, KS014, 
 
 Build this candidate manifest only if we are ready to spend on data construction, not training.
 After build, rerun this planner and require at least 80% held-out unit support for most subjects before launching another seed sweep.
+
+## Cloud Build Attempt
+
+The 48-recording build/audit was attempted on RunPod A100 twice under the
+project budget guard.
+
+| attempt | cap | container_disk | result |
+|---|---:|---:|---|
+| `anfm-a100-matched-region-audit-20260604-040052` | 2h | 80 GB | manually stopped after missing cap; no pushed artifact |
+| `anfm-a100-matched-region-audit-20260604-060316` | 4h | 160 GB | manually stopped after missing cap; no pushed artifact |
+
+Estimated combined spend was about $8.45, and cleanup left zero pods and zero
+network volumes. The practical next step is to split or persist the data build
+before retrying the region-family scoring gate.
