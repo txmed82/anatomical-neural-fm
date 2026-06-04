@@ -10,6 +10,8 @@ the cross-animal anatomical transfer benchmark.
 - Matched-region S3 cache remains at `4/48` recordings.
 - Compact support80-best6 S3 cache is `3/28` recordings. Shard 0 contains
   7 recordings; 3 were already remote and 4 still need upload.
+- Missing-only retry manifest:
+  `manifests/ibl_bwm_region_matched_support80_best6_shard0_missing.json`.
 - Local workstation is not viable for cache construction right now: only about
   `1.7 GiB` is free on `/System/Volumes/Data`, and shard02 failed locally with
   `No space left on device`.
@@ -142,9 +144,10 @@ updating; use logs/cache audit as the source of truth.
 
 ## Next Viable Paths
 
-1. Retry compact shard 0 when CPU capacity is available, using the command
-   above and the current `--skip-existing` upload path. Let it complete through
-   upload/verification unless cost approaches the active cap.
+1. Retry compact shard 0 when capacity is available, using
+   `manifests/ibl_bwm_region_matched_support80_best6_shard0_missing.json`
+   and compact build args only. This avoids the inline missing-list bug and
+   does not download/re-upload the three already cached shard-0 HDF5s.
 2. Make GHCR private-image pull work, or publish a reliable public image, then
    repeat the startup smoke. The temporary `ttl.sh` image was pushed but did not
    produce logs on earlier GPU attempts.

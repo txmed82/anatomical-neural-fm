@@ -54,6 +54,15 @@ python scripts/build_ibl_brainset_batch.py \
 
 Run `--shard-index 0..3` for the four shards.
 
+For the current shard-0 retry, use the missing-only manifest instead of the
+full 7-recording shard:
+
+```bash
+manifests/ibl_bwm_region_matched_support80_best6_shard0_missing.json
+```
+
+It contains only the four shard-0 HDF5s that are absent from S3.
+
 ## RunPod Guardrails
 
 Stay under the active $100 cap. Prefer a cheap CPU or low-end GPU data-build
@@ -68,13 +77,13 @@ python scripts/runpod_clone_a100.py \
   --datacenter ANY \
   --setup-mode minimal-data \
   --container-disk-gb 20 \
-  --manifest-path manifests/ibl_bwm_region_matched_support80_best6.json \
+  --manifest-path manifests/ibl_bwm_region_matched_support80_best6_shard0_missing.json \
   --s3-bucket rppfvo6ifn \
   --s3-datacenter US-IL-1 \
   --skip-sweep \
   --skip-verification \
   --skip-cell-type-priors \
-  --build-extra-args "--num-shards 4 --shard-index 0 --no-wheel --trial-window-only --window-len 1.0" \
+  --build-extra-args "--no-wheel --trial-window-only --window-len 1.0" \
   --result-doc docs/compact_support80_best6_shard0_results.md \
   --max-provision-seconds 600 \
   --poll

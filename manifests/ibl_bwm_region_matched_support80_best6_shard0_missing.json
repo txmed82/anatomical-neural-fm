@@ -1,0 +1,85 @@
+{
+  "source_manifest": "manifests/ibl_bwm_region_matched_support80_best6.json",
+  "selection": {
+    "target": 48,
+    "scan_limit": 1000,
+    "max_per_subject": 4,
+    "min_units": 200,
+    "region_granularity": "parent",
+    "candidate_pool_recordings": 579,
+    "candidate_pool_subjects": 143,
+    "filter_min_support": 0.8,
+    "pre_filter_recordings": 48,
+    "pre_filter_subjects": 12,
+    "optimized_support_subset": {
+      "min_support": 0.8,
+      "min_subjects": 6,
+      "pass_count": 6,
+      "subject_count": 7,
+      "pass_frac": 0.8571428571428571,
+      "min_unit_support_frac": 0.6575512740832815,
+      "total_units": 27365
+    },
+    "source_shard_index": 0,
+    "source_num_shards": 4,
+    "cache_state": "missing_from_s3"
+  },
+  "n_recordings": 4,
+  "n_subjects": 4,
+  "labs": [
+    "hoferlab",
+    "mrsicflogellab",
+    "steinmetzlab",
+    "zadorlab"
+  ],
+  "recordings": [
+    {
+      "session_id": "4ecb5d24-f5cc-402c-be28-9d0f7cb14b3a",
+      "probe_name": "probe00",
+      "subject_id": "SWC_043",
+      "lab": "hoferlab",
+      "start_time": "2020-09-21T19:02:16.707541",
+      "task_protocol": "_iblrig_tasks_ephysChoiceWorld6.4.2",
+      "insertion_id": "da8dfec1-d265-44e8-84ce-6ae9c109b8bd",
+      "n_units_meta": 914,
+      "qc": "PASS",
+      "alignment_qc": 1.0
+    },
+    {
+      "session_id": "4d8c7767-981c-4347-8e5e-5d5fffe38534",
+      "probe_name": "probe01",
+      "subject_id": "SWC_038",
+      "lab": "mrsicflogellab",
+      "start_time": "2020-07-30T17:47:20.137580",
+      "task_protocol": "_iblrig_tasks_ephysChoiceWorld6.4.1",
+      "insertion_id": "749cb2b7-e57e-4453-a794-f6230e4d0226",
+      "n_units_meta": 822,
+      "qc": "PASS",
+      "alignment_qc": 0.9859022556390977
+    },
+    {
+      "session_id": "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9",
+      "probe_name": "probe00",
+      "subject_id": "NR_0019",
+      "lab": "steinmetzlab",
+      "start_time": "2022-05-03T15:04:48.713692",
+      "task_protocol": "_iblrig_tasks_ephysChoiceWorld6.5.3",
+      "insertion_id": "335d689e-4d98-4532-b01b-7f7da89863c4",
+      "n_units_meta": 576,
+      "qc": "PASS",
+      "alignment_qc": 0.8949652777777778
+    },
+    {
+      "session_id": "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c",
+      "probe_name": "probe00",
+      "subject_id": "CSH_ZAD_019",
+      "lab": "zadorlab",
+      "start_time": "2020-08-16T07:39:40",
+      "task_protocol": "_iblrig_tasks_ephysChoiceWorld6.4.1",
+      "insertion_id": "b4131145-9675-4433-88e1-9ae016c701dd",
+      "n_units_meta": 848,
+      "qc": "PASS",
+      "alignment_qc": 0.8590801886792453
+    }
+  ]
+}
