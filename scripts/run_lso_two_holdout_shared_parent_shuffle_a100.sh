@@ -40,6 +40,17 @@ if [ -n "$MANIFEST" ]; then
 fi
 
 mkdir -p "$OUT_ROOT"
+write_incremental_summary() {
+  tmp_summary="$OUT_ROOT/summary.md.tmp"
+  if uv run python scripts/analyze_leave_subject_out.py "$OUT_ROOT" > "$tmp_summary"; then
+    mv "$tmp_summary" "$OUT_ROOT/summary.md"
+    echo "updated incremental summary: $OUT_ROOT/summary.md"
+  else
+    rm -f "$tmp_summary"
+    echo "warning: incremental summary failed" >&2
+  fi
+}
+
 echo "subjects: $SUBJECTS"
 echo "arms: shared_baseline region_only region_shuffle"
 echo "seeds: $SEEDS"
@@ -78,11 +89,13 @@ for holdout in $SUBJECTS; do
           --arm "$arm" \
           --out-dir "$out"
       fi
+      write_incremental_summary
     done
   done
+  write_incremental_summary
 done
 
-uv run python scripts/analyze_leave_subject_out.py "$OUT_ROOT" > "$OUT_ROOT/summary.md"
+write_incremental_summary
 
 echo ""
 echo "Wrote:"

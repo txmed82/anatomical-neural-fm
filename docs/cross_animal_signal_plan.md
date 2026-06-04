@@ -437,3 +437,6 @@ An initial two-holdout broadening wrapper now exists:
 `scripts/run_lso_two_holdout_shared_parent_shuffle_a100.sh`. The first cloud
 attempt produced `docs/lso_two_holdout_shared_parent_shuffle_results.md`, but
 that result is empty and should be treated as an aborted/non-evidence run.
+The wrapper now writes `summary.md` incrementally after completed arms/holdouts,
+so a future interrupted run should still preserve partial evidence for cleanup
+to push.
