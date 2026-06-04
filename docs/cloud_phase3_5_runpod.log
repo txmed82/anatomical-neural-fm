@@ -1,26 +1,26 @@
-Get:1 http://archive.ubuntu.com/ubuntu jammy InRelease [270 kB]
+Get:1 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  InRelease [1581 B]
 Get:2 http://security.ubuntu.com/ubuntu jammy-security InRelease [129 kB]
-Get:3 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  InRelease [1581 B]
-Get:4 http://archive.ubuntu.com/ubuntu jammy-updates InRelease [128 kB]
-Get:5 http://archive.ubuntu.com/ubuntu jammy-backports InRelease [127 kB]
-Get:6 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  Packages [2705 kB]
-Get:7 http://security.ubuntu.com/ubuntu jammy-security/multiverse amd64 Packages [77.8 kB]
-Get:8 http://security.ubuntu.com/ubuntu jammy-security/restricted amd64 Packages [7129 kB]
-Get:9 http://security.ubuntu.com/ubuntu jammy-security/universe amd64 Packages [1299 kB]
-Get:10 http://security.ubuntu.com/ubuntu jammy-security/main amd64 Packages [3974 kB]
-Get:11 http://archive.ubuntu.com/ubuntu jammy/universe amd64 Packages [17.5 MB]
-Get:12 http://archive.ubuntu.com/ubuntu jammy/restricted amd64 Packages [164 kB]
-Get:13 http://archive.ubuntu.com/ubuntu jammy/multiverse amd64 Packages [266 kB]
-Get:14 http://archive.ubuntu.com/ubuntu jammy/main amd64 Packages [1792 kB]
-Get:15 https://ppa.launchpadcontent.net/deadsnakes/ppa/ubuntu jammy InRelease [18.1 kB]
-Get:16 http://archive.ubuntu.com/ubuntu jammy-updates/restricted amd64 Packages [7451 kB]
-Get:17 http://archive.ubuntu.com/ubuntu jammy-updates/universe amd64 Packages [1607 kB]
-Get:18 http://archive.ubuntu.com/ubuntu jammy-updates/multiverse amd64 Packages [86.4 kB]
-Get:19 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 Packages [4344 kB]
-Get:20 http://archive.ubuntu.com/ubuntu jammy-backports/universe amd64 Packages [35.6 kB]
-Get:21 http://archive.ubuntu.com/ubuntu jammy-backports/main amd64 Packages [82.8 kB]
+Get:3 http://archive.ubuntu.com/ubuntu jammy InRelease [270 kB]
+Get:4 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  Packages [2705 kB]
+Get:5 http://archive.ubuntu.com/ubuntu jammy-updates InRelease [128 kB]
+Get:6 http://security.ubuntu.com/ubuntu jammy-security/restricted amd64 Packages [7183 kB]
+Get:7 http://archive.ubuntu.com/ubuntu jammy-backports InRelease [127 kB]
+Get:8 http://security.ubuntu.com/ubuntu jammy-security/universe amd64 Packages [1300 kB]
+Get:9 http://security.ubuntu.com/ubuntu jammy-security/multiverse amd64 Packages [77.8 kB]
+Get:10 http://security.ubuntu.com/ubuntu jammy-security/main amd64 Packages [4005 kB]
+Get:11 http://archive.ubuntu.com/ubuntu jammy/multiverse amd64 Packages [266 kB]
+Get:12 http://archive.ubuntu.com/ubuntu jammy/main amd64 Packages [1792 kB]
+Get:13 http://archive.ubuntu.com/ubuntu jammy/universe amd64 Packages [17.5 MB]
+Get:14 http://archive.ubuntu.com/ubuntu jammy/restricted amd64 Packages [164 kB]
+Get:15 http://archive.ubuntu.com/ubuntu jammy-updates/multiverse amd64 Packages [86.4 kB]
+Get:16 http://archive.ubuntu.com/ubuntu jammy-updates/universe amd64 Packages [1607 kB]
+Get:17 http://archive.ubuntu.com/ubuntu jammy-updates/restricted amd64 Packages [7451 kB]
+Get:18 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 Packages [4344 kB]
+Get:19 http://archive.ubuntu.com/ubuntu jammy-backports/universe amd64 Packages [35.6 kB]
+Get:20 http://archive.ubuntu.com/ubuntu jammy-backports/main amd64 Packages [82.8 kB]
+Get:21 https://ppa.launchpadcontent.net/deadsnakes/ppa/ubuntu jammy InRelease [18.1 kB]
 Get:22 https://ppa.launchpadcontent.net/deadsnakes/ppa/ubuntu jammy/main amd64 Packages [38.9 kB]
-Fetched 49.2 MB in 2s (24.5 MB/s)
+Fetched 49.3 MB in 2s (26.9 MB/s)
 Reading package lists...
 Reading package lists...
 Building dependency tree...
@@ -48,7 +48,7 @@ Get:6 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 python3-setuptoo
 Get:7 http://archive.ubuntu.com/ubuntu jammy-updates/universe amd64 python3-wheel all 0.37.1-2ubuntu0.22.04.1 [32.0 kB]
 Get:8 http://archive.ubuntu.com/ubuntu jammy-updates/universe amd64 python3-pip all 22.0.2+dfsg-1ubuntu0.7 [1306 kB]
 debconf: delaying package configuration, since apt-utils is not installed
-Fetched 5631 kB in 0s (28.5 MB/s)
+Fetched 5631 kB in 0s (35.2 MB/s)
 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 24135 files and directories currently installed.)
 Preparing to unpack .../0-ca-certificates_20240203~22.04.1_all.deb ...
 Unpacking ca-certificates (20240203~22.04.1) over (20230311ubuntu0.22.04.1) ...
@@ -98,905 +98,69 @@ Using CPython 3.11.10 interpreter at: /usr/bin/python3.11
 Creating virtual environment at: .venv
 Resolved 134 packages in 1ms
    Updating https://github.com/AllenInstitute/abc_atlas_access (HEAD)
-Downloading networkx (2.0MiB)
-Downloading pygments (1.2MiB)
-Downloading pillow (6.8MiB)
-Downloading scipy (33.7MiB)
-Downloading pandas (12.2MiB)
-Downloading llvmlite (53.7MiB)
-Downloading numba (3.6MiB)
-Downloading botocore (14.3MiB)
-Downloading sympy (5.9MiB)
-Downloading setuptools (1.0MiB)
+Downloading pyarrow (46.6MiB)
 Downloading h5py (4.8MiB)
-Downloading ruff (10.9MiB)
+Downloading sympy (5.9MiB)
+Downloading pandas (12.2MiB)
+Downloading pydantic-core (2.0MiB)
+Downloading scipy (33.7MiB)
+Downloading nvidia-cusparse-cu12 (197.8MiB)
+Downloading pygments (1.2MiB)
+Downloading setuptools (1.0MiB)
+Downloading matplotlib (8.4MiB)
 Downloading nvidia-curand-cu12 (53.7MiB)
-Downloading torch (864.5MiB)
-Downloading triton (199.8MiB)
-Downloading numpy (16.1MiB)
-Downloading nvidia-nvjitlink-cu12 (20.1MiB)
 Downloading nvidia-cuda-cupti-cu12 (13.2MiB)
 Downloading nvidia-cusolver-cu12 (122.0MiB)
-Downloading polars-runtime-32 (53.6MiB)
-Downloading numcodecs (8.7MiB)
 Downloading nvidia-cuda-nvrtc-cu12 (23.5MiB)
-Downloading wandb (26.0MiB)
-Downloading pydantic-core (2.0MiB)
+Downloading numpy (16.1MiB)
+Downloading nvidia-nccl-cu12 (179.9MiB)
 Downloading nvidia-cudnn-cu12 (634.0MiB)
-Downloading matplotlib (8.4MiB)
 Downloading kiwisolver (1.4MiB)
 Downloading fonttools (4.8MiB)
+Downloading polars-runtime-32 (53.6MiB)
+Downloading pillow (6.8MiB)
+Downloading wandb (26.0MiB)
+Downloading ruff (10.9MiB)
+Downloading nvidia-nvjitlink-cu12 (20.1MiB)
 Downloading nvidia-cufft-cu12 (201.7MiB)
-Downloading nvidia-cusparse-cu12 (197.8MiB)
-Downloading pyarrow (46.6MiB)
-Downloading nvidia-nccl-cu12 (179.9MiB)
+Downloading triton (199.8MiB)
+Downloading networkx (2.0MiB)
 Downloading nvidia-cublas-cu12 (346.6MiB)
+Downloading botocore (14.3MiB)
+Downloading numcodecs (8.7MiB)
+Downloading torch (864.5MiB)
+Downloading numba (3.6MiB)
+Downloading llvmlite (53.7MiB)
  Downloaded kiwisolver
    Building antlr4-python3-runtime==4.9.3
  Downloaded pydantic-core
  Downloaded pygments
  Downloaded setuptools
  Downloaded networkx
+ Downloaded fonttools
  Downloaded h5py
  Downloaded numba
- Downloaded fonttools
  Downloaded pillow
       Built antlr4-python3-runtime==4.9.3
  Downloaded numcodecs
  Downloaded matplotlib
- Downloaded ruff
  Downloaded sympy
+ Downloaded ruff
  Downloaded nvidia-cuda-cupti-cu12
  Downloaded numpy
  Downloaded nvidia-nvjitlink-cu12
  Downloaded nvidia-cuda-nvrtc-cu12
  Downloaded botocore
  Downloaded scipy
+ Downloaded pandas
  Downloaded polars-runtime-32
  Downloaded nvidia-curand-cu12
  Downloaded llvmlite
- Downloaded pandas
  Downloaded nvidia-cusolver-cu12
  Downloaded wandb
  Downloaded pyarrow
  Downloaded nvidia-nccl-cu12
- Downloaded nvidia-cufft-cu12
  Downloaded triton
  Downloaded nvidia-cusparse-cu12
+ Downloaded nvidia-cufft-cu12
  Downloaded nvidia-cublas-cu12
-    Updated https://github.com/AllenInstitute/abc_atlas_access (f7cc551f9e327cd1c413ebc54c006bf20ffe0b27)
-   Building abc-atlas-access @ git+https://github.com/AllenInstitute/abc_atlas_access@f7cc551f9e327cd1c413ebc54c006bf20ffe0b27
-      Built abc-atlas-access @ git+https://github.com/AllenInstitute/abc_atlas_access@f7cc551f9e327cd1c413ebc54c006bf20ffe0b27
- Downloaded nvidia-cudnn-cu12
- Downloaded torch
-Prepared 100 packages in 29.76s
-Installed 100 packages in 7.15s
- + abc-atlas-access==1.3.2 (from git+https://github.com/AllenInstitute/abc_atlas_access@f7cc551f9e327cd1c413ebc54c006bf20ffe0b27)
- + anndata==0.12.14
- + annotated-types==0.7.0
- + antlr4-python3-runtime==4.9.3
- + array-api-compat==1.14.0
- + boto3==1.43.8
- + botocore==1.43.8
- + certifi==2026.4.22
- + charset-normalizer==3.4.7
- + click==8.3.3
- + colorlog==6.10.1
- + contourpy==1.3.3
- + cycler==0.12.1
- + donfig==0.8.1.post1
- + einops==0.6.1
- + filelock==3.29.0
- + fonttools==4.63.0
- + fsspec==2026.4.0
- + gitdb==4.0.12
- + gitpython==3.1.50
- + google-crc32c==1.8.0
- + h5py==3.16.0
- + hydra-core==1.3.2
- + iblatlas==1.0.0
- + iblutil==1.20.0
- + idna==3.15
- + jaxtyping==0.3.9
- + jinja2==3.1.6
- + jmespath==1.1.0
- + kiwisolver==1.5.0
- + legacy-api-wrap==1.5
- + lightning-utilities==0.15.3
- + llvmlite==0.47.0
- + markdown-it-py==4.2.0
- + markupsafe==3.0.3
- + matplotlib==3.10.9
- + mdurl==0.1.2
- + mpmath==1.3.0
- + natsort==8.4.0
- + networkx==3.6.1
- + numba==0.65.1
- + numcodecs==0.16.5
- + numpy==2.4.4
- + nvidia-cublas-cu12==12.4.5.8
- + nvidia-cuda-cupti-cu12==12.4.127
- + nvidia-cuda-nvrtc-cu12==12.4.127
- + nvidia-cuda-runtime-cu12==12.4.127
- + nvidia-cudnn-cu12==9.1.0.70
- + nvidia-cufft-cu12==11.2.1.3
- + nvidia-curand-cu12==10.3.5.147
- + nvidia-cusolver-cu12==11.6.1.9
- + nvidia-cusparse-cu12==12.3.1.170
- + nvidia-nccl-cu12==2.21.5
- + nvidia-nvjitlink-cu12==12.4.127
- + nvidia-nvtx-cu12==12.4.127
- + omegaconf==2.3.0
- + one-api==3.4.1
- + packaging==26.2
- + pandas==2.3.3
- + pillow==12.2.0
- + platformdirs==4.9.6
- + polars==1.40.1
- + polars-runtime-32==1.40.1
- + protobuf==7.34.1
- + pyarrow==24.0.0
- + pydantic==2.13.4
- + pydantic-core==2.46.4
- + pygments==2.20.0
- + pynrrd==1.1.3
- + pyparsing==3.3.2
- + python-dateutil==2.9.0.post0
- + pytz==2026.2
- + pyyaml==6.0.3
- + requests==2.34.2
- + rich==15.0.0
- + ruff==0.15.13
- + s3transfer==0.17.0
- + scipy==1.17.1
- + scverse-misc==0.0.3
- + sentry-sdk==2.60.0
- + session-info2==0.4.1
- + setuptools==81.0.0
- + six==1.17.0
- + smmap==5.0.3
- + sympy==1.13.1
- + temporaldata==0.1.4
- + torch==2.5.1
- + torch-brain==0.1.2
- + torchmetrics==1.9.0
- + torchtyping==0.1.5
- + tqdm==4.67.3
- + triton==3.1.0
- + typeguard==2.13.3
- + typing-extensions==4.15.0
- + typing-inspection==0.4.2
- + tzdata==2026.2
- + urllib3==2.7.0
- + wadler-lindig==0.1.7
- + wandb==0.27.0
- + zarr==3.1.6
-Downloading jedi (4.7MiB)
-Downloading debugpy (3.0MiB)
- Downloaded debugpy
- Downloaded jedi
-Installed 27 packages in 2.78s
-upload /tmp/runpod_phase3_5.log -> s3://rppfvo6ifn/brainsets/ibl_bwm/logs/docs_lso_csh_zad_019_shared_parent_shuffle_results.log
-upload-log count: 1
-=== skipping local verification ===
-upload /tmp/runpod_phase3_5.log -> s3://rppfvo6ifn/brainsets/ibl_bwm/logs/docs_lso_csh_zad_019_shared_parent_shuffle_results.log
-upload-log count: 1
-=== skipping cell-type priors ===
-upload /tmp/runpod_phase3_5.log -> s3://rppfvo6ifn/brainsets/ibl_bwm/logs/docs_lso_csh_zad_019_shared_parent_shuffle_results.log
-upload-log count: 1
-=== downloading cached BrainSet data ===
-download s3://rppfvo6ifn/brainsets/ibl_bwm/03063955-2523-47bd-ae57-f7489dd40f15_probe01.h5 -> /workspace/anatomical-neural-fm/data/brainsets/ibl_bwm/03063955-2523-47bd-ae57-f7489dd40f15_probe01.h5
-download s3://rppfvo6ifn/brainsets/ibl_bwm/032ffcdf-7692-40b3-b9ff-8def1fc18b2e_probe00.h5 -> /workspace/anatomical-neural-fm/data/brainsets/ibl_bwm/032ffcdf-7692-40b3-b9ff-8def1fc18b2e_probe00.h5
-download s3://rppfvo6ifn/brainsets/ibl_bwm/16693458-0801-4d35-a3f1-9115c7e5acfd_probe00.h5 -> /workspace/anatomical-neural-fm/data/brainsets/ibl_bwm/16693458-0801-4d35-a3f1-9115c7e5acfd_probe00.h5
-download s3://rppfvo6ifn/brainsets/ibl_bwm/16693458-0801-4d35-a3f1-9115c7e5acfd_probe01.h5 -> /workspace/anatomical-neural-fm/data/brainsets/ibl_bwm/16693458-0801-4d35-a3f1-9115c7e5acfd_probe01.h5
-download s3://rppfvo6ifn/brainsets/ibl_bwm/1e45d992-c356-40e1-9be1-a506d944896f_probe01.h5 -> /workspace/anatomical-neural-fm/data/brainsets/ibl_bwm/1e45d992-c356-40e1-9be1-a506d944896f_probe01.h5
-download s3://rppfvo6ifn/brainsets/ibl_bwm/35eeb752-8f4f-4040-9714-ba0f5b7ccdfe_probe00.h5 -> /workspace/anatomical-neural-fm/data/brainsets/ibl_bwm/35eeb752-8f4f-4040-9714-ba0f5b7ccdfe_probe00.h5
-download s3://rppfvo6ifn/brainsets/ibl_bwm/3f71aa98-08c6-4e79-b4c8-00eae4f03eff_probe00.h5 -> /workspace/anatomical-neural-fm/data/brainsets/ibl_bwm/3f71aa98-08c6-4e79-b4c8-00eae4f03eff_probe00.h5
-download s3://rppfvo6ifn/brainsets/ibl_bwm/41872d7f-75cb-4445-bb1a-132b354c44f0_probe01.h5 -> /workspace/anatomical-neural-fm/data/brainsets/ibl_bwm/41872d7f-75cb-4445-bb1a-132b354c44f0_probe01.h5
-download s3://rppfvo6ifn/brainsets/ibl_bwm/49e0ab27-827a-4c91-bcaa-97eea27a1b8d_probe01.h5 -> /workspace/anatomical-neural-fm/data/brainsets/ibl_bwm/49e0ab27-827a-4c91-bcaa-97eea27a1b8d_probe01.h5
-download s3://rppfvo6ifn/brainsets/ibl_bwm/4d8c7767-981c-4347-8e5e-5d5fffe38534_probe01.h5 -> /workspace/anatomical-neural-fm/data/brainsets/ibl_bwm/4d8c7767-981c-4347-8e5e-5d5fffe38534_probe01.h5
-download s3://rppfvo6ifn/brainsets/ibl_bwm/4ecb5d24-f5cc-402c-be28-9d0f7cb14b3a_probe00.h5 -> /workspace/anatomical-neural-fm/data/brainsets/ibl_bwm/4ecb5d24-f5cc-402c-be28-9d0f7cb14b3a_probe00.h5
-download s3://rppfvo6ifn/brainsets/ibl_bwm/5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe00.h5 -> /workspace/anatomical-neural-fm/data/brainsets/ibl_bwm/5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe00.h5
-download s3://rppfvo6ifn/brainsets/ibl_bwm/5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe01.h5 -> /workspace/anatomical-neural-fm/data/brainsets/ibl_bwm/5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe01.h5
-download s3://rppfvo6ifn/brainsets/ibl_bwm/63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe00.h5 -> /workspace/anatomical-neural-fm/data/brainsets/ibl_bwm/63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe00.h5
-download s3://rppfvo6ifn/brainsets/ibl_bwm/63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe01.h5 -> /workspace/anatomical-neural-fm/data/brainsets/ibl_bwm/63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe01.h5
-download s3://rppfvo6ifn/brainsets/ibl_bwm/6899a67d-2e53-4215-a52a-c7021b5da5d4_probe00.h5 -> /workspace/anatomical-neural-fm/data/brainsets/ibl_bwm/6899a67d-2e53-4215-a52a-c7021b5da5d4_probe00.h5
-download s3://rppfvo6ifn/brainsets/ibl_bwm/6f09ba7e-e3ce-44b0-932b-c003fb44fb89_probe01.h5 -> /workspace/anatomical-neural-fm/data/brainsets/ibl_bwm/6f09ba7e-e3ce-44b0-932b-c003fb44fb89_probe01.h5
-download s3://rppfvo6ifn/brainsets/ibl_bwm/6fb1e12c-883b-46d1-a745-473cde3232c8_probe00.h5 -> /workspace/anatomical-neural-fm/data/brainsets/ibl_bwm/6fb1e12c-883b-46d1-a745-473cde3232c8_probe00.h5
-download s3://rppfvo6ifn/brainsets/ibl_bwm/88d24c31-52e4-49cc-9f32-6adbeb9eba87_probe00.h5 -> /workspace/anatomical-neural-fm/data/brainsets/ibl_bwm/88d24c31-52e4-49cc-9f32-6adbeb9eba87_probe00.h5
-download s3://rppfvo6ifn/brainsets/ibl_bwm/a1782f4f-86b0-480c-a7f2-3d8f1ab482ab_probe00.h5 -> /workspace/anatomical-neural-fm/data/brainsets/ibl_bwm/a1782f4f-86b0-480c-a7f2-3d8f1ab482ab_probe00.h5
-download s3://rppfvo6ifn/brainsets/ibl_bwm/a8a8af78-16de-4841-ab07-fde4b5281a03_probe00.h5 -> /workspace/anatomical-neural-fm/data/brainsets/ibl_bwm/a8a8af78-16de-4841-ab07-fde4b5281a03_probe00.h5
-download s3://rppfvo6ifn/brainsets/ibl_bwm/a8a8af78-16de-4841-ab07-fde4b5281a03_probe01.h5 -> /workspace/anatomical-neural-fm/data/brainsets/ibl_bwm/a8a8af78-16de-4841-ab07-fde4b5281a03_probe01.h5
-download s3://rppfvo6ifn/brainsets/ibl_bwm/b182b754-3c3e-4942-8144-6ee790926b58_probe01.h5 -> /workspace/anatomical-neural-fm/data/brainsets/ibl_bwm/b182b754-3c3e-4942-8144-6ee790926b58_probe01.h5
-download s3://rppfvo6ifn/brainsets/ibl_bwm/b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe00.h5 -> /workspace/anatomical-neural-fm/data/brainsets/ibl_bwm/b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe00.h5
-download s3://rppfvo6ifn/brainsets/ibl_bwm/b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe01.h5 -> /workspace/anatomical-neural-fm/data/brainsets/ibl_bwm/b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe01.h5
-download s3://rppfvo6ifn/brainsets/ibl_bwm/b9c205c3-feac-485b-a89d-afc96d9cb280_probe00.h5 -> /workspace/anatomical-neural-fm/data/brainsets/ibl_bwm/b9c205c3-feac-485b-a89d-afc96d9cb280_probe00.h5
-download s3://rppfvo6ifn/brainsets/ibl_bwm/e1931de1-cf7b-49af-af33-2ade15e8abe7_probe00.h5 -> /workspace/anatomical-neural-fm/data/brainsets/ibl_bwm/e1931de1-cf7b-49af-af33-2ade15e8abe7_probe00.h5
-download s3://rppfvo6ifn/brainsets/ibl_bwm/edd22318-216c-44ff-bc24-49ce8be78374_probe00.h5 -> /workspace/anatomical-neural-fm/data/brainsets/ibl_bwm/edd22318-216c-44ff-bc24-49ce8be78374_probe00.h5
-download count: 28
-upload /tmp/runpod_phase3_5.log -> s3://rppfvo6ifn/brainsets/ibl_bwm/logs/docs_lso_csh_zad_019_shared_parent_shuffle_results.log
-upload-log count: 1
-=== building BrainSet data ===
-Connected to https://openalyx.internationalbrainlab.org as user "intbrainlab"
-Loaded fixed manifest manifests/ibl_bwm_region_matched_support80_best6.json (28 recordings)
-Selected shard 1/1 (28 recordings)
-  [1/28] skip (exists): b182b754-3c3e-4942-8144-6ee790926b58 probe01
-  [2/28] skip (exists): 3f71aa98-08c6-4e79-b4c8-00eae4f03eff probe00
-  [3/28] skip (exists): 16693458-0801-4d35-a3f1-9115c7e5acfd probe00
-  [4/28] skip (exists): 4ecb5d24-f5cc-402c-be28-9d0f7cb14b3a probe00
-  [5/28] skip (exists): 4d8c7767-981c-4347-8e5e-5d5fffe38534 probe01
-  [6/28] skip (exists): 63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9 probe00
-  [7/28] skip (exists): 5adab0b7-dfd0-467d-b09d-43cb7ca5d59c probe00
-  [8/28] skip (exists): a8a8af78-16de-4841-ab07-fde4b5281a03 probe00
-  [9/28] skip (exists): 6899a67d-2e53-4215-a52a-c7021b5da5d4 probe00
-  [10/28] skip (exists): e1931de1-cf7b-49af-af33-2ade15e8abe7 probe00
-  [11/28] skip (exists): 6fb1e12c-883b-46d1-a745-473cde3232c8 probe00
-  [12/28] skip (exists): 1e45d992-c356-40e1-9be1-a506d944896f probe01
-  [13/28] skip (exists): b887df2c-bb9c-44c9-a9c0-538da87b2cab probe00
-  [14/28] skip (exists): 5adab0b7-dfd0-467d-b09d-43cb7ca5d59c probe01
-  [15/28] skip (exists): a8a8af78-16de-4841-ab07-fde4b5281a03 probe01
-  [16/28] skip (exists): a1782f4f-86b0-480c-a7f2-3d8f1ab482ab probe00
-  [17/28] skip (exists): b9c205c3-feac-485b-a89d-afc96d9cb280 probe00
-  [18/28] skip (exists): 88d24c31-52e4-49cc-9f32-6adbeb9eba87 probe00
-  [19/28] skip (exists): 03063955-2523-47bd-ae57-f7489dd40f15 probe01
-  [20/28] skip (exists): 63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9 probe01
-  [21/28] skip (exists): 49e0ab27-827a-4c91-bcaa-97eea27a1b8d probe01
-  [22/28] skip (exists): 032ffcdf-7692-40b3-b9ff-8def1fc18b2e probe00
-  [23/28] skip (exists): 35eeb752-8f4f-4040-9714-ba0f5b7ccdfe probe00
-  [24/28] skip (exists): 16693458-0801-4d35-a3f1-9115c7e5acfd probe01
-  [25/28] skip (exists): 6f09ba7e-e3ce-44b0-932b-c003fb44fb89 probe01
-  [26/28] skip (exists): 41872d7f-75cb-4445-bb1a-132b354c44f0 probe01
-  [27/28] skip (exists): b887df2c-bb9c-44c9-a9c0-538da87b2cab probe01
-  [28/28] skip (exists): edd22318-216c-44ff-bc24-49ce8be78374 probe00
-
-Built 28/28 in 0s (0 attempted, 0 failed)
-
-Files in data/brainsets/ibl_bwm:
-    53.9 MB  03063955-2523-47bd-ae57-f7489dd40f15_probe01.h5
-    55.8 MB  032ffcdf-7692-40b3-b9ff-8def1fc18b2e_probe00.h5
-   431.0 MB  16693458-0801-4d35-a3f1-9115c7e5acfd_probe00.h5
-    48.7 MB  16693458-0801-4d35-a3f1-9115c7e5acfd_probe01.h5
-    53.0 MB  1e45d992-c356-40e1-9be1-a506d944896f_probe01.h5
-    72.2 MB  35eeb752-8f4f-4040-9714-ba0f5b7ccdfe_probe00.h5
-   535.7 MB  3f71aa98-08c6-4e79-b4c8-00eae4f03eff_probe00.h5
-    11.3 MB  41872d7f-75cb-4445-bb1a-132b354c44f0_probe01.h5
-    89.3 MB  49e0ab27-827a-4c91-bcaa-97eea27a1b8d_probe01.h5
-    60.4 MB  4d8c7767-981c-4347-8e5e-5d5fffe38534_probe01.h5
-    75.8 MB  4ecb5d24-f5cc-402c-be28-9d0f7cb14b3a_probe00.h5
-    78.2 MB  5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe00.h5
-    91.3 MB  5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe01.h5
-   131.3 MB  63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe00.h5
-    52.8 MB  63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe01.h5
-    14.4 MB  6899a67d-2e53-4215-a52a-c7021b5da5d4_probe00.h5
-    61.0 MB  6f09ba7e-e3ce-44b0-932b-c003fb44fb89_probe01.h5
-    28.0 MB  6fb1e12c-883b-46d1-a745-473cde3232c8_probe00.h5
-    51.1 MB  88d24c31-52e4-49cc-9f32-6adbeb9eba87_probe00.h5
-    66.5 MB  a1782f4f-86b0-480c-a7f2-3d8f1ab482ab_probe00.h5
-    73.3 MB  a8a8af78-16de-4841-ab07-fde4b5281a03_probe00.h5
-    27.2 MB  a8a8af78-16de-4841-ab07-fde4b5281a03_probe01.h5
-   580.2 MB  b182b754-3c3e-4942-8144-6ee790926b58_probe01.h5
-    61.8 MB  b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe00.h5
-    56.4 MB  b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe01.h5
-    78.4 MB  b9c205c3-feac-485b-a89d-afc96d9cb280_probe00.h5
-    64.4 MB  e1931de1-cf7b-49af-af33-2ade15e8abe7_probe00.h5
-    53.8 MB  edd22318-216c-44ff-bc24-49ce8be78374_probe00.h5
-
-Wrote report runs/lso_csh_zad_019_shared_parent_shuffle/build_report.md
-upload /tmp/runpod_phase3_5.log -> s3://rppfvo6ifn/brainsets/ibl_bwm/logs/docs_lso_csh_zad_019_shared_parent_shuffle_results.log
-upload-log count: 1
-=== uploading built BrainSet data ===
-skip remote exists s3://rppfvo6ifn/brainsets/ibl_bwm/03063955-2523-47bd-ae57-f7489dd40f15_probe01.h5
-skip remote exists s3://rppfvo6ifn/brainsets/ibl_bwm/032ffcdf-7692-40b3-b9ff-8def1fc18b2e_probe00.h5
-skip remote exists s3://rppfvo6ifn/brainsets/ibl_bwm/16693458-0801-4d35-a3f1-9115c7e5acfd_probe00.h5
-skip remote exists s3://rppfvo6ifn/brainsets/ibl_bwm/16693458-0801-4d35-a3f1-9115c7e5acfd_probe01.h5
-skip remote exists s3://rppfvo6ifn/brainsets/ibl_bwm/1e45d992-c356-40e1-9be1-a506d944896f_probe01.h5
-skip remote exists s3://rppfvo6ifn/brainsets/ibl_bwm/35eeb752-8f4f-4040-9714-ba0f5b7ccdfe_probe00.h5
-skip remote exists s3://rppfvo6ifn/brainsets/ibl_bwm/3f71aa98-08c6-4e79-b4c8-00eae4f03eff_probe00.h5
-skip remote exists s3://rppfvo6ifn/brainsets/ibl_bwm/41872d7f-75cb-4445-bb1a-132b354c44f0_probe01.h5
-skip remote exists s3://rppfvo6ifn/brainsets/ibl_bwm/49e0ab27-827a-4c91-bcaa-97eea27a1b8d_probe01.h5
-skip remote exists s3://rppfvo6ifn/brainsets/ibl_bwm/4d8c7767-981c-4347-8e5e-5d5fffe38534_probe01.h5
-skip remote exists s3://rppfvo6ifn/brainsets/ibl_bwm/4ecb5d24-f5cc-402c-be28-9d0f7cb14b3a_probe00.h5
-skip remote exists s3://rppfvo6ifn/brainsets/ibl_bwm/5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe00.h5
-skip remote exists s3://rppfvo6ifn/brainsets/ibl_bwm/5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe01.h5
-skip remote exists s3://rppfvo6ifn/brainsets/ibl_bwm/63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe00.h5
-skip remote exists s3://rppfvo6ifn/brainsets/ibl_bwm/63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe01.h5
-skip remote exists s3://rppfvo6ifn/brainsets/ibl_bwm/6899a67d-2e53-4215-a52a-c7021b5da5d4_probe00.h5
-skip remote exists s3://rppfvo6ifn/brainsets/ibl_bwm/6f09ba7e-e3ce-44b0-932b-c003fb44fb89_probe01.h5
-skip remote exists s3://rppfvo6ifn/brainsets/ibl_bwm/6fb1e12c-883b-46d1-a745-473cde3232c8_probe00.h5
-skip remote exists s3://rppfvo6ifn/brainsets/ibl_bwm/88d24c31-52e4-49cc-9f32-6adbeb9eba87_probe00.h5
-skip remote exists s3://rppfvo6ifn/brainsets/ibl_bwm/a1782f4f-86b0-480c-a7f2-3d8f1ab482ab_probe00.h5
-skip remote exists s3://rppfvo6ifn/brainsets/ibl_bwm/a8a8af78-16de-4841-ab07-fde4b5281a03_probe00.h5
-skip remote exists s3://rppfvo6ifn/brainsets/ibl_bwm/a8a8af78-16de-4841-ab07-fde4b5281a03_probe01.h5
-skip remote exists s3://rppfvo6ifn/brainsets/ibl_bwm/b182b754-3c3e-4942-8144-6ee790926b58_probe01.h5
-skip remote exists s3://rppfvo6ifn/brainsets/ibl_bwm/b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe00.h5
-skip remote exists s3://rppfvo6ifn/brainsets/ibl_bwm/b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe01.h5
-skip remote exists s3://rppfvo6ifn/brainsets/ibl_bwm/b9c205c3-feac-485b-a89d-afc96d9cb280_probe00.h5
-skip remote exists s3://rppfvo6ifn/brainsets/ibl_bwm/e1931de1-cf7b-49af-af33-2ade15e8abe7_probe00.h5
-skip remote exists s3://rppfvo6ifn/brainsets/ibl_bwm/edd22318-216c-44ff-bc24-49ce8be78374_probe00.h5
-upload count: 0
-upload /tmp/runpod_phase3_5.log -> s3://rppfvo6ifn/brainsets/ibl_bwm/logs/docs_lso_csh_zad_019_shared_parent_shuffle_results.log
-upload-log count: 1
-=== verifying BrainSet cache upload ===
-local files present remotely: 28/28 (100.0%)
-wrote runs/lso_csh_zad_019_shared_parent_shuffle/cache_audit.md
-verify-local count: 28
-upload /tmp/runpod_phase3_5.log -> s3://rppfvo6ifn/brainsets/ibl_bwm/logs/docs_lso_csh_zad_019_shared_parent_shuffle_results.log
-upload-log count: 1
-wrote /workspace/anatomical-neural-fm/manifests/ibl_bwm.local.json
-recordings=28 subjects=7 units=27365 trials=17888
-upload /tmp/runpod_phase3_5.log -> s3://rppfvo6ifn/brainsets/ibl_bwm/logs/docs_lso_csh_zad_019_shared_parent_shuffle_results.log
-upload-log count: 1
-=== running phase 3-5 sweep ===
-subjects: CSH_ZAD_019
-arms: shared_baseline region_only region_shuffle
-seeds: 0 1 2
-region_filter: shared_regions
-region_granularity: parent
-manifest: manifests/ibl_bwm_region_matched_support80_best6.json
-
-=== holdout=CSH_ZAD_019 arm=shared_baseline seed=0 region_filter=shared_regions region_granularity=parent ===
-{"t": 1780611269.3930528, "event": "config", "data_dir": "/workspace/anatomical-neural-fm/data/brainsets/ibl_bwm", "manifest": "manifests/ibl_bwm_region_matched_support80_best6.json", "priors_path": "/workspace/anatomical-neural-fm/data/cell_type_priors/region_subclass_priors.parquet", "taxonomy_path": "/workspace/anatomical-neural-fm/data/cell_type_priors/subclass_taxonomy.parquet", "out_dir": "runs/lso_csh_zad_019_shared_parent_shuffle/holdout_CSH_ZAD_019/cloud_choice_shared_baseline_seed0", "device": "cuda", "seed": 0, "split_mode": "animal", "split_seed": 42, "holdout": ["CSH_ZAD_019"], "output_query_mode": "shared", "target_mode": "stimulus_side", "region_filter": "shared_regions", "region_granularity": "parent", "region_label_control": "none", "dim": 96, "depth": 3, "dim_head": 32, "num_latents": 24, "window_len": 1.0, "latent_step": 0.125, "arm": "shared_baseline", "batch_size": 16, "lr": 0.0003, "weight_decay": 0.0001, "max_steps": 300, "warmup_steps": 75, "eval_every": 150, "eval_batches": 20, "log_every": 50}
-{"t": 1780611273.0484774, "event": "split", "n_recordings": 28, "data_recordings_available": 28, "manifest": "manifests/ibl_bwm_region_matched_support80_best6.json", "split_mode": "animal", "holdout_subjects": ["CSH_ZAD_019"], "train_subjects": ["KS014", "MFD_06", "NR_0019", "NYU-12", "SWC_038", "SWC_043"], "eval_subjects": ["CSH_ZAD_019"], "n_train_rids": 24, "n_eval_rids": 4, "region_filter": "shared_regions", "n_allowed_regions": 21, "allowed_regions": ["BS", "CA", "DG", "IB", "LAT", "LZ", "MBmot", "MOp", "PRT", "RSPagl", "RSPd", "VENT", "VL", "VP", "VS", "cc", "fxs", "hc", "mfbc", "root", "void"], "region_granularity": "parent", "region_label_control": "none", "target_mode": "stimulus_side", "n_train_trials": 13015, "n_eval_trials": 2726, "train_class_balance": {"L": 6688, "R": 6327}, "eval_class_balance": {"L": 1504, "R": 1222}, "train_subject_trial_counts": {"KS014": {"L": 1064, "R": 1063}, "MFD_06": {"L": 1221, "R": 1044}, "NR_0019": {"L": 1194, "R": 1230}, "NYU-12": {"L": 973, "R": 902}, "SWC_038": {"L": 1252, "R": 1184}, "SWC_043": {"L": 984, "R": 904}}, "eval_subject_trial_counts": {"CSH_ZAD_019": {"L": 1504, "R": 1222}}, "train_recordings": [{"recording_id": "03063955-2523-47bd-ae57-f7489dd40f15_probe01", "subject": "SWC_038", "n_units": 799, "n_regions": 8, "n_trials": 867, "choice_counts": {"L": 273, "R": 593, "nogo": 1}}, {"recording_id": "032ffcdf-7692-40b3-b9ff-8def1fc18b2e_probe00", "subject": "NYU-12", "n_units": 983, "n_regions": 15, "n_trials": 581, "choice_counts": {"L": 290, "R": 290, "nogo": 1}}, {"recording_id": "16693458-0801-4d35-a3f1-9115c7e5acfd_probe00", "subject": "KS014", "n_units": 917, "n_regions": 8, "n_trials": 531, "choice_counts": {"L": 296, "R": 235, "nogo": 0}}, {"recording_id": "16693458-0801-4d35-a3f1-9115c7e5acfd_probe01", "subject": "KS014", "n_units": 995, "n_regions": 20, "n_trials": 531, "choice_counts": {"L": 296, "R": 235, "nogo": 0}}, {"recording_id": "1e45d992-c356-40e1-9be1-a506d944896f_probe01", "subject": "SWC_038", "n_units": 1280, "n_regions": 8, "n_trials": 623, "choice_counts": {"L": 242, "R": 368, "nogo": 13}}, {"recording_id": "35eeb752-8f4f-4040-9714-ba0f5b7ccdfe_probe00", "subject": "MFD_06", "n_units": 1363, "n_regions": 11, "n_trials": 762, "choice_counts": {"L": 467, "R": 295, "nogo": 0}}, {"recording_id": "3f71aa98-08c6-4e79-b4c8-00eae4f03eff_probe00", "subject": "MFD_06", "n_units": 1689, "n_regions": 7, "n_trials": 672, "choice_counts": {"L": 356, "R": 314, "nogo": 2}}, {"recording_id": "41872d7f-75cb-4445-bb1a-132b354c44f0_probe01", "subject": "SWC_038", "n_units": 308, "n_regions": 14, "n_trials": 512, "choice_counts": {"L": 283, "R": 224, "nogo": 5}}, {"recording_id": "4d8c7767-981c-4347-8e5e-5d5fffe38534_probe01", "subject": "SWC_038", "n_units": 1455, "n_regions": 8, "n_trials": 767, "choice_counts": {"L": 244, "R": 522, "nogo": 1}}, {"recording_id": "4ecb5d24-f5cc-402c-be28-9d0f7cb14b3a_probe00", "subject": "SWC_043", "n_units": 1143, "n_regions": 10, "n_trials": 529, "choice_counts": {"L": 232, "R": 294, "nogo": 3}}, {"recording_id": "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe00", "subject": "NR_0019", "n_units": 910, "n_regions": 14, "n_trials": 900, "choice_counts": {"L": 520, "R": 380, "nogo": 0}}, {"recording_id": "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe01", "subject": "NR_0019", "n_units": 515, "n_regions": 16, "n_trials": 900, "choice_counts": {"L": 520, "R": 380, "nogo": 0}}, {"recording_id": "6899a67d-2e53-4215-a52a-c7021b5da5d4_probe00", "subject": "MFD_06", "n_units": 651, "n_regions": 22, "n_trials": 402, "choice_counts": {"L": 209, "R": 172, "nogo": 21}}, {"recording_id": "6f09ba7e-e3ce-44b0-932b-c003fb44fb89_probe01", "subject": "SWC_043", "n_units": 1542, "n_regions": 10, "n_trials": 551, "choice_counts": {"L": 202, "R": 347, "nogo": 2}}, {"recording_id": "6fb1e12c-883b-46d1-a745-473cde3232c8_probe00", "subject": "SWC_043", "n_units": 1232, "n_regions": 13, "n_trials": 508, "choice_counts": {"L": 242, "R": 265, "nogo": 1}}, {"recording_id": "88d24c31-52e4-49cc-9f32-6adbeb9eba87_probe00", "subject": "SWC_043", "n_units": 910, "n_regions": 7, "n_trials": 547, "choice_counts": {"L": 268, "R": 278, "nogo": 1}}, {"recording_id": "a1782f4f-86b0-480c-a7f2-3d8f1ab482ab_probe00", "subject": "MFD_06", "n_units": 1504, "n_regions": 11, "n_trials": 741, "choice_counts": {"L": 439, "R": 302, "nogo": 0}}, {"recording_id": "a8a8af78-16de-4841-ab07-fde4b5281a03_probe00", "subject": "NYU-12", "n_units": 832, "n_regions": 23, "n_trials": 550, "choice_counts": {"L": 238, "R": 301, "nogo": 11}}, {"recording_id": "a8a8af78-16de-4841-ab07-fde4b5281a03_probe01", "subject": "NYU-12", "n_units": 1185, "n_regions": 10, "n_trials": 550, "choice_counts": {"L": 238, "R": 301, "nogo": 11}}, {"recording_id": "b182b754-3c3e-4942-8144-6ee790926b58_probe01", "subject": "NYU-12", "n_units": 1255, "n_regions": 11, "n_trials": 444, "choice_counts": {"L": 244, "R": 192, "nogo": 8}}, {"recording_id": "b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe00", "subject": "NR_0019", "n_units": 638, "n_regions": 7, "n_trials": 478, "choice_counts": {"L": 278, "R": 199, "nogo": 1}}, {"recording_id": "b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe01", "subject": "NR_0019", "n_units": 486, "n_regions": 15, "n_trials": 478, "choice_counts": {"L": 278, "R": 199, "nogo": 1}}, {"recording_id": "b9c205c3-feac-485b-a89d-afc96d9cb280_probe00", "subject": "KS014", "n_units": 790, "n_regions": 10, "n_trials": 657, "choice_counts": {"L": 352, "R": 305, "nogo": 0}}, {"recording_id": "e1931de1-cf7b-49af-af33-2ade15e8abe7_probe00", "subject": "KS014", "n_units": 419, "n_regions": 17, "n_trials": 688, "choice_counts": {"L": 271, "R": 415, "nogo": 2}}], "eval_recordings": [{"recording_id": "49e0ab27-827a-4c91-bcaa-97eea27a1b8d_probe01", "subject": "CSH_ZAD_019", "n_units": 944, "n_regions": 14, "n_trials": 884, "choice_counts": {"L": 466, "R": 416, "nogo": 2}}, {"recording_id": "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe00", "subject": "CSH_ZAD_019", "n_units": 1173, "n_regions": 15, "n_trials": 672, "choice_counts": {"L": 346, "R": 321, "nogo": 5}}, {"recording_id": "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe01", "subject": "CSH_ZAD_019", "n_units": 840, "n_regions": 14, "n_trials": 672, "choice_counts": {"L": 346, "R": 321, "nogo": 5}}, {"recording_id": "edd22318-216c-44ff-bc24-49ce8be78374_probe00", "subject": "CSH_ZAD_019", "n_units": 607, "n_regions": 14, "n_trials": 891, "choice_counts": {"L": 415, "R": 475, "nogo": 1}}]}
-{"t": 1780611273.231064, "event": "model", "arm": "shared_baseline", "n_params": 3389473, "use_unit_emb": false, "use_region_emb": false, "use_cell_type_emb": false, "use_waveform_emb": false}
-{"t": 1780611281.6871598, "event": "train", "step": 50, "loss": 0.7019299268722534, "mean20": 0.6996294587850571, "batch_acc": 0.375, "grad_norm": 1.165468454360962, "lr": 0.00019999999999999998}
-{"t": 1780611284.9865484, "event": "train", "step": 100, "loss": 0.6387605667114258, "mean20": 0.6911987125873565, "batch_acc": 0.75, "grad_norm": 1.326629638671875, "lr": 0.0002909538931178862}
-{"t": 1780611288.0937092, "event": "train", "step": 150, "loss": 0.736160159111023, "mean20": 0.71182122528553, "batch_acc": 0.25, "grad_norm": 1.8610179424285889, "lr": 0.000225}
-{"t": 1780611288.8544612, "event": "eval", "step": 150, "eval_loss": 0.6824482508003712, "eval_acc": 0.584375, "eval_auc": 0.4964014313859515, "eval_n": 320, "eval_n_pos": 133, "eval_n_neg": 187}
-{"t": 1780611288.919082, "event": "ckpt_best", "step": 150, "eval_loss": 0.6824482508003712, "eval_acc": 0.584375, "eval_auc": 0.4964014313859515}
-{"t": 1780611292.0697582, "event": "train", "step": 200, "loss": 0.6869391202926636, "mean20": 0.6891296297311783, "batch_acc": 0.5625, "grad_norm": 0.1998816281557083, "lr": 0.00012395277334996044}
-{"t": 1780611295.444209, "event": "train", "step": 250, "loss": 0.678070604801178, "mean20": 0.6929127871990204, "batch_acc": 0.625, "grad_norm": 0.5165599584579468, "lr": 3.509333353215331e-05}
-{"t": 1780611298.6993494, "event": "train", "step": 300, "loss": 0.697709321975708, "mean20": 0.6900374740362167, "batch_acc": 0.5, "grad_norm": 0.18887728452682495, "lr": 0.0}
-{"t": 1780611299.4334211, "event": "eval", "step": 300, "eval_loss": 0.6852047082036734, "eval_acc": 0.584375, "eval_auc": 0.5301354991757469, "eval_n": 320, "eval_n_pos": 133, "eval_n_neg": 187}
-{"t": 1780611299.4826016, "event": "done", "wall_clock_s": 22.254312753677368, "best_eval_loss": 0.6824482508003712}
-
-=== holdout=CSH_ZAD_019 arm=region_only seed=0 region_filter=shared_regions region_granularity=parent ===
-{"t": 1780611302.510606, "event": "config", "data_dir": "/workspace/anatomical-neural-fm/data/brainsets/ibl_bwm", "manifest": "manifests/ibl_bwm_region_matched_support80_best6.json", "priors_path": "/workspace/anatomical-neural-fm/data/cell_type_priors/region_subclass_priors.parquet", "taxonomy_path": "/workspace/anatomical-neural-fm/data/cell_type_priors/subclass_taxonomy.parquet", "out_dir": "runs/lso_csh_zad_019_shared_parent_shuffle/holdout_CSH_ZAD_019/cloud_choice_region_only_seed0", "device": "cuda", "seed": 0, "split_mode": "animal", "split_seed": 42, "holdout": ["CSH_ZAD_019"], "output_query_mode": "shared", "target_mode": "stimulus_side", "region_filter": "shared_regions", "region_granularity": "parent", "region_label_control": "none", "dim": 96, "depth": 3, "dim_head": 32, "num_latents": 24, "window_len": 1.0, "latent_step": 0.125, "arm": "region_only", "batch_size": 16, "lr": 0.0003, "weight_decay": 0.0001, "max_steps": 300, "warmup_steps": 75, "eval_every": 150, "eval_batches": 20, "log_every": 50}
-{"t": 1780611306.2116196, "event": "split", "n_recordings": 28, "data_recordings_available": 28, "manifest": "manifests/ibl_bwm_region_matched_support80_best6.json", "split_mode": "animal", "holdout_subjects": ["CSH_ZAD_019"], "train_subjects": ["KS014", "MFD_06", "NR_0019", "NYU-12", "SWC_038", "SWC_043"], "eval_subjects": ["CSH_ZAD_019"], "n_train_rids": 24, "n_eval_rids": 4, "region_filter": "shared_regions", "n_allowed_regions": 21, "allowed_regions": ["BS", "CA", "DG", "IB", "LAT", "LZ", "MBmot", "MOp", "PRT", "RSPagl", "RSPd", "VENT", "VL", "VP", "VS", "cc", "fxs", "hc", "mfbc", "root", "void"], "region_granularity": "parent", "region_label_control": "none", "target_mode": "stimulus_side", "n_train_trials": 13015, "n_eval_trials": 2726, "train_class_balance": {"L": 6688, "R": 6327}, "eval_class_balance": {"L": 1504, "R": 1222}, "train_subject_trial_counts": {"KS014": {"L": 1064, "R": 1063}, "MFD_06": {"L": 1221, "R": 1044}, "NR_0019": {"L": 1194, "R": 1230}, "NYU-12": {"L": 973, "R": 902}, "SWC_038": {"L": 1252, "R": 1184}, "SWC_043": {"L": 984, "R": 904}}, "eval_subject_trial_counts": {"CSH_ZAD_019": {"L": 1504, "R": 1222}}, "train_recordings": [{"recording_id": "03063955-2523-47bd-ae57-f7489dd40f15_probe01", "subject": "SWC_038", "n_units": 799, "n_regions": 8, "n_trials": 867, "choice_counts": {"L": 273, "R": 593, "nogo": 1}}, {"recording_id": "032ffcdf-7692-40b3-b9ff-8def1fc18b2e_probe00", "subject": "NYU-12", "n_units": 983, "n_regions": 15, "n_trials": 581, "choice_counts": {"L": 290, "R": 290, "nogo": 1}}, {"recording_id": "16693458-0801-4d35-a3f1-9115c7e5acfd_probe00", "subject": "KS014", "n_units": 917, "n_regions": 8, "n_trials": 531, "choice_counts": {"L": 296, "R": 235, "nogo": 0}}, {"recording_id": "16693458-0801-4d35-a3f1-9115c7e5acfd_probe01", "subject": "KS014", "n_units": 995, "n_regions": 20, "n_trials": 531, "choice_counts": {"L": 296, "R": 235, "nogo": 0}}, {"recording_id": "1e45d992-c356-40e1-9be1-a506d944896f_probe01", "subject": "SWC_038", "n_units": 1280, "n_regions": 8, "n_trials": 623, "choice_counts": {"L": 242, "R": 368, "nogo": 13}}, {"recording_id": "35eeb752-8f4f-4040-9714-ba0f5b7ccdfe_probe00", "subject": "MFD_06", "n_units": 1363, "n_regions": 11, "n_trials": 762, "choice_counts": {"L": 467, "R": 295, "nogo": 0}}, {"recording_id": "3f71aa98-08c6-4e79-b4c8-00eae4f03eff_probe00", "subject": "MFD_06", "n_units": 1689, "n_regions": 7, "n_trials": 672, "choice_counts": {"L": 356, "R": 314, "nogo": 2}}, {"recording_id": "41872d7f-75cb-4445-bb1a-132b354c44f0_probe01", "subject": "SWC_038", "n_units": 308, "n_regions": 14, "n_trials": 512, "choice_counts": {"L": 283, "R": 224, "nogo": 5}}, {"recording_id": "4d8c7767-981c-4347-8e5e-5d5fffe38534_probe01", "subject": "SWC_038", "n_units": 1455, "n_regions": 8, "n_trials": 767, "choice_counts": {"L": 244, "R": 522, "nogo": 1}}, {"recording_id": "4ecb5d24-f5cc-402c-be28-9d0f7cb14b3a_probe00", "subject": "SWC_043", "n_units": 1143, "n_regions": 10, "n_trials": 529, "choice_counts": {"L": 232, "R": 294, "nogo": 3}}, {"recording_id": "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe00", "subject": "NR_0019", "n_units": 910, "n_regions": 14, "n_trials": 900, "choice_counts": {"L": 520, "R": 380, "nogo": 0}}, {"recording_id": "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe01", "subject": "NR_0019", "n_units": 515, "n_regions": 16, "n_trials": 900, "choice_counts": {"L": 520, "R": 380, "nogo": 0}}, {"recording_id": "6899a67d-2e53-4215-a52a-c7021b5da5d4_probe00", "subject": "MFD_06", "n_units": 651, "n_regions": 22, "n_trials": 402, "choice_counts": {"L": 209, "R": 172, "nogo": 21}}, {"recording_id": "6f09ba7e-e3ce-44b0-932b-c003fb44fb89_probe01", "subject": "SWC_043", "n_units": 1542, "n_regions": 10, "n_trials": 551, "choice_counts": {"L": 202, "R": 347, "nogo": 2}}, {"recording_id": "6fb1e12c-883b-46d1-a745-473cde3232c8_probe00", "subject": "SWC_043", "n_units": 1232, "n_regions": 13, "n_trials": 508, "choice_counts": {"L": 242, "R": 265, "nogo": 1}}, {"recording_id": "88d24c31-52e4-49cc-9f32-6adbeb9eba87_probe00", "subject": "SWC_043", "n_units": 910, "n_regions": 7, "n_trials": 547, "choice_counts": {"L": 268, "R": 278, "nogo": 1}}, {"recording_id": "a1782f4f-86b0-480c-a7f2-3d8f1ab482ab_probe00", "subject": "MFD_06", "n_units": 1504, "n_regions": 11, "n_trials": 741, "choice_counts": {"L": 439, "R": 302, "nogo": 0}}, {"recording_id": "a8a8af78-16de-4841-ab07-fde4b5281a03_probe00", "subject": "NYU-12", "n_units": 832, "n_regions": 23, "n_trials": 550, "choice_counts": {"L": 238, "R": 301, "nogo": 11}}, {"recording_id": "a8a8af78-16de-4841-ab07-fde4b5281a03_probe01", "subject": "NYU-12", "n_units": 1185, "n_regions": 10, "n_trials": 550, "choice_counts": {"L": 238, "R": 301, "nogo": 11}}, {"recording_id": "b182b754-3c3e-4942-8144-6ee790926b58_probe01", "subject": "NYU-12", "n_units": 1255, "n_regions": 11, "n_trials": 444, "choice_counts": {"L": 244, "R": 192, "nogo": 8}}, {"recording_id": "b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe00", "subject": "NR_0019", "n_units": 638, "n_regions": 7, "n_trials": 478, "choice_counts": {"L": 278, "R": 199, "nogo": 1}}, {"recording_id": "b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe01", "subject": "NR_0019", "n_units": 486, "n_regions": 15, "n_trials": 478, "choice_counts": {"L": 278, "R": 199, "nogo": 1}}, {"recording_id": "b9c205c3-feac-485b-a89d-afc96d9cb280_probe00", "subject": "KS014", "n_units": 790, "n_regions": 10, "n_trials": 657, "choice_counts": {"L": 352, "R": 305, "nogo": 0}}, {"recording_id": "e1931de1-cf7b-49af-af33-2ade15e8abe7_probe00", "subject": "KS014", "n_units": 419, "n_regions": 17, "n_trials": 688, "choice_counts": {"L": 271, "R": 415, "nogo": 2}}], "eval_recordings": [{"recording_id": "49e0ab27-827a-4c91-bcaa-97eea27a1b8d_probe01", "subject": "CSH_ZAD_019", "n_units": 944, "n_regions": 14, "n_trials": 884, "choice_counts": {"L": 466, "R": 416, "nogo": 2}}, {"recording_id": "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe00", "subject": "CSH_ZAD_019", "n_units": 1173, "n_regions": 15, "n_trials": 672, "choice_counts": {"L": 346, "R": 321, "nogo": 5}}, {"recording_id": "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe01", "subject": "CSH_ZAD_019", "n_units": 840, "n_regions": 14, "n_trials": 672, "choice_counts": {"L": 346, "R": 321, "nogo": 5}}, {"recording_id": "edd22318-216c-44ff-bc24-49ce8be78374_probe00", "subject": "CSH_ZAD_019", "n_units": 607, "n_regions": 14, "n_trials": 891, "choice_counts": {"L": 415, "R": 475, "nogo": 1}}]}
-{"t": 1780611306.3324542, "event": "model", "arm": "region_only", "n_params": 3397153, "use_unit_emb": false, "use_region_emb": true, "use_cell_type_emb": false, "use_waveform_emb": false}
-{"t": 1780611313.2823923, "event": "train", "step": 50, "loss": 0.6469908952713013, "mean20": 0.7027458041906357, "batch_acc": 0.75, "grad_norm": 1.0234285593032837, "lr": 0.00019999999999999998}
-{"t": 1780611316.695512, "event": "train", "step": 100, "loss": 0.6975082159042358, "mean20": 0.7010984897613526, "batch_acc": 0.4375, "grad_norm": 1.7094875574111938, "lr": 0.0002909538931178862}
-{"t": 1780611319.8929904, "event": "train", "step": 150, "loss": 0.6815513372421265, "mean20": 0.6991422235965729, "batch_acc": 0.5625, "grad_norm": 1.5429503917694092, "lr": 0.000225}
-{"t": 1780611320.653989, "event": "eval", "step": 150, "eval_loss": 0.687047865986824, "eval_acc": 0.55, "eval_auc": 0.5439266615737204, "eval_n": 320, "eval_n_pos": 133, "eval_n_neg": 187}
-{"t": 1780611320.7150714, "event": "ckpt_best", "step": 150, "eval_loss": 0.687047865986824, "eval_acc": 0.55, "eval_auc": 0.5439266615737204}
-{"t": 1780611324.0457616, "event": "train", "step": 200, "loss": 0.6872515678405762, "mean20": 0.6880165755748748, "batch_acc": 0.5625, "grad_norm": 0.26392289996147156, "lr": 0.00012395277334996044}
-{"t": 1780611327.4629214, "event": "train", "step": 250, "loss": 0.6796331405639648, "mean20": 0.6920638501644134, "batch_acc": 0.5625, "grad_norm": 0.5719805359840393, "lr": 3.509333353215331e-05}
-{"t": 1780611330.7579627, "event": "train", "step": 300, "loss": 0.68764728307724, "mean20": 0.6888945519924163, "batch_acc": 0.5625, "grad_norm": 0.3904699385166168, "lr": 0.0}
-{"t": 1780611331.4570127, "event": "eval", "step": 300, "eval_loss": 0.6861186385154724, "eval_acc": 0.584375, "eval_auc": 0.5033975312613084, "eval_n": 320, "eval_n_pos": 133, "eval_n_neg": 187}
-{"t": 1780611331.5253873, "event": "ckpt_best", "step": 300, "eval_loss": 0.6861186385154724, "eval_acc": 0.584375, "eval_auc": 0.5033975312613084}
-{"t": 1780611331.5760174, "event": "done", "wall_clock_s": 23.30706787109375, "best_eval_loss": 0.6861186385154724}
-
-=== holdout=CSH_ZAD_019 arm=region_shuffle seed=0 region_filter=shared_regions region_granularity=parent ===
-{"t": 1780611334.567074, "event": "config", "data_dir": "/workspace/anatomical-neural-fm/data/brainsets/ibl_bwm", "manifest": "manifests/ibl_bwm_region_matched_support80_best6.json", "priors_path": "/workspace/anatomical-neural-fm/data/cell_type_priors/region_subclass_priors.parquet", "taxonomy_path": "/workspace/anatomical-neural-fm/data/cell_type_priors/subclass_taxonomy.parquet", "out_dir": "runs/lso_csh_zad_019_shared_parent_shuffle/holdout_CSH_ZAD_019/cloud_choice_region_shuffle_seed0", "device": "cuda", "seed": 0, "split_mode": "animal", "split_seed": 42, "holdout": ["CSH_ZAD_019"], "output_query_mode": "shared", "target_mode": "stimulus_side", "region_filter": "shared_regions", "region_granularity": "parent", "region_label_control": "shuffle", "dim": 96, "depth": 3, "dim_head": 32, "num_latents": 24, "window_len": 1.0, "latent_step": 0.125, "arm": "region_only", "batch_size": 16, "lr": 0.0003, "weight_decay": 0.0001, "max_steps": 300, "warmup_steps": 75, "eval_every": 150, "eval_batches": 20, "log_every": 50}
-{"t": 1780611338.2144911, "event": "split", "n_recordings": 28, "data_recordings_available": 28, "manifest": "manifests/ibl_bwm_region_matched_support80_best6.json", "split_mode": "animal", "holdout_subjects": ["CSH_ZAD_019"], "train_subjects": ["KS014", "MFD_06", "NR_0019", "NYU-12", "SWC_038", "SWC_043"], "eval_subjects": ["CSH_ZAD_019"], "n_train_rids": 24, "n_eval_rids": 4, "region_filter": "shared_regions", "n_allowed_regions": 21, "allowed_regions": ["BS", "CA", "DG", "IB", "LAT", "LZ", "MBmot", "MOp", "PRT", "RSPagl", "RSPd", "VENT", "VL", "VP", "VS", "cc", "fxs", "hc", "mfbc", "root", "void"], "region_granularity": "parent", "region_label_control": "shuffle", "target_mode": "stimulus_side", "n_train_trials": 13015, "n_eval_trials": 2726, "train_class_balance": {"L": 6688, "R": 6327}, "eval_class_balance": {"L": 1504, "R": 1222}, "train_subject_trial_counts": {"KS014": {"L": 1064, "R": 1063}, "MFD_06": {"L": 1221, "R": 1044}, "NR_0019": {"L": 1194, "R": 1230}, "NYU-12": {"L": 973, "R": 902}, "SWC_038": {"L": 1252, "R": 1184}, "SWC_043": {"L": 984, "R": 904}}, "eval_subject_trial_counts": {"CSH_ZAD_019": {"L": 1504, "R": 1222}}, "train_recordings": [{"recording_id": "03063955-2523-47bd-ae57-f7489dd40f15_probe01", "subject": "SWC_038", "n_units": 799, "n_regions": 8, "n_trials": 867, "choice_counts": {"L": 273, "R": 593, "nogo": 1}}, {"recording_id": "032ffcdf-7692-40b3-b9ff-8def1fc18b2e_probe00", "subject": "NYU-12", "n_units": 983, "n_regions": 15, "n_trials": 581, "choice_counts": {"L": 290, "R": 290, "nogo": 1}}, {"recording_id": "16693458-0801-4d35-a3f1-9115c7e5acfd_probe00", "subject": "KS014", "n_units": 917, "n_regions": 8, "n_trials": 531, "choice_counts": {"L": 296, "R": 235, "nogo": 0}}, {"recording_id": "16693458-0801-4d35-a3f1-9115c7e5acfd_probe01", "subject": "KS014", "n_units": 995, "n_regions": 20, "n_trials": 531, "choice_counts": {"L": 296, "R": 235, "nogo": 0}}, {"recording_id": "1e45d992-c356-40e1-9be1-a506d944896f_probe01", "subject": "SWC_038", "n_units": 1280, "n_regions": 8, "n_trials": 623, "choice_counts": {"L": 242, "R": 368, "nogo": 13}}, {"recording_id": "35eeb752-8f4f-4040-9714-ba0f5b7ccdfe_probe00", "subject": "MFD_06", "n_units": 1363, "n_regions": 11, "n_trials": 762, "choice_counts": {"L": 467, "R": 295, "nogo": 0}}, {"recording_id": "3f71aa98-08c6-4e79-b4c8-00eae4f03eff_probe00", "subject": "MFD_06", "n_units": 1689, "n_regions": 7, "n_trials": 672, "choice_counts": {"L": 356, "R": 314, "nogo": 2}}, {"recording_id": "41872d7f-75cb-4445-bb1a-132b354c44f0_probe01", "subject": "SWC_038", "n_units": 308, "n_regions": 14, "n_trials": 512, "choice_counts": {"L": 283, "R": 224, "nogo": 5}}, {"recording_id": "4d8c7767-981c-4347-8e5e-5d5fffe38534_probe01", "subject": "SWC_038", "n_units": 1455, "n_regions": 8, "n_trials": 767, "choice_counts": {"L": 244, "R": 522, "nogo": 1}}, {"recording_id": "4ecb5d24-f5cc-402c-be28-9d0f7cb14b3a_probe00", "subject": "SWC_043", "n_units": 1143, "n_regions": 10, "n_trials": 529, "choice_counts": {"L": 232, "R": 294, "nogo": 3}}, {"recording_id": "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe00", "subject": "NR_0019", "n_units": 910, "n_regions": 14, "n_trials": 900, "choice_counts": {"L": 520, "R": 380, "nogo": 0}}, {"recording_id": "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe01", "subject": "NR_0019", "n_units": 515, "n_regions": 16, "n_trials": 900, "choice_counts": {"L": 520, "R": 380, "nogo": 0}}, {"recording_id": "6899a67d-2e53-4215-a52a-c7021b5da5d4_probe00", "subject": "MFD_06", "n_units": 651, "n_regions": 22, "n_trials": 402, "choice_counts": {"L": 209, "R": 172, "nogo": 21}}, {"recording_id": "6f09ba7e-e3ce-44b0-932b-c003fb44fb89_probe01", "subject": "SWC_043", "n_units": 1542, "n_regions": 10, "n_trials": 551, "choice_counts": {"L": 202, "R": 347, "nogo": 2}}, {"recording_id": "6fb1e12c-883b-46d1-a745-473cde3232c8_probe00", "subject": "SWC_043", "n_units": 1232, "n_regions": 13, "n_trials": 508, "choice_counts": {"L": 242, "R": 265, "nogo": 1}}, {"recording_id": "88d24c31-52e4-49cc-9f32-6adbeb9eba87_probe00", "subject": "SWC_043", "n_units": 910, "n_regions": 7, "n_trials": 547, "choice_counts": {"L": 268, "R": 278, "nogo": 1}}, {"recording_id": "a1782f4f-86b0-480c-a7f2-3d8f1ab482ab_probe00", "subject": "MFD_06", "n_units": 1504, "n_regions": 11, "n_trials": 741, "choice_counts": {"L": 439, "R": 302, "nogo": 0}}, {"recording_id": "a8a8af78-16de-4841-ab07-fde4b5281a03_probe00", "subject": "NYU-12", "n_units": 832, "n_regions": 23, "n_trials": 550, "choice_counts": {"L": 238, "R": 301, "nogo": 11}}, {"recording_id": "a8a8af78-16de-4841-ab07-fde4b5281a03_probe01", "subject": "NYU-12", "n_units": 1185, "n_regions": 10, "n_trials": 550, "choice_counts": {"L": 238, "R": 301, "nogo": 11}}, {"recording_id": "b182b754-3c3e-4942-8144-6ee790926b58_probe01", "subject": "NYU-12", "n_units": 1255, "n_regions": 11, "n_trials": 444, "choice_counts": {"L": 244, "R": 192, "nogo": 8}}, {"recording_id": "b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe00", "subject": "NR_0019", "n_units": 638, "n_regions": 7, "n_trials": 478, "choice_counts": {"L": 278, "R": 199, "nogo": 1}}, {"recording_id": "b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe01", "subject": "NR_0019", "n_units": 486, "n_regions": 15, "n_trials": 478, "choice_counts": {"L": 278, "R": 199, "nogo": 1}}, {"recording_id": "b9c205c3-feac-485b-a89d-afc96d9cb280_probe00", "subject": "KS014", "n_units": 790, "n_regions": 10, "n_trials": 657, "choice_counts": {"L": 352, "R": 305, "nogo": 0}}, {"recording_id": "e1931de1-cf7b-49af-af33-2ade15e8abe7_probe00", "subject": "KS014", "n_units": 419, "n_regions": 17, "n_trials": 688, "choice_counts": {"L": 271, "R": 415, "nogo": 2}}], "eval_recordings": [{"recording_id": "49e0ab27-827a-4c91-bcaa-97eea27a1b8d_probe01", "subject": "CSH_ZAD_019", "n_units": 944, "n_regions": 14, "n_trials": 884, "choice_counts": {"L": 466, "R": 416, "nogo": 2}}, {"recording_id": "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe00", "subject": "CSH_ZAD_019", "n_units": 1173, "n_regions": 15, "n_trials": 672, "choice_counts": {"L": 346, "R": 321, "nogo": 5}}, {"recording_id": "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe01", "subject": "CSH_ZAD_019", "n_units": 840, "n_regions": 14, "n_trials": 672, "choice_counts": {"L": 346, "R": 321, "nogo": 5}}, {"recording_id": "edd22318-216c-44ff-bc24-49ce8be78374_probe00", "subject": "CSH_ZAD_019", "n_units": 607, "n_regions": 14, "n_trials": 891, "choice_counts": {"L": 415, "R": 475, "nogo": 1}}]}
-{"t": 1780611338.3315747, "event": "model", "arm": "region_only", "n_params": 3397153, "use_unit_emb": false, "use_region_emb": true, "use_cell_type_emb": false, "use_waveform_emb": false}
-{"t": 1780611345.345817, "event": "train", "step": 50, "loss": 0.7154839038848877, "mean20": 0.7058181822299957, "batch_acc": 0.375, "grad_norm": 1.6030347347259521, "lr": 0.00019999999999999998}
-{"t": 1780611348.6575074, "event": "train", "step": 100, "loss": 0.6427088975906372, "mean20": 0.6943946450948715, "batch_acc": 0.75, "grad_norm": 1.247599720954895, "lr": 0.0002909538931178862}
-{"t": 1780611351.8690479, "event": "train", "step": 150, "loss": 0.6984526515007019, "mean20": 0.7037474602460861, "batch_acc": 0.25, "grad_norm": 1.4286835193634033, "lr": 0.000225}
-{"t": 1780611352.6493728, "event": "eval", "step": 150, "eval_loss": 0.6919411312788725, "eval_acc": 0.584375, "eval_auc": 0.48634956374894456, "eval_n": 320, "eval_n_pos": 133, "eval_n_neg": 187}
-{"t": 1780611352.7228136, "event": "ckpt_best", "step": 150, "eval_loss": 0.6919411312788725, "eval_acc": 0.584375, "eval_auc": 0.48634956374894456}
-{"t": 1780611356.0059326, "event": "train", "step": 200, "loss": 0.6879589557647705, "mean20": 0.6880986332893372, "batch_acc": 0.5625, "grad_norm": 0.18890969455242157, "lr": 0.00012395277334996044}
-{"t": 1780611359.3943136, "event": "train", "step": 250, "loss": 0.6801897883415222, "mean20": 0.6922967374324799, "batch_acc": 0.625, "grad_norm": 0.4966858923435211, "lr": 3.509333353215331e-05}
-{"t": 1780611362.8354328, "event": "train", "step": 300, "loss": 0.6943679451942444, "mean20": 0.6899876117706298, "batch_acc": 0.5, "grad_norm": 0.16474665701389313, "lr": 0.0}
-{"t": 1780611363.6097536, "event": "eval", "step": 300, "eval_loss": 0.6862327467650176, "eval_acc": 0.584375, "eval_auc": 0.5220940050661413, "eval_n": 320, "eval_n_pos": 133, "eval_n_neg": 187}
-{"t": 1780611363.6697204, "event": "ckpt_best", "step": 300, "eval_loss": 0.6862327467650176, "eval_acc": 0.584375, "eval_auc": 0.5220940050661413}
-{"t": 1780611363.7249053, "event": "done", "wall_clock_s": 23.2358295917511, "best_eval_loss": 0.6862327467650176}
-
-=== holdout=CSH_ZAD_019 arm=shared_baseline seed=1 region_filter=shared_regions region_granularity=parent ===
-{"t": 1780611368.0139556, "event": "config", "data_dir": "/workspace/anatomical-neural-fm/data/brainsets/ibl_bwm", "manifest": "manifests/ibl_bwm_region_matched_support80_best6.json", "priors_path": "/workspace/anatomical-neural-fm/data/cell_type_priors/region_subclass_priors.parquet", "taxonomy_path": "/workspace/anatomical-neural-fm/data/cell_type_priors/subclass_taxonomy.parquet", "out_dir": "runs/lso_csh_zad_019_shared_parent_shuffle/holdout_CSH_ZAD_019/cloud_choice_shared_baseline_seed1", "device": "cuda", "seed": 1, "split_mode": "animal", "split_seed": 42, "holdout": ["CSH_ZAD_019"], "output_query_mode": "shared", "target_mode": "stimulus_side", "region_filter": "shared_regions", "region_granularity": "parent", "region_label_control": "none", "dim": 96, "depth": 3, "dim_head": 32, "num_latents": 24, "window_len": 1.0, "latent_step": 0.125, "arm": "shared_baseline", "batch_size": 16, "lr": 0.0003, "weight_decay": 0.0001, "max_steps": 300, "warmup_steps": 75, "eval_every": 150, "eval_batches": 20, "log_every": 50}
-{"t": 1780611371.7716892, "event": "split", "n_recordings": 28, "data_recordings_available": 28, "manifest": "manifests/ibl_bwm_region_matched_support80_best6.json", "split_mode": "animal", "holdout_subjects": ["CSH_ZAD_019"], "train_subjects": ["KS014", "MFD_06", "NR_0019", "NYU-12", "SWC_038", "SWC_043"], "eval_subjects": ["CSH_ZAD_019"], "n_train_rids": 24, "n_eval_rids": 4, "region_filter": "shared_regions", "n_allowed_regions": 21, "allowed_regions": ["BS", "CA", "DG", "IB", "LAT", "LZ", "MBmot", "MOp", "PRT", "RSPagl", "RSPd", "VENT", "VL", "VP", "VS", "cc", "fxs", "hc", "mfbc", "root", "void"], "region_granularity": "parent", "region_label_control": "none", "target_mode": "stimulus_side", "n_train_trials": 13015, "n_eval_trials": 2726, "train_class_balance": {"L": 6688, "R": 6327}, "eval_class_balance": {"L": 1504, "R": 1222}, "train_subject_trial_counts": {"KS014": {"L": 1064, "R": 1063}, "MFD_06": {"L": 1221, "R": 1044}, "NR_0019": {"L": 1194, "R": 1230}, "NYU-12": {"L": 973, "R": 902}, "SWC_038": {"L": 1252, "R": 1184}, "SWC_043": {"L": 984, "R": 904}}, "eval_subject_trial_counts": {"CSH_ZAD_019": {"L": 1504, "R": 1222}}, "train_recordings": [{"recording_id": "03063955-2523-47bd-ae57-f7489dd40f15_probe01", "subject": "SWC_038", "n_units": 799, "n_regions": 8, "n_trials": 867, "choice_counts": {"L": 273, "R": 593, "nogo": 1}}, {"recording_id": "032ffcdf-7692-40b3-b9ff-8def1fc18b2e_probe00", "subject": "NYU-12", "n_units": 983, "n_regions": 15, "n_trials": 581, "choice_counts": {"L": 290, "R": 290, "nogo": 1}}, {"recording_id": "16693458-0801-4d35-a3f1-9115c7e5acfd_probe00", "subject": "KS014", "n_units": 917, "n_regions": 8, "n_trials": 531, "choice_counts": {"L": 296, "R": 235, "nogo": 0}}, {"recording_id": "16693458-0801-4d35-a3f1-9115c7e5acfd_probe01", "subject": "KS014", "n_units": 995, "n_regions": 20, "n_trials": 531, "choice_counts": {"L": 296, "R": 235, "nogo": 0}}, {"recording_id": "1e45d992-c356-40e1-9be1-a506d944896f_probe01", "subject": "SWC_038", "n_units": 1280, "n_regions": 8, "n_trials": 623, "choice_counts": {"L": 242, "R": 368, "nogo": 13}}, {"recording_id": "35eeb752-8f4f-4040-9714-ba0f5b7ccdfe_probe00", "subject": "MFD_06", "n_units": 1363, "n_regions": 11, "n_trials": 762, "choice_counts": {"L": 467, "R": 295, "nogo": 0}}, {"recording_id": "3f71aa98-08c6-4e79-b4c8-00eae4f03eff_probe00", "subject": "MFD_06", "n_units": 1689, "n_regions": 7, "n_trials": 672, "choice_counts": {"L": 356, "R": 314, "nogo": 2}}, {"recording_id": "41872d7f-75cb-4445-bb1a-132b354c44f0_probe01", "subject": "SWC_038", "n_units": 308, "n_regions": 14, "n_trials": 512, "choice_counts": {"L": 283, "R": 224, "nogo": 5}}, {"recording_id": "4d8c7767-981c-4347-8e5e-5d5fffe38534_probe01", "subject": "SWC_038", "n_units": 1455, "n_regions": 8, "n_trials": 767, "choice_counts": {"L": 244, "R": 522, "nogo": 1}}, {"recording_id": "4ecb5d24-f5cc-402c-be28-9d0f7cb14b3a_probe00", "subject": "SWC_043", "n_units": 1143, "n_regions": 10, "n_trials": 529, "choice_counts": {"L": 232, "R": 294, "nogo": 3}}, {"recording_id": "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe00", "subject": "NR_0019", "n_units": 910, "n_regions": 14, "n_trials": 900, "choice_counts": {"L": 520, "R": 380, "nogo": 0}}, {"recording_id": "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe01", "subject": "NR_0019", "n_units": 515, "n_regions": 16, "n_trials": 900, "choice_counts": {"L": 520, "R": 380, "nogo": 0}}, {"recording_id": "6899a67d-2e53-4215-a52a-c7021b5da5d4_probe00", "subject": "MFD_06", "n_units": 651, "n_regions": 22, "n_trials": 402, "choice_counts": {"L": 209, "R": 172, "nogo": 21}}, {"recording_id": "6f09ba7e-e3ce-44b0-932b-c003fb44fb89_probe01", "subject": "SWC_043", "n_units": 1542, "n_regions": 10, "n_trials": 551, "choice_counts": {"L": 202, "R": 347, "nogo": 2}}, {"recording_id": "6fb1e12c-883b-46d1-a745-473cde3232c8_probe00", "subject": "SWC_043", "n_units": 1232, "n_regions": 13, "n_trials": 508, "choice_counts": {"L": 242, "R": 265, "nogo": 1}}, {"recording_id": "88d24c31-52e4-49cc-9f32-6adbeb9eba87_probe00", "subject": "SWC_043", "n_units": 910, "n_regions": 7, "n_trials": 547, "choice_counts": {"L": 268, "R": 278, "nogo": 1}}, {"recording_id": "a1782f4f-86b0-480c-a7f2-3d8f1ab482ab_probe00", "subject": "MFD_06", "n_units": 1504, "n_regions": 11, "n_trials": 741, "choice_counts": {"L": 439, "R": 302, "nogo": 0}}, {"recording_id": "a8a8af78-16de-4841-ab07-fde4b5281a03_probe00", "subject": "NYU-12", "n_units": 832, "n_regions": 23, "n_trials": 550, "choice_counts": {"L": 238, "R": 301, "nogo": 11}}, {"recording_id": "a8a8af78-16de-4841-ab07-fde4b5281a03_probe01", "subject": "NYU-12", "n_units": 1185, "n_regions": 10, "n_trials": 550, "choice_counts": {"L": 238, "R": 301, "nogo": 11}}, {"recording_id": "b182b754-3c3e-4942-8144-6ee790926b58_probe01", "subject": "NYU-12", "n_units": 1255, "n_regions": 11, "n_trials": 444, "choice_counts": {"L": 244, "R": 192, "nogo": 8}}, {"recording_id": "b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe00", "subject": "NR_0019", "n_units": 638, "n_regions": 7, "n_trials": 478, "choice_counts": {"L": 278, "R": 199, "nogo": 1}}, {"recording_id": "b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe01", "subject": "NR_0019", "n_units": 486, "n_regions": 15, "n_trials": 478, "choice_counts": {"L": 278, "R": 199, "nogo": 1}}, {"recording_id": "b9c205c3-feac-485b-a89d-afc96d9cb280_probe00", "subject": "KS014", "n_units": 790, "n_regions": 10, "n_trials": 657, "choice_counts": {"L": 352, "R": 305, "nogo": 0}}, {"recording_id": "e1931de1-cf7b-49af-af33-2ade15e8abe7_probe00", "subject": "KS014", "n_units": 419, "n_regions": 17, "n_trials": 688, "choice_counts": {"L": 271, "R": 415, "nogo": 2}}], "eval_recordings": [{"recording_id": "49e0ab27-827a-4c91-bcaa-97eea27a1b8d_probe01", "subject": "CSH_ZAD_019", "n_units": 944, "n_regions": 14, "n_trials": 884, "choice_counts": {"L": 466, "R": 416, "nogo": 2}}, {"recording_id": "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe00", "subject": "CSH_ZAD_019", "n_units": 1173, "n_regions": 15, "n_trials": 672, "choice_counts": {"L": 346, "R": 321, "nogo": 5}}, {"recording_id": "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe01", "subject": "CSH_ZAD_019", "n_units": 840, "n_regions": 14, "n_trials": 672, "choice_counts": {"L": 346, "R": 321, "nogo": 5}}, {"recording_id": "edd22318-216c-44ff-bc24-49ce8be78374_probe00", "subject": "CSH_ZAD_019", "n_units": 607, "n_regions": 14, "n_trials": 891, "choice_counts": {"L": 415, "R": 475, "nogo": 1}}]}
-{"t": 1780611371.9307938, "event": "model", "arm": "shared_baseline", "n_params": 3389473, "use_unit_emb": false, "use_region_emb": false, "use_cell_type_emb": false, "use_waveform_emb": false}
-{"t": 1780611377.9626892, "event": "train", "step": 50, "loss": 0.7003986835479736, "mean20": 0.70540771484375, "batch_acc": 0.4375, "grad_norm": 1.1304452419281006, "lr": 0.00019999999999999998}
-{"t": 1780611381.3764365, "event": "train", "step": 100, "loss": 0.7002989053726196, "mean20": 0.699036368727684, "batch_acc": 0.4375, "grad_norm": 0.5597155690193176, "lr": 0.0002909538931178862}
-{"t": 1780611384.5770931, "event": "train", "step": 150, "loss": 0.6809715628623962, "mean20": 0.6948595255613327, "batch_acc": 0.625, "grad_norm": 0.5878255367279053, "lr": 0.000225}
-{"t": 1780611385.3574157, "event": "eval", "step": 150, "eval_loss": 0.6973734529688954, "eval_acc": 0.475, "eval_auc": 0.5314458020050126, "eval_n": 320, "eval_n_pos": 152, "eval_n_neg": 168}
-{"t": 1780611385.430643, "event": "ckpt_best", "step": 150, "eval_loss": 0.6973734529688954, "eval_acc": 0.475, "eval_auc": 0.5314458020050126}
-{"t": 1780611388.659154, "event": "train", "step": 200, "loss": 0.6710691452026367, "mean20": 0.6901190340518951, "batch_acc": 0.625, "grad_norm": 0.3510889410972595, "lr": 0.00012395277334996044}
-{"t": 1780611391.910962, "event": "train", "step": 250, "loss": 0.6930258274078369, "mean20": 0.6954926282167435, "batch_acc": 0.5, "grad_norm": 0.337330162525177, "lr": 3.509333353215331e-05}
-{"t": 1780611395.7581103, "event": "train", "step": 300, "loss": 0.698291540145874, "mean20": 0.6915690273046493, "batch_acc": 0.3125, "grad_norm": 0.6761364340782166, "lr": 0.0}
-{"t": 1780611396.5088742, "event": "eval", "step": 300, "eval_loss": 0.6923687674105168, "eval_acc": 0.525, "eval_auc": 0.5202850877192983, "eval_n": 320, "eval_n_pos": 152, "eval_n_neg": 168}
-{"t": 1780611396.5632286, "event": "ckpt_best", "step": 300, "eval_loss": 0.6923687674105168, "eval_acc": 0.525, "eval_auc": 0.5202850877192983}
-{"t": 1780611396.6171086, "event": "done", "wall_clock_s": 22.866393089294434, "best_eval_loss": 0.6923687674105168}
-
-=== holdout=CSH_ZAD_019 arm=region_only seed=1 region_filter=shared_regions region_granularity=parent ===
-{"t": 1780611399.8362505, "event": "config", "data_dir": "/workspace/anatomical-neural-fm/data/brainsets/ibl_bwm", "manifest": "manifests/ibl_bwm_region_matched_support80_best6.json", "priors_path": "/workspace/anatomical-neural-fm/data/cell_type_priors/region_subclass_priors.parquet", "taxonomy_path": "/workspace/anatomical-neural-fm/data/cell_type_priors/subclass_taxonomy.parquet", "out_dir": "runs/lso_csh_zad_019_shared_parent_shuffle/holdout_CSH_ZAD_019/cloud_choice_region_only_seed1", "device": "cuda", "seed": 1, "split_mode": "animal", "split_seed": 42, "holdout": ["CSH_ZAD_019"], "output_query_mode": "shared", "target_mode": "stimulus_side", "region_filter": "shared_regions", "region_granularity": "parent", "region_label_control": "none", "dim": 96, "depth": 3, "dim_head": 32, "num_latents": 24, "window_len": 1.0, "latent_step": 0.125, "arm": "region_only", "batch_size": 16, "lr": 0.0003, "weight_decay": 0.0001, "max_steps": 300, "warmup_steps": 75, "eval_every": 150, "eval_batches": 20, "log_every": 50}
-{"t": 1780611403.4354947, "event": "split", "n_recordings": 28, "data_recordings_available": 28, "manifest": "manifests/ibl_bwm_region_matched_support80_best6.json", "split_mode": "animal", "holdout_subjects": ["CSH_ZAD_019"], "train_subjects": ["KS014", "MFD_06", "NR_0019", "NYU-12", "SWC_038", "SWC_043"], "eval_subjects": ["CSH_ZAD_019"], "n_train_rids": 24, "n_eval_rids": 4, "region_filter": "shared_regions", "n_allowed_regions": 21, "allowed_regions": ["BS", "CA", "DG", "IB", "LAT", "LZ", "MBmot", "MOp", "PRT", "RSPagl", "RSPd", "VENT", "VL", "VP", "VS", "cc", "fxs", "hc", "mfbc", "root", "void"], "region_granularity": "parent", "region_label_control": "none", "target_mode": "stimulus_side", "n_train_trials": 13015, "n_eval_trials": 2726, "train_class_balance": {"L": 6688, "R": 6327}, "eval_class_balance": {"L": 1504, "R": 1222}, "train_subject_trial_counts": {"KS014": {"L": 1064, "R": 1063}, "MFD_06": {"L": 1221, "R": 1044}, "NR_0019": {"L": 1194, "R": 1230}, "NYU-12": {"L": 973, "R": 902}, "SWC_038": {"L": 1252, "R": 1184}, "SWC_043": {"L": 984, "R": 904}}, "eval_subject_trial_counts": {"CSH_ZAD_019": {"L": 1504, "R": 1222}}, "train_recordings": [{"recording_id": "03063955-2523-47bd-ae57-f7489dd40f15_probe01", "subject": "SWC_038", "n_units": 799, "n_regions": 8, "n_trials": 867, "choice_counts": {"L": 273, "R": 593, "nogo": 1}}, {"recording_id": "032ffcdf-7692-40b3-b9ff-8def1fc18b2e_probe00", "subject": "NYU-12", "n_units": 983, "n_regions": 15, "n_trials": 581, "choice_counts": {"L": 290, "R": 290, "nogo": 1}}, {"recording_id": "16693458-0801-4d35-a3f1-9115c7e5acfd_probe00", "subject": "KS014", "n_units": 917, "n_regions": 8, "n_trials": 531, "choice_counts": {"L": 296, "R": 235, "nogo": 0}}, {"recording_id": "16693458-0801-4d35-a3f1-9115c7e5acfd_probe01", "subject": "KS014", "n_units": 995, "n_regions": 20, "n_trials": 531, "choice_counts": {"L": 296, "R": 235, "nogo": 0}}, {"recording_id": "1e45d992-c356-40e1-9be1-a506d944896f_probe01", "subject": "SWC_038", "n_units": 1280, "n_regions": 8, "n_trials": 623, "choice_counts": {"L": 242, "R": 368, "nogo": 13}}, {"recording_id": "35eeb752-8f4f-4040-9714-ba0f5b7ccdfe_probe00", "subject": "MFD_06", "n_units": 1363, "n_regions": 11, "n_trials": 762, "choice_counts": {"L": 467, "R": 295, "nogo": 0}}, {"recording_id": "3f71aa98-08c6-4e79-b4c8-00eae4f03eff_probe00", "subject": "MFD_06", "n_units": 1689, "n_regions": 7, "n_trials": 672, "choice_counts": {"L": 356, "R": 314, "nogo": 2}}, {"recording_id": "41872d7f-75cb-4445-bb1a-132b354c44f0_probe01", "subject": "SWC_038", "n_units": 308, "n_regions": 14, "n_trials": 512, "choice_counts": {"L": 283, "R": 224, "nogo": 5}}, {"recording_id": "4d8c7767-981c-4347-8e5e-5d5fffe38534_probe01", "subject": "SWC_038", "n_units": 1455, "n_regions": 8, "n_trials": 767, "choice_counts": {"L": 244, "R": 522, "nogo": 1}}, {"recording_id": "4ecb5d24-f5cc-402c-be28-9d0f7cb14b3a_probe00", "subject": "SWC_043", "n_units": 1143, "n_regions": 10, "n_trials": 529, "choice_counts": {"L": 232, "R": 294, "nogo": 3}}, {"recording_id": "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe00", "subject": "NR_0019", "n_units": 910, "n_regions": 14, "n_trials": 900, "choice_counts": {"L": 520, "R": 380, "nogo": 0}}, {"recording_id": "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe01", "subject": "NR_0019", "n_units": 515, "n_regions": 16, "n_trials": 900, "choice_counts": {"L": 520, "R": 380, "nogo": 0}}, {"recording_id": "6899a67d-2e53-4215-a52a-c7021b5da5d4_probe00", "subject": "MFD_06", "n_units": 651, "n_regions": 22, "n_trials": 402, "choice_counts": {"L": 209, "R": 172, "nogo": 21}}, {"recording_id": "6f09ba7e-e3ce-44b0-932b-c003fb44fb89_probe01", "subject": "SWC_043", "n_units": 1542, "n_regions": 10, "n_trials": 551, "choice_counts": {"L": 202, "R": 347, "nogo": 2}}, {"recording_id": "6fb1e12c-883b-46d1-a745-473cde3232c8_probe00", "subject": "SWC_043", "n_units": 1232, "n_regions": 13, "n_trials": 508, "choice_counts": {"L": 242, "R": 265, "nogo": 1}}, {"recording_id": "88d24c31-52e4-49cc-9f32-6adbeb9eba87_probe00", "subject": "SWC_043", "n_units": 910, "n_regions": 7, "n_trials": 547, "choice_counts": {"L": 268, "R": 278, "nogo": 1}}, {"recording_id": "a1782f4f-86b0-480c-a7f2-3d8f1ab482ab_probe00", "subject": "MFD_06", "n_units": 1504, "n_regions": 11, "n_trials": 741, "choice_counts": {"L": 439, "R": 302, "nogo": 0}}, {"recording_id": "a8a8af78-16de-4841-ab07-fde4b5281a03_probe00", "subject": "NYU-12", "n_units": 832, "n_regions": 23, "n_trials": 550, "choice_counts": {"L": 238, "R": 301, "nogo": 11}}, {"recording_id": "a8a8af78-16de-4841-ab07-fde4b5281a03_probe01", "subject": "NYU-12", "n_units": 1185, "n_regions": 10, "n_trials": 550, "choice_counts": {"L": 238, "R": 301, "nogo": 11}}, {"recording_id": "b182b754-3c3e-4942-8144-6ee790926b58_probe01", "subject": "NYU-12", "n_units": 1255, "n_regions": 11, "n_trials": 444, "choice_counts": {"L": 244, "R": 192, "nogo": 8}}, {"recording_id": "b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe00", "subject": "NR_0019", "n_units": 638, "n_regions": 7, "n_trials": 478, "choice_counts": {"L": 278, "R": 199, "nogo": 1}}, {"recording_id": "b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe01", "subject": "NR_0019", "n_units": 486, "n_regions": 15, "n_trials": 478, "choice_counts": {"L": 278, "R": 199, "nogo": 1}}, {"recording_id": "b9c205c3-feac-485b-a89d-afc96d9cb280_probe00", "subject": "KS014", "n_units": 790, "n_regions": 10, "n_trials": 657, "choice_counts": {"L": 352, "R": 305, "nogo": 0}}, {"recording_id": "e1931de1-cf7b-49af-af33-2ade15e8abe7_probe00", "subject": "KS014", "n_units": 419, "n_regions": 17, "n_trials": 688, "choice_counts": {"L": 271, "R": 415, "nogo": 2}}], "eval_recordings": [{"recording_id": "49e0ab27-827a-4c91-bcaa-97eea27a1b8d_probe01", "subject": "CSH_ZAD_019", "n_units": 944, "n_regions": 14, "n_trials": 884, "choice_counts": {"L": 466, "R": 416, "nogo": 2}}, {"recording_id": "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe00", "subject": "CSH_ZAD_019", "n_units": 1173, "n_regions": 15, "n_trials": 672, "choice_counts": {"L": 346, "R": 321, "nogo": 5}}, {"recording_id": "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe01", "subject": "CSH_ZAD_019", "n_units": 840, "n_regions": 14, "n_trials": 672, "choice_counts": {"L": 346, "R": 321, "nogo": 5}}, {"recording_id": "edd22318-216c-44ff-bc24-49ce8be78374_probe00", "subject": "CSH_ZAD_019", "n_units": 607, "n_regions": 14, "n_trials": 891, "choice_counts": {"L": 415, "R": 475, "nogo": 1}}]}
-{"t": 1780611403.531686, "event": "model", "arm": "region_only", "n_params": 3397153, "use_unit_emb": false, "use_region_emb": true, "use_cell_type_emb": false, "use_waveform_emb": false}
-{"t": 1780611410.2968304, "event": "train", "step": 50, "loss": 0.6784471273422241, "mean20": 0.7043774545192718, "batch_acc": 0.5625, "grad_norm": 0.9774991273880005, "lr": 0.00019999999999999998}
-{"t": 1780611413.5602634, "event": "train", "step": 100, "loss": 0.6846330165863037, "mean20": 0.7054503858089447, "batch_acc": 0.625, "grad_norm": 0.49758464097976685, "lr": 0.0002909538931178862}
-{"t": 1780611416.760601, "event": "train", "step": 150, "loss": 0.6816758513450623, "mean20": 0.6939749956130982, "batch_acc": 0.5625, "grad_norm": 0.5887381434440613, "lr": 0.000225}
-{"t": 1780611417.4920979, "event": "eval", "step": 150, "eval_loss": 0.7045131038874388, "eval_acc": 0.475, "eval_auc": 0.5679041353383458, "eval_n": 320, "eval_n_pos": 152, "eval_n_neg": 168}
-{"t": 1780611417.5508528, "event": "ckpt_best", "step": 150, "eval_loss": 0.7045131038874388, "eval_acc": 0.475, "eval_auc": 0.5679041353383458}
-{"t": 1780611420.9617288, "event": "train", "step": 200, "loss": 0.6679001450538635, "mean20": 0.6895713746547699, "batch_acc": 0.625, "grad_norm": 0.5161877274513245, "lr": 0.00012395277334996044}
-{"t": 1780611424.3559651, "event": "train", "step": 250, "loss": 0.6924859285354614, "mean20": 0.6908432126045227, "batch_acc": 0.625, "grad_norm": 0.43176165223121643, "lr": 3.509333353215331e-05}
-{"t": 1780611427.7298214, "event": "train", "step": 300, "loss": 0.7238205671310425, "mean20": 0.6822017312049866, "batch_acc": 0.1875, "grad_norm": 1.0155754089355469, "lr": 0.0}
-{"t": 1780611428.490351, "event": "eval", "step": 300, "eval_loss": 0.6878963952884078, "eval_acc": 0.55, "eval_auc": 0.5769110275689223, "eval_n": 320, "eval_n_pos": 152, "eval_n_neg": 168}
-{"t": 1780611428.5542674, "event": "ckpt_best", "step": 300, "eval_loss": 0.6878963952884078, "eval_acc": 0.55, "eval_auc": 0.5769110275689223}
-{"t": 1780611428.603894, "event": "done", "wall_clock_s": 22.802594900131226, "best_eval_loss": 0.6878963952884078}
-
-=== holdout=CSH_ZAD_019 arm=region_shuffle seed=1 region_filter=shared_regions region_granularity=parent ===
-{"t": 1780611431.6811333, "event": "config", "data_dir": "/workspace/anatomical-neural-fm/data/brainsets/ibl_bwm", "manifest": "manifests/ibl_bwm_region_matched_support80_best6.json", "priors_path": "/workspace/anatomical-neural-fm/data/cell_type_priors/region_subclass_priors.parquet", "taxonomy_path": "/workspace/anatomical-neural-fm/data/cell_type_priors/subclass_taxonomy.parquet", "out_dir": "runs/lso_csh_zad_019_shared_parent_shuffle/holdout_CSH_ZAD_019/cloud_choice_region_shuffle_seed1", "device": "cuda", "seed": 1, "split_mode": "animal", "split_seed": 42, "holdout": ["CSH_ZAD_019"], "output_query_mode": "shared", "target_mode": "stimulus_side", "region_filter": "shared_regions", "region_granularity": "parent", "region_label_control": "shuffle", "dim": 96, "depth": 3, "dim_head": 32, "num_latents": 24, "window_len": 1.0, "latent_step": 0.125, "arm": "region_only", "batch_size": 16, "lr": 0.0003, "weight_decay": 0.0001, "max_steps": 300, "warmup_steps": 75, "eval_every": 150, "eval_batches": 20, "log_every": 50}
-{"t": 1780611435.4451168, "event": "split", "n_recordings": 28, "data_recordings_available": 28, "manifest": "manifests/ibl_bwm_region_matched_support80_best6.json", "split_mode": "animal", "holdout_subjects": ["CSH_ZAD_019"], "train_subjects": ["KS014", "MFD_06", "NR_0019", "NYU-12", "SWC_038", "SWC_043"], "eval_subjects": ["CSH_ZAD_019"], "n_train_rids": 24, "n_eval_rids": 4, "region_filter": "shared_regions", "n_allowed_regions": 21, "allowed_regions": ["BS", "CA", "DG", "IB", "LAT", "LZ", "MBmot", "MOp", "PRT", "RSPagl", "RSPd", "VENT", "VL", "VP", "VS", "cc", "fxs", "hc", "mfbc", "root", "void"], "region_granularity": "parent", "region_label_control": "shuffle", "target_mode": "stimulus_side", "n_train_trials": 13015, "n_eval_trials": 2726, "train_class_balance": {"L": 6688, "R": 6327}, "eval_class_balance": {"L": 1504, "R": 1222}, "train_subject_trial_counts": {"KS014": {"L": 1064, "R": 1063}, "MFD_06": {"L": 1221, "R": 1044}, "NR_0019": {"L": 1194, "R": 1230}, "NYU-12": {"L": 973, "R": 902}, "SWC_038": {"L": 1252, "R": 1184}, "SWC_043": {"L": 984, "R": 904}}, "eval_subject_trial_counts": {"CSH_ZAD_019": {"L": 1504, "R": 1222}}, "train_recordings": [{"recording_id": "03063955-2523-47bd-ae57-f7489dd40f15_probe01", "subject": "SWC_038", "n_units": 799, "n_regions": 8, "n_trials": 867, "choice_counts": {"L": 273, "R": 593, "nogo": 1}}, {"recording_id": "032ffcdf-7692-40b3-b9ff-8def1fc18b2e_probe00", "subject": "NYU-12", "n_units": 983, "n_regions": 15, "n_trials": 581, "choice_counts": {"L": 290, "R": 290, "nogo": 1}}, {"recording_id": "16693458-0801-4d35-a3f1-9115c7e5acfd_probe00", "subject": "KS014", "n_units": 917, "n_regions": 8, "n_trials": 531, "choice_counts": {"L": 296, "R": 235, "nogo": 0}}, {"recording_id": "16693458-0801-4d35-a3f1-9115c7e5acfd_probe01", "subject": "KS014", "n_units": 995, "n_regions": 20, "n_trials": 531, "choice_counts": {"L": 296, "R": 235, "nogo": 0}}, {"recording_id": "1e45d992-c356-40e1-9be1-a506d944896f_probe01", "subject": "SWC_038", "n_units": 1280, "n_regions": 8, "n_trials": 623, "choice_counts": {"L": 242, "R": 368, "nogo": 13}}, {"recording_id": "35eeb752-8f4f-4040-9714-ba0f5b7ccdfe_probe00", "subject": "MFD_06", "n_units": 1363, "n_regions": 11, "n_trials": 762, "choice_counts": {"L": 467, "R": 295, "nogo": 0}}, {"recording_id": "3f71aa98-08c6-4e79-b4c8-00eae4f03eff_probe00", "subject": "MFD_06", "n_units": 1689, "n_regions": 7, "n_trials": 672, "choice_counts": {"L": 356, "R": 314, "nogo": 2}}, {"recording_id": "41872d7f-75cb-4445-bb1a-132b354c44f0_probe01", "subject": "SWC_038", "n_units": 308, "n_regions": 14, "n_trials": 512, "choice_counts": {"L": 283, "R": 224, "nogo": 5}}, {"recording_id": "4d8c7767-981c-4347-8e5e-5d5fffe38534_probe01", "subject": "SWC_038", "n_units": 1455, "n_regions": 8, "n_trials": 767, "choice_counts": {"L": 244, "R": 522, "nogo": 1}}, {"recording_id": "4ecb5d24-f5cc-402c-be28-9d0f7cb14b3a_probe00", "subject": "SWC_043", "n_units": 1143, "n_regions": 10, "n_trials": 529, "choice_counts": {"L": 232, "R": 294, "nogo": 3}}, {"recording_id": "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe00", "subject": "NR_0019", "n_units": 910, "n_regions": 14, "n_trials": 900, "choice_counts": {"L": 520, "R": 380, "nogo": 0}}, {"recording_id": "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe01", "subject": "NR_0019", "n_units": 515, "n_regions": 16, "n_trials": 900, "choice_counts": {"L": 520, "R": 380, "nogo": 0}}, {"recording_id": "6899a67d-2e53-4215-a52a-c7021b5da5d4_probe00", "subject": "MFD_06", "n_units": 651, "n_regions": 22, "n_trials": 402, "choice_counts": {"L": 209, "R": 172, "nogo": 21}}, {"recording_id": "6f09ba7e-e3ce-44b0-932b-c003fb44fb89_probe01", "subject": "SWC_043", "n_units": 1542, "n_regions": 10, "n_trials": 551, "choice_counts": {"L": 202, "R": 347, "nogo": 2}}, {"recording_id": "6fb1e12c-883b-46d1-a745-473cde3232c8_probe00", "subject": "SWC_043", "n_units": 1232, "n_regions": 13, "n_trials": 508, "choice_counts": {"L": 242, "R": 265, "nogo": 1}}, {"recording_id": "88d24c31-52e4-49cc-9f32-6adbeb9eba87_probe00", "subject": "SWC_043", "n_units": 910, "n_regions": 7, "n_trials": 547, "choice_counts": {"L": 268, "R": 278, "nogo": 1}}, {"recording_id": "a1782f4f-86b0-480c-a7f2-3d8f1ab482ab_probe00", "subject": "MFD_06", "n_units": 1504, "n_regions": 11, "n_trials": 741, "choice_counts": {"L": 439, "R": 302, "nogo": 0}}, {"recording_id": "a8a8af78-16de-4841-ab07-fde4b5281a03_probe00", "subject": "NYU-12", "n_units": 832, "n_regions": 23, "n_trials": 550, "choice_counts": {"L": 238, "R": 301, "nogo": 11}}, {"recording_id": "a8a8af78-16de-4841-ab07-fde4b5281a03_probe01", "subject": "NYU-12", "n_units": 1185, "n_regions": 10, "n_trials": 550, "choice_counts": {"L": 238, "R": 301, "nogo": 11}}, {"recording_id": "b182b754-3c3e-4942-8144-6ee790926b58_probe01", "subject": "NYU-12", "n_units": 1255, "n_regions": 11, "n_trials": 444, "choice_counts": {"L": 244, "R": 192, "nogo": 8}}, {"recording_id": "b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe00", "subject": "NR_0019", "n_units": 638, "n_regions": 7, "n_trials": 478, "choice_counts": {"L": 278, "R": 199, "nogo": 1}}, {"recording_id": "b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe01", "subject": "NR_0019", "n_units": 486, "n_regions": 15, "n_trials": 478, "choice_counts": {"L": 278, "R": 199, "nogo": 1}}, {"recording_id": "b9c205c3-feac-485b-a89d-afc96d9cb280_probe00", "subject": "KS014", "n_units": 790, "n_regions": 10, "n_trials": 657, "choice_counts": {"L": 352, "R": 305, "nogo": 0}}, {"recording_id": "e1931de1-cf7b-49af-af33-2ade15e8abe7_probe00", "subject": "KS014", "n_units": 419, "n_regions": 17, "n_trials": 688, "choice_counts": {"L": 271, "R": 415, "nogo": 2}}], "eval_recordings": [{"recording_id": "49e0ab27-827a-4c91-bcaa-97eea27a1b8d_probe01", "subject": "CSH_ZAD_019", "n_units": 944, "n_regions": 14, "n_trials": 884, "choice_counts": {"L": 466, "R": 416, "nogo": 2}}, {"recording_id": "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe00", "subject": "CSH_ZAD_019", "n_units": 1173, "n_regions": 15, "n_trials": 672, "choice_counts": {"L": 346, "R": 321, "nogo": 5}}, {"recording_id": "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe01", "subject": "CSH_ZAD_019", "n_units": 840, "n_regions": 14, "n_trials": 672, "choice_counts": {"L": 346, "R": 321, "nogo": 5}}, {"recording_id": "edd22318-216c-44ff-bc24-49ce8be78374_probe00", "subject": "CSH_ZAD_019", "n_units": 607, "n_regions": 14, "n_trials": 891, "choice_counts": {"L": 415, "R": 475, "nogo": 1}}]}
-{"t": 1780611435.5313845, "event": "model", "arm": "region_only", "n_params": 3397153, "use_unit_emb": false, "use_region_emb": true, "use_cell_type_emb": false, "use_waveform_emb": false}
-{"t": 1780611441.431083, "event": "train", "step": 50, "loss": 0.7006266713142395, "mean20": 0.7054078698158264, "batch_acc": 0.4375, "grad_norm": 0.8454403281211853, "lr": 0.00019999999999999998}
-{"t": 1780611444.6963654, "event": "train", "step": 100, "loss": 0.6877514719963074, "mean20": 0.6983542919158936, "batch_acc": 0.5, "grad_norm": 0.43567270040512085, "lr": 0.0002909538931178862}
-{"t": 1780611448.0005252, "event": "train", "step": 150, "loss": 0.7025958299636841, "mean20": 0.694828650355339, "batch_acc": 0.375, "grad_norm": 0.9615259170532227, "lr": 0.000225}
-{"t": 1780611448.7213054, "event": "eval", "step": 150, "eval_loss": 0.6924533070996404, "eval_acc": 0.51875, "eval_auc": 0.5015272556390977, "eval_n": 320, "eval_n_pos": 152, "eval_n_neg": 168}
-{"t": 1780611448.7771294, "event": "ckpt_best", "step": 150, "eval_loss": 0.6924533070996404, "eval_acc": 0.51875, "eval_auc": 0.5015272556390977}
-{"t": 1780611452.22643, "event": "train", "step": 200, "loss": 0.669116735458374, "mean20": 0.6893353432416915, "batch_acc": 0.625, "grad_norm": 0.4460195004940033, "lr": 0.00012395277334996044}
-{"t": 1780611455.617047, "event": "train", "step": 250, "loss": 0.6951462626457214, "mean20": 0.6957481294870377, "batch_acc": 0.4375, "grad_norm": 0.4193291962146759, "lr": 3.509333353215331e-05}
-{"t": 1780611459.024889, "event": "train", "step": 300, "loss": 0.6977373361587524, "mean20": 0.6906700283288956, "batch_acc": 0.375, "grad_norm": 0.8355299234390259, "lr": 0.0}
-{"t": 1780611459.7767315, "event": "eval", "step": 300, "eval_loss": 0.6923213202506304, "eval_acc": 0.525, "eval_auc": 0.47078634085213034, "eval_n": 320, "eval_n_pos": 152, "eval_n_neg": 168}
-{"t": 1780611459.8364155, "event": "ckpt_best", "step": 300, "eval_loss": 0.6923213202506304, "eval_acc": 0.525, "eval_auc": 0.47078634085213034}
-{"t": 1780611459.8837101, "event": "done", "wall_clock_s": 22.86693787574768, "best_eval_loss": 0.6923213202506304}
-
-=== holdout=CSH_ZAD_019 arm=shared_baseline seed=2 region_filter=shared_regions region_granularity=parent ===
-{"t": 1780611462.9326427, "event": "config", "data_dir": "/workspace/anatomical-neural-fm/data/brainsets/ibl_bwm", "manifest": "manifests/ibl_bwm_region_matched_support80_best6.json", "priors_path": "/workspace/anatomical-neural-fm/data/cell_type_priors/region_subclass_priors.parquet", "taxonomy_path": "/workspace/anatomical-neural-fm/data/cell_type_priors/subclass_taxonomy.parquet", "out_dir": "runs/lso_csh_zad_019_shared_parent_shuffle/holdout_CSH_ZAD_019/cloud_choice_shared_baseline_seed2", "device": "cuda", "seed": 2, "split_mode": "animal", "split_seed": 42, "holdout": ["CSH_ZAD_019"], "output_query_mode": "shared", "target_mode": "stimulus_side", "region_filter": "shared_regions", "region_granularity": "parent", "region_label_control": "none", "dim": 96, "depth": 3, "dim_head": 32, "num_latents": 24, "window_len": 1.0, "latent_step": 0.125, "arm": "shared_baseline", "batch_size": 16, "lr": 0.0003, "weight_decay": 0.0001, "max_steps": 300, "warmup_steps": 75, "eval_every": 150, "eval_batches": 20, "log_every": 50}
-{"t": 1780611466.6626117, "event": "split", "n_recordings": 28, "data_recordings_available": 28, "manifest": "manifests/ibl_bwm_region_matched_support80_best6.json", "split_mode": "animal", "holdout_subjects": ["CSH_ZAD_019"], "train_subjects": ["KS014", "MFD_06", "NR_0019", "NYU-12", "SWC_038", "SWC_043"], "eval_subjects": ["CSH_ZAD_019"], "n_train_rids": 24, "n_eval_rids": 4, "region_filter": "shared_regions", "n_allowed_regions": 21, "allowed_regions": ["BS", "CA", "DG", "IB", "LAT", "LZ", "MBmot", "MOp", "PRT", "RSPagl", "RSPd", "VENT", "VL", "VP", "VS", "cc", "fxs", "hc", "mfbc", "root", "void"], "region_granularity": "parent", "region_label_control": "none", "target_mode": "stimulus_side", "n_train_trials": 13015, "n_eval_trials": 2726, "train_class_balance": {"L": 6688, "R": 6327}, "eval_class_balance": {"L": 1504, "R": 1222}, "train_subject_trial_counts": {"KS014": {"L": 1064, "R": 1063}, "MFD_06": {"L": 1221, "R": 1044}, "NR_0019": {"L": 1194, "R": 1230}, "NYU-12": {"L": 973, "R": 902}, "SWC_038": {"L": 1252, "R": 1184}, "SWC_043": {"L": 984, "R": 904}}, "eval_subject_trial_counts": {"CSH_ZAD_019": {"L": 1504, "R": 1222}}, "train_recordings": [{"recording_id": "03063955-2523-47bd-ae57-f7489dd40f15_probe01", "subject": "SWC_038", "n_units": 799, "n_regions": 8, "n_trials": 867, "choice_counts": {"L": 273, "R": 593, "nogo": 1}}, {"recording_id": "032ffcdf-7692-40b3-b9ff-8def1fc18b2e_probe00", "subject": "NYU-12", "n_units": 983, "n_regions": 15, "n_trials": 581, "choice_counts": {"L": 290, "R": 290, "nogo": 1}}, {"recording_id": "16693458-0801-4d35-a3f1-9115c7e5acfd_probe00", "subject": "KS014", "n_units": 917, "n_regions": 8, "n_trials": 531, "choice_counts": {"L": 296, "R": 235, "nogo": 0}}, {"recording_id": "16693458-0801-4d35-a3f1-9115c7e5acfd_probe01", "subject": "KS014", "n_units": 995, "n_regions": 20, "n_trials": 531, "choice_counts": {"L": 296, "R": 235, "nogo": 0}}, {"recording_id": "1e45d992-c356-40e1-9be1-a506d944896f_probe01", "subject": "SWC_038", "n_units": 1280, "n_regions": 8, "n_trials": 623, "choice_counts": {"L": 242, "R": 368, "nogo": 13}}, {"recording_id": "35eeb752-8f4f-4040-9714-ba0f5b7ccdfe_probe00", "subject": "MFD_06", "n_units": 1363, "n_regions": 11, "n_trials": 762, "choice_counts": {"L": 467, "R": 295, "nogo": 0}}, {"recording_id": "3f71aa98-08c6-4e79-b4c8-00eae4f03eff_probe00", "subject": "MFD_06", "n_units": 1689, "n_regions": 7, "n_trials": 672, "choice_counts": {"L": 356, "R": 314, "nogo": 2}}, {"recording_id": "41872d7f-75cb-4445-bb1a-132b354c44f0_probe01", "subject": "SWC_038", "n_units": 308, "n_regions": 14, "n_trials": 512, "choice_counts": {"L": 283, "R": 224, "nogo": 5}}, {"recording_id": "4d8c7767-981c-4347-8e5e-5d5fffe38534_probe01", "subject": "SWC_038", "n_units": 1455, "n_regions": 8, "n_trials": 767, "choice_counts": {"L": 244, "R": 522, "nogo": 1}}, {"recording_id": "4ecb5d24-f5cc-402c-be28-9d0f7cb14b3a_probe00", "subject": "SWC_043", "n_units": 1143, "n_regions": 10, "n_trials": 529, "choice_counts": {"L": 232, "R": 294, "nogo": 3}}, {"recording_id": "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe00", "subject": "NR_0019", "n_units": 910, "n_regions": 14, "n_trials": 900, "choice_counts": {"L": 520, "R": 380, "nogo": 0}}, {"recording_id": "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe01", "subject": "NR_0019", "n_units": 515, "n_regions": 16, "n_trials": 900, "choice_counts": {"L": 520, "R": 380, "nogo": 0}}, {"recording_id": "6899a67d-2e53-4215-a52a-c7021b5da5d4_probe00", "subject": "MFD_06", "n_units": 651, "n_regions": 22, "n_trials": 402, "choice_counts": {"L": 209, "R": 172, "nogo": 21}}, {"recording_id": "6f09ba7e-e3ce-44b0-932b-c003fb44fb89_probe01", "subject": "SWC_043", "n_units": 1542, "n_regions": 10, "n_trials": 551, "choice_counts": {"L": 202, "R": 347, "nogo": 2}}, {"recording_id": "6fb1e12c-883b-46d1-a745-473cde3232c8_probe00", "subject": "SWC_043", "n_units": 1232, "n_regions": 13, "n_trials": 508, "choice_counts": {"L": 242, "R": 265, "nogo": 1}}, {"recording_id": "88d24c31-52e4-49cc-9f32-6adbeb9eba87_probe00", "subject": "SWC_043", "n_units": 910, "n_regions": 7, "n_trials": 547, "choice_counts": {"L": 268, "R": 278, "nogo": 1}}, {"recording_id": "a1782f4f-86b0-480c-a7f2-3d8f1ab482ab_probe00", "subject": "MFD_06", "n_units": 1504, "n_regions": 11, "n_trials": 741, "choice_counts": {"L": 439, "R": 302, "nogo": 0}}, {"recording_id": "a8a8af78-16de-4841-ab07-fde4b5281a03_probe00", "subject": "NYU-12", "n_units": 832, "n_regions": 23, "n_trials": 550, "choice_counts": {"L": 238, "R": 301, "nogo": 11}}, {"recording_id": "a8a8af78-16de-4841-ab07-fde4b5281a03_probe01", "subject": "NYU-12", "n_units": 1185, "n_regions": 10, "n_trials": 550, "choice_counts": {"L": 238, "R": 301, "nogo": 11}}, {"recording_id": "b182b754-3c3e-4942-8144-6ee790926b58_probe01", "subject": "NYU-12", "n_units": 1255, "n_regions": 11, "n_trials": 444, "choice_counts": {"L": 244, "R": 192, "nogo": 8}}, {"recording_id": "b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe00", "subject": "NR_0019", "n_units": 638, "n_regions": 7, "n_trials": 478, "choice_counts": {"L": 278, "R": 199, "nogo": 1}}, {"recording_id": "b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe01", "subject": "NR_0019", "n_units": 486, "n_regions": 15, "n_trials": 478, "choice_counts": {"L": 278, "R": 199, "nogo": 1}}, {"recording_id": "b9c205c3-feac-485b-a89d-afc96d9cb280_probe00", "subject": "KS014", "n_units": 790, "n_regions": 10, "n_trials": 657, "choice_counts": {"L": 352, "R": 305, "nogo": 0}}, {"recording_id": "e1931de1-cf7b-49af-af33-2ade15e8abe7_probe00", "subject": "KS014", "n_units": 419, "n_regions": 17, "n_trials": 688, "choice_counts": {"L": 271, "R": 415, "nogo": 2}}], "eval_recordings": [{"recording_id": "49e0ab27-827a-4c91-bcaa-97eea27a1b8d_probe01", "subject": "CSH_ZAD_019", "n_units": 944, "n_regions": 14, "n_trials": 884, "choice_counts": {"L": 466, "R": 416, "nogo": 2}}, {"recording_id": "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe00", "subject": "CSH_ZAD_019", "n_units": 1173, "n_regions": 15, "n_trials": 672, "choice_counts": {"L": 346, "R": 321, "nogo": 5}}, {"recording_id": "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe01", "subject": "CSH_ZAD_019", "n_units": 840, "n_regions": 14, "n_trials": 672, "choice_counts": {"L": 346, "R": 321, "nogo": 5}}, {"recording_id": "edd22318-216c-44ff-bc24-49ce8be78374_probe00", "subject": "CSH_ZAD_019", "n_units": 607, "n_regions": 14, "n_trials": 891, "choice_counts": {"L": 415, "R": 475, "nogo": 1}}]}
-{"t": 1780611466.7429981, "event": "model", "arm": "shared_baseline", "n_params": 3389473, "use_unit_emb": false, "use_region_emb": false, "use_cell_type_emb": false, "use_waveform_emb": false}
-{"t": 1780611472.8292675, "event": "train", "step": 50, "loss": 0.7403373718261719, "mean20": 0.6991097956895829, "batch_acc": 0.25, "grad_norm": 2.510326862335205, "lr": 0.00019999999999999998}
-{"t": 1780611476.052513, "event": "train", "step": 100, "loss": 0.6844576597213745, "mean20": 0.691753140091896, "batch_acc": 0.5625, "grad_norm": 0.20642857253551483, "lr": 0.0002909538931178862}
-{"t": 1780611479.3233006, "event": "train", "step": 150, "loss": 0.6877492070198059, "mean20": 0.6941749364137649, "batch_acc": 0.5625, "grad_norm": 0.3081718683242798, "lr": 0.000225}
-{"t": 1780611480.0365787, "event": "eval", "step": 150, "eval_loss": 0.6929779019206762, "eval_acc": 0.534375, "eval_auc": 0.4552376466894305, "eval_n": 320, "eval_n_pos": 149, "eval_n_neg": 171}
-{"t": 1780611480.0960772, "event": "ckpt_best", "step": 150, "eval_loss": 0.6929779019206762, "eval_acc": 0.534375, "eval_auc": 0.4552376466894305}
-{"t": 1780611483.2097895, "event": "train", "step": 200, "loss": 0.6966875791549683, "mean20": 0.6969970792531968, "batch_acc": 0.4375, "grad_norm": 0.7006235122680664, "lr": 0.00012395277334996044}
-{"t": 1780611486.397093, "event": "train", "step": 250, "loss": 0.6928524971008301, "mean20": 0.6944109916687011, "batch_acc": 0.5, "grad_norm": 0.9418109059333801, "lr": 3.509333353215331e-05}
-{"t": 1780611489.6032872, "event": "train", "step": 300, "loss": 0.6901804804801941, "mean20": 0.6940172135829925, "batch_acc": 0.5625, "grad_norm": 0.3027883470058441, "lr": 0.0}
-{"t": 1780611490.3612928, "event": "eval", "step": 300, "eval_loss": 0.6918844757601619, "eval_acc": 0.534375, "eval_auc": 0.45343223831390556, "eval_n": 320, "eval_n_pos": 149, "eval_n_neg": 171}
-{"t": 1780611490.429964, "event": "ckpt_best", "step": 300, "eval_loss": 0.6918844757601619, "eval_acc": 0.534375, "eval_auc": 0.45343223831390556}
-{"t": 1780611490.4744003, "event": "done", "wall_clock_s": 21.74308681488037, "best_eval_loss": 0.6918844757601619}
-
-=== holdout=CSH_ZAD_019 arm=region_only seed=2 region_filter=shared_regions region_granularity=parent ===
-{"t": 1780611494.5571718, "event": "config", "data_dir": "/workspace/anatomical-neural-fm/data/brainsets/ibl_bwm", "manifest": "manifests/ibl_bwm_region_matched_support80_best6.json", "priors_path": "/workspace/anatomical-neural-fm/data/cell_type_priors/region_subclass_priors.parquet", "taxonomy_path": "/workspace/anatomical-neural-fm/data/cell_type_priors/subclass_taxonomy.parquet", "out_dir": "runs/lso_csh_zad_019_shared_parent_shuffle/holdout_CSH_ZAD_019/cloud_choice_region_only_seed2", "device": "cuda", "seed": 2, "split_mode": "animal", "split_seed": 42, "holdout": ["CSH_ZAD_019"], "output_query_mode": "shared", "target_mode": "stimulus_side", "region_filter": "shared_regions", "region_granularity": "parent", "region_label_control": "none", "dim": 96, "depth": 3, "dim_head": 32, "num_latents": 24, "window_len": 1.0, "latent_step": 0.125, "arm": "region_only", "batch_size": 16, "lr": 0.0003, "weight_decay": 0.0001, "max_steps": 300, "warmup_steps": 75, "eval_every": 150, "eval_batches": 20, "log_every": 50}
-{"t": 1780611498.3123274, "event": "split", "n_recordings": 28, "data_recordings_available": 28, "manifest": "manifests/ibl_bwm_region_matched_support80_best6.json", "split_mode": "animal", "holdout_subjects": ["CSH_ZAD_019"], "train_subjects": ["KS014", "MFD_06", "NR_0019", "NYU-12", "SWC_038", "SWC_043"], "eval_subjects": ["CSH_ZAD_019"], "n_train_rids": 24, "n_eval_rids": 4, "region_filter": "shared_regions", "n_allowed_regions": 21, "allowed_regions": ["BS", "CA", "DG", "IB", "LAT", "LZ", "MBmot", "MOp", "PRT", "RSPagl", "RSPd", "VENT", "VL", "VP", "VS", "cc", "fxs", "hc", "mfbc", "root", "void"], "region_granularity": "parent", "region_label_control": "none", "target_mode": "stimulus_side", "n_train_trials": 13015, "n_eval_trials": 2726, "train_class_balance": {"L": 6688, "R": 6327}, "eval_class_balance": {"L": 1504, "R": 1222}, "train_subject_trial_counts": {"KS014": {"L": 1064, "R": 1063}, "MFD_06": {"L": 1221, "R": 1044}, "NR_0019": {"L": 1194, "R": 1230}, "NYU-12": {"L": 973, "R": 902}, "SWC_038": {"L": 1252, "R": 1184}, "SWC_043": {"L": 984, "R": 904}}, "eval_subject_trial_counts": {"CSH_ZAD_019": {"L": 1504, "R": 1222}}, "train_recordings": [{"recording_id": "03063955-2523-47bd-ae57-f7489dd40f15_probe01", "subject": "SWC_038", "n_units": 799, "n_regions": 8, "n_trials": 867, "choice_counts": {"L": 273, "R": 593, "nogo": 1}}, {"recording_id": "032ffcdf-7692-40b3-b9ff-8def1fc18b2e_probe00", "subject": "NYU-12", "n_units": 983, "n_regions": 15, "n_trials": 581, "choice_counts": {"L": 290, "R": 290, "nogo": 1}}, {"recording_id": "16693458-0801-4d35-a3f1-9115c7e5acfd_probe00", "subject": "KS014", "n_units": 917, "n_regions": 8, "n_trials": 531, "choice_counts": {"L": 296, "R": 235, "nogo": 0}}, {"recording_id": "16693458-0801-4d35-a3f1-9115c7e5acfd_probe01", "subject": "KS014", "n_units": 995, "n_regions": 20, "n_trials": 531, "choice_counts": {"L": 296, "R": 235, "nogo": 0}}, {"recording_id": "1e45d992-c356-40e1-9be1-a506d944896f_probe01", "subject": "SWC_038", "n_units": 1280, "n_regions": 8, "n_trials": 623, "choice_counts": {"L": 242, "R": 368, "nogo": 13}}, {"recording_id": "35eeb752-8f4f-4040-9714-ba0f5b7ccdfe_probe00", "subject": "MFD_06", "n_units": 1363, "n_regions": 11, "n_trials": 762, "choice_counts": {"L": 467, "R": 295, "nogo": 0}}, {"recording_id": "3f71aa98-08c6-4e79-b4c8-00eae4f03eff_probe00", "subject": "MFD_06", "n_units": 1689, "n_regions": 7, "n_trials": 672, "choice_counts": {"L": 356, "R": 314, "nogo": 2}}, {"recording_id": "41872d7f-75cb-4445-bb1a-132b354c44f0_probe01", "subject": "SWC_038", "n_units": 308, "n_regions": 14, "n_trials": 512, "choice_counts": {"L": 283, "R": 224, "nogo": 5}}, {"recording_id": "4d8c7767-981c-4347-8e5e-5d5fffe38534_probe01", "subject": "SWC_038", "n_units": 1455, "n_regions": 8, "n_trials": 767, "choice_counts": {"L": 244, "R": 522, "nogo": 1}}, {"recording_id": "4ecb5d24-f5cc-402c-be28-9d0f7cb14b3a_probe00", "subject": "SWC_043", "n_units": 1143, "n_regions": 10, "n_trials": 529, "choice_counts": {"L": 232, "R": 294, "nogo": 3}}, {"recording_id": "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe00", "subject": "NR_0019", "n_units": 910, "n_regions": 14, "n_trials": 900, "choice_counts": {"L": 520, "R": 380, "nogo": 0}}, {"recording_id": "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe01", "subject": "NR_0019", "n_units": 515, "n_regions": 16, "n_trials": 900, "choice_counts": {"L": 520, "R": 380, "nogo": 0}}, {"recording_id": "6899a67d-2e53-4215-a52a-c7021b5da5d4_probe00", "subject": "MFD_06", "n_units": 651, "n_regions": 22, "n_trials": 402, "choice_counts": {"L": 209, "R": 172, "nogo": 21}}, {"recording_id": "6f09ba7e-e3ce-44b0-932b-c003fb44fb89_probe01", "subject": "SWC_043", "n_units": 1542, "n_regions": 10, "n_trials": 551, "choice_counts": {"L": 202, "R": 347, "nogo": 2}}, {"recording_id": "6fb1e12c-883b-46d1-a745-473cde3232c8_probe00", "subject": "SWC_043", "n_units": 1232, "n_regions": 13, "n_trials": 508, "choice_counts": {"L": 242, "R": 265, "nogo": 1}}, {"recording_id": "88d24c31-52e4-49cc-9f32-6adbeb9eba87_probe00", "subject": "SWC_043", "n_units": 910, "n_regions": 7, "n_trials": 547, "choice_counts": {"L": 268, "R": 278, "nogo": 1}}, {"recording_id": "a1782f4f-86b0-480c-a7f2-3d8f1ab482ab_probe00", "subject": "MFD_06", "n_units": 1504, "n_regions": 11, "n_trials": 741, "choice_counts": {"L": 439, "R": 302, "nogo": 0}}, {"recording_id": "a8a8af78-16de-4841-ab07-fde4b5281a03_probe00", "subject": "NYU-12", "n_units": 832, "n_regions": 23, "n_trials": 550, "choice_counts": {"L": 238, "R": 301, "nogo": 11}}, {"recording_id": "a8a8af78-16de-4841-ab07-fde4b5281a03_probe01", "subject": "NYU-12", "n_units": 1185, "n_regions": 10, "n_trials": 550, "choice_counts": {"L": 238, "R": 301, "nogo": 11}}, {"recording_id": "b182b754-3c3e-4942-8144-6ee790926b58_probe01", "subject": "NYU-12", "n_units": 1255, "n_regions": 11, "n_trials": 444, "choice_counts": {"L": 244, "R": 192, "nogo": 8}}, {"recording_id": "b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe00", "subject": "NR_0019", "n_units": 638, "n_regions": 7, "n_trials": 478, "choice_counts": {"L": 278, "R": 199, "nogo": 1}}, {"recording_id": "b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe01", "subject": "NR_0019", "n_units": 486, "n_regions": 15, "n_trials": 478, "choice_counts": {"L": 278, "R": 199, "nogo": 1}}, {"recording_id": "b9c205c3-feac-485b-a89d-afc96d9cb280_probe00", "subject": "KS014", "n_units": 790, "n_regions": 10, "n_trials": 657, "choice_counts": {"L": 352, "R": 305, "nogo": 0}}, {"recording_id": "e1931de1-cf7b-49af-af33-2ade15e8abe7_probe00", "subject": "KS014", "n_units": 419, "n_regions": 17, "n_trials": 688, "choice_counts": {"L": 271, "R": 415, "nogo": 2}}], "eval_recordings": [{"recording_id": "49e0ab27-827a-4c91-bcaa-97eea27a1b8d_probe01", "subject": "CSH_ZAD_019", "n_units": 944, "n_regions": 14, "n_trials": 884, "choice_counts": {"L": 466, "R": 416, "nogo": 2}}, {"recording_id": "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe00", "subject": "CSH_ZAD_019", "n_units": 1173, "n_regions": 15, "n_trials": 672, "choice_counts": {"L": 346, "R": 321, "nogo": 5}}, {"recording_id": "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe01", "subject": "CSH_ZAD_019", "n_units": 840, "n_regions": 14, "n_trials": 672, "choice_counts": {"L": 346, "R": 321, "nogo": 5}}, {"recording_id": "edd22318-216c-44ff-bc24-49ce8be78374_probe00", "subject": "CSH_ZAD_019", "n_units": 607, "n_regions": 14, "n_trials": 891, "choice_counts": {"L": 415, "R": 475, "nogo": 1}}]}
-{"t": 1780611498.4319737, "event": "model", "arm": "region_only", "n_params": 3397153, "use_unit_emb": false, "use_region_emb": true, "use_cell_type_emb": false, "use_waveform_emb": false}
-{"t": 1780611503.9587476, "event": "train", "step": 50, "loss": 0.7091854810714722, "mean20": 0.6973376721143723, "batch_acc": 0.375, "grad_norm": 2.79429292678833, "lr": 0.00019999999999999998}
-{"t": 1780611507.6954393, "event": "train", "step": 100, "loss": 0.7054520845413208, "mean20": 0.6969466269016266, "batch_acc": 0.375, "grad_norm": 0.6849725842475891, "lr": 0.0002909538931178862}
-{"t": 1780611510.9585247, "event": "train", "step": 150, "loss": 0.6872872114181519, "mean20": 0.6965453654527665, "batch_acc": 0.5625, "grad_norm": 0.3091046214103699, "lr": 0.000225}
-{"t": 1780611511.6687796, "event": "eval", "step": 150, "eval_loss": 0.6912831062451005, "eval_acc": 0.534375, "eval_auc": 0.510891322265395, "eval_n": 320, "eval_n_pos": 149, "eval_n_neg": 171}
-{"t": 1780611511.7337456, "event": "ckpt_best", "step": 150, "eval_loss": 0.6912831062451005, "eval_acc": 0.534375, "eval_auc": 0.510891322265395}
-{"t": 1780611514.8999345, "event": "train", "step": 200, "loss": 0.6936728954315186, "mean20": 0.6959478616714477, "batch_acc": 0.4375, "grad_norm": 0.776933491230011, "lr": 0.00012395277334996044}
-{"t": 1780611518.1478484, "event": "train", "step": 250, "loss": 0.6952733993530273, "mean20": 0.6951043277978897, "batch_acc": 0.5, "grad_norm": 1.0114850997924805, "lr": 3.509333353215331e-05}
-{"t": 1780611521.4981108, "event": "train", "step": 300, "loss": 0.6980679035186768, "mean20": 0.6936341762542725, "batch_acc": 0.375, "grad_norm": 0.31973928213119507, "lr": 0.0}
-{"t": 1780611522.203865, "event": "eval", "step": 300, "eval_loss": 0.6914286324754357, "eval_acc": 0.534375, "eval_auc": 0.4818477962243416, "eval_n": 320, "eval_n_pos": 149, "eval_n_neg": 171}
-{"t": 1780611522.2541783, "event": "done", "wall_clock_s": 22.39966058731079, "best_eval_loss": 0.6912831062451005}
-
-=== holdout=CSH_ZAD_019 arm=region_shuffle seed=2 region_filter=shared_regions region_granularity=parent ===
-{"t": 1780611525.5545447, "event": "config", "data_dir": "/workspace/anatomical-neural-fm/data/brainsets/ibl_bwm", "manifest": "manifests/ibl_bwm_region_matched_support80_best6.json", "priors_path": "/workspace/anatomical-neural-fm/data/cell_type_priors/region_subclass_priors.parquet", "taxonomy_path": "/workspace/anatomical-neural-fm/data/cell_type_priors/subclass_taxonomy.parquet", "out_dir": "runs/lso_csh_zad_019_shared_parent_shuffle/holdout_CSH_ZAD_019/cloud_choice_region_shuffle_seed2", "device": "cuda", "seed": 2, "split_mode": "animal", "split_seed": 42, "holdout": ["CSH_ZAD_019"], "output_query_mode": "shared", "target_mode": "stimulus_side", "region_filter": "shared_regions", "region_granularity": "parent", "region_label_control": "shuffle", "dim": 96, "depth": 3, "dim_head": 32, "num_latents": 24, "window_len": 1.0, "latent_step": 0.125, "arm": "region_only", "batch_size": 16, "lr": 0.0003, "weight_decay": 0.0001, "max_steps": 300, "warmup_steps": 75, "eval_every": 150, "eval_batches": 20, "log_every": 50}
-{"t": 1780611529.2415147, "event": "split", "n_recordings": 28, "data_recordings_available": 28, "manifest": "manifests/ibl_bwm_region_matched_support80_best6.json", "split_mode": "animal", "holdout_subjects": ["CSH_ZAD_019"], "train_subjects": ["KS014", "MFD_06", "NR_0019", "NYU-12", "SWC_038", "SWC_043"], "eval_subjects": ["CSH_ZAD_019"], "n_train_rids": 24, "n_eval_rids": 4, "region_filter": "shared_regions", "n_allowed_regions": 21, "allowed_regions": ["BS", "CA", "DG", "IB", "LAT", "LZ", "MBmot", "MOp", "PRT", "RSPagl", "RSPd", "VENT", "VL", "VP", "VS", "cc", "fxs", "hc", "mfbc", "root", "void"], "region_granularity": "parent", "region_label_control": "shuffle", "target_mode": "stimulus_side", "n_train_trials": 13015, "n_eval_trials": 2726, "train_class_balance": {"L": 6688, "R": 6327}, "eval_class_balance": {"L": 1504, "R": 1222}, "train_subject_trial_counts": {"KS014": {"L": 1064, "R": 1063}, "MFD_06": {"L": 1221, "R": 1044}, "NR_0019": {"L": 1194, "R": 1230}, "NYU-12": {"L": 973, "R": 902}, "SWC_038": {"L": 1252, "R": 1184}, "SWC_043": {"L": 984, "R": 904}}, "eval_subject_trial_counts": {"CSH_ZAD_019": {"L": 1504, "R": 1222}}, "train_recordings": [{"recording_id": "03063955-2523-47bd-ae57-f7489dd40f15_probe01", "subject": "SWC_038", "n_units": 799, "n_regions": 8, "n_trials": 867, "choice_counts": {"L": 273, "R": 593, "nogo": 1}}, {"recording_id": "032ffcdf-7692-40b3-b9ff-8def1fc18b2e_probe00", "subject": "NYU-12", "n_units": 983, "n_regions": 15, "n_trials": 581, "choice_counts": {"L": 290, "R": 290, "nogo": 1}}, {"recording_id": "16693458-0801-4d35-a3f1-9115c7e5acfd_probe00", "subject": "KS014", "n_units": 917, "n_regions": 8, "n_trials": 531, "choice_counts": {"L": 296, "R": 235, "nogo": 0}}, {"recording_id": "16693458-0801-4d35-a3f1-9115c7e5acfd_probe01", "subject": "KS014", "n_units": 995, "n_regions": 20, "n_trials": 531, "choice_counts": {"L": 296, "R": 235, "nogo": 0}}, {"recording_id": "1e45d992-c356-40e1-9be1-a506d944896f_probe01", "subject": "SWC_038", "n_units": 1280, "n_regions": 8, "n_trials": 623, "choice_counts": {"L": 242, "R": 368, "nogo": 13}}, {"recording_id": "35eeb752-8f4f-4040-9714-ba0f5b7ccdfe_probe00", "subject": "MFD_06", "n_units": 1363, "n_regions": 11, "n_trials": 762, "choice_counts": {"L": 467, "R": 295, "nogo": 0}}, {"recording_id": "3f71aa98-08c6-4e79-b4c8-00eae4f03eff_probe00", "subject": "MFD_06", "n_units": 1689, "n_regions": 7, "n_trials": 672, "choice_counts": {"L": 356, "R": 314, "nogo": 2}}, {"recording_id": "41872d7f-75cb-4445-bb1a-132b354c44f0_probe01", "subject": "SWC_038", "n_units": 308, "n_regions": 14, "n_trials": 512, "choice_counts": {"L": 283, "R": 224, "nogo": 5}}, {"recording_id": "4d8c7767-981c-4347-8e5e-5d5fffe38534_probe01", "subject": "SWC_038", "n_units": 1455, "n_regions": 8, "n_trials": 767, "choice_counts": {"L": 244, "R": 522, "nogo": 1}}, {"recording_id": "4ecb5d24-f5cc-402c-be28-9d0f7cb14b3a_probe00", "subject": "SWC_043", "n_units": 1143, "n_regions": 10, "n_trials": 529, "choice_counts": {"L": 232, "R": 294, "nogo": 3}}, {"recording_id": "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe00", "subject": "NR_0019", "n_units": 910, "n_regions": 14, "n_trials": 900, "choice_counts": {"L": 520, "R": 380, "nogo": 0}}, {"recording_id": "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe01", "subject": "NR_0019", "n_units": 515, "n_regions": 16, "n_trials": 900, "choice_counts": {"L": 520, "R": 380, "nogo": 0}}, {"recording_id": "6899a67d-2e53-4215-a52a-c7021b5da5d4_probe00", "subject": "MFD_06", "n_units": 651, "n_regions": 22, "n_trials": 402, "choice_counts": {"L": 209, "R": 172, "nogo": 21}}, {"recording_id": "6f09ba7e-e3ce-44b0-932b-c003fb44fb89_probe01", "subject": "SWC_043", "n_units": 1542, "n_regions": 10, "n_trials": 551, "choice_counts": {"L": 202, "R": 347, "nogo": 2}}, {"recording_id": "6fb1e12c-883b-46d1-a745-473cde3232c8_probe00", "subject": "SWC_043", "n_units": 1232, "n_regions": 13, "n_trials": 508, "choice_counts": {"L": 242, "R": 265, "nogo": 1}}, {"recording_id": "88d24c31-52e4-49cc-9f32-6adbeb9eba87_probe00", "subject": "SWC_043", "n_units": 910, "n_regions": 7, "n_trials": 547, "choice_counts": {"L": 268, "R": 278, "nogo": 1}}, {"recording_id": "a1782f4f-86b0-480c-a7f2-3d8f1ab482ab_probe00", "subject": "MFD_06", "n_units": 1504, "n_regions": 11, "n_trials": 741, "choice_counts": {"L": 439, "R": 302, "nogo": 0}}, {"recording_id": "a8a8af78-16de-4841-ab07-fde4b5281a03_probe00", "subject": "NYU-12", "n_units": 832, "n_regions": 23, "n_trials": 550, "choice_counts": {"L": 238, "R": 301, "nogo": 11}}, {"recording_id": "a8a8af78-16de-4841-ab07-fde4b5281a03_probe01", "subject": "NYU-12", "n_units": 1185, "n_regions": 10, "n_trials": 550, "choice_counts": {"L": 238, "R": 301, "nogo": 11}}, {"recording_id": "b182b754-3c3e-4942-8144-6ee790926b58_probe01", "subject": "NYU-12", "n_units": 1255, "n_regions": 11, "n_trials": 444, "choice_counts": {"L": 244, "R": 192, "nogo": 8}}, {"recording_id": "b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe00", "subject": "NR_0019", "n_units": 638, "n_regions": 7, "n_trials": 478, "choice_counts": {"L": 278, "R": 199, "nogo": 1}}, {"recording_id": "b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe01", "subject": "NR_0019", "n_units": 486, "n_regions": 15, "n_trials": 478, "choice_counts": {"L": 278, "R": 199, "nogo": 1}}, {"recording_id": "b9c205c3-feac-485b-a89d-afc96d9cb280_probe00", "subject": "KS014", "n_units": 790, "n_regions": 10, "n_trials": 657, "choice_counts": {"L": 352, "R": 305, "nogo": 0}}, {"recording_id": "e1931de1-cf7b-49af-af33-2ade15e8abe7_probe00", "subject": "KS014", "n_units": 419, "n_regions": 17, "n_trials": 688, "choice_counts": {"L": 271, "R": 415, "nogo": 2}}], "eval_recordings": [{"recording_id": "49e0ab27-827a-4c91-bcaa-97eea27a1b8d_probe01", "subject": "CSH_ZAD_019", "n_units": 944, "n_regions": 14, "n_trials": 884, "choice_counts": {"L": 466, "R": 416, "nogo": 2}}, {"recording_id": "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe00", "subject": "CSH_ZAD_019", "n_units": 1173, "n_regions": 15, "n_trials": 672, "choice_counts": {"L": 346, "R": 321, "nogo": 5}}, {"recording_id": "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe01", "subject": "CSH_ZAD_019", "n_units": 840, "n_regions": 14, "n_trials": 672, "choice_counts": {"L": 346, "R": 321, "nogo": 5}}, {"recording_id": "edd22318-216c-44ff-bc24-49ce8be78374_probe00", "subject": "CSH_ZAD_019", "n_units": 607, "n_regions": 14, "n_trials": 891, "choice_counts": {"L": 415, "R": 475, "nogo": 1}}]}
-{"t": 1780611529.331043, "event": "model", "arm": "region_only", "n_params": 3397153, "use_unit_emb": false, "use_region_emb": true, "use_cell_type_emb": false, "use_waveform_emb": false}
-{"t": 1780611535.744231, "event": "train", "step": 50, "loss": 0.7272489070892334, "mean20": 0.701859849691391, "batch_acc": 0.25, "grad_norm": 3.9330623149871826, "lr": 0.00019999999999999998}
-{"t": 1780611539.1847959, "event": "train", "step": 100, "loss": 0.6824826002120972, "mean20": 0.6915744364261627, "batch_acc": 0.5625, "grad_norm": 0.16539452970027924, "lr": 0.0002909538931178862}
-{"t": 1780611542.5581288, "event": "train", "step": 150, "loss": 0.6917433738708496, "mean20": 0.6945212751626968, "batch_acc": 0.5, "grad_norm": 0.3725443482398987, "lr": 0.000225}
-{"t": 1780611543.2870443, "event": "eval", "step": 150, "eval_loss": 0.6935957994312048, "eval_acc": 0.465625, "eval_auc": 0.44825150123631224, "eval_n": 320, "eval_n_pos": 149, "eval_n_neg": 171}
-{"t": 1780611543.3576899, "event": "ckpt_best", "step": 150, "eval_loss": 0.6935957994312048, "eval_acc": 0.465625, "eval_auc": 0.44825150123631224}
-{"t": 1780611546.4199433, "event": "train", "step": 200, "loss": 0.6929082274436951, "mean20": 0.6973578214645386, "batch_acc": 0.625, "grad_norm": 0.7378866076469421, "lr": 0.00012395277334996044}
-{"t": 1780611549.617055, "event": "train", "step": 250, "loss": 0.6874625086784363, "mean20": 0.6943090051412583, "batch_acc": 0.625, "grad_norm": 1.034407615661621, "lr": 3.509333353215331e-05}
-{"t": 1780611552.9637277, "event": "train", "step": 300, "loss": 0.6906740665435791, "mean20": 0.6938065320253373, "batch_acc": 0.5625, "grad_norm": 0.29786747694015503, "lr": 0.0}
-{"t": 1780611553.7053194, "event": "eval", "step": 300, "eval_loss": 0.6916831817477942, "eval_acc": 0.534375, "eval_auc": 0.4584559833588445, "eval_n": 320, "eval_n_pos": 149, "eval_n_neg": 171}
-{"t": 1780611553.764318, "event": "ckpt_best", "step": 300, "eval_loss": 0.6916831817477942, "eval_acc": 0.534375, "eval_auc": 0.4584559833588445}
-{"t": 1780611553.815466, "event": "done", "wall_clock_s": 22.48885941505432, "best_eval_loss": 0.6916831817477942}
-
-Wrote:
-  runs/lso_csh_zad_019_shared_parent_shuffle/summary.md
-upload /tmp/runpod_phase3_5.log -> s3://rppfvo6ifn/brainsets/ibl_bwm/logs/docs_lso_csh_zad_019_shared_parent_shuffle_results.log
-upload-log count: 1
-[runpod-pilot-phases-3-5 a783491] Add cloud phase 3-5 pilot results
- 2 files changed, 216 insertions(+), 79 deletions(-)
-To https://github.com/txmed82/anatomical-neural-fm.git
-   6ab0e6c..a783491  HEAD -> runpod-pilot-phases-3-5
-Collecting boto3
-  Downloading boto3-1.43.23-py3-none-any.whl.metadata (6.6 kB)
-Collecting botocore<1.44.0,>=1.43.23 (from boto3)
-  Downloading botocore-1.43.23-py3-none-any.whl.metadata (5.6 kB)
-Collecting jmespath<2.0.0,>=0.7.1 (from boto3)
-  Downloading jmespath-1.1.0-py3-none-any.whl.metadata (7.6 kB)
-Collecting s3transfer<0.19.0,>=0.18.0 (from boto3)
-  Downloading s3transfer-0.18.0-py3-none-any.whl.metadata (1.7 kB)
-Requirement already satisfied: python-dateutil<3.0.0,>=2.1 in /usr/local/lib/python3.11/dist-packages (from botocore<1.44.0,>=1.43.23->boto3) (2.9.0.post0)
-Requirement already satisfied: urllib3!=2.2.0,<3,>=1.25.4 in /usr/local/lib/python3.11/dist-packages (from botocore<1.44.0,>=1.43.23->boto3) (2.2.3)
-Requirement already satisfied: six>=1.5 in /usr/lib/python3/dist-packages (from python-dateutil<3.0.0,>=2.1->botocore<1.44.0,>=1.43.23->boto3) (1.16.0)
-Downloading boto3-1.43.23-py3-none-any.whl (140 kB)
-Downloading botocore-1.43.23-py3-none-any.whl (15.1 MB)
-   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 15.1/15.1 MB 181.3 MB/s eta 0:00:00
-Downloading jmespath-1.1.0-py3-none-any.whl (20 kB)
-Downloading s3transfer-0.18.0-py3-none-any.whl (88 kB)
-Installing collected packages: jmespath, botocore, s3transfer, boto3
-Successfully installed boto3-1.43.23 botocore-1.43.23 jmespath-1.1.0 s3transfer-0.18.0
-WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable.It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
-
-[notice] A new release of pip is available: 24.2 -> 26.1.2
-[notice] To update, run: python3 -m pip install --upgrade pip
-Traceback (most recent call last):
-  File "<stdin>", line 6, in <module>
-ModuleNotFoundError: No module named 'boto3'
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "<stdin>", line 9, in <module>
-ModuleNotFoundError: No module named 'boto3'
-Traceback (most recent call last):
-  File "<stdin>", line 12, in <module>
-  File "/usr/lib/python3.11/urllib/request.py", line 216, in urlopen
-    return opener.open(url, data, timeout)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/lib/python3.11/urllib/request.py", line 525, in open
-    response = meth(req, response)
-               ^^^^^^^^^^^^^^^^^^^
-  File "/usr/lib/python3.11/urllib/request.py", line 634, in http_response
-    response = self.parent.error(
-               ^^^^^^^^^^^^^^^^^^
-  File "/usr/lib/python3.11/urllib/request.py", line 563, in error
-    return self._call_chain(*args)
-           ^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/lib/python3.11/urllib/request.py", line 496, in _call_chain
-    result = func(*args)
-             ^^^^^^^^^^^
-  File "/usr/lib/python3.11/urllib/request.py", line 643, in http_error_default
-    raise HTTPError(req.full_url, code, msg, hdrs, fp)
-urllib.error.HTTPError: HTTP Error 403: Forbidden
-Hit:1 http://archive.ubuntu.com/ubuntu jammy InRelease
-Get:2 http://security.ubuntu.com/ubuntu jammy-security InRelease [129 kB]
-Hit:3 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  InRelease
-Get:4 http://archive.ubuntu.com/ubuntu jammy-updates InRelease [128 kB]
-Hit:5 http://archive.ubuntu.com/ubuntu jammy-backports InRelease
-Get:6 http://security.ubuntu.com/ubuntu jammy-security/restricted amd64 Packages [7183 kB]
-Hit:7 https://ppa.launchpadcontent.net/deadsnakes/ppa/ubuntu jammy InRelease
-Get:8 http://security.ubuntu.com/ubuntu jammy-security/main amd64 Packages [4005 kB]
-Get:9 http://security.ubuntu.com/ubuntu jammy-security/universe amd64 Packages [1300 kB]
-Get:10 http://archive.ubuntu.com/ubuntu jammy-updates/restricted amd64 Packages [7451 kB]
-Get:11 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 Packages [4344 kB]
-Fetched 24.5 MB in 1s (17.5 MB/s)
-Reading package lists...
-Reading package lists...
-Building dependency tree...
-Reading state information...
-ca-certificates is already the newest version (20240203~22.04.1).
-curl is already the newest version (7.81.0-1ubuntu1.24).
-git is already the newest version (1:2.34.1-1ubuntu1.17).
-python3-pip is already the newest version (22.0.2+dfsg-1ubuntu0.7).
-0 upgraded, 0 newly installed, 0 to remove and 153 not upgraded.
-Cloning into 'anatomical-neural-fm'...
-uv 0.11.19 (x86_64-unknown-linux-gnu)
-=== syncing environment ===
-Using CPython 3.11.10 interpreter at: /usr/bin/python3.11
-Creating virtual environment at: .venv
-Resolved 134 packages in 1ms
-Installed 100 packages in 4.55s
- + abc-atlas-access==1.3.2 (from git+https://github.com/AllenInstitute/abc_atlas_access@f7cc551f9e327cd1c413ebc54c006bf20ffe0b27)
- + anndata==0.12.14
- + annotated-types==0.7.0
- + antlr4-python3-runtime==4.9.3
- + array-api-compat==1.14.0
- + boto3==1.43.8
- + botocore==1.43.8
- + certifi==2026.4.22
- + charset-normalizer==3.4.7
- + click==8.3.3
- + colorlog==6.10.1
- + contourpy==1.3.3
- + cycler==0.12.1
- + donfig==0.8.1.post1
- + einops==0.6.1
- + filelock==3.29.0
- + fonttools==4.63.0
- + fsspec==2026.4.0
- + gitdb==4.0.12
- + gitpython==3.1.50
- + google-crc32c==1.8.0
- + h5py==3.16.0
- + hydra-core==1.3.2
- + iblatlas==1.0.0
- + iblutil==1.20.0
- + idna==3.15
- + jaxtyping==0.3.9
- + jinja2==3.1.6
- + jmespath==1.1.0
- + kiwisolver==1.5.0
- + legacy-api-wrap==1.5
- + lightning-utilities==0.15.3
- + llvmlite==0.47.0
- + markdown-it-py==4.2.0
- + markupsafe==3.0.3
- + matplotlib==3.10.9
- + mdurl==0.1.2
- + mpmath==1.3.0
- + natsort==8.4.0
- + networkx==3.6.1
- + numba==0.65.1
- + numcodecs==0.16.5
- + numpy==2.4.4
- + nvidia-cublas-cu12==12.4.5.8
- + nvidia-cuda-cupti-cu12==12.4.127
- + nvidia-cuda-nvrtc-cu12==12.4.127
- + nvidia-cuda-runtime-cu12==12.4.127
- + nvidia-cudnn-cu12==9.1.0.70
- + nvidia-cufft-cu12==11.2.1.3
- + nvidia-curand-cu12==10.3.5.147
- + nvidia-cusolver-cu12==11.6.1.9
- + nvidia-cusparse-cu12==12.3.1.170
- + nvidia-nccl-cu12==2.21.5
- + nvidia-nvjitlink-cu12==12.4.127
- + nvidia-nvtx-cu12==12.4.127
- + omegaconf==2.3.0
- + one-api==3.4.1
- + packaging==26.2
- + pandas==2.3.3
- + pillow==12.2.0
- + platformdirs==4.9.6
- + polars==1.40.1
- + polars-runtime-32==1.40.1
- + protobuf==7.34.1
- + pyarrow==24.0.0
- + pydantic==2.13.4
- + pydantic-core==2.46.4
- + pygments==2.20.0
- + pynrrd==1.1.3
- + pyparsing==3.3.2
- + python-dateutil==2.9.0.post0
- + pytz==2026.2
- + pyyaml==6.0.3
- + requests==2.34.2
- + rich==15.0.0
- + ruff==0.15.13
- + s3transfer==0.17.0
- + scipy==1.17.1
- + scverse-misc==0.0.3
- + sentry-sdk==2.60.0
- + session-info2==0.4.1
- + setuptools==81.0.0
- + six==1.17.0
- + smmap==5.0.3
- + sympy==1.13.1
- + temporaldata==0.1.4
- + torch==2.5.1
- + torch-brain==0.1.2
- + torchmetrics==1.9.0
- + torchtyping==0.1.5
- + tqdm==4.67.3
- + triton==3.1.0
- + typeguard==2.13.3
- + typing-extensions==4.15.0
- + typing-inspection==0.4.2
- + tzdata==2026.2
- + urllib3==2.7.0
- + wadler-lindig==0.1.7
- + wandb==0.27.0
- + zarr==3.1.6
-Installed 27 packages in 1.52s
-upload /tmp/runpod_phase3_5.log -> s3://rppfvo6ifn/brainsets/ibl_bwm/logs/docs_lso_csh_zad_019_shared_parent_shuffle_results.log
-upload-log count: 1
-=== skipping local verification ===
-upload /tmp/runpod_phase3_5.log -> s3://rppfvo6ifn/brainsets/ibl_bwm/logs/docs_lso_csh_zad_019_shared_parent_shuffle_results.log
-upload-log count: 1
-=== skipping cell-type priors ===
-upload /tmp/runpod_phase3_5.log -> s3://rppfvo6ifn/brainsets/ibl_bwm/logs/docs_lso_csh_zad_019_shared_parent_shuffle_results.log
-upload-log count: 1
-=== downloading cached BrainSet data ===
-download s3://rppfvo6ifn/brainsets/ibl_bwm/03063955-2523-47bd-ae57-f7489dd40f15_probe01.h5 -> /workspace/anatomical-neural-fm/data/brainsets/ibl_bwm/03063955-2523-47bd-ae57-f7489dd40f15_probe01.h5
-download s3://rppfvo6ifn/brainsets/ibl_bwm/032ffcdf-7692-40b3-b9ff-8def1fc18b2e_probe00.h5 -> /workspace/anatomical-neural-fm/data/brainsets/ibl_bwm/032ffcdf-7692-40b3-b9ff-8def1fc18b2e_probe00.h5
-download s3://rppfvo6ifn/brainsets/ibl_bwm/16693458-0801-4d35-a3f1-9115c7e5acfd_probe00.h5 -> /workspace/anatomical-neural-fm/data/brainsets/ibl_bwm/16693458-0801-4d35-a3f1-9115c7e5acfd_probe00.h5
-download s3://rppfvo6ifn/brainsets/ibl_bwm/16693458-0801-4d35-a3f1-9115c7e5acfd_probe01.h5 -> /workspace/anatomical-neural-fm/data/brainsets/ibl_bwm/16693458-0801-4d35-a3f1-9115c7e5acfd_probe01.h5
-download s3://rppfvo6ifn/brainsets/ibl_bwm/1e45d992-c356-40e1-9be1-a506d944896f_probe01.h5 -> /workspace/anatomical-neural-fm/data/brainsets/ibl_bwm/1e45d992-c356-40e1-9be1-a506d944896f_probe01.h5
-download s3://rppfvo6ifn/brainsets/ibl_bwm/35eeb752-8f4f-4040-9714-ba0f5b7ccdfe_probe00.h5 -> /workspace/anatomical-neural-fm/data/brainsets/ibl_bwm/35eeb752-8f4f-4040-9714-ba0f5b7ccdfe_probe00.h5
-download s3://rppfvo6ifn/brainsets/ibl_bwm/3f71aa98-08c6-4e79-b4c8-00eae4f03eff_probe00.h5 -> /workspace/anatomical-neural-fm/data/brainsets/ibl_bwm/3f71aa98-08c6-4e79-b4c8-00eae4f03eff_probe00.h5
-download s3://rppfvo6ifn/brainsets/ibl_bwm/41872d7f-75cb-4445-bb1a-132b354c44f0_probe01.h5 -> /workspace/anatomical-neural-fm/data/brainsets/ibl_bwm/41872d7f-75cb-4445-bb1a-132b354c44f0_probe01.h5
-download s3://rppfvo6ifn/brainsets/ibl_bwm/49e0ab27-827a-4c91-bcaa-97eea27a1b8d_probe01.h5 -> /workspace/anatomical-neural-fm/data/brainsets/ibl_bwm/49e0ab27-827a-4c91-bcaa-97eea27a1b8d_probe01.h5
-download s3://rppfvo6ifn/brainsets/ibl_bwm/4d8c7767-981c-4347-8e5e-5d5fffe38534_probe01.h5 -> /workspace/anatomical-neural-fm/data/brainsets/ibl_bwm/4d8c7767-981c-4347-8e5e-5d5fffe38534_probe01.h5
-download s3://rppfvo6ifn/brainsets/ibl_bwm/4ecb5d24-f5cc-402c-be28-9d0f7cb14b3a_probe00.h5 -> /workspace/anatomical-neural-fm/data/brainsets/ibl_bwm/4ecb5d24-f5cc-402c-be28-9d0f7cb14b3a_probe00.h5
-download s3://rppfvo6ifn/brainsets/ibl_bwm/5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe00.h5 -> /workspace/anatomical-neural-fm/data/brainsets/ibl_bwm/5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe00.h5
-download s3://rppfvo6ifn/brainsets/ibl_bwm/5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe01.h5 -> /workspace/anatomical-neural-fm/data/brainsets/ibl_bwm/5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe01.h5
-download s3://rppfvo6ifn/brainsets/ibl_bwm/63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe00.h5 -> /workspace/anatomical-neural-fm/data/brainsets/ibl_bwm/63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe00.h5
-download s3://rppfvo6ifn/brainsets/ibl_bwm/63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe01.h5 -> /workspace/anatomical-neural-fm/data/brainsets/ibl_bwm/63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe01.h5
-download s3://rppfvo6ifn/brainsets/ibl_bwm/6899a67d-2e53-4215-a52a-c7021b5da5d4_probe00.h5 -> /workspace/anatomical-neural-fm/data/brainsets/ibl_bwm/6899a67d-2e53-4215-a52a-c7021b5da5d4_probe00.h5
-download s3://rppfvo6ifn/brainsets/ibl_bwm/6f09ba7e-e3ce-44b0-932b-c003fb44fb89_probe01.h5 -> /workspace/anatomical-neural-fm/data/brainsets/ibl_bwm/6f09ba7e-e3ce-44b0-932b-c003fb44fb89_probe01.h5
-download s3://rppfvo6ifn/brainsets/ibl_bwm/6fb1e12c-883b-46d1-a745-473cde3232c8_probe00.h5 -> /workspace/anatomical-neural-fm/data/brainsets/ibl_bwm/6fb1e12c-883b-46d1-a745-473cde3232c8_probe00.h5
-download s3://rppfvo6ifn/brainsets/ibl_bwm/88d24c31-52e4-49cc-9f32-6adbeb9eba87_probe00.h5 -> /workspace/anatomical-neural-fm/data/brainsets/ibl_bwm/88d24c31-52e4-49cc-9f32-6adbeb9eba87_probe00.h5
-download s3://rppfvo6ifn/brainsets/ibl_bwm/a1782f4f-86b0-480c-a7f2-3d8f1ab482ab_probe00.h5 -> /workspace/anatomical-neural-fm/data/brainsets/ibl_bwm/a1782f4f-86b0-480c-a7f2-3d8f1ab482ab_probe00.h5
-download s3://rppfvo6ifn/brainsets/ibl_bwm/a8a8af78-16de-4841-ab07-fde4b5281a03_probe00.h5 -> /workspace/anatomical-neural-fm/data/brainsets/ibl_bwm/a8a8af78-16de-4841-ab07-fde4b5281a03_probe00.h5
-download s3://rppfvo6ifn/brainsets/ibl_bwm/a8a8af78-16de-4841-ab07-fde4b5281a03_probe01.h5 -> /workspace/anatomical-neural-fm/data/brainsets/ibl_bwm/a8a8af78-16de-4841-ab07-fde4b5281a03_probe01.h5
-download s3://rppfvo6ifn/brainsets/ibl_bwm/b182b754-3c3e-4942-8144-6ee790926b58_probe01.h5 -> /workspace/anatomical-neural-fm/data/brainsets/ibl_bwm/b182b754-3c3e-4942-8144-6ee790926b58_probe01.h5
-download s3://rppfvo6ifn/brainsets/ibl_bwm/b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe00.h5 -> /workspace/anatomical-neural-fm/data/brainsets/ibl_bwm/b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe00.h5
-download s3://rppfvo6ifn/brainsets/ibl_bwm/b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe01.h5 -> /workspace/anatomical-neural-fm/data/brainsets/ibl_bwm/b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe01.h5
-download s3://rppfvo6ifn/brainsets/ibl_bwm/b9c205c3-feac-485b-a89d-afc96d9cb280_probe00.h5 -> /workspace/anatomical-neural-fm/data/brainsets/ibl_bwm/b9c205c3-feac-485b-a89d-afc96d9cb280_probe00.h5
-download s3://rppfvo6ifn/brainsets/ibl_bwm/e1931de1-cf7b-49af-af33-2ade15e8abe7_probe00.h5 -> /workspace/anatomical-neural-fm/data/brainsets/ibl_bwm/e1931de1-cf7b-49af-af33-2ade15e8abe7_probe00.h5
-download s3://rppfvo6ifn/brainsets/ibl_bwm/edd22318-216c-44ff-bc24-49ce8be78374_probe00.h5 -> /workspace/anatomical-neural-fm/data/brainsets/ibl_bwm/edd22318-216c-44ff-bc24-49ce8be78374_probe00.h5
-download count: 28
-upload /tmp/runpod_phase3_5.log -> s3://rppfvo6ifn/brainsets/ibl_bwm/logs/docs_lso_csh_zad_019_shared_parent_shuffle_results.log
-upload-log count: 1
-=== building BrainSet data ===
-Connected to https://openalyx.internationalbrainlab.org as user "intbrainlab"
-Loaded fixed manifest manifests/ibl_bwm_region_matched_support80_best6.json (28 recordings)
-Selected shard 1/1 (28 recordings)
-  [1/28] skip (exists): b182b754-3c3e-4942-8144-6ee790926b58 probe01
-  [2/28] skip (exists): 3f71aa98-08c6-4e79-b4c8-00eae4f03eff probe00
-  [3/28] skip (exists): 16693458-0801-4d35-a3f1-9115c7e5acfd probe00
-  [4/28] skip (exists): 4ecb5d24-f5cc-402c-be28-9d0f7cb14b3a probe00
-  [5/28] skip (exists): 4d8c7767-981c-4347-8e5e-5d5fffe38534 probe01
-  [6/28] skip (exists): 63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9 probe00
-  [7/28] skip (exists): 5adab0b7-dfd0-467d-b09d-43cb7ca5d59c probe00
-  [8/28] skip (exists): a8a8af78-16de-4841-ab07-fde4b5281a03 probe00
-  [9/28] skip (exists): 6899a67d-2e53-4215-a52a-c7021b5da5d4 probe00
-  [10/28] skip (exists): e1931de1-cf7b-49af-af33-2ade15e8abe7 probe00
-  [11/28] skip (exists): 6fb1e12c-883b-46d1-a745-473cde3232c8 probe00
-  [12/28] skip (exists): 1e45d992-c356-40e1-9be1-a506d944896f probe01
-  [13/28] skip (exists): b887df2c-bb9c-44c9-a9c0-538da87b2cab probe00
-  [14/28] skip (exists): 5adab0b7-dfd0-467d-b09d-43cb7ca5d59c probe01
-  [15/28] skip (exists): a8a8af78-16de-4841-ab07-fde4b5281a03 probe01
-  [16/28] skip (exists): a1782f4f-86b0-480c-a7f2-3d8f1ab482ab probe00
-  [17/28] skip (exists): b9c205c3-feac-485b-a89d-afc96d9cb280 probe00
-  [18/28] skip (exists): 88d24c31-52e4-49cc-9f32-6adbeb9eba87 probe00
-  [19/28] skip (exists): 03063955-2523-47bd-ae57-f7489dd40f15 probe01
-  [20/28] skip (exists): 63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9 probe01
-  [21/28] skip (exists): 49e0ab27-827a-4c91-bcaa-97eea27a1b8d probe01
-  [22/28] skip (exists): 032ffcdf-7692-40b3-b9ff-8def1fc18b2e probe00
-  [23/28] skip (exists): 35eeb752-8f4f-4040-9714-ba0f5b7ccdfe probe00
-  [24/28] skip (exists): 16693458-0801-4d35-a3f1-9115c7e5acfd probe01
-  [25/28] skip (exists): 6f09ba7e-e3ce-44b0-932b-c003fb44fb89 probe01
-  [26/28] skip (exists): 41872d7f-75cb-4445-bb1a-132b354c44f0 probe01
-  [27/28] skip (exists): b887df2c-bb9c-44c9-a9c0-538da87b2cab probe01
-  [28/28] skip (exists): edd22318-216c-44ff-bc24-49ce8be78374 probe00
-
-Built 28/28 in 0s (0 attempted, 0 failed)
-
-Files in data/brainsets/ibl_bwm:
-    53.9 MB  03063955-2523-47bd-ae57-f7489dd40f15_probe01.h5
-    55.8 MB  032ffcdf-7692-40b3-b9ff-8def1fc18b2e_probe00.h5
-   431.0 MB  16693458-0801-4d35-a3f1-9115c7e5acfd_probe00.h5
-    48.7 MB  16693458-0801-4d35-a3f1-9115c7e5acfd_probe01.h5
-    53.0 MB  1e45d992-c356-40e1-9be1-a506d944896f_probe01.h5
-    72.2 MB  35eeb752-8f4f-4040-9714-ba0f5b7ccdfe_probe00.h5
-   535.7 MB  3f71aa98-08c6-4e79-b4c8-00eae4f03eff_probe00.h5
-    11.3 MB  41872d7f-75cb-4445-bb1a-132b354c44f0_probe01.h5
-    89.3 MB  49e0ab27-827a-4c91-bcaa-97eea27a1b8d_probe01.h5
-    60.4 MB  4d8c7767-981c-4347-8e5e-5d5fffe38534_probe01.h5
-    75.8 MB  4ecb5d24-f5cc-402c-be28-9d0f7cb14b3a_probe00.h5
-    78.2 MB  5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe00.h5
-    91.3 MB  5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe01.h5
-   131.3 MB  63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe00.h5
-    52.8 MB  63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe01.h5
-    14.4 MB  6899a67d-2e53-4215-a52a-c7021b5da5d4_probe00.h5
-    61.0 MB  6f09ba7e-e3ce-44b0-932b-c003fb44fb89_probe01.h5
-    28.0 MB  6fb1e12c-883b-46d1-a745-473cde3232c8_probe00.h5
-    51.1 MB  88d24c31-52e4-49cc-9f32-6adbeb9eba87_probe00.h5
-    66.5 MB  a1782f4f-86b0-480c-a7f2-3d8f1ab482ab_probe00.h5
-    73.3 MB  a8a8af78-16de-4841-ab07-fde4b5281a03_probe00.h5
-    27.2 MB  a8a8af78-16de-4841-ab07-fde4b5281a03_probe01.h5
-   580.2 MB  b182b754-3c3e-4942-8144-6ee790926b58_probe01.h5
-    61.8 MB  b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe00.h5
-    56.4 MB  b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe01.h5
-    78.4 MB  b9c205c3-feac-485b-a89d-afc96d9cb280_probe00.h5
-    64.4 MB  e1931de1-cf7b-49af-af33-2ade15e8abe7_probe00.h5
-    53.8 MB  edd22318-216c-44ff-bc24-49ce8be78374_probe00.h5
-
-Wrote report runs/lso_csh_zad_019_shared_parent_shuffle/build_report.md
-upload /tmp/runpod_phase3_5.log -> s3://rppfvo6ifn/brainsets/ibl_bwm/logs/docs_lso_csh_zad_019_shared_parent_shuffle_results.log
-upload-log count: 1
-=== uploading built BrainSet data ===
-skip remote exists s3://rppfvo6ifn/brainsets/ibl_bwm/03063955-2523-47bd-ae57-f7489dd40f15_probe01.h5
-skip remote exists s3://rppfvo6ifn/brainsets/ibl_bwm/032ffcdf-7692-40b3-b9ff-8def1fc18b2e_probe00.h5
-skip remote exists s3://rppfvo6ifn/brainsets/ibl_bwm/16693458-0801-4d35-a3f1-9115c7e5acfd_probe00.h5
-skip remote exists s3://rppfvo6ifn/brainsets/ibl_bwm/16693458-0801-4d35-a3f1-9115c7e5acfd_probe01.h5
-skip remote exists s3://rppfvo6ifn/brainsets/ibl_bwm/1e45d992-c356-40e1-9be1-a506d944896f_probe01.h5
-skip remote exists s3://rppfvo6ifn/brainsets/ibl_bwm/35eeb752-8f4f-4040-9714-ba0f5b7ccdfe_probe00.h5
-skip remote exists s3://rppfvo6ifn/brainsets/ibl_bwm/3f71aa98-08c6-4e79-b4c8-00eae4f03eff_probe00.h5
-skip remote exists s3://rppfvo6ifn/brainsets/ibl_bwm/41872d7f-75cb-4445-bb1a-132b354c44f0_probe01.h5
-skip remote exists s3://rppfvo6ifn/brainsets/ibl_bwm/49e0ab27-827a-4c91-bcaa-97eea27a1b8d_probe01.h5
-skip remote exists s3://rppfvo6ifn/brainsets/ibl_bwm/4d8c7767-981c-4347-8e5e-5d5fffe38534_probe01.h5
-skip remote exists s3://rppfvo6ifn/brainsets/ibl_bwm/4ecb5d24-f5cc-402c-be28-9d0f7cb14b3a_probe00.h5
-skip remote exists s3://rppfvo6ifn/brainsets/ibl_bwm/5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe00.h5
-skip remote exists s3://rppfvo6ifn/brainsets/ibl_bwm/5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe01.h5
-skip remote exists s3://rppfvo6ifn/brainsets/ibl_bwm/63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe00.h5
-skip remote exists s3://rppfvo6ifn/brainsets/ibl_bwm/63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe01.h5
-skip remote exists s3://rppfvo6ifn/brainsets/ibl_bwm/6899a67d-2e53-4215-a52a-c7021b5da5d4_probe00.h5
-skip remote exists s3://rppfvo6ifn/brainsets/ibl_bwm/6f09ba7e-e3ce-44b0-932b-c003fb44fb89_probe01.h5
-skip remote exists s3://rppfvo6ifn/brainsets/ibl_bwm/6fb1e12c-883b-46d1-a745-473cde3232c8_probe00.h5
-skip remote exists s3://rppfvo6ifn/brainsets/ibl_bwm/88d24c31-52e4-49cc-9f32-6adbeb9eba87_probe00.h5
-skip remote exists s3://rppfvo6ifn/brainsets/ibl_bwm/a1782f4f-86b0-480c-a7f2-3d8f1ab482ab_probe00.h5
-skip remote exists s3://rppfvo6ifn/brainsets/ibl_bwm/a8a8af78-16de-4841-ab07-fde4b5281a03_probe00.h5
-skip remote exists s3://rppfvo6ifn/brainsets/ibl_bwm/a8a8af78-16de-4841-ab07-fde4b5281a03_probe01.h5
-skip remote exists s3://rppfvo6ifn/brainsets/ibl_bwm/b182b754-3c3e-4942-8144-6ee790926b58_probe01.h5
-skip remote exists s3://rppfvo6ifn/brainsets/ibl_bwm/b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe00.h5
-skip remote exists s3://rppfvo6ifn/brainsets/ibl_bwm/b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe01.h5
-skip remote exists s3://rppfvo6ifn/brainsets/ibl_bwm/b9c205c3-feac-485b-a89d-afc96d9cb280_probe00.h5
-skip remote exists s3://rppfvo6ifn/brainsets/ibl_bwm/e1931de1-cf7b-49af-af33-2ade15e8abe7_probe00.h5
-skip remote exists s3://rppfvo6ifn/brainsets/ibl_bwm/edd22318-216c-44ff-bc24-49ce8be78374_probe00.h5
-upload count: 0
-upload /tmp/runpod_phase3_5.log -> s3://rppfvo6ifn/brainsets/ibl_bwm/logs/docs_lso_csh_zad_019_shared_parent_shuffle_results.log
-upload-log count: 1
-=== verifying BrainSet cache upload ===
-local files present remotely: 28/28 (100.0%)
-wrote runs/lso_csh_zad_019_shared_parent_shuffle/cache_audit.md
-verify-local count: 28
-upload /tmp/runpod_phase3_5.log -> s3://rppfvo6ifn/brainsets/ibl_bwm/logs/docs_lso_csh_zad_019_shared_parent_shuffle_results.log
-upload-log count: 1
-wrote /workspace/anatomical-neural-fm/manifests/ibl_bwm.local.json
-recordings=28 subjects=7 units=27365 trials=17888
-upload /tmp/runpod_phase3_5.log -> s3://rppfvo6ifn/brainsets/ibl_bwm/logs/docs_lso_csh_zad_019_shared_parent_shuffle_results.log
-upload-log count: 1
-=== running phase 3-5 sweep ===
-subjects: CSH_ZAD_019
-arms: shared_baseline region_only region_shuffle
-seeds: 0 1 2
-region_filter: shared_regions
-region_granularity: parent
-manifest: manifests/ibl_bwm_region_matched_support80_best6.json
-
-=== holdout=CSH_ZAD_019 arm=shared_baseline seed=0 region_filter=shared_regions region_granularity=parent ===
-{"t": 1780611625.9109812, "event": "config", "data_dir": "/workspace/anatomical-neural-fm/data/brainsets/ibl_bwm", "manifest": "manifests/ibl_bwm_region_matched_support80_best6.json", "priors_path": "/workspace/anatomical-neural-fm/data/cell_type_priors/region_subclass_priors.parquet", "taxonomy_path": "/workspace/anatomical-neural-fm/data/cell_type_priors/subclass_taxonomy.parquet", "out_dir": "runs/lso_csh_zad_019_shared_parent_shuffle/holdout_CSH_ZAD_019/cloud_choice_shared_baseline_seed0", "device": "cuda", "seed": 0, "split_mode": "animal", "split_seed": 42, "holdout": ["CSH_ZAD_019"], "output_query_mode": "shared", "target_mode": "stimulus_side", "region_filter": "shared_regions", "region_granularity": "parent", "region_label_control": "none", "dim": 96, "depth": 3, "dim_head": 32, "num_latents": 24, "window_len": 1.0, "latent_step": 0.125, "arm": "shared_baseline", "batch_size": 16, "lr": 0.0003, "weight_decay": 0.0001, "max_steps": 300, "warmup_steps": 75, "eval_every": 150, "eval_batches": 20, "log_every": 50}
-{"t": 1780611629.590701, "event": "split", "n_recordings": 28, "data_recordings_available": 28, "manifest": "manifests/ibl_bwm_region_matched_support80_best6.json", "split_mode": "animal", "holdout_subjects": ["CSH_ZAD_019"], "train_subjects": ["KS014", "MFD_06", "NR_0019", "NYU-12", "SWC_038", "SWC_043"], "eval_subjects": ["CSH_ZAD_019"], "n_train_rids": 24, "n_eval_rids": 4, "region_filter": "shared_regions", "n_allowed_regions": 21, "allowed_regions": ["BS", "CA", "DG", "IB", "LAT", "LZ", "MBmot", "MOp", "PRT", "RSPagl", "RSPd", "VENT", "VL", "VP", "VS", "cc", "fxs", "hc", "mfbc", "root", "void"], "region_granularity": "parent", "region_label_control": "none", "target_mode": "stimulus_side", "n_train_trials": 13015, "n_eval_trials": 2726, "train_class_balance": {"L": 6688, "R": 6327}, "eval_class_balance": {"L": 1504, "R": 1222}, "train_subject_trial_counts": {"KS014": {"L": 1064, "R": 1063}, "MFD_06": {"L": 1221, "R": 1044}, "NR_0019": {"L": 1194, "R": 1230}, "NYU-12": {"L": 973, "R": 902}, "SWC_038": {"L": 1252, "R": 1184}, "SWC_043": {"L": 984, "R": 904}}, "eval_subject_trial_counts": {"CSH_ZAD_019": {"L": 1504, "R": 1222}}, "train_recordings": [{"recording_id": "03063955-2523-47bd-ae57-f7489dd40f15_probe01", "subject": "SWC_038", "n_units": 799, "n_regions": 8, "n_trials": 867, "choice_counts": {"L": 273, "R": 593, "nogo": 1}}, {"recording_id": "032ffcdf-7692-40b3-b9ff-8def1fc18b2e_probe00", "subject": "NYU-12", "n_units": 983, "n_regions": 15, "n_trials": 581, "choice_counts": {"L": 290, "R": 290, "nogo": 1}}, {"recording_id": "16693458-0801-4d35-a3f1-9115c7e5acfd_probe00", "subject": "KS014", "n_units": 917, "n_regions": 8, "n_trials": 531, "choice_counts": {"L": 296, "R": 235, "nogo": 0}}, {"recording_id": "16693458-0801-4d35-a3f1-9115c7e5acfd_probe01", "subject": "KS014", "n_units": 995, "n_regions": 20, "n_trials": 531, "choice_counts": {"L": 296, "R": 235, "nogo": 0}}, {"recording_id": "1e45d992-c356-40e1-9be1-a506d944896f_probe01", "subject": "SWC_038", "n_units": 1280, "n_regions": 8, "n_trials": 623, "choice_counts": {"L": 242, "R": 368, "nogo": 13}}, {"recording_id": "35eeb752-8f4f-4040-9714-ba0f5b7ccdfe_probe00", "subject": "MFD_06", "n_units": 1363, "n_regions": 11, "n_trials": 762, "choice_counts": {"L": 467, "R": 295, "nogo": 0}}, {"recording_id": "3f71aa98-08c6-4e79-b4c8-00eae4f03eff_probe00", "subject": "MFD_06", "n_units": 1689, "n_regions": 7, "n_trials": 672, "choice_counts": {"L": 356, "R": 314, "nogo": 2}}, {"recording_id": "41872d7f-75cb-4445-bb1a-132b354c44f0_probe01", "subject": "SWC_038", "n_units": 308, "n_regions": 14, "n_trials": 512, "choice_counts": {"L": 283, "R": 224, "nogo": 5}}, {"recording_id": "4d8c7767-981c-4347-8e5e-5d5fffe38534_probe01", "subject": "SWC_038", "n_units": 1455, "n_regions": 8, "n_trials": 767, "choice_counts": {"L": 244, "R": 522, "nogo": 1}}, {"recording_id": "4ecb5d24-f5cc-402c-be28-9d0f7cb14b3a_probe00", "subject": "SWC_043", "n_units": 1143, "n_regions": 10, "n_trials": 529, "choice_counts": {"L": 232, "R": 294, "nogo": 3}}, {"recording_id": "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe00", "subject": "NR_0019", "n_units": 910, "n_regions": 14, "n_trials": 900, "choice_counts": {"L": 520, "R": 380, "nogo": 0}}, {"recording_id": "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe01", "subject": "NR_0019", "n_units": 515, "n_regions": 16, "n_trials": 900, "choice_counts": {"L": 520, "R": 380, "nogo": 0}}, {"recording_id": "6899a67d-2e53-4215-a52a-c7021b5da5d4_probe00", "subject": "MFD_06", "n_units": 651, "n_regions": 22, "n_trials": 402, "choice_counts": {"L": 209, "R": 172, "nogo": 21}}, {"recording_id": "6f09ba7e-e3ce-44b0-932b-c003fb44fb89_probe01", "subject": "SWC_043", "n_units": 1542, "n_regions": 10, "n_trials": 551, "choice_counts": {"L": 202, "R": 347, "nogo": 2}}, {"recording_id": "6fb1e12c-883b-46d1-a745-473cde3232c8_probe00", "subject": "SWC_043", "n_units": 1232, "n_regions": 13, "n_trials": 508, "choice_counts": {"L": 242, "R": 265, "nogo": 1}}, {"recording_id": "88d24c31-52e4-49cc-9f32-6adbeb9eba87_probe00", "subject": "SWC_043", "n_units": 910, "n_regions": 7, "n_trials": 547, "choice_counts": {"L": 268, "R": 278, "nogo": 1}}, {"recording_id": "a1782f4f-86b0-480c-a7f2-3d8f1ab482ab_probe00", "subject": "MFD_06", "n_units": 1504, "n_regions": 11, "n_trials": 741, "choice_counts": {"L": 439, "R": 302, "nogo": 0}}, {"recording_id": "a8a8af78-16de-4841-ab07-fde4b5281a03_probe00", "subject": "NYU-12", "n_units": 832, "n_regions": 23, "n_trials": 550, "choice_counts": {"L": 238, "R": 301, "nogo": 11}}, {"recording_id": "a8a8af78-16de-4841-ab07-fde4b5281a03_probe01", "subject": "NYU-12", "n_units": 1185, "n_regions": 10, "n_trials": 550, "choice_counts": {"L": 238, "R": 301, "nogo": 11}}, {"recording_id": "b182b754-3c3e-4942-8144-6ee790926b58_probe01", "subject": "NYU-12", "n_units": 1255, "n_regions": 11, "n_trials": 444, "choice_counts": {"L": 244, "R": 192, "nogo": 8}}, {"recording_id": "b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe00", "subject": "NR_0019", "n_units": 638, "n_regions": 7, "n_trials": 478, "choice_counts": {"L": 278, "R": 199, "nogo": 1}}, {"recording_id": "b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe01", "subject": "NR_0019", "n_units": 486, "n_regions": 15, "n_trials": 478, "choice_counts": {"L": 278, "R": 199, "nogo": 1}}, {"recording_id": "b9c205c3-feac-485b-a89d-afc96d9cb280_probe00", "subject": "KS014", "n_units": 790, "n_regions": 10, "n_trials": 657, "choice_counts": {"L": 352, "R": 305, "nogo": 0}}, {"recording_id": "e1931de1-cf7b-49af-af33-2ade15e8abe7_probe00", "subject": "KS014", "n_units": 419, "n_regions": 17, "n_trials": 688, "choice_counts": {"L": 271, "R": 415, "nogo": 2}}], "eval_recordings": [{"recording_id": "49e0ab27-827a-4c91-bcaa-97eea27a1b8d_probe01", "subject": "CSH_ZAD_019", "n_units": 944, "n_regions": 14, "n_trials": 884, "choice_counts": {"L": 466, "R": 416, "nogo": 2}}, {"recording_id": "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe00", "subject": "CSH_ZAD_019", "n_units": 1173, "n_regions": 15, "n_trials": 672, "choice_counts": {"L": 346, "R": 321, "nogo": 5}}, {"recording_id": "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe01", "subject": "CSH_ZAD_019", "n_units": 840, "n_regions": 14, "n_trials": 672, "choice_counts": {"L": 346, "R": 321, "nogo": 5}}, {"recording_id": "edd22318-216c-44ff-bc24-49ce8be78374_probe00", "subject": "CSH_ZAD_019", "n_units": 607, "n_regions": 14, "n_trials": 891, "choice_counts": {"L": 415, "R": 475, "nogo": 1}}]}
-{"t": 1780611629.7603564, "event": "model", "arm": "shared_baseline", "n_params": 3389473, "use_unit_emb": false, "use_region_emb": false, "use_cell_type_emb": false, "use_waveform_emb": false}
-{"t": 1780611638.9524074, "event": "train", "step": 50, "loss": 0.7019299268722534, "mean20": 0.6996294528245925, "batch_acc": 0.375, "grad_norm": 1.1654685735702515, "lr": 0.00019999999999999998}
-{"t": 1780611642.4159052, "event": "train", "step": 100, "loss": 0.638760507106781, "mean20": 0.6911987036466598, "batch_acc": 0.75, "grad_norm": 1.3266292810440063, "lr": 0.0002909538931178862}
-{"t": 1780611645.651659, "event": "train", "step": 150, "loss": 0.7361602783203125, "mean20": 0.7118212640285492, "batch_acc": 0.25, "grad_norm": 1.8610203266143799, "lr": 0.000225}
-{"t": 1780611646.416928, "event": "eval", "step": 150, "eval_loss": 0.6824482159689069, "eval_acc": 0.584375, "eval_auc": 0.4964014313859515, "eval_n": 320, "eval_n_pos": 133, "eval_n_neg": 187}
-{"t": 1780611646.472561, "event": "ckpt_best", "step": 150, "eval_loss": 0.6824482159689069, "eval_acc": 0.584375, "eval_auc": 0.4964014313859515}
-{"t": 1780611649.6664162, "event": "train", "step": 200, "loss": 0.6869391202926636, "mean20": 0.689129626750946, "batch_acc": 0.5625, "grad_norm": 0.1998814195394516, "lr": 0.00012395277334996044}
-{"t": 1780611652.9686496, "event": "train", "step": 250, "loss": 0.678070604801178, "mean20": 0.6929127901792527, "batch_acc": 0.625, "grad_norm": 0.5165604948997498, "lr": 3.509333353215331e-05}
-{"t": 1780611656.2513633, "event": "train", "step": 300, "loss": 0.697709321975708, "mean20": 0.6900374680757523, "batch_acc": 0.5, "grad_norm": 0.18887697160243988, "lr": 0.0}
-{"t": 1780611656.9930193, "event": "eval", "step": 300, "eval_loss": 0.6852047212421895, "eval_acc": 0.584375, "eval_auc": 0.5301354991757469, "eval_n": 320, "eval_n_pos": 133, "eval_n_neg": 187}
-{"t": 1780611657.0382314, "event": "done", "wall_clock_s": 22.557265043258667, "best_eval_loss": 0.6824482159689069}
-
-=== holdout=CSH_ZAD_019 arm=region_only seed=0 region_filter=shared_regions region_granularity=parent ===
-{"t": 1780611661.0719137, "event": "config", "data_dir": "/workspace/anatomical-neural-fm/data/brainsets/ibl_bwm", "manifest": "manifests/ibl_bwm_region_matched_support80_best6.json", "priors_path": "/workspace/anatomical-neural-fm/data/cell_type_priors/region_subclass_priors.parquet", "taxonomy_path": "/workspace/anatomical-neural-fm/data/cell_type_priors/subclass_taxonomy.parquet", "out_dir": "runs/lso_csh_zad_019_shared_parent_shuffle/holdout_CSH_ZAD_019/cloud_choice_region_only_seed0", "device": "cuda", "seed": 0, "split_mode": "animal", "split_seed": 42, "holdout": ["CSH_ZAD_019"], "output_query_mode": "shared", "target_mode": "stimulus_side", "region_filter": "shared_regions", "region_granularity": "parent", "region_label_control": "none", "dim": 96, "depth": 3, "dim_head": 32, "num_latents": 24, "window_len": 1.0, "latent_step": 0.125, "arm": "region_only", "batch_size": 16, "lr": 0.0003, "weight_decay": 0.0001, "max_steps": 300, "warmup_steps": 75, "eval_every": 150, "eval_batches": 20, "log_every": 50}
-{"t": 1780611664.6594923, "event": "split", "n_recordings": 28, "data_recordings_available": 28, "manifest": "manifests/ibl_bwm_region_matched_support80_best6.json", "split_mode": "animal", "holdout_subjects": ["CSH_ZAD_019"], "train_subjects": ["KS014", "MFD_06", "NR_0019", "NYU-12", "SWC_038", "SWC_043"], "eval_subjects": ["CSH_ZAD_019"], "n_train_rids": 24, "n_eval_rids": 4, "region_filter": "shared_regions", "n_allowed_regions": 21, "allowed_regions": ["BS", "CA", "DG", "IB", "LAT", "LZ", "MBmot", "MOp", "PRT", "RSPagl", "RSPd", "VENT", "VL", "VP", "VS", "cc", "fxs", "hc", "mfbc", "root", "void"], "region_granularity": "parent", "region_label_control": "none", "target_mode": "stimulus_side", "n_train_trials": 13015, "n_eval_trials": 2726, "train_class_balance": {"L": 6688, "R": 6327}, "eval_class_balance": {"L": 1504, "R": 1222}, "train_subject_trial_counts": {"KS014": {"L": 1064, "R": 1063}, "MFD_06": {"L": 1221, "R": 1044}, "NR_0019": {"L": 1194, "R": 1230}, "NYU-12": {"L": 973, "R": 902}, "SWC_038": {"L": 1252, "R": 1184}, "SWC_043": {"L": 984, "R": 904}}, "eval_subject_trial_counts": {"CSH_ZAD_019": {"L": 1504, "R": 1222}}, "train_recordings": [{"recording_id": "03063955-2523-47bd-ae57-f7489dd40f15_probe01", "subject": "SWC_038", "n_units": 799, "n_regions": 8, "n_trials": 867, "choice_counts": {"L": 273, "R": 593, "nogo": 1}}, {"recording_id": "032ffcdf-7692-40b3-b9ff-8def1fc18b2e_probe00", "subject": "NYU-12", "n_units": 983, "n_regions": 15, "n_trials": 581, "choice_counts": {"L": 290, "R": 290, "nogo": 1}}, {"recording_id": "16693458-0801-4d35-a3f1-9115c7e5acfd_probe00", "subject": "KS014", "n_units": 917, "n_regions": 8, "n_trials": 531, "choice_counts": {"L": 296, "R": 235, "nogo": 0}}, {"recording_id": "16693458-0801-4d35-a3f1-9115c7e5acfd_probe01", "subject": "KS014", "n_units": 995, "n_regions": 20, "n_trials": 531, "choice_counts": {"L": 296, "R": 235, "nogo": 0}}, {"recording_id": "1e45d992-c356-40e1-9be1-a506d944896f_probe01", "subject": "SWC_038", "n_units": 1280, "n_regions": 8, "n_trials": 623, "choice_counts": {"L": 242, "R": 368, "nogo": 13}}, {"recording_id": "35eeb752-8f4f-4040-9714-ba0f5b7ccdfe_probe00", "subject": "MFD_06", "n_units": 1363, "n_regions": 11, "n_trials": 762, "choice_counts": {"L": 467, "R": 295, "nogo": 0}}, {"recording_id": "3f71aa98-08c6-4e79-b4c8-00eae4f03eff_probe00", "subject": "MFD_06", "n_units": 1689, "n_regions": 7, "n_trials": 672, "choice_counts": {"L": 356, "R": 314, "nogo": 2}}, {"recording_id": "41872d7f-75cb-4445-bb1a-132b354c44f0_probe01", "subject": "SWC_038", "n_units": 308, "n_regions": 14, "n_trials": 512, "choice_counts": {"L": 283, "R": 224, "nogo": 5}}, {"recording_id": "4d8c7767-981c-4347-8e5e-5d5fffe38534_probe01", "subject": "SWC_038", "n_units": 1455, "n_regions": 8, "n_trials": 767, "choice_counts": {"L": 244, "R": 522, "nogo": 1}}, {"recording_id": "4ecb5d24-f5cc-402c-be28-9d0f7cb14b3a_probe00", "subject": "SWC_043", "n_units": 1143, "n_regions": 10, "n_trials": 529, "choice_counts": {"L": 232, "R": 294, "nogo": 3}}, {"recording_id": "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe00", "subject": "NR_0019", "n_units": 910, "n_regions": 14, "n_trials": 900, "choice_counts": {"L": 520, "R": 380, "nogo": 0}}, {"recording_id": "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe01", "subject": "NR_0019", "n_units": 515, "n_regions": 16, "n_trials": 900, "choice_counts": {"L": 520, "R": 380, "nogo": 0}}, {"recording_id": "6899a67d-2e53-4215-a52a-c7021b5da5d4_probe00", "subject": "MFD_06", "n_units": 651, "n_regions": 22, "n_trials": 402, "choice_counts": {"L": 209, "R": 172, "nogo": 21}}, {"recording_id": "6f09ba7e-e3ce-44b0-932b-c003fb44fb89_probe01", "subject": "SWC_043", "n_units": 1542, "n_regions": 10, "n_trials": 551, "choice_counts": {"L": 202, "R": 347, "nogo": 2}}, {"recording_id": "6fb1e12c-883b-46d1-a745-473cde3232c8_probe00", "subject": "SWC_043", "n_units": 1232, "n_regions": 13, "n_trials": 508, "choice_counts": {"L": 242, "R": 265, "nogo": 1}}, {"recording_id": "88d24c31-52e4-49cc-9f32-6adbeb9eba87_probe00", "subject": "SWC_043", "n_units": 910, "n_regions": 7, "n_trials": 547, "choice_counts": {"L": 268, "R": 278, "nogo": 1}}, {"recording_id": "a1782f4f-86b0-480c-a7f2-3d8f1ab482ab_probe00", "subject": "MFD_06", "n_units": 1504, "n_regions": 11, "n_trials": 741, "choice_counts": {"L": 439, "R": 302, "nogo": 0}}, {"recording_id": "a8a8af78-16de-4841-ab07-fde4b5281a03_probe00", "subject": "NYU-12", "n_units": 832, "n_regions": 23, "n_trials": 550, "choice_counts": {"L": 238, "R": 301, "nogo": 11}}, {"recording_id": "a8a8af78-16de-4841-ab07-fde4b5281a03_probe01", "subject": "NYU-12", "n_units": 1185, "n_regions": 10, "n_trials": 550, "choice_counts": {"L": 238, "R": 301, "nogo": 11}}, {"recording_id": "b182b754-3c3e-4942-8144-6ee790926b58_probe01", "subject": "NYU-12", "n_units": 1255, "n_regions": 11, "n_trials": 444, "choice_counts": {"L": 244, "R": 192, "nogo": 8}}, {"recording_id": "b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe00", "subject": "NR_0019", "n_units": 638, "n_regions": 7, "n_trials": 478, "choice_counts": {"L": 278, "R": 199, "nogo": 1}}, {"recording_id": "b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe01", "subject": "NR_0019", "n_units": 486, "n_regions": 15, "n_trials": 478, "choice_counts": {"L": 278, "R": 199, "nogo": 1}}, {"recording_id": "b9c205c3-feac-485b-a89d-afc96d9cb280_probe00", "subject": "KS014", "n_units": 790, "n_regions": 10, "n_trials": 657, "choice_counts": {"L": 352, "R": 305, "nogo": 0}}, {"recording_id": "e1931de1-cf7b-49af-af33-2ade15e8abe7_probe00", "subject": "KS014", "n_units": 419, "n_regions": 17, "n_trials": 688, "choice_counts": {"L": 271, "R": 415, "nogo": 2}}], "eval_recordings": [{"recording_id": "49e0ab27-827a-4c91-bcaa-97eea27a1b8d_probe01", "subject": "CSH_ZAD_019", "n_units": 944, "n_regions": 14, "n_trials": 884, "choice_counts": {"L": 466, "R": 416, "nogo": 2}}, {"recording_id": "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe00", "subject": "CSH_ZAD_019", "n_units": 1173, "n_regions": 15, "n_trials": 672, "choice_counts": {"L": 346, "R": 321, "nogo": 5}}, {"recording_id": "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe01", "subject": "CSH_ZAD_019", "n_units": 840, "n_regions": 14, "n_trials": 672, "choice_counts": {"L": 346, "R": 321, "nogo": 5}}, {"recording_id": "edd22318-216c-44ff-bc24-49ce8be78374_probe00", "subject": "CSH_ZAD_019", "n_units": 607, "n_regions": 14, "n_trials": 891, "choice_counts": {"L": 415, "R": 475, "nogo": 1}}]}
-{"t": 1780611664.7592418, "event": "model", "arm": "region_only", "n_params": 3397153, "use_unit_emb": false, "use_region_emb": true, "use_cell_type_emb": false, "use_waveform_emb": false}
-{"t": 1780611671.9529321, "event": "train", "step": 50, "loss": 0.6469908952713013, "mean20": 0.7027458041906357, "batch_acc": 0.75, "grad_norm": 1.0234284400939941, "lr": 0.00019999999999999998}
-{"t": 1780611675.4180586, "event": "train", "step": 100, "loss": 0.6975082159042358, "mean20": 0.7010984927415848, "batch_acc": 0.4375, "grad_norm": 1.709488034248352, "lr": 0.0002909538931178862}
-{"t": 1780611678.7908878, "event": "train", "step": 150, "loss": 0.6815513968467712, "mean20": 0.6991422325372696, "batch_acc": 0.5625, "grad_norm": 1.5429500341415405, "lr": 0.000225}
-{"t": 1780611679.6050274, "event": "eval", "step": 150, "eval_loss": 0.6870478704571724, "eval_acc": 0.55, "eval_auc": 0.5439266615737204, "eval_n": 320, "eval_n_pos": 133, "eval_n_neg": 187}
-{"t": 1780611679.66313, "event": "ckpt_best", "step": 150, "eval_loss": 0.6870478704571724, "eval_acc": 0.55, "eval_auc": 0.5439266615737204}
-{"t": 1780611682.9105377, "event": "train", "step": 200, "loss": 0.6872515678405762, "mean20": 0.6880165725946427, "batch_acc": 0.5625, "grad_norm": 0.2639228105545044, "lr": 0.00012395277334996044}
-{"t": 1780611686.316117, "event": "train", "step": 250, "loss": 0.6796331405639648, "mean20": 0.6920638531446457, "batch_acc": 0.5625, "grad_norm": 0.5719804763793945, "lr": 3.509333353215331e-05}
-{"t": 1780611689.6819482, "event": "train", "step": 300, "loss": 0.68764728307724, "mean20": 0.6888945579528809, "batch_acc": 0.5625, "grad_norm": 0.39046990871429443, "lr": 0.0}
-{"t": 1780611690.4348278, "event": "eval", "step": 300, "eval_loss": 0.6861186388880014, "eval_acc": 0.584375, "eval_auc": 0.5033975312613084, "eval_n": 320, "eval_n_pos": 133, "eval_n_neg": 187}
-{"t": 1780611690.4966464, "event": "ckpt_best", "step": 300, "eval_loss": 0.6861186388880014, "eval_acc": 0.584375, "eval_auc": 0.5033975312613084}
-{"t": 1780611690.5481467, "event": "done", "wall_clock_s": 23.576696157455444, "best_eval_loss": 0.6861186388880014}
-
-=== holdout=CSH_ZAD_019 arm=region_shuffle seed=0 region_filter=shared_regions region_granularity=parent ===
-{"t": 1780611694.3200774, "event": "config", "data_dir": "/workspace/anatomical-neural-fm/data/brainsets/ibl_bwm", "manifest": "manifests/ibl_bwm_region_matched_support80_best6.json", "priors_path": "/workspace/anatomical-neural-fm/data/cell_type_priors/region_subclass_priors.parquet", "taxonomy_path": "/workspace/anatomical-neural-fm/data/cell_type_priors/subclass_taxonomy.parquet", "out_dir": "runs/lso_csh_zad_019_shared_parent_shuffle/holdout_CSH_ZAD_019/cloud_choice_region_shuffle_seed0", "device": "cuda", "seed": 0, "split_mode": "animal", "split_seed": 42, "holdout": ["CSH_ZAD_019"], "output_query_mode": "shared", "target_mode": "stimulus_side", "region_filter": "shared_regions", "region_granularity": "parent", "region_label_control": "shuffle", "dim": 96, "depth": 3, "dim_head": 32, "num_latents": 24, "window_len": 1.0, "latent_step": 0.125, "arm": "region_only", "batch_size": 16, "lr": 0.0003, "weight_decay": 0.0001, "max_steps": 300, "warmup_steps": 75, "eval_every": 150, "eval_batches": 20, "log_every": 50}
-{"t": 1780611698.0016243, "event": "split", "n_recordings": 28, "data_recordings_available": 28, "manifest": "manifests/ibl_bwm_region_matched_support80_best6.json", "split_mode": "animal", "holdout_subjects": ["CSH_ZAD_019"], "train_subjects": ["KS014", "MFD_06", "NR_0019", "NYU-12", "SWC_038", "SWC_043"], "eval_subjects": ["CSH_ZAD_019"], "n_train_rids": 24, "n_eval_rids": 4, "region_filter": "shared_regions", "n_allowed_regions": 21, "allowed_regions": ["BS", "CA", "DG", "IB", "LAT", "LZ", "MBmot", "MOp", "PRT", "RSPagl", "RSPd", "VENT", "VL", "VP", "VS", "cc", "fxs", "hc", "mfbc", "root", "void"], "region_granularity": "parent", "region_label_control": "shuffle", "target_mode": "stimulus_side", "n_train_trials": 13015, "n_eval_trials": 2726, "train_class_balance": {"L": 6688, "R": 6327}, "eval_class_balance": {"L": 1504, "R": 1222}, "train_subject_trial_counts": {"KS014": {"L": 1064, "R": 1063}, "MFD_06": {"L": 1221, "R": 1044}, "NR_0019": {"L": 1194, "R": 1230}, "NYU-12": {"L": 973, "R": 902}, "SWC_038": {"L": 1252, "R": 1184}, "SWC_043": {"L": 984, "R": 904}}, "eval_subject_trial_counts": {"CSH_ZAD_019": {"L": 1504, "R": 1222}}, "train_recordings": [{"recording_id": "03063955-2523-47bd-ae57-f7489dd40f15_probe01", "subject": "SWC_038", "n_units": 799, "n_regions": 8, "n_trials": 867, "choice_counts": {"L": 273, "R": 593, "nogo": 1}}, {"recording_id": "032ffcdf-7692-40b3-b9ff-8def1fc18b2e_probe00", "subject": "NYU-12", "n_units": 983, "n_regions": 15, "n_trials": 581, "choice_counts": {"L": 290, "R": 290, "nogo": 1}}, {"recording_id": "16693458-0801-4d35-a3f1-9115c7e5acfd_probe00", "subject": "KS014", "n_units": 917, "n_regions": 8, "n_trials": 531, "choice_counts": {"L": 296, "R": 235, "nogo": 0}}, {"recording_id": "16693458-0801-4d35-a3f1-9115c7e5acfd_probe01", "subject": "KS014", "n_units": 995, "n_regions": 20, "n_trials": 531, "choice_counts": {"L": 296, "R": 235, "nogo": 0}}, {"recording_id": "1e45d992-c356-40e1-9be1-a506d944896f_probe01", "subject": "SWC_038", "n_units": 1280, "n_regions": 8, "n_trials": 623, "choice_counts": {"L": 242, "R": 368, "nogo": 13}}, {"recording_id": "35eeb752-8f4f-4040-9714-ba0f5b7ccdfe_probe00", "subject": "MFD_06", "n_units": 1363, "n_regions": 11, "n_trials": 762, "choice_counts": {"L": 467, "R": 295, "nogo": 0}}, {"recording_id": "3f71aa98-08c6-4e79-b4c8-00eae4f03eff_probe00", "subject": "MFD_06", "n_units": 1689, "n_regions": 7, "n_trials": 672, "choice_counts": {"L": 356, "R": 314, "nogo": 2}}, {"recording_id": "41872d7f-75cb-4445-bb1a-132b354c44f0_probe01", "subject": "SWC_038", "n_units": 308, "n_regions": 14, "n_trials": 512, "choice_counts": {"L": 283, "R": 224, "nogo": 5}}, {"recording_id": "4d8c7767-981c-4347-8e5e-5d5fffe38534_probe01", "subject": "SWC_038", "n_units": 1455, "n_regions": 8, "n_trials": 767, "choice_counts": {"L": 244, "R": 522, "nogo": 1}}, {"recording_id": "4ecb5d24-f5cc-402c-be28-9d0f7cb14b3a_probe00", "subject": "SWC_043", "n_units": 1143, "n_regions": 10, "n_trials": 529, "choice_counts": {"L": 232, "R": 294, "nogo": 3}}, {"recording_id": "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe00", "subject": "NR_0019", "n_units": 910, "n_regions": 14, "n_trials": 900, "choice_counts": {"L": 520, "R": 380, "nogo": 0}}, {"recording_id": "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe01", "subject": "NR_0019", "n_units": 515, "n_regions": 16, "n_trials": 900, "choice_counts": {"L": 520, "R": 380, "nogo": 0}}, {"recording_id": "6899a67d-2e53-4215-a52a-c7021b5da5d4_probe00", "subject": "MFD_06", "n_units": 651, "n_regions": 22, "n_trials": 402, "choice_counts": {"L": 209, "R": 172, "nogo": 21}}, {"recording_id": "6f09ba7e-e3ce-44b0-932b-c003fb44fb89_probe01", "subject": "SWC_043", "n_units": 1542, "n_regions": 10, "n_trials": 551, "choice_counts": {"L": 202, "R": 347, "nogo": 2}}, {"recording_id": "6fb1e12c-883b-46d1-a745-473cde3232c8_probe00", "subject": "SWC_043", "n_units": 1232, "n_regions": 13, "n_trials": 508, "choice_counts": {"L": 242, "R": 265, "nogo": 1}}, {"recording_id": "88d24c31-52e4-49cc-9f32-6adbeb9eba87_probe00", "subject": "SWC_043", "n_units": 910, "n_regions": 7, "n_trials": 547, "choice_counts": {"L": 268, "R": 278, "nogo": 1}}, {"recording_id": "a1782f4f-86b0-480c-a7f2-3d8f1ab482ab_probe00", "subject": "MFD_06", "n_units": 1504, "n_regions": 11, "n_trials": 741, "choice_counts": {"L": 439, "R": 302, "nogo": 0}}, {"recording_id": "a8a8af78-16de-4841-ab07-fde4b5281a03_probe00", "subject": "NYU-12", "n_units": 832, "n_regions": 23, "n_trials": 550, "choice_counts": {"L": 238, "R": 301, "nogo": 11}}, {"recording_id": "a8a8af78-16de-4841-ab07-fde4b5281a03_probe01", "subject": "NYU-12", "n_units": 1185, "n_regions": 10, "n_trials": 550, "choice_counts": {"L": 238, "R": 301, "nogo": 11}}, {"recording_id": "b182b754-3c3e-4942-8144-6ee790926b58_probe01", "subject": "NYU-12", "n_units": 1255, "n_regions": 11, "n_trials": 444, "choice_counts": {"L": 244, "R": 192, "nogo": 8}}, {"recording_id": "b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe00", "subject": "NR_0019", "n_units": 638, "n_regions": 7, "n_trials": 478, "choice_counts": {"L": 278, "R": 199, "nogo": 1}}, {"recording_id": "b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe01", "subject": "NR_0019", "n_units": 486, "n_regions": 15, "n_trials": 478, "choice_counts": {"L": 278, "R": 199, "nogo": 1}}, {"recording_id": "b9c205c3-feac-485b-a89d-afc96d9cb280_probe00", "subject": "KS014", "n_units": 790, "n_regions": 10, "n_trials": 657, "choice_counts": {"L": 352, "R": 305, "nogo": 0}}, {"recording_id": "e1931de1-cf7b-49af-af33-2ade15e8abe7_probe00", "subject": "KS014", "n_units": 419, "n_regions": 17, "n_trials": 688, "choice_counts": {"L": 271, "R": 415, "nogo": 2}}], "eval_recordings": [{"recording_id": "49e0ab27-827a-4c91-bcaa-97eea27a1b8d_probe01", "subject": "CSH_ZAD_019", "n_units": 944, "n_regions": 14, "n_trials": 884, "choice_counts": {"L": 466, "R": 416, "nogo": 2}}, {"recording_id": "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe00", "subject": "CSH_ZAD_019", "n_units": 1173, "n_regions": 15, "n_trials": 672, "choice_counts": {"L": 346, "R": 321, "nogo": 5}}, {"recording_id": "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe01", "subject": "CSH_ZAD_019", "n_units": 840, "n_regions": 14, "n_trials": 672, "choice_counts": {"L": 346, "R": 321, "nogo": 5}}, {"recording_id": "edd22318-216c-44ff-bc24-49ce8be78374_probe00", "subject": "CSH_ZAD_019", "n_units": 607, "n_regions": 14, "n_trials": 891, "choice_counts": {"L": 415, "R": 475, "nogo": 1}}]}
-{"t": 1780611698.1590853, "event": "model", "arm": "region_only", "n_params": 3397153, "use_unit_emb": false, "use_region_emb": true, "use_cell_type_emb": false, "use_waveform_emb": false}
-{"t": 1780611705.3861084, "event": "train", "step": 50, "loss": 0.7154839038848877, "mean20": 0.7058181881904602, "batch_acc": 0.375, "grad_norm": 1.6030347347259521, "lr": 0.00019999999999999998}
-{"t": 1780611708.6097267, "event": "train", "step": 100, "loss": 0.6427088379859924, "mean20": 0.6943946540355682, "batch_acc": 0.75, "grad_norm": 1.2475996017456055, "lr": 0.0002909538931178862}
-{"t": 1780611711.704459, "event": "train", "step": 150, "loss": 0.6984526515007019, "mean20": 0.7037474542856217, "batch_acc": 0.25, "grad_norm": 1.4286832809448242, "lr": 0.000225}
-{"t": 1780611712.4072602, "event": "eval", "step": 150, "eval_loss": 0.6919411348178983, "eval_acc": 0.584375, "eval_auc": 0.48634956374894456, "eval_n": 320, "eval_n_pos": 133, "eval_n_neg": 187}
-{"t": 1780611712.4712975, "event": "ckpt_best", "step": 150, "eval_loss": 0.6919411348178983, "eval_acc": 0.584375, "eval_auc": 0.48634956374894456}
-{"t": 1780611715.6366658, "event": "train", "step": 200, "loss": 0.6879589557647705, "mean20": 0.6880986332893372, "batch_acc": 0.5625, "grad_norm": 0.1889098584651947, "lr": 0.00012395277334996044}
-{"t": 1780611719.053566, "event": "train", "step": 250, "loss": 0.6801897883415222, "mean20": 0.6922967314720154, "batch_acc": 0.625, "grad_norm": 0.49668604135513306, "lr": 3.509333353215331e-05}
-{"t": 1780611722.391843, "event": "train", "step": 300, "loss": 0.6943678855895996, "mean20": 0.6899876028299332, "batch_acc": 0.5, "grad_norm": 0.1647467464208603, "lr": 0.0}
-{"t": 1780611723.1451414, "event": "eval", "step": 300, "eval_loss": 0.6862327584996819, "eval_acc": 0.584375, "eval_auc": 0.5221342125366893, "eval_n": 320, "eval_n_pos": 133, "eval_n_neg": 187}
-{"t": 1780611723.2071016, "event": "ckpt_best", "step": 300, "eval_loss": 0.6862327584996819, "eval_acc": 0.584375, "eval_auc": 0.5221342125366893}
-{"t": 1780611723.251803, "event": "done", "wall_clock_s": 22.861711263656616, "best_eval_loss": 0.6862327584996819}
-
-=== holdout=CSH_ZAD_019 arm=shared_baseline seed=1 region_filter=shared_regions region_granularity=parent ===
-{"t": 1780611726.3784676, "event": "config", "data_dir": "/workspace/anatomical-neural-fm/data/brainsets/ibl_bwm", "manifest": "manifests/ibl_bwm_region_matched_support80_best6.json", "priors_path": "/workspace/anatomical-neural-fm/data/cell_type_priors/region_subclass_priors.parquet", "taxonomy_path": "/workspace/anatomical-neural-fm/data/cell_type_priors/subclass_taxonomy.parquet", "out_dir": "runs/lso_csh_zad_019_shared_parent_shuffle/holdout_CSH_ZAD_019/cloud_choice_shared_baseline_seed1", "device": "cuda", "seed": 1, "split_mode": "animal", "split_seed": 42, "holdout": ["CSH_ZAD_019"], "output_query_mode": "shared", "target_mode": "stimulus_side", "region_filter": "shared_regions", "region_granularity": "parent", "region_label_control": "none", "dim": 96, "depth": 3, "dim_head": 32, "num_latents": 24, "window_len": 1.0, "latent_step": 0.125, "arm": "shared_baseline", "batch_size": 16, "lr": 0.0003, "weight_decay": 0.0001, "max_steps": 300, "warmup_steps": 75, "eval_every": 150, "eval_batches": 20, "log_every": 50}
-{"t": 1780611730.1303723, "event": "split", "n_recordings": 28, "data_recordings_available": 28, "manifest": "manifests/ibl_bwm_region_matched_support80_best6.json", "split_mode": "animal", "holdout_subjects": ["CSH_ZAD_019"], "train_subjects": ["KS014", "MFD_06", "NR_0019", "NYU-12", "SWC_038", "SWC_043"], "eval_subjects": ["CSH_ZAD_019"], "n_train_rids": 24, "n_eval_rids": 4, "region_filter": "shared_regions", "n_allowed_regions": 21, "allowed_regions": ["BS", "CA", "DG", "IB", "LAT", "LZ", "MBmot", "MOp", "PRT", "RSPagl", "RSPd", "VENT", "VL", "VP", "VS", "cc", "fxs", "hc", "mfbc", "root", "void"], "region_granularity": "parent", "region_label_control": "none", "target_mode": "stimulus_side", "n_train_trials": 13015, "n_eval_trials": 2726, "train_class_balance": {"L": 6688, "R": 6327}, "eval_class_balance": {"L": 1504, "R": 1222}, "train_subject_trial_counts": {"KS014": {"L": 1064, "R": 1063}, "MFD_06": {"L": 1221, "R": 1044}, "NR_0019": {"L": 1194, "R": 1230}, "NYU-12": {"L": 973, "R": 902}, "SWC_038": {"L": 1252, "R": 1184}, "SWC_043": {"L": 984, "R": 904}}, "eval_subject_trial_counts": {"CSH_ZAD_019": {"L": 1504, "R": 1222}}, "train_recordings": [{"recording_id": "03063955-2523-47bd-ae57-f7489dd40f15_probe01", "subject": "SWC_038", "n_units": 799, "n_regions": 8, "n_trials": 867, "choice_counts": {"L": 273, "R": 593, "nogo": 1}}, {"recording_id": "032ffcdf-7692-40b3-b9ff-8def1fc18b2e_probe00", "subject": "NYU-12", "n_units": 983, "n_regions": 15, "n_trials": 581, "choice_counts": {"L": 290, "R": 290, "nogo": 1}}, {"recording_id": "16693458-0801-4d35-a3f1-9115c7e5acfd_probe00", "subject": "KS014", "n_units": 917, "n_regions": 8, "n_trials": 531, "choice_counts": {"L": 296, "R": 235, "nogo": 0}}, {"recording_id": "16693458-0801-4d35-a3f1-9115c7e5acfd_probe01", "subject": "KS014", "n_units": 995, "n_regions": 20, "n_trials": 531, "choice_counts": {"L": 296, "R": 235, "nogo": 0}}, {"recording_id": "1e45d992-c356-40e1-9be1-a506d944896f_probe01", "subject": "SWC_038", "n_units": 1280, "n_regions": 8, "n_trials": 623, "choice_counts": {"L": 242, "R": 368, "nogo": 13}}, {"recording_id": "35eeb752-8f4f-4040-9714-ba0f5b7ccdfe_probe00", "subject": "MFD_06", "n_units": 1363, "n_regions": 11, "n_trials": 762, "choice_counts": {"L": 467, "R": 295, "nogo": 0}}, {"recording_id": "3f71aa98-08c6-4e79-b4c8-00eae4f03eff_probe00", "subject": "MFD_06", "n_units": 1689, "n_regions": 7, "n_trials": 672, "choice_counts": {"L": 356, "R": 314, "nogo": 2}}, {"recording_id": "41872d7f-75cb-4445-bb1a-132b354c44f0_probe01", "subject": "SWC_038", "n_units": 308, "n_regions": 14, "n_trials": 512, "choice_counts": {"L": 283, "R": 224, "nogo": 5}}, {"recording_id": "4d8c7767-981c-4347-8e5e-5d5fffe38534_probe01", "subject": "SWC_038", "n_units": 1455, "n_regions": 8, "n_trials": 767, "choice_counts": {"L": 244, "R": 522, "nogo": 1}}, {"recording_id": "4ecb5d24-f5cc-402c-be28-9d0f7cb14b3a_probe00", "subject": "SWC_043", "n_units": 1143, "n_regions": 10, "n_trials": 529, "choice_counts": {"L": 232, "R": 294, "nogo": 3}}, {"recording_id": "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe00", "subject": "NR_0019", "n_units": 910, "n_regions": 14, "n_trials": 900, "choice_counts": {"L": 520, "R": 380, "nogo": 0}}, {"recording_id": "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe01", "subject": "NR_0019", "n_units": 515, "n_regions": 16, "n_trials": 900, "choice_counts": {"L": 520, "R": 380, "nogo": 0}}, {"recording_id": "6899a67d-2e53-4215-a52a-c7021b5da5d4_probe00", "subject": "MFD_06", "n_units": 651, "n_regions": 22, "n_trials": 402, "choice_counts": {"L": 209, "R": 172, "nogo": 21}}, {"recording_id": "6f09ba7e-e3ce-44b0-932b-c003fb44fb89_probe01", "subject": "SWC_043", "n_units": 1542, "n_regions": 10, "n_trials": 551, "choice_counts": {"L": 202, "R": 347, "nogo": 2}}, {"recording_id": "6fb1e12c-883b-46d1-a745-473cde3232c8_probe00", "subject": "SWC_043", "n_units": 1232, "n_regions": 13, "n_trials": 508, "choice_counts": {"L": 242, "R": 265, "nogo": 1}}, {"recording_id": "88d24c31-52e4-49cc-9f32-6adbeb9eba87_probe00", "subject": "SWC_043", "n_units": 910, "n_regions": 7, "n_trials": 547, "choice_counts": {"L": 268, "R": 278, "nogo": 1}}, {"recording_id": "a1782f4f-86b0-480c-a7f2-3d8f1ab482ab_probe00", "subject": "MFD_06", "n_units": 1504, "n_regions": 11, "n_trials": 741, "choice_counts": {"L": 439, "R": 302, "nogo": 0}}, {"recording_id": "a8a8af78-16de-4841-ab07-fde4b5281a03_probe00", "subject": "NYU-12", "n_units": 832, "n_regions": 23, "n_trials": 550, "choice_counts": {"L": 238, "R": 301, "nogo": 11}}, {"recording_id": "a8a8af78-16de-4841-ab07-fde4b5281a03_probe01", "subject": "NYU-12", "n_units": 1185, "n_regions": 10, "n_trials": 550, "choice_counts": {"L": 238, "R": 301, "nogo": 11}}, {"recording_id": "b182b754-3c3e-4942-8144-6ee790926b58_probe01", "subject": "NYU-12", "n_units": 1255, "n_regions": 11, "n_trials": 444, "choice_counts": {"L": 244, "R": 192, "nogo": 8}}, {"recording_id": "b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe00", "subject": "NR_0019", "n_units": 638, "n_regions": 7, "n_trials": 478, "choice_counts": {"L": 278, "R": 199, "nogo": 1}}, {"recording_id": "b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe01", "subject": "NR_0019", "n_units": 486, "n_regions": 15, "n_trials": 478, "choice_counts": {"L": 278, "R": 199, "nogo": 1}}, {"recording_id": "b9c205c3-feac-485b-a89d-afc96d9cb280_probe00", "subject": "KS014", "n_units": 790, "n_regions": 10, "n_trials": 657, "choice_counts": {"L": 352, "R": 305, "nogo": 0}}, {"recording_id": "e1931de1-cf7b-49af-af33-2ade15e8abe7_probe00", "subject": "KS014", "n_units": 419, "n_regions": 17, "n_trials": 688, "choice_counts": {"L": 271, "R": 415, "nogo": 2}}], "eval_recordings": [{"recording_id": "49e0ab27-827a-4c91-bcaa-97eea27a1b8d_probe01", "subject": "CSH_ZAD_019", "n_units": 944, "n_regions": 14, "n_trials": 884, "choice_counts": {"L": 466, "R": 416, "nogo": 2}}, {"recording_id": "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe00", "subject": "CSH_ZAD_019", "n_units": 1173, "n_regions": 15, "n_trials": 672, "choice_counts": {"L": 346, "R": 321, "nogo": 5}}, {"recording_id": "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe01", "subject": "CSH_ZAD_019", "n_units": 840, "n_regions": 14, "n_trials": 672, "choice_counts": {"L": 346, "R": 321, "nogo": 5}}, {"recording_id": "edd22318-216c-44ff-bc24-49ce8be78374_probe00", "subject": "CSH_ZAD_019", "n_units": 607, "n_regions": 14, "n_trials": 891, "choice_counts": {"L": 415, "R": 475, "nogo": 1}}]}
-{"t": 1780611730.2599313, "event": "model", "arm": "shared_baseline", "n_params": 3389473, "use_unit_emb": false, "use_region_emb": false, "use_cell_type_emb": false, "use_waveform_emb": false}
-{"t": 1780611736.469442, "event": "train", "step": 50, "loss": 0.7003986835479736, "mean20": 0.7054077208042144, "batch_acc": 0.4375, "grad_norm": 1.1304447650909424, "lr": 0.00019999999999999998}
-{"t": 1780611739.7359335, "event": "train", "step": 100, "loss": 0.7002989053726196, "mean20": 0.6990363627672196, "batch_acc": 0.4375, "grad_norm": 0.5597155094146729, "lr": 0.0002909538931178862}
-{"t": 1780611742.93143, "event": "train", "step": 150, "loss": 0.680971622467041, "mean20": 0.6948595166206359, "batch_acc": 0.625, "grad_norm": 0.5878262519836426, "lr": 0.000225}
-{"t": 1780611743.6957207, "event": "eval", "step": 150, "eval_loss": 0.6973734356462955, "eval_acc": 0.475, "eval_auc": 0.5314458020050126, "eval_n": 320, "eval_n_pos": 152, "eval_n_neg": 168}
-{"t": 1780611743.7600472, "event": "ckpt_best", "step": 150, "eval_loss": 0.6973734356462955, "eval_acc": 0.475, "eval_auc": 0.5314458020050126}
-{"t": 1780611747.0654233, "event": "train", "step": 200, "loss": 0.6710691452026367, "mean20": 0.6901190429925919, "batch_acc": 0.625, "grad_norm": 0.35108891129493713, "lr": 0.00012395277334996044}
-{"t": 1780611750.4446151, "event": "train", "step": 250, "loss": 0.6930257678031921, "mean20": 0.6954926192760468, "batch_acc": 0.5, "grad_norm": 0.33733031153678894, "lr": 3.509333353215331e-05}
-{"t": 1780611754.562145, "event": "train", "step": 300, "loss": 0.6982914805412292, "mean20": 0.6915690213441849, "batch_acc": 0.3125, "grad_norm": 0.6761366724967957, "lr": 0.0}
-{"t": 1780611755.3240285, "event": "eval", "step": 300, "eval_loss": 0.6923687672242522, "eval_acc": 0.525, "eval_auc": 0.5202850877192983, "eval_n": 320, "eval_n_pos": 152, "eval_n_neg": 168}
-{"t": 1780611755.38149, "event": "ckpt_best", "step": 300, "eval_loss": 0.6923687672242522, "eval_acc": 0.525, "eval_auc": 0.5202850877192983}
-{"t": 1780611755.4381988, "event": "done", "wall_clock_s": 23.112018585205078, "best_eval_loss": 0.6923687672242522}
-
-=== holdout=CSH_ZAD_019 arm=region_only seed=1 region_filter=shared_regions region_granularity=parent ===
-{"t": 1780611758.5433125, "event": "config", "data_dir": "/workspace/anatomical-neural-fm/data/brainsets/ibl_bwm", "manifest": "manifests/ibl_bwm_region_matched_support80_best6.json", "priors_path": "/workspace/anatomical-neural-fm/data/cell_type_priors/region_subclass_priors.parquet", "taxonomy_path": "/workspace/anatomical-neural-fm/data/cell_type_priors/subclass_taxonomy.parquet", "out_dir": "runs/lso_csh_zad_019_shared_parent_shuffle/holdout_CSH_ZAD_019/cloud_choice_region_only_seed1", "device": "cuda", "seed": 1, "split_mode": "animal", "split_seed": 42, "holdout": ["CSH_ZAD_019"], "output_query_mode": "shared", "target_mode": "stimulus_side", "region_filter": "shared_regions", "region_granularity": "parent", "region_label_control": "none", "dim": 96, "depth": 3, "dim_head": 32, "num_latents": 24, "window_len": 1.0, "latent_step": 0.125, "arm": "region_only", "batch_size": 16, "lr": 0.0003, "weight_decay": 0.0001, "max_steps": 300, "warmup_steps": 75, "eval_every": 150, "eval_batches": 20, "log_every": 50}
-{"t": 1780611762.060427, "event": "split", "n_recordings": 28, "data_recordings_available": 28, "manifest": "manifests/ibl_bwm_region_matched_support80_best6.json", "split_mode": "animal", "holdout_subjects": ["CSH_ZAD_019"], "train_subjects": ["KS014", "MFD_06", "NR_0019", "NYU-12", "SWC_038", "SWC_043"], "eval_subjects": ["CSH_ZAD_019"], "n_train_rids": 24, "n_eval_rids": 4, "region_filter": "shared_regions", "n_allowed_regions": 21, "allowed_regions": ["BS", "CA", "DG", "IB", "LAT", "LZ", "MBmot", "MOp", "PRT", "RSPagl", "RSPd", "VENT", "VL", "VP", "VS", "cc", "fxs", "hc", "mfbc", "root", "void"], "region_granularity": "parent", "region_label_control": "none", "target_mode": "stimulus_side", "n_train_trials": 13015, "n_eval_trials": 2726, "train_class_balance": {"L": 6688, "R": 6327}, "eval_class_balance": {"L": 1504, "R": 1222}, "train_subject_trial_counts": {"KS014": {"L": 1064, "R": 1063}, "MFD_06": {"L": 1221, "R": 1044}, "NR_0019": {"L": 1194, "R": 1230}, "NYU-12": {"L": 973, "R": 902}, "SWC_038": {"L": 1252, "R": 1184}, "SWC_043": {"L": 984, "R": 904}}, "eval_subject_trial_counts": {"CSH_ZAD_019": {"L": 1504, "R": 1222}}, "train_recordings": [{"recording_id": "03063955-2523-47bd-ae57-f7489dd40f15_probe01", "subject": "SWC_038", "n_units": 799, "n_regions": 8, "n_trials": 867, "choice_counts": {"L": 273, "R": 593, "nogo": 1}}, {"recording_id": "032ffcdf-7692-40b3-b9ff-8def1fc18b2e_probe00", "subject": "NYU-12", "n_units": 983, "n_regions": 15, "n_trials": 581, "choice_counts": {"L": 290, "R": 290, "nogo": 1}}, {"recording_id": "16693458-0801-4d35-a3f1-9115c7e5acfd_probe00", "subject": "KS014", "n_units": 917, "n_regions": 8, "n_trials": 531, "choice_counts": {"L": 296, "R": 235, "nogo": 0}}, {"recording_id": "16693458-0801-4d35-a3f1-9115c7e5acfd_probe01", "subject": "KS014", "n_units": 995, "n_regions": 20, "n_trials": 531, "choice_counts": {"L": 296, "R": 235, "nogo": 0}}, {"recording_id": "1e45d992-c356-40e1-9be1-a506d944896f_probe01", "subject": "SWC_038", "n_units": 1280, "n_regions": 8, "n_trials": 623, "choice_counts": {"L": 242, "R": 368, "nogo": 13}}, {"recording_id": "35eeb752-8f4f-4040-9714-ba0f5b7ccdfe_probe00", "subject": "MFD_06", "n_units": 1363, "n_regions": 11, "n_trials": 762, "choice_counts": {"L": 467, "R": 295, "nogo": 0}}, {"recording_id": "3f71aa98-08c6-4e79-b4c8-00eae4f03eff_probe00", "subject": "MFD_06", "n_units": 1689, "n_regions": 7, "n_trials": 672, "choice_counts": {"L": 356, "R": 314, "nogo": 2}}, {"recording_id": "41872d7f-75cb-4445-bb1a-132b354c44f0_probe01", "subject": "SWC_038", "n_units": 308, "n_regions": 14, "n_trials": 512, "choice_counts": {"L": 283, "R": 224, "nogo": 5}}, {"recording_id": "4d8c7767-981c-4347-8e5e-5d5fffe38534_probe01", "subject": "SWC_038", "n_units": 1455, "n_regions": 8, "n_trials": 767, "choice_counts": {"L": 244, "R": 522, "nogo": 1}}, {"recording_id": "4ecb5d24-f5cc-402c-be28-9d0f7cb14b3a_probe00", "subject": "SWC_043", "n_units": 1143, "n_regions": 10, "n_trials": 529, "choice_counts": {"L": 232, "R": 294, "nogo": 3}}, {"recording_id": "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe00", "subject": "NR_0019", "n_units": 910, "n_regions": 14, "n_trials": 900, "choice_counts": {"L": 520, "R": 380, "nogo": 0}}, {"recording_id": "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe01", "subject": "NR_0019", "n_units": 515, "n_regions": 16, "n_trials": 900, "choice_counts": {"L": 520, "R": 380, "nogo": 0}}, {"recording_id": "6899a67d-2e53-4215-a52a-c7021b5da5d4_probe00", "subject": "MFD_06", "n_units": 651, "n_regions": 22, "n_trials": 402, "choice_counts": {"L": 209, "R": 172, "nogo": 21}}, {"recording_id": "6f09ba7e-e3ce-44b0-932b-c003fb44fb89_probe01", "subject": "SWC_043", "n_units": 1542, "n_regions": 10, "n_trials": 551, "choice_counts": {"L": 202, "R": 347, "nogo": 2}}, {"recording_id": "6fb1e12c-883b-46d1-a745-473cde3232c8_probe00", "subject": "SWC_043", "n_units": 1232, "n_regions": 13, "n_trials": 508, "choice_counts": {"L": 242, "R": 265, "nogo": 1}}, {"recording_id": "88d24c31-52e4-49cc-9f32-6adbeb9eba87_probe00", "subject": "SWC_043", "n_units": 910, "n_regions": 7, "n_trials": 547, "choice_counts": {"L": 268, "R": 278, "nogo": 1}}, {"recording_id": "a1782f4f-86b0-480c-a7f2-3d8f1ab482ab_probe00", "subject": "MFD_06", "n_units": 1504, "n_regions": 11, "n_trials": 741, "choice_counts": {"L": 439, "R": 302, "nogo": 0}}, {"recording_id": "a8a8af78-16de-4841-ab07-fde4b5281a03_probe00", "subject": "NYU-12", "n_units": 832, "n_regions": 23, "n_trials": 550, "choice_counts": {"L": 238, "R": 301, "nogo": 11}}, {"recording_id": "a8a8af78-16de-4841-ab07-fde4b5281a03_probe01", "subject": "NYU-12", "n_units": 1185, "n_regions": 10, "n_trials": 550, "choice_counts": {"L": 238, "R": 301, "nogo": 11}}, {"recording_id": "b182b754-3c3e-4942-8144-6ee790926b58_probe01", "subject": "NYU-12", "n_units": 1255, "n_regions": 11, "n_trials": 444, "choice_counts": {"L": 244, "R": 192, "nogo": 8}}, {"recording_id": "b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe00", "subject": "NR_0019", "n_units": 638, "n_regions": 7, "n_trials": 478, "choice_counts": {"L": 278, "R": 199, "nogo": 1}}, {"recording_id": "b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe01", "subject": "NR_0019", "n_units": 486, "n_regions": 15, "n_trials": 478, "choice_counts": {"L": 278, "R": 199, "nogo": 1}}, {"recording_id": "b9c205c3-feac-485b-a89d-afc96d9cb280_probe00", "subject": "KS014", "n_units": 790, "n_regions": 10, "n_trials": 657, "choice_counts": {"L": 352, "R": 305, "nogo": 0}}, {"recording_id": "e1931de1-cf7b-49af-af33-2ade15e8abe7_probe00", "subject": "KS014", "n_units": 419, "n_regions": 17, "n_trials": 688, "choice_counts": {"L": 271, "R": 415, "nogo": 2}}], "eval_recordings": [{"recording_id": "49e0ab27-827a-4c91-bcaa-97eea27a1b8d_probe01", "subject": "CSH_ZAD_019", "n_units": 944, "n_regions": 14, "n_trials": 884, "choice_counts": {"L": 466, "R": 416, "nogo": 2}}, {"recording_id": "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe00", "subject": "CSH_ZAD_019", "n_units": 1173, "n_regions": 15, "n_trials": 672, "choice_counts": {"L": 346, "R": 321, "nogo": 5}}, {"recording_id": "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe01", "subject": "CSH_ZAD_019", "n_units": 840, "n_regions": 14, "n_trials": 672, "choice_counts": {"L": 346, "R": 321, "nogo": 5}}, {"recording_id": "edd22318-216c-44ff-bc24-49ce8be78374_probe00", "subject": "CSH_ZAD_019", "n_units": 607, "n_regions": 14, "n_trials": 891, "choice_counts": {"L": 415, "R": 475, "nogo": 1}}]}
-{"t": 1780611762.1591191, "event": "model", "arm": "region_only", "n_params": 3397153, "use_unit_emb": false, "use_region_emb": true, "use_cell_type_emb": false, "use_waveform_emb": false}
-{"t": 1780611768.9872897, "event": "train", "step": 50, "loss": 0.6784471869468689, "mean20": 0.7043774664402008, "batch_acc": 0.5625, "grad_norm": 0.9774987101554871, "lr": 0.00019999999999999998}
-{"t": 1780611772.202274, "event": "train", "step": 100, "loss": 0.6846330761909485, "mean20": 0.7054503828287124, "batch_acc": 0.625, "grad_norm": 0.49758467078208923, "lr": 0.0002909538931178862}
-{"t": 1780611775.4726474, "event": "train", "step": 150, "loss": 0.681675910949707, "mean20": 0.6939749866724014, "batch_acc": 0.5625, "grad_norm": 0.5887380242347717, "lr": 0.000225}
-{"t": 1780611776.2419152, "event": "eval", "step": 150, "eval_loss": 0.7045131105929613, "eval_acc": 0.475, "eval_auc": 0.5679041353383458, "eval_n": 320, "eval_n_pos": 152, "eval_n_neg": 168}
-{"t": 1780611776.3074687, "event": "ckpt_best", "step": 150, "eval_loss": 0.7045131105929613, "eval_acc": 0.475, "eval_auc": 0.5679041353383458}
-{"t": 1780611779.5860374, "event": "train", "step": 200, "loss": 0.6679002046585083, "mean20": 0.6895713657140732, "batch_acc": 0.625, "grad_norm": 0.5161879658699036, "lr": 0.00012395277334996044}
-{"t": 1780611782.870575, "event": "train", "step": 250, "loss": 0.6924859285354614, "mean20": 0.6908432155847549, "batch_acc": 0.625, "grad_norm": 0.431761771440506, "lr": 3.509333353215331e-05}
-{"t": 1780611786.2169027, "event": "train", "step": 300, "loss": 0.7238205671310425, "mean20": 0.682201725244522, "batch_acc": 0.1875, "grad_norm": 1.0155755281448364, "lr": 0.0}
-{"t": 1780611786.9077137, "event": "eval", "step": 300, "eval_loss": 0.6878963893279433, "eval_acc": 0.55, "eval_auc": 0.5769110275689223, "eval_n": 320, "eval_n_pos": 152, "eval_n_neg": 168}
-{"t": 1780611786.9723523, "event": "ckpt_best", "step": 300, "eval_loss": 0.6878963893279433, "eval_acc": 0.55, "eval_auc": 0.5769110275689223}
-{"t": 1780611787.0204043, "event": "done", "wall_clock_s": 22.723937511444092, "best_eval_loss": 0.6878963893279433}
