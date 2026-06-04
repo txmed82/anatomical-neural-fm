@@ -28,6 +28,8 @@ class ClonePilotConfig:
     branch: str
     repo_url: str
     datacenter: str
+    compute_type: str
+    cpu_flavor: str
     gpu_type: str
     image_name: str
     container_disk_gb: int
@@ -242,6 +244,9 @@ EOF
 
 cleanup() {{
   status="$?"
+  if [ -n "${{GUARD_PID:-}}" ]; then
+    kill "$GUARD_PID" >/dev/null 2>&1 || true
+  fi
   push_artifacts "$status" || true
   if [ -n "${{RUNPOD_POD_ID:-}}" ] && [ -n "${{RUNPOD_API_KEY:-}}" ]; then
     python3 - <<'PY' || true
@@ -261,6 +266,29 @@ PY
   fi
 }}
 trap cleanup EXIT
+
+guard_timeout() {{
+  sleep {run_timeout}
+  echo "=== max runtime seconds exceeded; terminating pod ===" >> "$LOG_PATH" || true
+  if [ -n "${{RUNPOD_POD_ID:-}}" ] && [ -n "${{RUNPOD_API_KEY:-}}" ]; then
+    python3 - <<'PY' || true
+import os
+import urllib.request
+
+pod_id = os.environ.get("RUNPOD_POD_ID")
+api_key = os.environ.get("RUNPOD_API_KEY")
+if pod_id and api_key:
+    req = urllib.request.Request(
+        f"https://rest.runpod.io/v1/pods/{{pod_id}}",
+        method="DELETE",
+        headers={{"Authorization": "Bearer " + api_key}},
+    )
+    urllib.request.urlopen(req, timeout=30).read()
+PY
+  fi
+}}
+guard_timeout &
+GUARD_PID="$!"
 
 set -euo pipefail
 export DEBIAN_FRONTEND=noninteractive
@@ -351,15 +379,11 @@ def build_pod_body(name: str, config: ClonePilotConfig, runpod_key: str, github_
         )
         env["BRAINSET_S3_ACCESS_KEY"] = access_key
         env["BRAINSET_S3_SECRET_KEY"] = secret_key
-    gpu_type_ids = [gpu.strip() for gpu in config.gpu_type.split(",") if gpu.strip()]
     body = {
         "name": name,
         "imageName": config.image_name,
         "cloudType": "SECURE",
-        "computeType": "GPU",
-        "gpuTypeIds": gpu_type_ids,
-        "gpuTypePriority": "availability",
-        "gpuCount": 1,
+        "computeType": config.compute_type,
         "dataCenterPriority": "availability" if config.datacenter.upper() == "ANY" else "custom",
         "containerDiskInGb": config.container_disk_gb,
         "volumeInGb": config.volume_gb,
@@ -369,6 +393,15 @@ def build_pod_body(name: str, config: ClonePilotConfig, runpod_key: str, github_
         "env": env,
         "dockerStartCmd": ["bash", "-lc", build_start_script(config)],
     }
+    if config.compute_type == "CPU":
+        cpu_flavor_ids = [flavor.strip() for flavor in config.cpu_flavor.split(",") if flavor.strip()]
+        body["cpuFlavorIds"] = cpu_flavor_ids
+        body["cpuFlavorPriority"] = "availability"
+    else:
+        gpu_type_ids = [gpu.strip() for gpu in config.gpu_type.split(",") if gpu.strip()]
+        body["gpuTypeIds"] = gpu_type_ids
+        body["gpuTypePriority"] = "availability"
+        body["gpuCount"] = 1
     if config.datacenter.upper() != "ANY":
         body["dataCenterIds"] = [config.datacenter]
     return body
@@ -390,6 +423,9 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--repo-url", default="https://github.com/txmed82/anatomical-neural-fm.git")
     p.add_argument("--datacenter", default="US-MO-1",
                    help="RunPod data center ID, or ANY to let RunPod pick by availability.")
+    p.add_argument("--compute-type", choices=["GPU", "CPU"], default="GPU")
+    p.add_argument("--cpu-flavor", default="cpu3c,cpu3g,cpu3m",
+                   help="CPU flavor ID, or a comma-separated priority list of IDs.")
     p.add_argument("--gpu-type", default="NVIDIA A100 80GB PCIe",
                    help="GPU type ID, or a comma-separated priority list of type IDs.")
     p.add_argument("--image-name", default="runpod/pytorch:2.4.0-py3.11-cuda12.4.1-devel-ubuntu22.04")
@@ -432,6 +468,8 @@ def main() -> int:
         branch=args.branch,
         repo_url=args.repo_url,
         datacenter=args.datacenter,
+        compute_type=args.compute_type,
+        cpu_flavor=args.cpu_flavor,
         gpu_type=args.gpu_type,
         image_name=args.image_name,
         container_disk_gb=args.container_disk_gb,
@@ -482,7 +520,7 @@ def main() -> int:
         return 0
 
     client = RunpodClient(runpod_key)
-    print(f"Creating A100 clone pilot pod on {config.datacenter}", flush=True)
+    print(f"Creating {config.compute_type} clone pilot pod on {config.datacenter}", flush=True)
     pod = client.create_pod(body)
     print(json.dumps(summarize_pod(pod), indent=2), flush=True)
 
