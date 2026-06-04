@@ -126,13 +126,21 @@ clear +0.03 across three seeds. The local HDF5 cache is not the 20-recording
 benchmark cache, though, so local trial-balance and region-coverage rows are
 partial and cannot explain the signal.
 
-## Next Experiment: Full-Dataset Coverage Audit
+## Completed Probe: Full-Dataset Coverage Audit
 
 Run `scripts/audit_subject_signal.py` on a fresh RunPod clone after rebuilding
 the 20-recording BrainSet data, but do not train. This should be a sub-$2 job
 at the observed A100 rate because it only builds data and writes the audit.
 
-Decision gate:
+Result: `docs/subject_conditioned_signal_audit.md` now contains a full-cache
+audit over all 10 subjects and 20 recordings. The `DY_008` lift is not explained
+by obvious class imbalance: it has 405 left vs 376 right valid stimulus-side
+trials. It has partial but meaningful anatomical support in the training
+subjects: 69.0% of held-out region units are in regions seen in other subjects,
+and 6/8 top regions are seen in training. Two top `DY_008` regions, `PO` and
+`LP`, are missing from the other subjects' top-region support.
+
+Decision:
 
 - If `DY_008` has comparable region support and class balance, run a
   region-balanced LSO rerun focused on `DY_008` plus matched controls.
@@ -140,10 +148,15 @@ Decision gate:
   dataset-composition artifact and redesign the benchmark before spending on
   more seeds.
 
+The decision gate points to a region-balanced rerun, not a broad multi-seed
+sweep. The rerun should downsample or mask to regions with train/eval support
+and compare `DY_008` against matched controls (`MFD_05`, `CSHL045`, `KS014`) so
+we can distinguish a real transfer signal from coverage effects.
+
 ## Budget Guard
 
 Hard cap from user: do not spend more than $100.
 
-The targeted multi-seed confirmation completed under the cap and left zero pods
-and zero network volumes. The next full-dataset audit should avoid training and
-use a short timeout; expected spend is below $2 at the observed $1.39/hr rate.
+The targeted multi-seed confirmation and full-dataset coverage audits completed
+under the cap and left zero pods and zero network volumes. The next paid run
+should be a narrow region-balanced LSO check, not a broad exploratory sweep.
