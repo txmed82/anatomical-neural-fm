@@ -20,7 +20,8 @@ credible demo nucleus that justifies one carefully gated broadening experiment.
 | fine shuffle control | fine regions, seeds 0-2 | +0.042 | -0.012 | true 3/3, shuffled 1/3 |
 | shared-parent shuffle control | shared parent regions, seeds 0-2 | +0.038 | -0.012 | true 3/3, shuffled 1/3 |
 
-Canonical source: `docs/csh_zad_019_signal_audit.md`.
+Canonical source: `docs/csh_zad_019_signal_audit.md`. Machine-readable
+metrics: `docs/csh_zad_019_demo_metrics.json`.
 
 ## Why This Is Real Enough To Demo
 

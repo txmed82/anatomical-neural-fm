@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import argparse
+import ast
 import json
 import re
 from dataclasses import dataclass
@@ -176,6 +177,44 @@ def parse_split_diagnostics(log_path: Path, holdout: str) -> list[SplitDiagnosti
     return diagnostics
 
 
+def parse_split_diagnostic_from_audit(path: Path, holdout: str) -> SplitDiagnostic | None:
+    """Recover the stable split diagnostic from an existing generated audit."""
+    if not path.exists():
+        return None
+    lines = path.read_text().splitlines()
+    allowed_regions: tuple[str, ...] = ()
+    for idx, line in enumerate(lines):
+        if not line.startswith("| ") or "train_subjects" in line or "---" in line:
+            continue
+        cells = [cell.strip() for cell in line.strip().strip("|").split("|")]
+        if len(cells) != 6 or holdout not in cells[1]:
+            continue
+        try:
+            train_balance = ast.literal_eval(cells[4])
+            eval_balance = ast.literal_eval(cells[5])
+        except (SyntaxError, ValueError):
+            continue
+        for later in lines[idx + 1:]:
+            if later.startswith("## "):
+                break
+            if later.startswith("`") and later.endswith("`"):
+                allowed_regions = tuple(part.strip(" `") for part in later.split(",") if part.strip())
+                break
+        return SplitDiagnostic(
+            region_filter="shared_regions",
+            region_granularity="parent",
+            n_allowed_regions=len(allowed_regions) or None,
+            allowed_regions=allowed_regions,
+            n_train_trials=int(cells[2]),
+            n_eval_trials=int(cells[3]),
+            train_class_balance={str(k): int(v) for k, v in train_balance.items()},
+            eval_class_balance={str(k): int(v) for k, v in eval_balance.items()},
+            train_subjects=tuple(subject.strip() for subject in cells[0].split(",") if subject.strip()),
+            eval_subjects=tuple(subject.strip() for subject in cells[1].split(",") if subject.strip()),
+        )
+    return None
+
+
 def fmt_delta(value: float) -> str:
     return f"{value:+.3f}"
 
@@ -188,7 +227,21 @@ def fmt_deltas(values: Iterable[float]) -> str:
     return ",".join(fmt_delta(value) for value in values)
 
 
-def write_report(
+def result_to_json(row: ResultRow) -> dict:
+    positives = sum(1 for delta in row.seed_deltas if delta > 0)
+    return {
+        "source": row.source,
+        "holdout": row.holdout,
+        "arm": row.arm,
+        "n_seeds": row.n_seeds,
+        "mean_auc": row.mean_auc,
+        "mean_delta_vs_shared": row.mean_delta,
+        "seed_deltas": list(row.seed_deltas),
+        "positive_seeds": positives,
+    }
+
+
+def build_evidence(
     *,
     manifest_path: Path,
     seed0_path: Path,
@@ -196,9 +249,9 @@ def write_report(
     fine_shuffle_path: Path,
     shared_parent_path: Path,
     log_path: Path,
-    out_path: Path,
     holdout: str,
-) -> None:
+    split_fallback_path: Path | None = None,
+) -> dict:
     seed0_rows = parse_manual_delta_rows(seed0_path, "matched seed0 screen")
     confirm_rows = parse_lso_rows(confirm_path, "matched seeds1-2 confirmation")
     fine_rows = parse_lso_rows(fine_shuffle_path, "fine region shuffle control")
@@ -224,7 +277,8 @@ def write_report(
         ),
         None,
     )
-
+    if shared_parent_split is None and split_fallback_path is not None:
+        shared_parent_split = parse_split_diagnostic_from_audit(split_fallback_path, holdout)
     evidence_rows = [
         *rows_for(seed0_rows, holdout, {"pure_anatomy", "region_only"}),
         *rows_for(confirm_rows, holdout, {"pure_anatomy", "region_only"}),
@@ -235,6 +289,90 @@ def write_report(
         evidence_rows.append(combined_region)
     evidence_rows.extend(rows_for(fine_rows, holdout, {"region_only", "region_shuffle"}))
     evidence_rows.extend(rows_for(parent_rows, holdout, {"region_only", "region_shuffle"}))
+    return {
+        "holdout": holdout,
+        "manifest": {
+            "path": display_path(manifest_path),
+            "n_recordings": manifest_subject["manifest_n_recordings"],
+            "n_subjects": manifest_subject["manifest_n_subjects"],
+            "holdout_recordings": manifest_subject["n_recordings"],
+            "holdout_units_meta": manifest_subject["n_units_meta"],
+            "holdout_labs": manifest_subject["labs"],
+            "holdout_probes": manifest_subject["probes"],
+        },
+        "shared_parent_split": None if shared_parent_split is None else {
+            "region_filter": shared_parent_split.region_filter,
+            "region_granularity": shared_parent_split.region_granularity,
+            "n_allowed_regions": shared_parent_split.n_allowed_regions,
+            "allowed_regions": list(shared_parent_split.allowed_regions),
+            "n_train_trials": shared_parent_split.n_train_trials,
+            "n_eval_trials": shared_parent_split.n_eval_trials,
+            "train_class_balance": shared_parent_split.train_class_balance,
+            "eval_class_balance": shared_parent_split.eval_class_balance,
+            "train_subjects": list(shared_parent_split.train_subjects),
+            "eval_subjects": list(shared_parent_split.eval_subjects),
+        },
+        "evidence_rows": [result_to_json(row) for row in evidence_rows],
+    }
+
+
+def write_report(
+    *,
+    manifest_path: Path,
+    seed0_path: Path,
+    confirm_path: Path,
+    fine_shuffle_path: Path,
+    shared_parent_path: Path,
+    log_path: Path,
+    out_path: Path,
+    holdout: str,
+    split_fallback_path: Path | None = None,
+) -> None:
+    evidence = build_evidence(
+        manifest_path=manifest_path,
+        seed0_path=seed0_path,
+        confirm_path=confirm_path,
+        fine_shuffle_path=fine_shuffle_path,
+        shared_parent_path=shared_parent_path,
+        log_path=log_path,
+        holdout=holdout,
+        split_fallback_path=split_fallback_path,
+    )
+    manifest_subject = {
+        "manifest_n_recordings": evidence["manifest"]["n_recordings"],
+        "manifest_n_subjects": evidence["manifest"]["n_subjects"],
+        "n_recordings": evidence["manifest"]["holdout_recordings"],
+        "n_units_meta": evidence["manifest"]["holdout_units_meta"],
+        "probes": evidence["manifest"]["holdout_probes"],
+        "labs": evidence["manifest"]["holdout_labs"],
+    }
+    shared_parent_split_data = evidence["shared_parent_split"]
+    shared_parent_split = None
+    if shared_parent_split_data is not None:
+        shared_parent_split = SplitDiagnostic(
+            region_filter=shared_parent_split_data["region_filter"],
+            region_granularity=shared_parent_split_data["region_granularity"],
+            n_allowed_regions=shared_parent_split_data["n_allowed_regions"],
+            allowed_regions=tuple(shared_parent_split_data["allowed_regions"]),
+            n_train_trials=shared_parent_split_data["n_train_trials"],
+            n_eval_trials=shared_parent_split_data["n_eval_trials"],
+            train_class_balance=shared_parent_split_data["train_class_balance"],
+            eval_class_balance=shared_parent_split_data["eval_class_balance"],
+            train_subjects=tuple(shared_parent_split_data["train_subjects"]),
+            eval_subjects=tuple(shared_parent_split_data["eval_subjects"]),
+        )
+    evidence_rows = [
+        ResultRow(
+            source=row["source"],
+            holdout=row["holdout"],
+            arm=row["arm"],
+            n_seeds=row["n_seeds"],
+            mean_auc=row["mean_auc"],
+            mean_delta=row["mean_delta_vs_shared"],
+            seed_deltas=tuple(row["seed_deltas"]),
+        )
+        for row in evidence["evidence_rows"]
+    ]
 
     lines = [
         "# CSH_ZAD_019 Cross-Animal Anatomy Signal Audit",
@@ -337,6 +475,32 @@ def write_report(
     out_path.write_text("\n".join(lines))
 
 
+def write_json_report(
+    *,
+    manifest_path: Path,
+    seed0_path: Path,
+    confirm_path: Path,
+    fine_shuffle_path: Path,
+    shared_parent_path: Path,
+    log_path: Path,
+    out_path: Path,
+    holdout: str,
+    split_fallback_path: Path | None = None,
+) -> None:
+    evidence = build_evidence(
+        manifest_path=manifest_path,
+        seed0_path=seed0_path,
+        confirm_path=confirm_path,
+        fine_shuffle_path=fine_shuffle_path,
+        shared_parent_path=shared_parent_path,
+        log_path=log_path,
+        holdout=holdout,
+        split_fallback_path=split_fallback_path,
+    )
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    out_path.write_text(json.dumps(evidence, indent=2, sort_keys=True) + "\n")
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument("--manifest", type=Path, default=REPO_ROOT / "manifests/ibl_bwm_region_matched_support80_best6.json")
@@ -346,6 +510,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--shared-parent-results", type=Path, default=REPO_ROOT / "docs/lso_csh_zad_019_shared_parent_shuffle_results.md")
     parser.add_argument("--log", type=Path, default=REPO_ROOT / "docs/cloud_phase3_5_runpod.log")
     parser.add_argument("--out", type=Path, default=REPO_ROOT / "docs/csh_zad_019_signal_audit.md")
+    parser.add_argument("--json-out", type=Path, default=None)
     parser.add_argument("--holdout", default="CSH_ZAD_019")
     return parser.parse_args()
 
@@ -361,8 +526,22 @@ def main() -> int:
         log_path=args.log,
         out_path=args.out,
         holdout=args.holdout,
+        split_fallback_path=args.out,
     )
     print(f"wrote {args.out}")
+    if args.json_out is not None:
+        write_json_report(
+            manifest_path=args.manifest,
+            seed0_path=args.seed0_results,
+            confirm_path=args.confirm_results,
+            fine_shuffle_path=args.fine_shuffle_results,
+            shared_parent_path=args.shared_parent_results,
+            log_path=args.log,
+            out_path=args.json_out,
+            holdout=args.holdout,
+            split_fallback_path=args.out,
+        )
+        print(f"wrote {args.json_out}")
     return 0
 
 
