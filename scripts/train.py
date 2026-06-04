@@ -1,7 +1,7 @@
-"""Real training script: AnatomicalPOYO for IBL choice decoding (L/R) with held-out-animal eval.
+"""Real training script: AnatomicalPOYO for IBL decoding with held-out-animal eval.
 
 Sampling is trial-aligned: each training window is [stimOn_time, stimOn_time + window_len]
-from a real IBL trial; target is sign(trials.choice). Nogo trials (choice=0) skipped.
+from a real IBL trial. Targets can be animal choice or stimulus side.
 Loss is BCE-with-logits; eval reports accuracy + AUC + loss.
 
 Run on M4:
@@ -71,6 +71,9 @@ def parse_args():
                    help="'shared' uses one trainable task query for all recordings, which is "
                         "the primary cross-animal setting. 'session' preserves the original "
                         "per-recording query for diagnostics.")
+    p.add_argument("--target-mode", default="choice", choices=["choice", "stimulus_side"],
+                   help="'choice' decodes animal L/R choice. 'stimulus_side' decodes whether "
+                        "the visual stimulus contrast was stronger on the right than left.")
     # Model
     p.add_argument("--dim", type=int, default=64)
     p.add_argument("--depth", type=int, default=2)
@@ -81,7 +84,8 @@ def parse_args():
     # Ablation: which conditioning channels are on
     p.add_argument("--arm", default="baseline",
                    choices=["baseline", "shared_baseline", "region", "cell_type", "region_ctype",
-                            "pure_anatomy", "waveform", "waveform_only"])
+                            "region_only", "cell_type_only", "pure_anatomy",
+                            "waveform", "waveform_only"])
     # Optim
     p.add_argument("--batch-size", type=int, default=4)
     p.add_argument("--lr", type=float, default=3e-4)
@@ -171,11 +175,33 @@ def build_model(vocab, args, n_cell_types: int):
     return model, flags
 
 
-def build_trial_samples(recs, rids: list[str], window_len: float) -> list[tuple[str, float, float]]:
+def _target_from_trial(rec, idx: int, target_mode: str) -> float | None:
+    if target_mode == "choice":
+        choice = int(np.asarray(rec.trials.choice, dtype=np.int64)[idx])
+        if choice == 0:
+            return None
+        return 0.0 if choice == -1 else 1.0
+    if target_mode == "stimulus_side":
+        left = np.asarray(rec.trials.contrast_left, dtype=np.float64)[idx]
+        right = np.asarray(rec.trials.contrast_right, dtype=np.float64)[idx]
+        left = 0.0 if not np.isfinite(left) else float(left)
+        right = 0.0 if not np.isfinite(right) else float(right)
+        if left == right:
+            return None
+        return 1.0 if right > left else 0.0
+    raise ValueError(f"unknown target_mode {target_mode!r}")
+
+
+def build_trial_samples(
+    recs,
+    rids: list[str],
+    window_len: float,
+    target_mode: str,
+) -> list[tuple[str, float, float]]:
     """Return a flat list of (recording_id, window_start_time, choice_binary) triples.
 
     Each entry is a trial-aligned window: t0 = trials.stim_on_times, t1 = t0 + window_len.
-    Target is 0.0 for left (choice=-1) or 1.0 for right (choice=+1). Nogo (choice=0)
+    Target is 0.0 for left and 1.0 for right. Invalid/no-go/equal-contrast trials
     and trials with NaN stim_on_time or windows past the recording domain are skipped.
     """
     out: list[tuple[str, float, float]] = []
@@ -183,15 +209,16 @@ def build_trial_samples(recs, rids: list[str], window_len: float) -> list[tuple[
         rec = recs[rid]
         if not hasattr(rec, "trials"):
             continue
-        choice = np.asarray(rec.trials.choice, dtype=np.int64)
         stim_on = np.asarray(rec.trials.stim_on_times, dtype=np.float64)
         domain_hi = float(rec.domain.end[-1])
-        for c, t0 in zip(choice, stim_on):
-            if c == 0 or not np.isfinite(t0):
+        for idx, t0 in enumerate(stim_on):
+            if not np.isfinite(t0):
                 continue
             if t0 + window_len > domain_hi:
                 continue
-            target = 0.0 if c == -1 else 1.0
+            target = _target_from_trial(rec, idx, target_mode)
+            if target is None:
+                continue
             out.append((rid, float(t0), target))
     return out
 
@@ -402,8 +429,8 @@ def main():
         animal_split = split_recordings_by_subject(vocab["subject_by_rid"], args.holdout)
         train_rids = animal_split.train_rids
         eval_rids = animal_split.eval_rids
-        train_trials = build_trial_samples(vocab["recs"], train_rids, args.window_len)
-        eval_trials = build_trial_samples(vocab["recs"], eval_rids, args.window_len)
+        train_trials = build_trial_samples(vocab["recs"], train_rids, args.window_len, args.target_mode)
+        eval_trials = build_trial_samples(vocab["recs"], eval_rids, args.window_len, args.target_mode)
         split_info = {"split_mode": "animal",
                       "holdout_subjects": animal_split.holdout_subjects,
                       "train_subjects": animal_split.train_subjects,
@@ -414,7 +441,7 @@ def main():
         all_rids = list(vocab["recs"].keys())
         train_rids = all_rids
         eval_rids = all_rids
-        all_trials = build_trial_samples(vocab["recs"], all_rids, args.window_len)
+        all_trials = build_trial_samples(vocab["recs"], all_rids, args.window_len, args.target_mode)
         split_rng = np.random.default_rng(args.split_seed)
         perm = split_rng.permutation(len(all_trials))
         n_train = int(len(all_trials) * 0.8)
@@ -429,6 +456,7 @@ def main():
     n_eval_right = sum(1 for *_, t in eval_trials if t == 1.0)
     log({"event": "split", "n_recordings": len(ds.recording_ids),
          **split_info,
+         "target_mode": args.target_mode,
          "n_train_trials": len(train_trials),
          "n_eval_trials": len(eval_trials),
          "train_class_balance": {"L": n_train_left, "R": n_train_right},

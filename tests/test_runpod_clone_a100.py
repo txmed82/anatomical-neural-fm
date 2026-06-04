@@ -25,6 +25,7 @@ def config() -> ClonePilotConfig:
         eval_batches=50,
         manifest_path="manifests/ibl_bwm_phase4.json",
         seeds="0 1 2",
+        target_mode="stimulus_side",
     )
 
 
@@ -43,6 +44,8 @@ def test_start_script_clones_branch_builds_data_and_pushes_results() -> None:
     assert "export SEEDS='0 1 2'" in script
     assert "export MAX_STEPS=600" in script
     assert "export EVAL_BATCHES=50" in script
+    assert "export TARGET_MODE=stimulus_side" in script
+    assert "- target mode: stimulus_side" in script
     assert "bash scripts/run_phase2_cloud_a100.sh" in script
     assert "git push origin HEAD:runpod-pilot-phases-3-5" in script
     assert "DELETE" in script

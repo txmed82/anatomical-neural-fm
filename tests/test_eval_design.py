@@ -81,3 +81,18 @@ def test_shared_baseline_uses_no_unit_specific_conditioning():
         "use_cell_type_emb": False,
         "use_waveform_emb": False,
     }
+
+
+def test_identity_free_single_channel_anatomy_arms():
+    assert arm_flags("region_only") == {
+        "use_unit_emb": False,
+        "use_region_emb": True,
+        "use_cell_type_emb": False,
+        "use_waveform_emb": False,
+    }
+    assert arm_flags("cell_type_only") == {
+        "use_unit_emb": False,
+        "use_region_emb": False,
+        "use_cell_type_emb": True,
+        "use_waveform_emb": False,
+    }

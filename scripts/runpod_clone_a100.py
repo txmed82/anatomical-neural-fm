@@ -38,6 +38,7 @@ class ClonePilotConfig:
     eval_batches: int
     manifest_path: str
     seeds: str
+    target_mode: str
 
 
 def current_branch() -> str:
@@ -71,6 +72,7 @@ def build_start_script(config: ClonePilotConfig) -> str:
     eval_batches = shlex.quote(str(config.eval_batches))
     manifest_path = shlex.quote(config.manifest_path)
     seeds = shlex.quote(config.seeds)
+    target_mode = shlex.quote(config.target_mode)
     repo_dir_q = shlex.quote(repo_dir)
     return f"""set -uo pipefail
 LOG_PATH=/tmp/runpod_phase3_5.log
@@ -99,6 +101,7 @@ Configuration:
 - build recordings: {config.build_recordings}
 - max steps: {config.max_steps}
 - eval batches: {config.eval_batches}
+- target mode: {config.target_mode}
 - max runtime seconds: {config.max_runtime_seconds}
 - output root: \`runs/phase2_cloud_a100\`
 
@@ -176,6 +179,7 @@ cat > /tmp/run_phase3_5_body.sh <<'RUNSCRIPT'
   export SEEDS={seeds}
   export MAX_STEPS={max_steps}
   export EVAL_BATCHES={eval_batches}
+  export TARGET_MODE={target_mode}
   bash scripts/run_phase2_cloud_a100.sh
 RUNSCRIPT
 timeout {run_timeout} bash /tmp/run_phase3_5_body.sh
@@ -231,6 +235,7 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--eval-batches", type=int, default=50)
     p.add_argument("--manifest-path", default="manifests/ibl_bwm_phase4.json")
     p.add_argument("--seeds", default="0 1 2")
+    p.add_argument("--target-mode", default="choice", choices=["choice", "stimulus_side"])
     p.add_argument("--name-prefix", default="anfm-a100-clone-pilot")
     p.add_argument("--dry-run", action="store_true")
     p.add_argument("--poll", action="store_true")
@@ -253,6 +258,7 @@ def main() -> int:
         eval_batches=args.eval_batches,
         manifest_path=args.manifest_path,
         seeds=args.seeds,
+        target_mode=args.target_mode,
     )
     env = load_dotenv(REPO_ROOT / ".env")
     runpod_key = require_env(env, "RUNPOD_API_KEY")
