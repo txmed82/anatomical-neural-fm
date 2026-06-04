@@ -1,69 +1,124 @@
-Get:1 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  InRelease [1581 B]
-Get:2 http://archive.ubuntu.com/ubuntu jammy InRelease [270 kB]
-Get:3 http://security.ubuntu.com/ubuntu jammy-security InRelease [129 kB]
-Get:4 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  Packages [2705 kB]
-Get:5 http://archive.ubuntu.com/ubuntu jammy-updates InRelease [128 kB]
-Get:6 http://security.ubuntu.com/ubuntu jammy-security/restricted amd64 Packages [7129 kB]
-Get:7 https://ppa.launchpadcontent.net/deadsnakes/ppa/ubuntu jammy InRelease [18.1 kB]
-Get:8 http://archive.ubuntu.com/ubuntu jammy-backports InRelease [127 kB]
-Get:9 http://archive.ubuntu.com/ubuntu jammy/universe amd64 Packages [17.5 MB]
-Get:10 http://security.ubuntu.com/ubuntu jammy-security/universe amd64 Packages [1299 kB]
-Get:11 https://ppa.launchpadcontent.net/deadsnakes/ppa/ubuntu jammy/main amd64 Packages [38.9 kB]
-Get:12 http://security.ubuntu.com/ubuntu jammy-security/multiverse amd64 Packages [77.8 kB]
-Get:13 http://security.ubuntu.com/ubuntu jammy-security/main amd64 Packages [3974 kB]
-Get:14 http://archive.ubuntu.com/ubuntu jammy/multiverse amd64 Packages [266 kB]
-Get:15 http://archive.ubuntu.com/ubuntu jammy/main amd64 Packages [1792 kB]
-Get:16 http://archive.ubuntu.com/ubuntu jammy/restricted amd64 Packages [164 kB]
-Get:17 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 Packages [4344 kB]
-Get:18 http://archive.ubuntu.com/ubuntu jammy-updates/universe amd64 Packages [1607 kB]
-Get:19 http://archive.ubuntu.com/ubuntu jammy-updates/multiverse amd64 Packages [86.4 kB]
-Get:20 http://archive.ubuntu.com/ubuntu jammy-updates/restricted amd64 Packages [7451 kB]
-Get:21 http://archive.ubuntu.com/ubuntu jammy-backports/main amd64 Packages [82.8 kB]
-Get:22 http://archive.ubuntu.com/ubuntu jammy-backports/universe amd64 Packages [35.6 kB]
-Fetched 49.2 MB in 1s (40.1 MB/s)
-Reading package lists...
-Reading package lists...
-Building dependency tree...
-Reading state information...
-The following additional packages will be installed:
-  libcurl4
-Suggested packages:
-  gettext-base git-daemon-run | git-daemon-sysvinit git-doc git-email git-gui
-  gitk gitweb git-cvs git-mediawiki git-svn
-Recommended packages:
-  less
-The following packages will be upgraded:
-  ca-certificates curl git libcurl4
-4 upgraded, 0 newly installed, 0 to remove and 154 not upgraded.
-Need to get 3820 kB of archives.
-After this operation, 11.3 kB of additional disk space will be used.
-Get:1 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 ca-certificates all 20240203~22.04.1 [162 kB]
-Get:2 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 curl amd64 7.81.0-1ubuntu1.24 [194 kB]
-Get:3 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libcurl4 amd64 7.81.0-1ubuntu1.24 [291 kB]
-Get:4 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 git amd64 1:2.34.1-1ubuntu1.17 [3174 kB]
-debconf: delaying package configuration, since apt-utils is not installed
-Fetched 3820 kB in 0s (13.4 MB/s)
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 24135 files and directories currently installed.)
-Preparing to unpack .../ca-certificates_20240203~22.04.1_all.deb ...
-Unpacking ca-certificates (20240203~22.04.1) over (20230311ubuntu0.22.04.1) ...
-Preparing to unpack .../curl_7.81.0-1ubuntu1.24_amd64.deb ...
-Unpacking curl (7.81.0-1ubuntu1.24) over (7.81.0-1ubuntu1.18) ...
-Preparing to unpack .../libcurl4_7.81.0-1ubuntu1.24_amd64.deb ...
-Unpacking libcurl4:amd64 (7.81.0-1ubuntu1.24) over (7.81.0-1ubuntu1.18) ...
-Preparing to unpack .../git_1%3a2.34.1-1ubuntu1.17_amd64.deb ...
-Unpacking git (1:2.34.1-1ubuntu1.17) over (1:2.34.1-1ubuntu1.11) ...
-Setting up ca-certificates (20240203~22.04.1) ...
-Updating certificates in /etc/ssl/certs...
-rehash: warning: skipping ca-certificates.crt,it does not contain exactly one certificate or CRL
-14 added, 5 removed; done.
-Setting up git (1:2.34.1-1ubuntu1.17) ...
-Setting up libcurl4:amd64 (7.81.0-1ubuntu1.24) ...
-Setting up curl (7.81.0-1ubuntu1.24) ...
-Processing triggers for libc-bin (2.35-0ubuntu3.8) ...
-Processing triggers for ca-certificates (20240203~22.04.1) ...
-Updating certificates in /etc/ssl/certs...
-0 added, 0 removed; done.
-Running hooks in /etc/ca-certificates/update.d...
-done.
+minimal data-build system tools already installed
 Cloning into 'anatomical-neural-fm'...
-=== pushing data-build startup marker ===
+uv not installed; using python3 minimal-data setup
+=== syncing environment ===
+Requirement already satisfied: pip in /usr/local/lib/python3.11/dist-packages (24.2)
+Collecting pip
+  Downloading pip-26.1.2-py3-none-any.whl.metadata (4.6 kB)
+Downloading pip-26.1.2-py3-none-any.whl (1.8 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.8/1.8 MB 37.7 MB/s eta 0:00:00
+Installing collected packages: pip
+Successfully installed pip-26.1.2
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable.It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+
+[notice] A new release of pip is available: 24.2 -> 26.1.2
+[notice] To update, run: python3 -m pip install --upgrade pip
+Collecting boto3
+  Downloading boto3-1.43.22-py3-none-any.whl.metadata (6.6 kB)
+Collecting h5py
+  Downloading h5py-3.16.0-cp311-cp311-manylinux_2_28_x86_64.whl.metadata (3.0 kB)
+Requirement already satisfied: numpy in /usr/local/lib/python3.11/dist-packages (1.26.3)
+Collecting one-api
+  Downloading one_api-3.5.2-py3-none-any.whl.metadata (4.7 kB)
+Collecting iblatlas
+  Downloading iblatlas-1.0.0-py3-none-any.whl.metadata (3.5 kB)
+Collecting temporaldata
+  Downloading temporaldata-0.1.6-py3-none-any.whl.metadata (3.4 kB)
+Collecting botocore<1.44.0,>=1.43.22 (from boto3)
+  Downloading botocore-1.43.22-py3-none-any.whl.metadata (5.6 kB)
+Collecting jmespath<2.0.0,>=0.7.1 (from boto3)
+  Downloading jmespath-1.1.0-py3-none-any.whl.metadata (7.6 kB)
+Collecting s3transfer<0.19.0,>=0.18.0 (from boto3)
+  Downloading s3transfer-0.18.0-py3-none-any.whl.metadata (1.7 kB)
+Requirement already satisfied: python-dateutil<3.0.0,>=2.1 in /usr/local/lib/python3.11/dist-packages (from botocore<1.44.0,>=1.43.22->boto3) (2.9.0.post0)
+Requirement already satisfied: urllib3!=2.2.0,<3,>=1.25.4 in /usr/local/lib/python3.11/dist-packages (from botocore<1.44.0,>=1.43.22->boto3) (2.2.3)
+Requirement already satisfied: six>=1.5 in /usr/lib/python3/dist-packages (from python-dateutil<3.0.0,>=2.1->botocore<1.44.0,>=1.43.22->boto3) (1.16.0)
+Collecting ruff (from one-api)
+  Downloading ruff-0.15.16-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (26 kB)
+Collecting pandas>=1.5.0 (from one-api)
+  Downloading pandas-3.0.3-cp311-cp311-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl.metadata (79 kB)
+Collecting tqdm>=4.32.1 (from one-api)
+  Downloading tqdm-4.67.3-py3-none-any.whl.metadata (57 kB)
+Requirement already satisfied: requests>=2.22.0 in /usr/local/lib/python3.11/dist-packages (from one-api) (2.32.3)
+Collecting iblutil>=1.14.0 (from one-api)
+  Downloading iblutil-1.20.0-py3-none-any.whl.metadata (1.6 kB)
+Requirement already satisfied: packaging in /usr/local/lib/python3.11/dist-packages (from one-api) (24.1)
+Requirement already satisfied: pyyaml in /usr/local/lib/python3.11/dist-packages (from one-api) (6.0.2)
+Collecting pynrrd (from iblatlas)
+  Downloading pynrrd-1.1.3-py3-none-any.whl.metadata (5.4 kB)
+Collecting matplotlib (from iblatlas)
+  Downloading matplotlib-3.10.9-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (52 kB)
+Collecting scipy (from iblatlas)
+  Downloading scipy-1.17.1-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (62 kB)
+Requirement already satisfied: setuptools>=60.0.0 in /usr/local/lib/python3.11/dist-packages (from temporaldata) (75.1.0)
+Collecting colorlog>=6.0.0 (from iblutil>=1.14.0->one-api)
+  Downloading colorlog-6.10.1-py3-none-any.whl.metadata (11 kB)
+Collecting numba>0.53.1 (from iblutil>=1.14.0->one-api)
+  Downloading numba-0.65.1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (2.9 kB)
+Collecting pyarrow (from iblutil>=1.14.0->one-api)
+  Downloading pyarrow-24.0.0-cp311-cp311-manylinux_2_28_x86_64.whl.metadata (3.0 kB)
+Collecting llvmlite<0.48,>=0.47.0dev0 (from numba>0.53.1->iblutil>=1.14.0->one-api)
+  Downloading llvmlite-0.47.0-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (5.0 kB)
+Requirement already satisfied: charset-normalizer<4,>=2 in /usr/local/lib/python3.11/dist-packages (from requests>=2.22.0->one-api) (3.3.2)
+Requirement already satisfied: idna<4,>=2.5 in /usr/local/lib/python3.11/dist-packages (from requests>=2.22.0->one-api) (3.10)
+Requirement already satisfied: certifi>=2017.4.17 in /usr/local/lib/python3.11/dist-packages (from requests>=2.22.0->one-api) (2024.8.30)
+Collecting contourpy>=1.0.1 (from matplotlib->iblatlas)
+  Downloading contourpy-1.3.3-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (5.5 kB)
+Collecting cycler>=0.10 (from matplotlib->iblatlas)
+  Downloading cycler-0.12.1-py3-none-any.whl.metadata (3.8 kB)
+Collecting fonttools>=4.22.0 (from matplotlib->iblatlas)
+  Downloading fonttools-4.63.0-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (118 kB)
+Collecting kiwisolver>=1.3.1 (from matplotlib->iblatlas)
+  Downloading kiwisolver-1.5.0-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (5.1 kB)
+Requirement already satisfied: pillow>=8 in /usr/local/lib/python3.11/dist-packages (from matplotlib->iblatlas) (10.2.0)
+Collecting pyparsing>=3 (from matplotlib->iblatlas)
+  Downloading pyparsing-3.3.2-py3-none-any.whl.metadata (5.8 kB)
+Requirement already satisfied: typing_extensions in /usr/local/lib/python3.11/dist-packages (from pynrrd->iblatlas) (4.9.0)
+Collecting numpy
+  Downloading numpy-2.3.5-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (62 kB)
+Downloading boto3-1.43.22-py3-none-any.whl (140 kB)
+Downloading botocore-1.43.22-py3-none-any.whl (15.1 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 15.1/15.1 MB 109.7 MB/s  0:00:00
+Downloading jmespath-1.1.0-py3-none-any.whl (20 kB)
+Downloading s3transfer-0.18.0-py3-none-any.whl (88 kB)
+Downloading h5py-3.16.0-cp311-cp311-manylinux_2_28_x86_64.whl (5.0 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 5.0/5.0 MB 108.5 MB/s  0:00:00
+Downloading one_api-3.5.2-py3-none-any.whl (1.0 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.0/1.0 MB 201.2 MB/s  0:00:00
+Downloading iblatlas-1.0.0-py3-none-any.whl (208 kB)
+Downloading temporaldata-0.1.6-py3-none-any.whl (44 kB)
+Downloading iblutil-1.20.0-py3-none-any.whl (43 kB)
+Downloading colorlog-6.10.1-py3-none-any.whl (11 kB)
+Downloading numba-0.65.1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (3.7 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 3.7/3.7 MB 153.7 MB/s  0:00:00
+Downloading llvmlite-0.47.0-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (56.3 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 56.3/56.3 MB 220.0 MB/s  0:00:00
+Downloading pandas-3.0.3-cp311-cp311-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl (11.3 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 11.3/11.3 MB 193.1 MB/s  0:00:00
+Downloading tqdm-4.67.3-py3-none-any.whl (78 kB)
+Downloading matplotlib-3.10.9-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (8.8 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 8.8/8.8 MB 115.2 MB/s  0:00:00
+Downloading contourpy-1.3.3-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (355 kB)
+Downloading cycler-0.12.1-py3-none-any.whl (8.3 kB)
+Downloading fonttools-4.63.0-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (5.1 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 5.1/5.1 MB 163.5 MB/s  0:00:00
+Downloading kiwisolver-1.5.0-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (1.4 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.4/1.4 MB 52.1 MB/s  0:00:00
+Downloading pyparsing-3.3.2-py3-none-any.whl (122 kB)
+Downloading pyarrow-24.0.0-cp311-cp311-manylinux_2_28_x86_64.whl (48.8 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 48.8/48.8 MB 165.9 MB/s  0:00:00
+Downloading pynrrd-1.1.3-py3-none-any.whl (23 kB)
+Downloading ruff-0.15.16-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (11.4 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 11.4/11.4 MB 179.6 MB/s  0:00:00
+Downloading scipy-1.17.1-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (35.3 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 35.3/35.3 MB 161.6 MB/s  0:00:00
+Downloading numpy-2.3.5-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (16.9 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 16.9/16.9 MB 251.0 MB/s  0:00:00
+Installing collected packages: tqdm, ruff, pyparsing, pyarrow, numpy, llvmlite, kiwisolver, jmespath, fonttools, cycler, colorlog, scipy, pynrrd, pandas, numba, h5py, contourpy, botocore, temporaldata, s3transfer, matplotlib, iblutil, boto3, one-api, iblatlas
+
+Successfully installed boto3-1.43.22 botocore-1.43.22 colorlog-6.10.1 contourpy-1.3.3 cycler-0.12.1 fonttools-4.63.0 h5py-3.16.0 iblatlas-1.0.0 iblutil-1.20.0 jmespath-1.1.0 kiwisolver-1.5.0 llvmlite-0.47.0 matplotlib-3.10.9 numba-0.65.1 numpy-2.3.5 one-api-3.5.2 pandas-3.0.3 pyarrow-24.0.0 pynrrd-1.1.3 pyparsing-3.3.2 ruff-0.15.16 s3transfer-0.18.0 scipy-1.17.1 temporaldata-0.1.6 tqdm-4.67.3
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+upload /tmp/runpod_phase3_5.log -> s3://rppfvo6ifn/brainsets/ibl_bwm/logs/docs_compact_support80_best6_shard0_gpu_results.log
+upload-log count: 1
+=== skipping local verification ===
+upload /tmp/runpod_phase3_5.log -> s3://rppfvo6ifn/brainsets/ibl_bwm/logs/docs_compact_support80_best6_shard0_gpu_results.log
