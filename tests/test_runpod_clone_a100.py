@@ -95,6 +95,21 @@ def test_start_script_can_skip_pod_verification() -> None:
     assert "uv run python scripts/build_cell_type_priors.py" in script
 
 
+def test_start_script_can_run_data_build_only() -> None:
+    cfg = replace(config(), skip_cell_type_priors=True, skip_sweep=True)
+
+    script = build_start_script(cfg)
+
+    assert "=== skipping cell-type priors ===" in script
+    assert "uv run python scripts/build_cell_type_priors.py" not in script
+    assert "=== skipping phase 3-5 sweep ===" in script
+    assert "bash scripts/run_phase2_cloud_a100.sh" not in script
+    assert "- skip cell-type priors: True" in script
+    assert "- skip sweep: True" in script
+    assert "scripts/build_ibl_brainset_batch.py --manifest manifests/ibl_bwm_phase4.json" in script
+    assert "scripts/write_dataset_manifest.py" in script
+
+
 def test_start_script_can_pass_build_shard_args() -> None:
     cfg = replace(
         config(),

@@ -48,6 +48,8 @@ class ClonePilotConfig:
     s3_prefix: str = "brainsets/ibl_bwm"
     s3_endpoint_url: str = ""
     s3_datacenter: str = ""
+    skip_cell_type_priors: bool = False
+    skip_sweep: bool = False
 
 
 def current_branch() -> str:
@@ -105,6 +107,24 @@ def build_start_script(config: ClonePilotConfig) -> str:
             "  uv run python scripts/00_ibl_smoke_test.py\n"
         )
     )
+    cell_type_priors_block = (
+        '  echo "=== skipping cell-type priors ==="\n'
+        if config.skip_cell_type_priors
+        else "  uv run python scripts/build_cell_type_priors.py\n"
+    )
+    sweep_block = (
+        '  echo "=== skipping phase 3-5 sweep ==="\n'
+        if config.skip_sweep
+        else (
+            '  echo "=== running phase 3-5 sweep ==="\n'
+            f"  export SEEDS={seeds}\n"
+            f"  export MAX_STEPS={max_steps}\n"
+            f"  export EVAL_BATCHES={eval_batches}\n"
+            f"  export TARGET_MODE={target_mode}\n"
+            f"  export OUT_ROOT={output_root}\n"
+            f"  bash {sweep_script}\n"
+        )
+    )
     return f"""set -uo pipefail
 LOG_PATH=/tmp/runpod_phase3_5.log
 REPO_DIR=/workspace/{repo_dir_q}
@@ -134,6 +154,8 @@ Configuration:
 - eval batches: {config.eval_batches}
 - target mode: {config.target_mode}
 - sweep script: {config.sweep_script}
+- skip cell-type priors: {config.skip_cell_type_priors}
+- skip sweep: {config.skip_sweep}
 - max runtime seconds: {config.max_runtime_seconds}
 - output root: \`{config.output_root}\`
 
@@ -235,7 +257,7 @@ cat > /tmp/run_phase3_5_body.sh <<'RUNSCRIPT'
   upload_log
 {verification_block.rstrip()}
   upload_log
-  uv run python scripts/build_cell_type_priors.py
+{cell_type_priors_block.rstrip()}
   upload_log
   if [ ! -f {manifest_path} ]; then
     uv run python scripts/select_ibl_manifest.py --target {build_recordings} --out {manifest_path}
@@ -259,13 +281,7 @@ cat > /tmp/run_phase3_5_body.sh <<'RUNSCRIPT'
   fi
   uv run python scripts/write_dataset_manifest.py
   upload_log
-  echo "=== running phase 3-5 sweep ==="
-  export SEEDS={seeds}
-  export MAX_STEPS={max_steps}
-  export EVAL_BATCHES={eval_batches}
-  export TARGET_MODE={target_mode}
-  export OUT_ROOT={output_root}
-  bash {sweep_script}
+{sweep_block.rstrip()}
   upload_log
 RUNSCRIPT
 timeout {run_timeout} bash /tmp/run_phase3_5_body.sh
@@ -354,6 +370,10 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--s3-prefix", default="brainsets/ibl_bwm")
     p.add_argument("--s3-endpoint-url", default="")
     p.add_argument("--s3-datacenter", default="")
+    p.add_argument("--skip-cell-type-priors", action="store_true",
+                   help="Skip ABC atlas cell-type prior construction on the pod.")
+    p.add_argument("--skip-sweep", action="store_true",
+                   help="Only build/sync BrainSet data and reports; do not run the sweep script.")
     p.add_argument("--dry-run", action="store_true")
     p.add_argument("--poll", action="store_true")
     return p.parse_args()
@@ -385,6 +405,8 @@ def main() -> int:
         s3_prefix=args.s3_prefix,
         s3_endpoint_url=args.s3_endpoint_url,
         s3_datacenter=args.s3_datacenter or (args.datacenter if args.s3_bucket else ""),
+        skip_cell_type_priors=args.skip_cell_type_priors,
+        skip_sweep=args.skip_sweep,
     )
     env = load_dotenv(REPO_ROOT / ".env")
     runpod_key = require_env(env, "RUNPOD_API_KEY")
