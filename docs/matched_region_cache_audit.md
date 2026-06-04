@@ -2,7 +2,7 @@
 
 Manifest: `manifests/ibl_bwm_region_matched_candidates.json`
 Cache: `s3://rppfvo6ifn/brainsets/ibl_bwm`
-Present: 0/48 (0.0%)
+Present: 2/48 (4.2%)
 
 ## Missing
 
@@ -37,7 +37,6 @@ Present: 0/48 (0.0%)
 | `6899a67d-2e53-4215-a52a-c7021b5da5d4_probe00.h5` |
 | `6f09ba7e-e3ce-44b0-932b-c003fb44fb89_probe01.h5` |
 | `6fb1e12c-883b-46d1-a745-473cde3232c8_probe00.h5` |
-| `7939711b-8b4d-4251-b698-b97c1eaa846e_probe01.h5` |
 | `88d24c31-52e4-49cc-9f32-6adbeb9eba87_probe00.h5` |
 | `90e524a2-aa63-47ce-b5b8-1b1941a1223a_probe00.h5` |
 | `9a6e127b-bb07-4be2-92e2-53dd858c2762_probe00.h5` |
@@ -45,7 +44,6 @@ Present: 0/48 (0.0%)
 | `a19c7a3a-7261-42ce-95d5-1f4ca46007ed_probe00.h5` |
 | `a8a8af78-16de-4841-ab07-fde4b5281a03_probe00.h5` |
 | `a8a8af78-16de-4841-ab07-fde4b5281a03_probe01.h5` |
-| `b182b754-3c3e-4942-8144-6ee790926b58_probe01.h5` |
 | `b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe00.h5` |
 | `b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe01.h5` |
 | `b9c205c3-feac-485b-a89d-afc96d9cb280_probe00.h5` |
@@ -59,4 +57,7 @@ Present: 0/48 (0.0%)
 
 ## Present
 
-none
+| filename |
+|---|
+| `7939711b-8b4d-4251-b698-b97c1eaa846e_probe01.h5` |
+| `b182b754-3c3e-4942-8144-6ee790926b58_probe01.h5` |
