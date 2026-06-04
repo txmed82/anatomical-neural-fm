@@ -53,6 +53,7 @@ class ClonePilotConfig:
     skip_cell_type_priors: bool = False
     skip_sweep: bool = False
     setup_mode: str = "project"
+    startup_smoke_only: bool = False
 
 
 def current_branch() -> str:
@@ -147,6 +148,13 @@ def build_start_script(config: ClonePilotConfig) -> str:
         if config.skip_cell_type_priors
         else "  uv run python scripts/build_cell_type_priors.py\n"
     )
+    startup_smoke_block = (
+        '  echo "=== startup smoke complete ==="\n'
+        "  upload_log\n"
+        "  exit 0"
+        if config.startup_smoke_only
+        else ""
+    )
     sweep_block = (
         '  echo "=== skipping phase 3-5 sweep ==="\n'
         if config.skip_sweep
@@ -192,6 +200,7 @@ Configuration:
 - setup mode: {config.setup_mode}
 - skip cell-type priors: {config.skip_cell_type_priors}
 - skip sweep: {config.skip_sweep}
+- startup smoke only: {config.startup_smoke_only}
 - max runtime seconds: {config.max_runtime_seconds}
 - output root: \`{config.output_root}\`
 
@@ -323,6 +332,7 @@ cat > /tmp/run_phase3_5_body.sh <<'RUNSCRIPT'
   echo "=== syncing environment ==="
   {dependency_sync_command}
   upload_log
+{startup_smoke_block}
 {verification_block.rstrip()}
   upload_log
 {cell_type_priors_block.rstrip()}
@@ -391,7 +401,8 @@ def build_pod_body(name: str, config: ClonePilotConfig, runpod_key: str, github_
         "ports": [],
         "interruptible": False,
         "env": env,
-        "dockerStartCmd": ["bash", "-lc", build_start_script(config)],
+        "dockerEntrypoint": ["bash", "-lc"],
+        "dockerStartCmd": [build_start_script(config)],
     }
     if config.compute_type == "CPU":
         cpu_flavor_ids = [flavor.strip() for flavor in config.cpu_flavor.split(",") if flavor.strip()]
@@ -457,6 +468,8 @@ def parse_args() -> argparse.Namespace:
                    help="Only build/sync BrainSet data and reports; do not run the sweep script.")
     p.add_argument("--setup-mode", choices=["project", "minimal-data"], default="project",
                    help="Dependency setup strategy. minimal-data avoids torch/project sync for cache builds.")
+    p.add_argument("--startup-smoke-only", action="store_true",
+                   help="Stop after dependency setup and first S3 log upload.")
     p.add_argument("--dry-run", action="store_true")
     p.add_argument("--poll", action="store_true")
     return p.parse_args()
@@ -493,6 +506,7 @@ def main() -> int:
         skip_cell_type_priors=args.skip_cell_type_priors,
         skip_sweep=args.skip_sweep,
         setup_mode=args.setup_mode,
+        startup_smoke_only=args.startup_smoke_only,
     )
     env = load_dotenv(REPO_ROOT / ".env")
     runpod_key = require_env(env, "RUNPOD_API_KEY")

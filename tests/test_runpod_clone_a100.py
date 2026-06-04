@@ -17,6 +17,8 @@ def config() -> ClonePilotConfig:
         branch="runpod-pilot-phases-3-5",
         repo_url="https://github.com/txmed82/anatomical-neural-fm.git",
         datacenter="US-MO-1",
+        compute_type="GPU",
+        cpu_flavor="cpu3c,cpu3g,cpu3m",
         gpu_type="NVIDIA A100 80GB PCIe",
         image_name="runpod/pytorch:test",
         container_disk_gb=80,
@@ -63,6 +65,8 @@ def test_pod_body_uses_container_disk_no_network_volume() -> None:
     assert "networkVolumeId" not in body
     assert body["volumeInGb"] == 0
     assert body["containerDiskInGb"] == 80
+    assert body["dockerEntrypoint"] == ["bash", "-lc"]
+    assert len(body["dockerStartCmd"]) == 1
     assert body["gpuTypeIds"] == ["NVIDIA A100 80GB PCIe"]
     assert body["env"]["RUNPOD_API_KEY"] == "runpod"
     assert body["env"]["GITHUB_TOKEN"] == "github"
@@ -80,6 +84,26 @@ def test_pod_body_can_use_availability_datacenter_and_gpu_list() -> None:
     assert "dataCenterIds" not in body
     assert body["dataCenterPriority"] == "availability"
     assert body["gpuTypeIds"] == ["NVIDIA L4", "NVIDIA RTX A4000"]
+
+
+def test_pod_body_can_use_cpu_flavors() -> None:
+    cfg = replace(
+        config(),
+        compute_type="CPU",
+        cpu_flavor="cpu3c,cpu5g",
+        container_disk_gb=20,
+        volume_gb=80,
+    )
+
+    body = build_pod_body("pilot", cfg, "runpod", "github")
+
+    assert body["computeType"] == "CPU"
+    assert body["cpuFlavorIds"] == ["cpu3c", "cpu5g"]
+    assert body["cpuFlavorPriority"] == "availability"
+    assert body["containerDiskInGb"] == 20
+    assert body["volumeInGb"] == 80
+    assert "gpuTypeIds" not in body
+    assert "gpuCount" not in body
 
 
 def test_start_script_can_run_leave_subject_out_report() -> None:
@@ -146,6 +170,25 @@ def test_start_script_can_use_minimal_data_setup() -> None:
     assert "python3 scripts/sync_brainset_s3.py verify-local" in script
     assert "scripts/write_dataset_manifest.py" not in script
     assert "=== skipping dataset manifest (minimal-data setup) ===" in script
+
+
+def test_start_script_can_run_startup_smoke_only() -> None:
+    cfg = replace(
+        config(),
+        skip_verification=True,
+        skip_cell_type_priors=True,
+        skip_sweep=True,
+        setup_mode="minimal-data",
+        s3_bucket="brainset-cache",
+        startup_smoke_only=True,
+    )
+
+    script = build_start_script(cfg)
+
+    assert "- startup smoke only: True" in script
+    assert "=== startup smoke complete ===" in script
+    assert "exit 0" in script
+    assert "scripts/build_ibl_brainset_batch.py" not in script.split("=== startup smoke complete ===", 1)[0]
 
 
 def test_start_script_can_pass_build_shard_args() -> None:
