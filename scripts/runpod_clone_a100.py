@@ -107,6 +107,34 @@ def build_start_script(config: ClonePilotConfig) -> str:
             "  uv run python scripts/00_ibl_smoke_test.py\n"
         )
     )
+    dependency_sync_command = "uv sync --no-dev" if config.skip_verification else "uv sync --dev"
+    startup_marker_block = (
+        f"""echo "=== pushing data-build startup marker ==="
+mkdir -p docs
+cp "$LOG_PATH" docs/cloud_phase3_5_runpod.log || true
+cat > {result_doc} <<EOF
+# Cloud Phase 3-5 Results
+
+Date: $(date -u +"%Y-%m-%dT%H:%M:%SZ")
+
+RunPod target: data-build startup marker.
+
+Configuration:
+
+- branch: {branch_raw}
+- output root: \`{config.output_root}\`
+- skip cell-type priors: {config.skip_cell_type_priors}
+- skip sweep: {config.skip_sweep}
+
+The pod reached repository clone and dependency setup is starting.
+EOF
+git add {result_doc} docs/cloud_phase3_5_runpod.log 2>/dev/null || true
+git commit -m "Add cloud data-build startup marker" || true
+git push origin HEAD:{branch_raw} || true
+"""
+        if config.skip_sweep
+        else ""
+    )
     cell_type_priors_block = (
         '  echo "=== skipping cell-type priors ==="\n'
         if config.skip_cell_type_priors
@@ -239,6 +267,7 @@ git clone --branch {branch} --single-branch "{clone_url}"
 cd {repo_dir_q}
 git config user.name "RunPod Pilot"
 git config user.email "runpod-pilot@example.invalid"
+{startup_marker_block.rstrip()}
 
 curl -LsSf https://astral.sh/uv/install.sh | sh
 export PATH="$HOME/.local/bin:$PATH"
@@ -253,7 +282,7 @@ cat > /tmp/run_phase3_5_body.sh <<'RUNSCRIPT'
     fi
   }}
   echo "=== syncing environment ==="
-  uv sync --dev
+  {dependency_sync_command}
   upload_log
 {verification_block.rstrip()}
   upload_log
