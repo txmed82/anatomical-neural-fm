@@ -1,6 +1,6 @@
 # Cloud Phase 3-5 Results
 
-Date: 2026-06-04T21:09:32Z
+Date: 2026-06-04T21:18:42Z
 
 RunPod target: A100 pilot.
 
@@ -13,12 +13,12 @@ Configuration:
 - max steps: 300
 - eval batches: 20
 - target mode: stimulus_side
-- sweep script: scripts/run_leave_subject_out_a100.sh
+- sweep script: scripts/run_lso_matched_support80_best6_a100.sh
 - setup mode: project
 - skip cell-type priors: False
 - skip sweep: False
 - startup smoke only: False
-- max runtime seconds: 7200
+- max runtime seconds: 10800
 - output root: `runs/lso_matched_support80_best6_seed0`
 
 ## Build Report
