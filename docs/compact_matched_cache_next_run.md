@@ -16,6 +16,17 @@ candidate set.
 
 ## Compact Build Mode
 
+First audit the S3 cache and write a shard plan:
+
+```bash
+python scripts/sync_brainset_s3.py audit \
+  --manifest manifests/ibl_bwm_region_matched_support80_best6.json \
+  --datacenter US-IL-1 \
+  --report docs/compact_support80_best6_s3_audit.md \
+  --num-shards 4 \
+  --compact-build-args "--no-wheel --trial-window-only --window-len 1.0"
+```
+
 For the choice/stimulus training scripts, the HDF5 cache does not need wheel
 samples, and it does not need spikes outside trial-aligned windows. Build with:
 
@@ -53,10 +64,18 @@ The RunPod clone launcher can pass the same compact flags through:
 
 ```bash
 python scripts/runpod_clone_a100.py \
+  --compute-type CPU \
+  --datacenter US-IL-1 \
+  --setup-mode minimal-data \
   --manifest-path manifests/ibl_bwm_region_matched_support80_best6.json \
-  --data-only \
+  --s3-bucket rppfvo6ifn \
+  --s3-datacenter US-IL-1 \
+  --skip-sweep \
+  --skip-verification \
+  --skip-cell-type-priors \
   --build-extra-args "--no-wheel --trial-window-only --window-len 1.0" \
-  --max-provision-seconds 600
+  --max-provision-seconds 600 \
+  --poll
 ```
 
 Before and after every cloud attempt, verify `/pods` is zero or only contains

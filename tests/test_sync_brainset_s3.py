@@ -5,10 +5,12 @@ import json
 from scripts.sync_brainset_s3 import (
     cache_audit_rows,
     local_h5_files,
+    manifest_recording_rows,
     manifest_recording_names,
     parse_args,
     region_from_args,
     s3_key,
+    select_shard_rows,
     upload_log_file,
     verify_local_cache_rows,
     write_audit_report,
@@ -28,6 +30,10 @@ def test_manifest_recording_names_accepts_committed_schema(tmp_path) -> None:
         "eid-a_probe00.h5",
         "eid-b_probe01.h5",
     }
+    assert manifest_recording_rows(path) == [
+        {"session_id": "eid-a", "probe_name": "probe00"},
+        {"eid": "eid-b", "probe": "probe01"},
+    ]
 
 
 def test_s3_key_normalizes_prefix() -> None:
@@ -111,6 +117,44 @@ def test_write_audit_report_includes_gate_counts(tmp_path) -> None:
     assert "Present: 1/3 (33.3%)" in text
     assert "`b.h5`" in text
     assert "`a.h5`" in text
+
+
+def test_select_shard_rows_splits_manifest_contiguously() -> None:
+    rows = [{"session_id": f"eid-{i}", "probe_name": "probe00"} for i in range(5)]
+
+    assert select_shard_rows(rows, num_shards=2, shard_index=0) == rows[:2]
+    assert select_shard_rows(rows, num_shards=2, shard_index=1) == rows[2:]
+
+
+def test_write_audit_report_includes_optional_shard_plan(tmp_path) -> None:
+    report = tmp_path / "audit.md"
+    manifest = tmp_path / "manifest.json"
+    manifest.write_text("{}")
+    rows = [
+        {"session_id": "eid-a", "probe_name": "probe00"},
+        {"session_id": "eid-b", "probe_name": "probe00"},
+        {"session_id": "eid-c", "probe_name": "probe01"},
+    ]
+
+    write_audit_report(
+        report,
+        manifest=manifest,
+        bucket="cache",
+        prefix="brainsets/ibl_bwm",
+        matched=["eid-a_probe00.h5"],
+        missing=["eid-b_probe00.h5", "eid-c_probe01.h5"],
+        manifest_rows=rows,
+        num_shards=2,
+        compact_build_args="--no-wheel --trial-window-only --window-len 1.0",
+    )
+
+    text = report.read_text()
+    assert "## Shard Build Plan" in text
+    assert "| 0 | 1 | 1 | 0 |" in text
+    assert "| 1 | 2 | 0 | 2 |" in text
+    assert "--no-wheel --trial-window-only --window-len 1.0" in text
+    assert "#### Shard 1" in text
+    assert "`eid-c_probe01.h5`" in text
 
 
 def test_region_from_args_uses_env_datacenter(monkeypatch) -> None:

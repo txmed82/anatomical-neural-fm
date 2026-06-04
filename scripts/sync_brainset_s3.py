@@ -104,15 +104,26 @@ def bucket_from_args(args: argparse.Namespace) -> str:
 
 
 def manifest_recording_names(path: Path) -> set[str]:
-    payload = json.loads(path.read_text())
-    rows = payload["recordings"] if isinstance(payload, dict) else payload
+    rows = manifest_recording_rows(path)
     names: set[str] = set()
     for row in rows:
-        eid = row.get("session_id") or row.get("eid") or row.get("session")
-        probe = row.get("probe_name") or row.get("probe") or row.get("name")
-        if eid and probe:
-            names.add(f"{eid}_{probe}.h5")
+        name = manifest_recording_name(row)
+        if name:
+            names.add(name)
     return names
+
+
+def manifest_recording_rows(path: Path) -> list[dict]:
+    payload = json.loads(path.read_text())
+    return payload["recordings"] if isinstance(payload, dict) else payload
+
+
+def manifest_recording_name(row: dict) -> str | None:
+    eid = row.get("session_id") or row.get("eid") or row.get("session")
+    probe = row.get("probe_name") or row.get("probe") or row.get("name")
+    if eid and probe:
+        return f"{eid}_{probe}.h5"
+    return None
 
 
 def local_h5_files(data_dir: Path, names: set[str] | None) -> list[Path]:
@@ -191,6 +202,17 @@ def cache_audit_rows(expected: set[str], present: set[str]) -> tuple[list[str], 
     return matched, missing
 
 
+def select_shard_rows(rows: list[dict], *, num_shards: int, shard_index: int) -> list[dict]:
+    if num_shards < 1:
+        raise ValueError("num_shards must be >= 1")
+    if shard_index < 0 or shard_index >= num_shards:
+        raise ValueError("shard_index must satisfy 0 <= shard_index < num_shards")
+    n = len(rows)
+    start = (n * shard_index) // num_shards
+    end = (n * (shard_index + 1)) // num_shards
+    return list(rows[start:end])
+
+
 def verify_local_cache_rows(local_files: Iterable[Path], present: set[str]) -> tuple[list[str], list[str]]:
     expected = {path.name for path in local_files}
     return cache_audit_rows(expected, present)
@@ -204,6 +226,9 @@ def write_audit_report(
     prefix: str,
     matched: list[str],
     missing: list[str],
+    manifest_rows: list[dict] | None = None,
+    num_shards: int | None = None,
+    compact_build_args: str = "",
 ) -> None:
     total = len(matched) + len(missing)
     pct = (len(matched) / total * 100.0) if total else 0.0
@@ -222,6 +247,65 @@ def write_audit_report(
         lines += [f"| `{name}` |" for name in missing]
     else:
         lines.append("none")
+    if manifest_rows is not None and num_shards is not None:
+        present = set(matched)
+        missing_set = set(missing)
+        build_args = compact_build_args.strip()
+        lines += [
+            "",
+            "## Shard Build Plan",
+            "",
+            f"Shards: {num_shards}",
+            "",
+            "| shard | recordings | present | missing | build command |",
+            "|---:|---:|---:|---:|---|",
+        ]
+        for shard_index in range(num_shards):
+            shard_rows = select_shard_rows(
+                manifest_rows,
+                num_shards=num_shards,
+                shard_index=shard_index,
+            )
+            shard_names = [
+                name for row in shard_rows
+                if (name := manifest_recording_name(row)) is not None
+            ]
+            shard_present = sorted(name for name in shard_names if name in present)
+            shard_missing = sorted(name for name in shard_names if name in missing_set)
+            command = (
+                "python scripts/build_ibl_brainset_batch.py "
+                f"--manifest {manifest} "
+                f"--num-shards {num_shards} "
+                f"--shard-index {shard_index}"
+            )
+            if build_args:
+                command = f"{command} {build_args}"
+            lines.append(
+                f"| {shard_index} | {len(shard_names)} | {len(shard_present)} | "
+                f"{len(shard_missing)} | `{command}` |"
+            )
+        lines += [
+            "",
+            "### Missing By Shard",
+            "",
+        ]
+        for shard_index in range(num_shards):
+            shard_rows = select_shard_rows(
+                manifest_rows,
+                num_shards=num_shards,
+                shard_index=shard_index,
+            )
+            shard_missing = [
+                name for row in shard_rows
+                if (name := manifest_recording_name(row)) in missing_set
+            ]
+            lines += [f"#### Shard {shard_index}", ""]
+            if shard_missing:
+                lines += ["| filename |", "|---|"]
+                lines += [f"| `{name}` |" for name in shard_missing]
+            else:
+                lines.append("none")
+            lines.append("")
     lines += [
         "",
         "## Present",
@@ -254,6 +338,10 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--secret-key", default=None)
     p.add_argument("--report", type=Path, default=None,
                    help="Optional markdown report path for the audit command.")
+    p.add_argument("--num-shards", type=int, default=None,
+                   help="Optional shard count to include in audit reports.")
+    p.add_argument("--compact-build-args", default="",
+                   help="Optional build args to include in audit report shard commands.")
     return p.parse_args()
 
 
@@ -311,6 +399,7 @@ def main() -> int:
                 for name in missing:
                     print(f"  {name}")
             if args.report is not None:
+                manifest_rows = manifest_recording_rows(args.manifest) if args.num_shards else None
                 write_audit_report(
                     args.report,
                     manifest=args.manifest,
@@ -318,6 +407,9 @@ def main() -> int:
                     prefix=args.prefix,
                     matched=matched,
                     missing=missing,
+                    manifest_rows=manifest_rows,
+                    num_shards=args.num_shards,
+                    compact_build_args=args.compact_build_args,
                 )
                 print(f"wrote {args.report}")
         else:
@@ -334,6 +426,11 @@ def main() -> int:
                     print(f"  {name}")
             if args.report is not None:
                 manifest = args.manifest if args.manifest is not None else Path("<all local h5>")
+                manifest_rows = (
+                    manifest_recording_rows(args.manifest)
+                    if args.manifest is not None and args.num_shards
+                    else None
+                )
                 write_audit_report(
                     args.report,
                     manifest=manifest,
@@ -341,6 +438,9 @@ def main() -> int:
                     prefix=args.prefix,
                     matched=matched,
                     missing=missing,
+                    manifest_rows=manifest_rows,
+                    num_shards=args.num_shards,
+                    compact_build_args=args.compact_build_args,
                 )
                 print(f"wrote {args.report}")
             if missing:
