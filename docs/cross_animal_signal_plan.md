@@ -67,10 +67,34 @@ This is not meant as the final claim. It is a cheap screen for whether some
 held-out animals or anatomical channels show a reproducible lift worth rerunning
 with more seeds.
 
+Result: the one-seed screen found candidate lifts, but not a global effect.
+Aggregate `pure_anatomy` was +0.010 AUC over `shared_baseline` across 10
+held-out subjects, positive in 7/10 pairs. Strongest candidate holdouts:
+
+- `DY_008`: `pure_anatomy` +0.059, `region_only` +0.043
+- `MFD_05`: `pure_anatomy` +0.040, `region_only` +0.044
+- `CSHL045`: `region_only` +0.038
+- `KS014`: `pure_anatomy` +0.029, despite weaker single-channel arms
+
+## Next Experiment: Targeted Multi-Seed Confirmation
+
+Run only the candidate held-out subjects with three seeds:
+
+- subjects: `CSHL045 DY_008 MFD_05 KS014`
+- arms: `shared_baseline region_only pure_anatomy waveform_only`
+- seeds: `0 1 2`
+- output root: `runs/lso_promising_a100`
+- report: `docs/lso_promising_results.md`
+
+Success criterion:
+
+- Any anatomy arm beats `shared_baseline` by at least +0.03 mean AUC across the
+  four candidate holdouts, with at least 8/12 positive subject-seed pairs.
+
 ## Budget Guard
 
 Hard cap from user: do not spend more than $100.
 
-The leave-subject-out diagnostic should use the existing 3-hour timeout and is
-expected to cost roughly $2-$4 at the observed $1.39/hr rate. Always verify zero
-pods and zero network volumes after the run.
+The targeted multi-seed confirmation should use the existing 3-hour timeout and
+is expected to cost roughly $2-$4 at the observed $1.39/hr rate. Always verify
+zero pods and zero network volumes after the run.
