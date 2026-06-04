@@ -382,3 +382,37 @@ animal shows a reproducible cross-animal region-identity transfer signal that
 collapses under shuffled anatomical labels." The next step toward a stronger
 open computational neuroscience demo is to test whether the same CSH_ZAD_019
 effect survives shared-region masking or parent-region granularity.
+
+## Completed Stricter Control: CSH_ZAD_019 Shared Parent Regions
+
+Run `scripts/run_lso_csh_zad_019_shared_parent_shuffle_a100.sh` to repeat the
+true-vs-shuffled region-label control under stricter anatomical constraints:
+
+- subject: `CSH_ZAD_019`
+- arms: `shared_baseline region_only region_shuffle`
+- seeds: `0 1 2`
+- target: `stimulus_side`
+- region filter: `shared_regions`
+- region granularity: `parent`
+- report: `docs/lso_csh_zad_019_shared_parent_shuffle_results.md`
+
+Result:
+
+- true parent `region_only`: +0.038 mean delta, positive in 3/3 seeds
+- shuffled parent-region control: -0.012 mean delta, positive in 1/3 seeds
+- seed deltas:
+  - true `region_only`: +0.014, +0.045, +0.056
+  - shuffled: -0.008, -0.030, +0.003
+
+Interpretation: the CSH_ZAD_019 signal survives both shared-region masking and
+parent-region coarsening. This is stronger than the fine-region shuffle result
+because it reduces the chance that the lift is driven by held-out-only regions
+or brittle fine acronyms. The claim is still subject-specific, but it is now a
+credible demo nucleus: a held-out animal benefits from train-animal anatomical
+region identity, and the benefit disappears when region identity is shuffled.
+
+Next decision: stop rerunning CSH_ZAD_019 in isolation. The next useful spend is
+either (1) a small transfer-screen of two more matched holdouts using the same
+shared-parent true-vs-shuffled control, or (2) a publication-facing audit of the
+CSH_ZAD_019 runs that extracts per-region unit support, class balance, and
+failure modes before broadening.

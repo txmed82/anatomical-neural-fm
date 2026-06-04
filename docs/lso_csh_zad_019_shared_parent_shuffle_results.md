@@ -114,8 +114,34 @@ none
 | `e1931de1-cf7b-49af-af33-2ade15e8abe7_probe00.h5` |
 | `edd22318-216c-44ff-bc24-49ce8be78374_probe00.h5` |
 
-## Within-Animal Summary
+## Summary
 
+# Leave-subject-out analysis
 
-## Cross-Animal Summary
+root: `runs/lso_csh_zad_019_shared_parent_shuffle`
 
+## Per-Holdout AUC and Delta vs Shared Null
+
+| holdout | arm | n_seeds | mean_AUC | mean_delta_vs_shared | seed_deltas |
+|---|---|---|---|---|---|
+| CSH_ZAD_019 | region_only | 3 | 0.544 | +0.038 | +0.014,+0.045,+0.056 |
+| CSH_ZAD_019 | region_shuffle | 3 | 0.494 | -0.012 | -0.008,-0.030,+0.003 |
+
+## Aggregate Delta vs Shared Null
+
+| arm | n_pairs | mean_delta | positive_pairs |
+|---|---|---|---|
+| region_only | 3 | +0.038 | 3/3 |
+| region_shuffle | 3 | -0.012 | 1/3 |
+
+## Interpretation
+
+This is the stricter CSH_ZAD_019 anatomy-control run: spike inputs were masked
+to parent-level regions shared by the training subjects and held-out subject.
+The true parent-region model stayed positive in all three seeds, while the
+shuffled-label control stayed null/negative.
+
+This strengthens the current claim from "fine-grained region labels help on one
+held-out animal" to "the CSH_ZAD_019 effect survives shared-region masking and
+coarse parent-region labels, and still collapses when anatomical identity is
+shuffled." It remains subject-specific, not yet a broad cross-animal result.
