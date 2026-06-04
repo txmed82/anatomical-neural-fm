@@ -21,10 +21,12 @@ consistent but too weak to claim generality.
 | fine shuffle control | fine regions, seeds 0-2 | +0.042 | -0.012 | true 3/3, shuffled 1/3 |
 | shared-parent shuffle control | shared parent regions, seeds 0-2 | +0.038 | -0.012 | true 3/3, shuffled 1/3 |
 | two-holdout broadening | shared parent regions, `KS014` + `MFD_06` | +0.016 | -0.006 | true 4/6, shuffled 2/6 |
+| CSH-like candidate broadening | shared parent regions, `NR_0019` | -0.008 | +0.003 | true 1/3, shuffled 2/3 |
 
 Canonical source: `docs/csh_zad_019_signal_audit.md`. Machine-readable
 metrics: `docs/csh_zad_019_demo_metrics.json`.
 Broadening source: `docs/lso_two_holdout_shared_parent_shuffle_results.md`.
+CSH-like candidate source: `docs/lso_nr0019_shared_parent_shuffle_results.md`.
 Broadening audit: `docs/shared_parent_broadening_audit.md`.
 Parent-region support audit: `docs/parent_region_support_signal_audit.md`.
 Candidate ranking: `docs/csh_composition_candidate_ranking.md`.
@@ -47,18 +49,15 @@ Candidate ranking: `docs/csh_composition_candidate_ranking.md`.
 - The weak broadening subjects are not weak because of low global parent-region
   support; they have higher support than CSH_ZAD_019. The unresolved issue is
   anatomical composition.
+- The top-ranked CSH-like follow-up, `NR_0019`, did not reproduce the signal:
+  true parent-region labels were slightly below the shared null and below the
+  shuffled-label control.
 - The claim should not be phrased as broad anatomical transfer across IBL until
   more held-out animals reproduce the stronger CSH_ZAD_019-sized effect.
 
 ## Next Experimental Gate
 
-Do not rerun the same two-holdout sweep unchanged. The next paid experiment
-should either preselect holdouts whose parent-region composition resembles
-CSH_ZAD_019 or force all compared holdouts onto a common parent-region panel
-before training.
-
-The current cheapest paid gate is a single `NR_0019` shared-parent
-true-vs-shuffled control. `NR_0019` is the closest remaining matched-cache
-subject to `CSH_ZAD_019` by parent-region composition; continue to another
-holdout only if that run produces a meaningful true-label lift over both the
-shared null and shuffled-label control.
+Do not launch another paid broadening run unchanged. The next step should be a
+no-spend failure-mode audit that compares `CSH_ZAD_019` against `KS014`,
+`MFD_06`, and `NR_0019` at the parent-region level, then defines a narrower
+falsifiable slice before any additional GPU rental.

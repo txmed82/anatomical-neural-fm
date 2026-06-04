@@ -325,6 +325,8 @@ EOF
 
 EOF
       cat {output_root}/cross_summary.md >> {result_doc} 2>/dev/null || true
+    elif [ -f {result_doc} ] && grep -q '^## Summary' {result_doc}; then
+      echo "Existing result doc already has a summary; preserving it."
     else
       cat >> {result_doc} <<EOF
 ## Missing Sweep Summary

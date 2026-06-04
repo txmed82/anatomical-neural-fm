@@ -552,3 +552,28 @@ This is the cheapest defensible broadening step because it tests whether the
 CSH_ZAD_019 effect generalizes to the most compositionally similar held-out
 animal, instead of paying again for holdouts that the no-spend audit already
 flags as mismatched.
+
+Completed paid gate: `NR_0019` shared-parent control:
+`docs/lso_nr0019_shared_parent_shuffle_results.md` ran the top-ranked
+compositionally similar holdout under the same shared-parent true-vs-shuffled
+control.
+
+- `NR_0019` `region_only`: -0.008 mean delta, positive in 1/3 seeds
+- `NR_0019` `region_shuffle`: +0.003 mean delta, positive in 2/3 seeds
+- cache gate: 28/28 matched-cache HDF5 files present
+- resource cleanup: zero active RunPod pods after completion
+
+Interpretation: the most CSH-like follow-up did not reproduce the
+CSH_ZAD_019 signal. This materially weakens the hypothesis that the CSH result
+will broaden simply by choosing anatomically similar held-out subjects. The
+current honest position is now narrower: CSH_ZAD_019 remains a controlled,
+subject-specific demo nucleus, while matched-cache broadening has failed on
+three additional holdouts (`KS014`, `MFD_06`, `NR_0019`) at demo-grade effect
+size.
+
+Next no-spend step before any more GPU rental: analyze why `CSH_ZAD_019`
+separates from the three weak follow-ups at the parent-region level. Use the
+existing logs and cache to compare per-parent unit mass, trial support,
+baseline AUC, and region-wise stimulus-side spike contrast for all four
+controlled holdouts. Do not launch another paid broadening run until that
+failure-mode audit produces a specific falsifiable slice.

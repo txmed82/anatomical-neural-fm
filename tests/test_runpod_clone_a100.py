@@ -176,6 +176,7 @@ def test_start_script_marks_missing_sweep_summary_as_incomplete() -> None:
 
     assert "elif [ -f runs/phase2_cloud_a100/within_summary.md ]" in script
     assert "## Missing Sweep Summary" in script
+    assert "Existing result doc already has a summary; preserving it." in script
     assert (
         "No \\`runs/phase2_cloud_a100/summary.md\\`, \\`within_summary.md\\`, or\n"
         "\\`cross_summary.md\\` file was present"

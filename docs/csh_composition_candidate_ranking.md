@@ -37,10 +37,12 @@ The ranking compares each possible held-out subject with `CSH_ZAD_019` using par
 | 5 | KS014 | 3121 | 18 | 0.055 | 0.090 | 27.7% | 26.6% | 3/12 | 0.290 |
 | 6 | MFD_06 | 5207 | 27 | 0.049 | 0.077 | 37.5% | 37.3% | 4/12 | 0.196 |
 
-## Recommendation
+## Completed Gate
 
-`NR_0019` is the best next paid holdout if the goal is to test whether the strong CSH_ZAD_019 result generalizes to another animal with similar parent-region composition.
+`NR_0019` was the best next paid holdout if the goal was to test whether the strong CSH_ZAD_019 result generalizes to another animal with similar parent-region composition. That gate has now been run: `docs/lso_nr0019_shared_parent_shuffle_results.md`.
+
+Result: `NR_0019` did not reproduce the CSH_ZAD_019 signal. True parent-region labels averaged -0.008 delta versus the shared null, while shuffled parent-region labels averaged +0.003.
 
 `KS014` and `MFD_06` were useful broadening controls, but this ranking explains why rerunning them unchanged is unlikely to be the cheapest next step: they are among the least CSH-like subjects by parent-region composition.
 
-Next paid gate under the budget cap: run one shared-parent true-vs-shuffled control on the top-ranked candidate first. Continue to a second candidate only if the true arm beats the shuffled arm and the shared null by a meaningful margin on the first candidate. This keeps the next cloud spend small and evidence-driven.
+Next gate under the budget cap: spend nothing until a failure-mode audit explains what distinguishes CSH_ZAD_019 from the three weak broadening holdouts (`KS014`, `MFD_06`, `NR_0019`). Composition similarity alone is not enough to justify another paid run.
