@@ -9,6 +9,7 @@ from scripts.sync_brainset_s3 import (
     parse_args,
     region_from_args,
     s3_key,
+    upload_log_file,
     verify_local_cache_rows,
     write_audit_report,
 )
@@ -44,6 +45,30 @@ def test_local_h5_files_filters_by_manifest_names(tmp_path) -> None:
     other.write_text("x")
 
     assert local_h5_files(tmp_path, {"keep.h5"}) == [keep]
+
+
+def test_upload_log_file_uses_prefix_and_relative_key(tmp_path) -> None:
+    class FakeClient:
+        def __init__(self) -> None:
+            self.calls = []
+
+        def upload_file(self, local: str, bucket: str, key: str) -> None:
+            self.calls.append((local, bucket, key))
+
+    path = tmp_path / "run.log"
+    path.write_text("hello")
+    client = FakeClient()
+
+    count = upload_log_file(
+        client,
+        bucket="cache",
+        prefix="brainsets/ibl_bwm",
+        local_path=path,
+        key="logs/shard01.log",
+    )
+
+    assert count == 1
+    assert client.calls == [(str(path), "cache", "brainsets/ibl_bwm/logs/shard01.log")]
 
 
 def test_cache_audit_rows_splits_present_and_missing() -> None:

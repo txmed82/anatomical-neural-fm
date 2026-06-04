@@ -2,7 +2,7 @@
 
 Manifest: `manifests/ibl_bwm_region_matched_candidates.json`
 Cache: `s3://rppfvo6ifn/brainsets/ibl_bwm`
-Present: 2/48 (4.2%)
+Present: 4/48 (8.3%)
 
 ## Missing
 
@@ -13,12 +13,10 @@ Present: 2/48 (4.2%)
 | `034e726f-b35f-41e0-8d6c-a22cc32391fb_probe01.h5` |
 | `09156021-9a1d-4e1d-ae59-48cbde3c5d42_probe00.h5` |
 | `09b2c4d1-058d-4c84-9fd4-97530f85baf6_probe00.h5` |
-| `16693458-0801-4d35-a3f1-9115c7e5acfd_probe00.h5` |
 | `16693458-0801-4d35-a3f1-9115c7e5acfd_probe01.h5` |
 | `1e45d992-c356-40e1-9be1-a506d944896f_probe01.h5` |
 | `30e5937e-e86a-47e6-93ae-d2ae3877ff8e_probe00.h5` |
 | `35eeb752-8f4f-4040-9714-ba0f5b7ccdfe_probe00.h5` |
-| `3f71aa98-08c6-4e79-b4c8-00eae4f03eff_probe00.h5` |
 | `41872d7f-75cb-4445-bb1a-132b354c44f0_probe01.h5` |
 | `49e0ab27-827a-4c91-bcaa-97eea27a1b8d_probe01.h5` |
 | `4d8c7767-981c-4347-8e5e-5d5fffe38534_probe01.h5` |
@@ -59,5 +57,7 @@ Present: 2/48 (4.2%)
 
 | filename |
 |---|
+| `16693458-0801-4d35-a3f1-9115c7e5acfd_probe00.h5` |
+| `3f71aa98-08c6-4e79-b4c8-00eae4f03eff_probe00.h5` |
 | `7939711b-8b4d-4251-b698-b97c1eaa846e_probe01.h5` |
 | `b182b754-3c3e-4942-8144-6ee790926b58_probe01.h5` |

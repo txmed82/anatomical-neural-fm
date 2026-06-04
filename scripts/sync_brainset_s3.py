@@ -137,6 +137,15 @@ def upload_files(client, *, bucket: str, prefix: str, files: Iterable[Path]) -> 
     return count
 
 
+def upload_log_file(client, *, bucket: str, prefix: str, local_path: Path, key: str) -> int:
+    if not local_path.exists():
+        raise SystemExit(f"Missing log file: {local_path}")
+    remote_key = s3_key(prefix, key)
+    print(f"upload {local_path} -> s3://{bucket}/{remote_key}", flush=True)
+    client.upload_file(str(local_path), bucket, remote_key)
+    return 1
+
+
 def iter_remote_h5_keys(client, *, bucket: str, prefix: str):
     token = None
     clean_prefix = prefix.strip("/")
@@ -229,12 +238,16 @@ def write_audit_report(
 
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser()
-    p.add_argument("command", choices=["upload", "download", "list", "audit", "verify-local"])
+    p.add_argument("command", choices=["upload", "download", "list", "audit", "verify-local", "upload-log"])
     p.add_argument("--data-dir", type=Path, default=DEFAULT_DATA_DIR)
     p.add_argument("--manifest", type=Path, default=None,
                    help="Optional manifest used to filter local/remote HDF5 filenames.")
     p.add_argument("--bucket", default=None)
     p.add_argument("--prefix", default=DEFAULT_PREFIX)
+    p.add_argument("--local-path", type=Path, default=None,
+                   help="Local file to upload for the upload-log command.")
+    p.add_argument("--key", default=None,
+                   help="Remote key, relative to --prefix, for the upload-log command.")
     p.add_argument("--endpoint-url", default=None)
     p.add_argument("--datacenter", default=None)
     p.add_argument("--access-key", default=None)
@@ -256,6 +269,18 @@ def main() -> int:
                 bucket=bucket,
                 prefix=args.prefix,
                 files=local_h5_files(args.data_dir, names),
+            )
+        elif args.command == "upload-log":
+            if args.local_path is None:
+                raise SystemExit("upload-log requires --local-path")
+            if not args.key:
+                raise SystemExit("upload-log requires --key")
+            count = upload_log_file(
+                client,
+                bucket=bucket,
+                prefix=args.prefix,
+                local_path=args.local_path,
+                key=args.key,
             )
         elif args.command == "download":
             count = download_files(

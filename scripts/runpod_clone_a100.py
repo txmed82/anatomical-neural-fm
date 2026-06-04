@@ -94,6 +94,7 @@ def build_start_script(config: ClonePilotConfig) -> str:
             sync_args += f" --endpoint-url {shlex.quote(config.s3_endpoint_url)}"
         if config.s3_datacenter:
             sync_args += f" --datacenter {shlex.quote(config.s3_datacenter)}"
+    log_key = shlex.quote(f"logs/{config.result_doc.replace('/', '_').removesuffix('.md')}.log")
     repo_dir_q = shlex.quote(repo_dir)
     verification_block = (
         '  echo "=== skipping local verification ==="\n'
@@ -224,27 +225,40 @@ export WANDB_MODE=offline
 
 cat > /tmp/run_phase3_5_body.sh <<'RUNSCRIPT'
   set -euo pipefail
+  upload_log() {{
+    if [ -n "{config.s3_bucket}" ]; then
+      uv run python scripts/sync_brainset_s3.py upload-log --local-path "$LOG_PATH" --key {log_key}{sync_args} || true
+    fi
+  }}
   echo "=== syncing environment ==="
   uv sync --dev
+  upload_log
 {verification_block.rstrip()}
+  upload_log
   uv run python scripts/build_cell_type_priors.py
+  upload_log
   if [ ! -f {manifest_path} ]; then
     uv run python scripts/select_ibl_manifest.py --target {build_recordings} --out {manifest_path}
   fi
   if [ -n "{config.s3_bucket}" ]; then
     echo "=== downloading cached BrainSet data ==="
     uv run python scripts/sync_brainset_s3.py download --manifest {manifest_path}{sync_args} || true
+    upload_log
   fi
   echo "=== building BrainSet data ==="
   mkdir -p {output_root}
   uv run python scripts/build_ibl_brainset_batch.py --manifest {manifest_path} --report {output_root}/build_report.md{build_extra}
+  upload_log
   if [ -n "{config.s3_bucket}" ]; then
     echo "=== uploading built BrainSet data ==="
     uv run python scripts/sync_brainset_s3.py upload --manifest {manifest_path}{sync_args}
+    upload_log
     echo "=== verifying BrainSet cache upload ==="
     uv run python scripts/sync_brainset_s3.py verify-local --manifest {manifest_path}{sync_args} --report {output_root}/cache_audit.md
+    upload_log
   fi
   uv run python scripts/write_dataset_manifest.py
+  upload_log
   echo "=== running phase 3-5 sweep ==="
   export SEEDS={seeds}
   export MAX_STEPS={max_steps}
@@ -252,6 +266,7 @@ cat > /tmp/run_phase3_5_body.sh <<'RUNSCRIPT'
   export TARGET_MODE={target_mode}
   export OUT_ROOT={output_root}
   bash {sweep_script}
+  upload_log
 RUNSCRIPT
 timeout {run_timeout} bash /tmp/run_phase3_5_body.sh
 """
