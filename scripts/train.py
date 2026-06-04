@@ -74,6 +74,9 @@ def parse_args():
     p.add_argument("--target-mode", default="choice", choices=["choice", "stimulus_side"],
                    help="'choice' decodes animal L/R choice. 'stimulus_side' decodes whether "
                         "the visual stimulus contrast was stronger on the right than left.")
+    p.add_argument("--region-filter", default="none", choices=["none", "shared_regions"],
+                   help="'shared_regions' keeps only units whose region acronym appears in both "
+                        "the train and held-out recordings for the current split.")
     # Model
     p.add_argument("--dim", type=int, default=64)
     p.add_argument("--depth", type=int, default=2)
@@ -223,6 +226,17 @@ def build_trial_samples(
     return out
 
 
+def recording_region_acronyms(recs, rids: list[str]) -> set[str]:
+    regions: set[str] = set()
+    for rid in rids:
+        regions.update(str(r) for r in recs[rid].units.region_acronym.astype(str).tolist())
+    return regions
+
+
+def shared_split_regions(recs, train_rids: list[str], eval_rids: list[str]) -> set[str]:
+    return recording_region_acronyms(recs, train_rids) & recording_region_acronyms(recs, eval_rids)
+
+
 def recording_diagnostics(recs, rids: list[str]) -> list[dict]:
     rows = []
     for rid in sorted(rids):
@@ -254,16 +268,26 @@ def subject_trial_counts(trials: list[tuple[str, float, float]], subject_by_rid:
     }
 
 
-def build_inputs_for_window(model, sample, rid, t0, args):
+def build_inputs_for_window(model, sample, rid, t0, args, allowed_region_acronyms: set[str] | None = None):
     """Build per-window arrays. Returns a dict of np.ndarrays, or None if no spikes."""
-    n_spikes = len(sample.spikes.timestamps)
-    if n_spikes == 0:
-        return None
     prefix = f"{rid}/"
     sample_unit_ids = [prefix + u for u in sample.units.id.astype(str).tolist()]
     local_to_global = np.array(model.unit_emb.tokenizer(sample_unit_ids), dtype=np.int64)
-    input_unit_index = local_to_global[sample.spikes.unit_index]
-    input_timestamps = sample.spikes.timestamps.astype(np.float32) - t0
+
+    spike_unit_index = np.asarray(sample.spikes.unit_index, dtype=np.int64)
+    spike_timestamps = np.asarray(sample.spikes.timestamps, dtype=np.float32)
+    if allowed_region_acronyms is not None:
+        unit_regions = sample.units.region_acronym.astype(str)
+        unit_allowed = np.array([region in allowed_region_acronyms for region in unit_regions], dtype=bool)
+        spike_mask = unit_allowed[spike_unit_index]
+        spike_unit_index = spike_unit_index[spike_mask]
+        spike_timestamps = spike_timestamps[spike_mask]
+
+    n_spikes = len(spike_timestamps)
+    if n_spikes == 0:
+        return None
+    input_unit_index = local_to_global[spike_unit_index]
+    input_timestamps = spike_timestamps - t0
     input_token_type = np.zeros(n_spikes, dtype=np.int64)
 
     latent_index, latent_timestamps = create_linspace_latent_tokens(
@@ -336,7 +360,14 @@ def lr_lambda(step: int, warmup: int, total: int) -> float:
     return 0.5 * (1.0 + math.cos(math.pi * min(1.0, progress)))
 
 
-def draw_batch(ds, trial_list, args, model, rng) -> tuple[dict, torch.Tensor]:
+def draw_batch(
+    ds,
+    trial_list,
+    args,
+    model,
+    rng,
+    allowed_region_acronyms: set[str] | None = None,
+) -> tuple[dict, torch.Tensor]:
     """Draw a batch of `batch_size` trial-aligned windows from the precomputed list.
 
     `trial_list` is the output of `build_trial_samples` — every entry is already a valid
@@ -349,7 +380,7 @@ def draw_batch(ds, trial_list, args, model, rng) -> tuple[dict, torch.Tensor]:
         attempts += 1
         rid, t0, target = trial_list[rng.integers(len(trial_list))]
         sample = ds[DatasetIndex(recording_id=rid, start=t0, end=t0 + args.window_len)]
-        inputs_np = build_inputs_for_window(model, sample, rid, t0, args)
+        inputs_np = build_inputs_for_window(model, sample, rid, t0, args, allowed_region_acronyms)
         if inputs_np is None:
             continue
         samples.append(inputs_np)
@@ -376,14 +407,14 @@ def _auc(scores: np.ndarray, labels: np.ndarray) -> float:
     return float((sum_pos_ranks - n_pos * (n_pos + 1) / 2) / (n_pos * n_neg))
 
 
-def evaluate(model, ds, eval_trial_list, args) -> dict:
+def evaluate(model, ds, eval_trial_list, args, allowed_region_acronyms: set[str] | None = None) -> dict:
     model.eval()
     all_logits = []
     all_tgts = []
     rng = np.random.default_rng(args.seed + 1000)  # deterministic eval order
     with torch.no_grad():
         for _ in range(args.eval_batches):
-            batch, tgt = draw_batch(ds, eval_trial_list, args, model, rng)
+            batch, tgt = draw_batch(ds, eval_trial_list, args, model, rng, allowed_region_acronyms)
             if batch is None:
                 continue
             out = model(**batch).squeeze(-1)  # (B, 1)
@@ -454,8 +485,17 @@ def main():
     n_train_right = sum(1 for *_, t in train_trials if t == 1.0)
     n_eval_left = sum(1 for *_, t in eval_trials if t == 0.0)
     n_eval_right = sum(1 for *_, t in eval_trials if t == 1.0)
+    allowed_region_acronyms = None
+    region_filter_info = {"region_filter": args.region_filter}
+    if args.region_filter == "shared_regions":
+        allowed_region_acronyms = shared_split_regions(vocab["recs"], train_rids, eval_rids)
+        region_filter_info.update({
+            "n_allowed_regions": len(allowed_region_acronyms),
+            "allowed_regions": sorted(allowed_region_acronyms),
+        })
     log({"event": "split", "n_recordings": len(ds.recording_ids),
          **split_info,
+         **region_filter_info,
          "target_mode": args.target_mode,
          "n_train_trials": len(train_trials),
          "n_eval_trials": len(eval_trials),
@@ -500,7 +540,7 @@ def main():
     t_start = time.time()
     model.train()
     for step in range(1, args.max_steps + 1):
-        batch, target = draw_batch(ds, train_trials, args, model, rng)
+        batch, target = draw_batch(ds, train_trials, args, model, rng, allowed_region_acronyms)
         if batch is None:
             log({"event": "skip_step", "step": step, "reason": "no_valid_samples"})
             continue
@@ -523,7 +563,7 @@ def main():
                  "lr": optimizer.param_groups[0]["lr"]})
 
         if step % args.eval_every == 0 or step == args.max_steps:
-            eval_metrics = evaluate(model, ds, eval_trials, args)
+            eval_metrics = evaluate(model, ds, eval_trials, args, allowed_region_acronyms)
             log({"event": "eval", "step": step, **eval_metrics})
             if eval_metrics["eval_loss"] < best_eval:
                 best_eval = eval_metrics["eval_loss"]
