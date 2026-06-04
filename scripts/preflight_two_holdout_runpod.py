@@ -23,6 +23,10 @@ class PreflightConfig:
     s3_bucket: str = "rppfvo6ifn"
     s3_datacenter: str = "US-IL-1"
     name_prefix: str = "anfm-two-parent-compact"
+    manifest_path: str = "manifests/ibl_bwm_region_matched_support80_best6.json"
+    sweep_script: str = "scripts/run_lso_two_holdout_shared_parent_shuffle_a100.sh"
+    output_root: str = "runs/lso_two_holdout_shared_parent_shuffle"
+    result_doc: str = "docs/lso_two_holdout_shared_parent_shuffle_results.md"
 
 
 def estimate_cost(max_runtime_seconds: int, assumed_cost_per_hr: float) -> float:
@@ -43,11 +47,11 @@ def build_launch_command(config: PreflightConfig) -> list[str]:
         "--max-steps", "300",
         "--eval-batches", "20",
         "--target-mode", "stimulus_side",
-        "--manifest-path", "manifests/ibl_bwm_region_matched_support80_best6.json",
+        "--manifest-path", config.manifest_path,
         "--seeds", "0 1 2",
-        "--sweep-script", "scripts/run_lso_two_holdout_shared_parent_shuffle_a100.sh",
-        "--output-root", "runs/lso_two_holdout_shared_parent_shuffle",
-        "--result-doc", "docs/lso_two_holdout_shared_parent_shuffle_results.md",
+        "--sweep-script", config.sweep_script,
+        "--output-root", config.output_root,
+        "--result-doc", config.result_doc,
         "--s3-bucket", config.s3_bucket,
         "--s3-prefix", "brainsets/ibl_bwm",
         "--s3-datacenter", config.s3_datacenter,
@@ -117,6 +121,10 @@ def main() -> int:
         print(f"- {pod.get('id')} {pod.get('name')} cost={pod.get('costPerHr')} status={pod.get('desiredStatus') or pod.get('status')}")
     print(f"estimated_max_cost: ${cost:.2f}")
     print(f"max_dollars: ${config.max_dollars:.2f}")
+    print(f"manifest_path: {config.manifest_path}")
+    print(f"sweep_script: {config.sweep_script}")
+    print(f"output_root: {config.output_root}")
+    print(f"result_doc: {config.result_doc}")
     print("")
     print("Launch command:")
     print(shell_join(command))

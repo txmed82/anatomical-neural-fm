@@ -451,3 +451,9 @@ The preflight does not rent a pod. It verifies that the Git branch is clean and
 synced, active RunPod pods are zero, and the estimated one-pod worst-case cost
 is below the cap. With the current 5400-second guard and a conservative
 `$1.50/hr` assumption, the estimated maximum is `$2.25`.
+
+Latest status: a later short-alias cloud attempt wrote `d.md` using `t.sh` and
+output root `r`, but it also produced `Missing Sweep Summary`; treat it as
+another aborted/non-evidence run. Do not count `d.md` toward the evidence
+ladder. The next paid attempt should use only the canonical preflight command
+above and should not start if any unexpected RunPod pod already exists.

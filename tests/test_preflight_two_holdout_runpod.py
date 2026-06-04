@@ -25,3 +25,8 @@ def test_build_launch_command_targets_two_holdout_sweep() -> None:
     assert "--result-doc docs/lso_two_holdout_shared_parent_shuffle_results.md" in joined
     assert "--s3-bucket rppfvo6ifn" in joined
     assert "--name-prefix anfm-two-parent-compact" in joined
+    assert "--sweep-script t.sh" not in joined
+    assert "--manifest-path m.json" not in joined
+    assert "--result-doc d.md" not in joined
+    assert command[command.index("--output-root") + 1] == "runs/lso_two_holdout_shared_parent_shuffle"
+    assert command[command.index("--result-doc") + 1] == "docs/lso_two_holdout_shared_parent_shuffle_results.md"
