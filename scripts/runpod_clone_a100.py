@@ -39,6 +39,9 @@ class ClonePilotConfig:
     manifest_path: str
     seeds: str
     target_mode: str
+    sweep_script: str
+    output_root: str
+    result_doc: str
 
 
 def current_branch() -> str:
@@ -73,6 +76,9 @@ def build_start_script(config: ClonePilotConfig) -> str:
     manifest_path = shlex.quote(config.manifest_path)
     seeds = shlex.quote(config.seeds)
     target_mode = shlex.quote(config.target_mode)
+    sweep_script = shlex.quote(config.sweep_script)
+    output_root = shlex.quote(config.output_root)
+    result_doc = shlex.quote(config.result_doc)
     repo_dir_q = shlex.quote(repo_dir)
     return f"""set -uo pipefail
 LOG_PATH=/tmp/runpod_phase3_5.log
@@ -86,7 +92,7 @@ push_artifacts() {{
     cd "$REPO_DIR"
     mkdir -p docs
     cp "$LOG_PATH" docs/cloud_phase3_5_runpod.log || true
-    cat > docs/cloud_phase3_5_results.md <<EOF
+    cat > {result_doc} <<EOF
 # Cloud Phase 3-5 Results
 
 Date: $(date -u +"%Y-%m-%dT%H:%M:%SZ")
@@ -102,21 +108,32 @@ Configuration:
 - max steps: {config.max_steps}
 - eval batches: {config.eval_batches}
 - target mode: {config.target_mode}
+- sweep script: {config.sweep_script}
 - max runtime seconds: {config.max_runtime_seconds}
-- output root: \`runs/phase2_cloud_a100\`
+- output root: \`{config.output_root}\`
 
+EOF
+    if [ -f {output_root}/summary.md ]; then
+      cat >> {result_doc} <<EOF
+## Summary
+
+EOF
+      cat {output_root}/summary.md >> {result_doc} 2>/dev/null || true
+    else
+      cat >> {result_doc} <<EOF
 ## Within-Animal Summary
 
 EOF
-    cat runs/phase2_cloud_a100/within_summary.md >> docs/cloud_phase3_5_results.md 2>/dev/null || true
-    cat >> docs/cloud_phase3_5_results.md <<EOF
+      cat {output_root}/within_summary.md >> {result_doc} 2>/dev/null || true
+      cat >> {result_doc} <<EOF
 
 ## Cross-Animal Summary
 
 EOF
-    cat runs/phase2_cloud_a100/cross_summary.md >> docs/cloud_phase3_5_results.md 2>/dev/null || true
+      cat {output_root}/cross_summary.md >> {result_doc} 2>/dev/null || true
+    fi
 
-    git add docs/cloud_phase3_5_results.md docs/cloud_phase3_5_runpod.log manifests/ibl_bwm.local.json 2>/dev/null || true
+    git add {result_doc} docs/cloud_phase3_5_runpod.log manifests/ibl_bwm.local.json 2>/dev/null || true
     git commit -m "Add cloud phase 3-5 pilot results" || true
     git push origin HEAD:{branch_raw} || true
   fi
@@ -180,7 +197,8 @@ cat > /tmp/run_phase3_5_body.sh <<'RUNSCRIPT'
   export MAX_STEPS={max_steps}
   export EVAL_BATCHES={eval_batches}
   export TARGET_MODE={target_mode}
-  bash scripts/run_phase2_cloud_a100.sh
+  export OUT_ROOT={output_root}
+  bash {sweep_script}
 RUNSCRIPT
 timeout {run_timeout} bash /tmp/run_phase3_5_body.sh
 """
@@ -236,6 +254,9 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--manifest-path", default="manifests/ibl_bwm_phase4.json")
     p.add_argument("--seeds", default="0 1 2")
     p.add_argument("--target-mode", default="choice", choices=["choice", "stimulus_side"])
+    p.add_argument("--sweep-script", default="scripts/run_phase2_cloud_a100.sh")
+    p.add_argument("--output-root", default="runs/phase2_cloud_a100")
+    p.add_argument("--result-doc", default="docs/cloud_phase3_5_results.md")
     p.add_argument("--name-prefix", default="anfm-a100-clone-pilot")
     p.add_argument("--dry-run", action="store_true")
     p.add_argument("--poll", action="store_true")
@@ -259,6 +280,9 @@ def main() -> int:
         manifest_path=args.manifest_path,
         seeds=args.seeds,
         target_mode=args.target_mode,
+        sweep_script=args.sweep_script,
+        output_root=args.output_root,
+        result_doc=args.result_doc,
     )
     env = load_dotenv(REPO_ROOT / ".env")
     runpod_key = require_env(env, "RUNPOD_API_KEY")
