@@ -67,6 +67,6 @@ Target: `stimulus_side` over 1.0s stimulus-aligned windows
 
 ## Interpretation
 
-The weak broadening subjects are not missing global parent-region support. They have higher support than the strong CSH_ZAD_019 holdout, which rules out a simple 'more shared support means stronger transfer' explanation. The sharper difference is composition. Only 5 parent regions are shared by all three strict splits (BS, MBmot, cc, root, void).
+The weak broadening subjects are not missing global parent-region support. They have higher support than the strong CSH_ZAD_019 holdout, which rules out a simple 'more shared support means stronger transfer' explanation. The sharper difference in this three-holdout audit is composition. Only 5 parent regions are shared by all three strict splits (BS, MBmot, cc, root, void).
 
-This supports treating the current result as an anatomical-composition problem, not a simple data-volume failure. The next paid experiment should not rerun the same two holdouts unchanged; it should either preselect holdouts whose parent-region composition resembles CSH_ZAD_019 or restrict all compared holdouts to a common parent-region panel before training.
+The later `NR_0019` follow-up tested the composition-preselection idea directly and did not reproduce the CSH_ZAD_019 signal. The current four-holdout conclusion is in `docs/cross_holdout_failure_mode_audit.md`: support fraction, CSH-like composition, trial balance, and raw parent-level stimulus contrast are all insufficient as single gates. The next step should be a no-spend parent-region slice definition before any more GPU rental.

@@ -537,7 +537,7 @@ holdout. `NR_0019` is the closest candidate by weighted Jaccard and cosine,
 while the already-tested `KS014` and `MFD_06` are among the least CSH-like
 subjects by composition.
 
-Next paid gate under the $100 hard cap:
+Paid gate selected at that point under the $100 hard cap:
 
 - run only `NR_0019` first under the same shared-parent true-vs-shuffled control
 - arms: `shared_baseline region_only region_shuffle`
@@ -577,3 +577,27 @@ existing logs and cache to compare per-parent unit mass, trial support,
 baseline AUC, and region-wise stimulus-side spike contrast for all four
 controlled holdouts. Do not launch another paid broadening run until that
 failure-mode audit produces a specific falsifiable slice.
+
+Completed no-spend failure-mode audit:
+`docs/cross_holdout_failure_mode_audit.md` compares the four controlled
+shared-parent true-vs-shuffled holdouts (`CSH_ZAD_019`, `KS014`, `MFD_06`,
+`NR_0019`) using preserved result docs plus the local 28-recording cache.
+
+Key findings:
+
+- `CSH_ZAD_019` remains the only strong controlled success: true-minus-shuffle
+  gap +0.050, true positive in 3/3 seeds.
+- `KS014` and `MFD_06` have very high parent-region support (96.2% and 98.7%),
+  so support fraction alone does not explain failure.
+- `NR_0019` is the closest CSH-like candidate by composition and has the
+  largest raw parent-level spike-rate contrast, but true parent labels are
+  below the shared null and below shuffled labels.
+- Trial counts and class balance are adequate for all four controlled holdouts.
+
+Decision: do not spend on another broad LSO sweep or another composition-only
+candidate. The next useful step is to define a parent-region-specific slice
+from the successful CSH run: identify CSH parent regions that are shared,
+high-mass, and stimulus-informative, then search for held-out subjects/sessions
+where those same parents have enough units and aligned stimulus-side contrast.
+Only after that slice is specified should we run another small true-vs-shuffled
+control.

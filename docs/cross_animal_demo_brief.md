@@ -30,6 +30,7 @@ CSH-like candidate source: `docs/lso_nr0019_shared_parent_shuffle_results.md`.
 Broadening audit: `docs/shared_parent_broadening_audit.md`.
 Parent-region support audit: `docs/parent_region_support_signal_audit.md`.
 Candidate ranking: `docs/csh_composition_candidate_ranking.md`.
+Failure-mode audit: `docs/cross_holdout_failure_mode_audit.md`.
 
 ## Why This Is Real Enough To Demo
 
@@ -52,12 +53,16 @@ Candidate ranking: `docs/csh_composition_candidate_ranking.md`.
 - The top-ranked CSH-like follow-up, `NR_0019`, did not reproduce the signal:
   true parent-region labels were slightly below the shared null and below the
   shuffled-label control.
+- The failure-mode audit rules out several simple gates on their own:
+  parent-region support, CSH-like composition, trial count, class balance, and
+  raw parent-level stimulus contrast.
 - The claim should not be phrased as broad anatomical transfer across IBL until
   more held-out animals reproduce the stronger CSH_ZAD_019-sized effect.
 
 ## Next Experimental Gate
 
 Do not launch another paid broadening run unchanged. The next step should be a
-no-spend failure-mode audit that compares `CSH_ZAD_019` against `KS014`,
-`MFD_06`, and `NR_0019` at the parent-region level, then defines a narrower
-falsifiable slice before any additional GPU rental.
+no-spend parent-region slice definition from the successful `CSH_ZAD_019` run:
+identify shared, high-mass, stimulus-informative CSH parent regions, then find
+held-out subjects/sessions where those same parents are sufficiently represented
+and directionally aligned. Only then run another small true-vs-shuffled control.
