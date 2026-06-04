@@ -138,10 +138,31 @@ def s3_key(prefix: str, filename: str) -> str:
     return f"{clean}/{filename}" if clean else filename
 
 
-def upload_files(client, *, bucket: str, prefix: str, files: Iterable[Path]) -> int:
+def remote_key_exists(client, *, bucket: str, key: str) -> bool:
+    try:
+        client.head_object(Bucket=bucket, Key=key)
+        return True
+    except ClientError as exc:
+        code = exc.response.get("Error", {}).get("Code")
+        if code in {"404", "NoSuchKey", "NotFound"}:
+            return False
+        raise
+
+
+def upload_files(
+    client,
+    *,
+    bucket: str,
+    prefix: str,
+    files: Iterable[Path],
+    skip_existing: bool = False,
+) -> int:
     count = 0
     for path in files:
         key = s3_key(prefix, path.name)
+        if skip_existing and remote_key_exists(client, bucket=bucket, key=key):
+            print(f"skip remote exists s3://{bucket}/{key}", flush=True)
+            continue
         print(f"upload {path} -> s3://{bucket}/{key}", flush=True)
         client.upload_file(str(path), bucket, key)
         count += 1
@@ -342,6 +363,8 @@ def parse_args() -> argparse.Namespace:
                    help="Optional shard count to include in audit reports.")
     p.add_argument("--compact-build-args", default="",
                    help="Optional build args to include in audit report shard commands.")
+    p.add_argument("--skip-existing", action="store_true",
+                   help="For upload, do not re-upload files whose remote key already exists.")
     return p.parse_args()
 
 
@@ -357,6 +380,7 @@ def main() -> int:
                 bucket=bucket,
                 prefix=args.prefix,
                 files=local_h5_files(args.data_dir, names),
+                skip_existing=args.skip_existing,
             )
         elif args.command == "upload-log":
             if args.local_path is None:

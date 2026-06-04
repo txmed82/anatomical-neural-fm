@@ -18,9 +18,9 @@ from pathlib import Path
 from typing import Any
 
 try:
-    from scripts.runpod_first_a100 import REPO_ROOT, RunpodClient, load_dotenv, require_env
+    from scripts.runpod_first_a100 import REPO_ROOT, S3_ENDPOINTS, RunpodClient, load_dotenv, require_env
 except ModuleNotFoundError:
-    from runpod_first_a100 import REPO_ROOT, RunpodClient, load_dotenv, require_env
+    from runpod_first_a100 import REPO_ROOT, S3_ENDPOINTS, RunpodClient, load_dotenv, require_env
 
 
 @dataclass(frozen=True)
@@ -94,12 +94,48 @@ def build_start_script(config: ClonePilotConfig) -> str:
     build_extra_args = config.build_extra_args.strip()
     build_extra = f" {build_extra_args}" if build_extra_args else ""
     sync_args = ""
+    bootstrap_log_block = ""
     if config.s3_bucket:
         sync_args = f" --bucket {shlex.quote(config.s3_bucket)} --prefix {shlex.quote(config.s3_prefix)}"
         if config.s3_endpoint_url:
             sync_args += f" --endpoint-url {shlex.quote(config.s3_endpoint_url)}"
         if config.s3_datacenter:
             sync_args += f" --datacenter {shlex.quote(config.s3_datacenter)}"
+        endpoint_url = config.s3_endpoint_url
+        if not endpoint_url and config.s3_datacenter:
+            endpoint_url = S3_ENDPOINTS.get(config.s3_datacenter, "")
+        bootstrap_key = f"{config.s3_prefix.strip('/')}/logs/bootstrap_{config.result_doc.replace('/', '_').removesuffix('.md')}.log"
+        bootstrap_log_block = f"""
+bootstrap_upload_log() {{
+  if [ ! -s "$LOG_PATH" ]; then
+    return 0
+  fi
+  python3 - <<'PY' || true
+import os
+import subprocess
+import sys
+
+try:
+    import boto3
+except Exception:
+    subprocess.run([sys.executable, "-m", "pip", "install", "--user", "boto3"], check=False)
+    import boto3
+
+client = boto3.client(
+    "s3",
+    aws_access_key_id=os.environ.get("BRAINSET_S3_ACCESS_KEY"),
+    aws_secret_access_key=os.environ.get("BRAINSET_S3_SECRET_KEY"),
+    endpoint_url={endpoint_url!r} or None,
+    region_name={config.s3_datacenter.lower()!r} or "auto",
+)
+client.upload_file(
+    os.environ["LOG_PATH"],
+    {config.s3_bucket!r},
+    {bootstrap_key!r},
+)
+PY
+}}
+"""
     log_key = shlex.quote(f"logs/{config.result_doc.replace('/', '_').removesuffix('.md')}.log")
     repo_dir_q = shlex.quote(repo_dir)
     verification_block = (
@@ -171,8 +207,10 @@ def build_start_script(config: ClonePilotConfig) -> str:
     return f"""set -uo pipefail
 LOG_PATH=/tmp/runpod_phase3_5.log
 REPO_DIR=/workspace/{repo_dir_q}
+export LOG_PATH
 touch "$LOG_PATH"
 exec > >(tee -a "$LOG_PATH") 2>&1
+{bootstrap_log_block}
 
 push_artifacts() {{
   status="$1"
@@ -257,6 +295,9 @@ cleanup() {{
     kill "$GUARD_PID" >/dev/null 2>&1 || true
   fi
   push_artifacts "$status" || true
+  if declare -f bootstrap_upload_log >/dev/null 2>&1; then
+    bootstrap_upload_log || true
+  fi
   if [ -n "${{RUNPOD_POD_ID:-}}" ] && [ -n "${{RUNPOD_API_KEY:-}}" ]; then
     python3 - <<'PY' || true
 import os
@@ -351,7 +392,7 @@ cat > /tmp/run_phase3_5_body.sh <<'RUNSCRIPT'
   upload_log
   if [ -n "{config.s3_bucket}" ]; then
     echo "=== uploading built BrainSet data ==="
-    {python_runner} scripts/sync_brainset_s3.py upload --manifest {manifest_path}{sync_args}
+    {python_runner} scripts/sync_brainset_s3.py upload --manifest {manifest_path}{sync_args} --skip-existing
     upload_log
     echo "=== verifying BrainSet cache upload ==="
     {python_runner} scripts/sync_brainset_s3.py verify-local --manifest {manifest_path}{sync_args} --report {output_root}/cache_audit.md

@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import json
 
+from botocore.exceptions import ClientError
+
 from scripts.sync_brainset_s3 import (
     cache_audit_rows,
     local_h5_files,
@@ -11,6 +13,7 @@ from scripts.sync_brainset_s3 import (
     region_from_args,
     s3_key,
     select_shard_rows,
+    upload_files,
     upload_log_file,
     verify_local_cache_rows,
     write_audit_report,
@@ -75,6 +78,37 @@ def test_upload_log_file_uses_prefix_and_relative_key(tmp_path) -> None:
 
     assert count == 1
     assert client.calls == [(str(path), "cache", "brainsets/ibl_bwm/logs/shard01.log")]
+
+
+def test_upload_files_can_skip_existing_remote_keys(tmp_path) -> None:
+    class FakeClient:
+        def __init__(self) -> None:
+            self.uploads = []
+
+        def head_object(self, *, Bucket: str, Key: str) -> None:
+            if Key == "brainsets/ibl_bwm/existing.h5":
+                return None
+            raise ClientError({"Error": {"Code": "404"}}, "HeadObject")
+
+        def upload_file(self, local: str, bucket: str, key: str) -> None:
+            self.uploads.append((local, bucket, key))
+
+    existing = tmp_path / "existing.h5"
+    new = tmp_path / "new.h5"
+    existing.write_text("x")
+    new.write_text("x")
+    client = FakeClient()
+
+    count = upload_files(
+        client,
+        bucket="cache",
+        prefix="brainsets/ibl_bwm",
+        files=[existing, new],
+        skip_existing=True,
+    )
+
+    assert count == 1
+    assert client.uploads == [(str(new), "cache", "brainsets/ibl_bwm/new.h5")]
 
 
 def test_cache_audit_rows_splits_present_and_missing() -> None:

@@ -247,6 +247,10 @@ def test_start_script_can_sync_brainset_cache() -> None:
         "--bucket brainset-cache --prefix ibl/test --endpoint-url https://s3.example.test"
     ) in script
     assert "=== uploading built BrainSet data ===" in script
+    assert (
+        "scripts/sync_brainset_s3.py upload --manifest manifests/ibl_bwm_phase4.json "
+        "--bucket brainset-cache --prefix ibl/test --endpoint-url https://s3.example.test --skip-existing"
+    ) in script
     assert "=== verifying BrainSet cache upload ===" in script
     assert (
         "scripts/sync_brainset_s3.py verify-local --manifest manifests/ibl_bwm_phase4.json "
