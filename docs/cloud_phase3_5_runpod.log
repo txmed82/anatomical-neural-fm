@@ -1933,3 +1933,634 @@ wrote /workspace/anatomical-neural-fm/manifests/ibl_bwm.local.json
 recordings=20 subjects=10 units=19215 trials=12741
 === running phase 3-5 sweep ===
 wrote runs/subject_conditioned_audit_a100/summary.md
+[runpod-pilot-phases-3-5 3b95398] Add cloud phase 3-5 pilot results
+ 2 files changed, 1278 insertions(+), 640 deletions(-)
+To https://github.com/txmed82/anatomical-neural-fm.git
+   31c5e6e..3b95398  HEAD -> runpod-pilot-phases-3-5
+Traceback (most recent call last):
+  File "<stdin>", line 12, in <module>
+  File "/usr/lib/python3.11/urllib/request.py", line 216, in urlopen
+    return opener.open(url, data, timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/urllib/request.py", line 525, in open
+    response = meth(req, response)
+               ^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/urllib/request.py", line 634, in http_response
+    response = self.parent.error(
+               ^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/urllib/request.py", line 563, in error
+    return self._call_chain(*args)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/urllib/request.py", line 496, in _call_chain
+    result = func(*args)
+             ^^^^^^^^^^^
+  File "/usr/lib/python3.11/urllib/request.py", line 643, in http_error_default
+    raise HTTPError(req.full_url, code, msg, hdrs, fp)
+urllib.error.HTTPError: HTTP Error 403: Forbidden
+Hit:1 http://security.ubuntu.com/ubuntu jammy-security InRelease
+Hit:2 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  InRelease
+Hit:3 http://archive.ubuntu.com/ubuntu jammy InRelease
+Hit:4 http://archive.ubuntu.com/ubuntu jammy-updates InRelease
+Hit:5 http://archive.ubuntu.com/ubuntu jammy-backports InRelease
+Hit:6 https://ppa.launchpadcontent.net/deadsnakes/ppa/ubuntu jammy InRelease
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+ca-certificates is already the newest version (20240203~22.04.1).
+curl is already the newest version (7.81.0-1ubuntu1.24).
+git is already the newest version (1:2.34.1-1ubuntu1.17).
+0 upgraded, 0 newly installed, 0 to remove and 154 not upgraded.
+Cloning into 'anatomical-neural-fm'...
+downloading uv 0.11.19 x86_64-unknown-linux-gnu
+installing to /root/.local/bin
+  uv
+  uvx
+everything's installed!
+=== syncing environment ===
+Using CPython 3.11.10 interpreter at: /usr/bin/python3.11
+Creating virtual environment at: .venv
+Resolved 134 packages in 1ms
+Installed 127 packages in 4.24s
+ + abc-atlas-access==1.3.2 (from git+https://github.com/AllenInstitute/abc_atlas_access@f7cc551f9e327cd1c413ebc54c006bf20ffe0b27)
+ + anndata==0.12.14
+ + annotated-types==0.7.0
+ + antlr4-python3-runtime==4.9.3
+ + array-api-compat==1.14.0
+ + asttokens==3.0.1
+ + boto3==1.43.8
+ + botocore==1.43.8
+ + certifi==2026.4.22
+ + charset-normalizer==3.4.7
+ + click==8.3.3
+ + colorlog==6.10.1
+ + comm==0.2.3
+ + contourpy==1.3.3
+ + cycler==0.12.1
+ + debugpy==1.8.20
+ + decorator==5.2.1
+ + donfig==0.8.1.post1
+ + einops==0.6.1
+ + executing==2.2.1
+ + filelock==3.29.0
+ + fonttools==4.63.0
+ + fsspec==2026.4.0
+ + gitdb==4.0.12
+ + gitpython==3.1.50
+ + google-crc32c==1.8.0
+ + h5py==3.16.0
+ + hydra-core==1.3.2
+ + iblatlas==1.0.0
+ + iblutil==1.20.0
+ + idna==3.15
+ + iniconfig==2.3.0
+ + ipykernel==7.2.0
+ + ipython==9.13.0
+ + ipython-pygments-lexers==1.1.1
+ + jaxtyping==0.3.9
+ + jedi==0.20.0
+ + jinja2==3.1.6
+ + jmespath==1.1.0
+ + jupyter-client==8.8.0
+ + jupyter-core==5.9.1
+ + kiwisolver==1.5.0
+ + legacy-api-wrap==1.5
+ + lightning-utilities==0.15.3
+ + llvmlite==0.47.0
+ + markdown-it-py==4.2.0
+ + markupsafe==3.0.3
+ + matplotlib==3.10.9
+ + matplotlib-inline==0.2.2
+ + mdurl==0.1.2
+ + mpmath==1.3.0
+ + natsort==8.4.0
+ + nest-asyncio==1.6.0
+ + networkx==3.6.1
+ + numba==0.65.1
+ + numcodecs==0.16.5
+ + numpy==2.4.4
+ + nvidia-cublas-cu12==12.4.5.8
+ + nvidia-cuda-cupti-cu12==12.4.127
+ + nvidia-cuda-nvrtc-cu12==12.4.127
+ + nvidia-cuda-runtime-cu12==12.4.127
+ + nvidia-cudnn-cu12==9.1.0.70
+ + nvidia-cufft-cu12==11.2.1.3
+ + nvidia-curand-cu12==10.3.5.147
+ + nvidia-cusolver-cu12==11.6.1.9
+ + nvidia-cusparse-cu12==12.3.1.170
+ + nvidia-nccl-cu12==2.21.5
+ + nvidia-nvjitlink-cu12==12.4.127
+ + nvidia-nvtx-cu12==12.4.127
+ + omegaconf==2.3.0
+ + one-api==3.4.1
+ + packaging==26.2
+ + pandas==2.3.3
+ + parso==0.8.7
+ + pexpect==4.9.0
+ + pillow==12.2.0
+ + platformdirs==4.9.6
+ + pluggy==1.6.0
+ + polars==1.40.1
+ + polars-runtime-32==1.40.1
+ + prompt-toolkit==3.0.52
+ + protobuf==7.34.1
+ + psutil==7.2.2
+ + ptyprocess==0.7.0
+ + pure-eval==0.2.3
+ + pyarrow==24.0.0
+ + pydantic==2.13.4
+ + pydantic-core==2.46.4
+ + pygments==2.20.0
+ + pynrrd==1.1.3
+ + pyparsing==3.3.2
+ + pytest==9.0.3
+ + python-dateutil==2.9.0.post0
+ + pytz==2026.2
+ + pyyaml==6.0.3
+ + pyzmq==27.1.0
+ + requests==2.34.2
+ + rich==15.0.0
+ + ruff==0.15.13
+ + s3transfer==0.17.0
+ + scipy==1.17.1
+ + scverse-misc==0.0.3
+ + sentry-sdk==2.60.0
+ + session-info2==0.4.1
+ + setuptools==81.0.0
+ + six==1.17.0
+ + smmap==5.0.3
+ + stack-data==0.6.3
+ + sympy==1.13.1
+ + temporaldata==0.1.4
+ + torch==2.5.1
+ + torch-brain==0.1.2
+ + torchmetrics==1.9.0
+ + torchtyping==0.1.5
+ + tornado==6.5.5
+ + tqdm==4.67.3
+ + traitlets==5.15.0
+ + triton==3.1.0
+ + typeguard==2.13.3
+ + typing-extensions==4.15.0
+ + typing-inspection==0.4.2
+ + tzdata==2026.2
+ + urllib3==2.7.0
+ + wadler-lindig==0.1.7
+ + wandb==0.27.0
+ + wcwidth==0.7.0
+ + zarr==3.1.6
+=== running local verification ===
+.................................                                        [100%]
+=============================== warnings summary ===============================
+scripts/runpod_clone_a100.py:83
+scripts/runpod_clone_a100.py:83
+  /workspace/anatomical-neural-fm/scripts/runpod_clone_a100.py:83: DeprecationWarning: invalid escape sequence '\`'
+    return f"""set -uo pipefail
+
+.venv/lib/python3.11/site-packages/einops/einops.py:717
+  /workspace/anatomical-neural-fm/.venv/lib/python3.11/site-packages/einops/einops.py:717: DeprecationWarning: invalid escape sequence '\s'
+    """
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+33 passed, 3 warnings in 2.68s
+Connected to https://openalyx.internationalbrainlab.org as user "intbrainlab"
+Searching BWM sessions...
+  got 7505 session ids (showing first 5):
+    a79a53fd-269f-4770-b40b-7d844ae71109
+    ebce500b-c530-47de-8cb1-963c552703ea
+    a7eba2cf-427f-4df9-879b-e53e962eae18
+    5ae68c54-2897-4d3a-8120-426150704385
+    3a3ea015-b5f4-4e8b-b189-9364d1fc7435
+
+Searching for a session with probe insertions (scanning first 50)...
+  found session ebce500b-c530-47de-8cb1-963c552703ea with 1 insertion(s)
+    pid=8c732bf2-639d-496c-bf82-464bc9c2d54b  name=probe00
+
+Probe probe00 (8c732bf2-639d-496c-bf82-464bc9c2d54b): loading cluster regions...
+  collections matching probe: ['alf/probe00/pykilosort', 'raw_ephys_data/probe00', 'alf/probe00']
+  using collection: alf/probe00/pykilosort
+  loaded 1557 clusters; keys: ['amps', 'channels', 'depths', 'metrics', 'peakToTrough', 'uuids', 'waveforms', 'waveformsChannels']
+
+Loading channels object for CCF region join...
+  channels keys: ['brainLocationIds_ccf_2017', 'labels', 'localCoordinates', 'mlapdv', 'rawInd']
+  using channels['brainLocationIds_ccf_2017']
+  16 unique CCF region IDs across 1557 clusters
+  top 10 regions by cluster count: [('PO', 1014), ('LP', 133), ('CA1', 93), ('SSp-tr6a', 73), ('SSp-tr5', 59), ('SSp-tr4', 59), ('CA3', 54), ('DG-mo', 31), ('or', 12), ('scwm', 9)]
+Initializing ABC Atlas cache at data/abc_atlas_cache...
+  current manifest: releases/20260415/manifest.json
+
+Downloading parcellation table: MERFISH-C57BL6J-638850-CCF/cell_metadata_with_parcellation_annotation...
+cell_metadata_with_parcellation_annotation.csv:   0%|          | 0.00/1.61G [00:00<?, ?MB/s]cell_metadata_with_parcellation_annotation.csv:   0%|          | 1.02k/1.61G [00:00<75:38:57, 5.90kMB/s]cell_metadata_with_parcellation_annotation.csv:   0%|          | 1.29M/1.61G [00:00<05:18, 5.04MMB/s]   cell_metadata_with_parcellation_annotation.csv:   0%|          | 6.50M/1.61G [00:00<01:22, 19.4MMB/s]cell_metadata_with_parcellation_annotation.csv:   1%|          | 14.2M/1.61G [00:00<00:42, 37.4MMB/s]cell_metadata_with_parcellation_annotation.csv:   1%|          | 18.6M/1.61G [00:00<00:42, 37.4MMB/s]cell_metadata_with_parcellation_annotation.csv:   2%|▏         | 26.4M/1.61G [00:00<00:31, 49.4MMB/s]cell_metadata_with_parcellation_annotation.csv:   2%|▏         | 31.8M/1.61G [00:00<00:33, 47.2MMB/s]cell_metadata_with_parcellation_annotation.csv:   2%|▏         | 38.8M/1.61G [00:01<00:32, 48.4MMB/s]cell_metadata_with_parcellation_annotation.csv:   3%|▎         | 46.7M/1.61G [00:01<00:30, 51.1MMB/s]cell_metadata_with_parcellation_annotation.csv:   3%|▎         | 54.3M/1.61G [00:01<00:27, 57.4MMB/s]cell_metadata_with_parcellation_annotation.csv:   4%|▍         | 60.3M/1.61G [00:01<00:28, 54.3MMB/s]cell_metadata_with_parcellation_annotation.csv:   4%|▍         | 66.8M/1.61G [00:01<00:29, 52.5MMB/s]cell_metadata_with_parcellation_annotation.csv:   5%|▍         | 74.6M/1.61G [00:01<00:26, 58.9MMB/s]cell_metadata_with_parcellation_annotation.csv:   5%|▌         | 80.6M/1.61G [00:01<00:28, 53.0MMB/s]cell_metadata_with_parcellation_annotation.csv:   5%|▌         | 86.7M/1.61G [00:01<00:29, 52.3MMB/s]cell_metadata_with_parcellation_annotation.csv:   6%|▌         | 92.3M/1.61G [00:02<00:31, 48.5MMB/s]cell_metadata_with_parcellation_annotation.csv:   6%|▌         | 100M/1.61G [00:02<00:29, 51.1MMB/s] cell_metadata_with_parcellation_annotation.csv:   7%|▋         | 106M/1.61G [00:02<00:30, 48.6MMB/s]cell_metadata_with_parcellation_annotation.csv:   7%|▋         | 112M/1.61G [00:02<00:30, 49.3MMB/s]cell_metadata_with_parcellation_annotation.csv:   7%|▋         | 117M/1.61G [00:02<00:31, 46.7MMB/s]cell_metadata_with_parcellation_annotation.csv:   8%|▊         | 124M/1.61G [00:02<00:29, 50.4MMB/s]cell_metadata_with_parcellation_annotation.csv:   8%|▊         | 129M/1.61G [00:02<00:29, 49.3MMB/s]cell_metadata_with_parcellation_annotation.csv:   8%|▊         | 134M/1.61G [00:02<00:31, 46.3MMB/s]cell_metadata_with_parcellation_annotation.csv:   9%|▉         | 141M/1.61G [00:02<00:27, 53.2MMB/s]cell_metadata_with_parcellation_annotation.csv:   9%|▉         | 147M/1.61G [00:03<00:29, 50.1MMB/s]cell_metadata_with_parcellation_annotation.csv:  10%|▉         | 153M/1.61G [00:03<00:27, 53.1MMB/s]cell_metadata_with_parcellation_annotation.csv:  10%|▉         | 158M/1.61G [00:03<00:28, 50.6MMB/s]cell_metadata_with_parcellation_annotation.csv:  10%|█         | 166M/1.61G [00:03<00:27, 52.1MMB/s]cell_metadata_with_parcellation_annotation.csv:  11%|█         | 172M/1.61G [00:03<00:25, 55.4MMB/s]cell_metadata_with_parcellation_annotation.csv:  11%|█         | 178M/1.61G [00:03<00:29, 49.2MMB/s]cell_metadata_with_parcellation_annotation.csv:  11%|█▏        | 183M/1.61G [00:03<00:34, 40.9MMB/s]cell_metadata_with_parcellation_annotation.csv:  12%|█▏        | 188M/1.61G [00:04<00:35, 40.2MMB/s]cell_metadata_with_parcellation_annotation.csv:  12%|█▏        | 192M/1.61G [00:04<00:35, 40.1MMB/s]cell_metadata_with_parcellation_annotation.csv:  12%|█▏        | 200M/1.61G [00:04<00:29, 48.1MMB/s]cell_metadata_with_parcellation_annotation.csv:  13%|█▎        | 205M/1.61G [00:04<00:30, 45.6MMB/s]cell_metadata_with_parcellation_annotation.csv:  13%|█▎        | 212M/1.61G [00:04<00:28, 48.7MMB/s]cell_metadata_with_parcellation_annotation.csv:  14%|█▎        | 220M/1.61G [00:04<00:24, 55.6MMB/s]cell_metadata_with_parcellation_annotation.csv:  14%|█▍        | 226M/1.61G [00:04<00:26, 51.9MMB/s]cell_metadata_with_parcellation_annotation.csv:  14%|█▍        | 233M/1.61G [00:04<00:27, 50.6MMB/s]cell_metadata_with_parcellation_annotation.csv:  15%|█▍        | 240M/1.61G [00:04<00:23, 57.0MMB/s]cell_metadata_with_parcellation_annotation.csv:  15%|█▌        | 246M/1.61G [00:05<00:25, 53.2MMB/s]cell_metadata_with_parcellation_annotation.csv:  16%|█▌        | 253M/1.61G [00:05<00:25, 52.3MMB/s]cell_metadata_with_parcellation_annotation.csv:  16%|█▌        | 261M/1.61G [00:05<00:22, 59.2MMB/s]cell_metadata_with_parcellation_annotation.csv:  17%|█▋        | 267M/1.61G [00:05<00:24, 54.9MMB/s]cell_metadata_with_parcellation_annotation.csv:  17%|█▋        | 273M/1.61G [00:05<00:25, 52.9MMB/s]cell_metadata_with_parcellation_annotation.csv:  17%|█▋        | 281M/1.61G [00:05<00:22, 59.8MMB/s]cell_metadata_with_parcellation_annotation.csv:  18%|█▊        | 287M/1.61G [00:05<00:23, 55.5MMB/s]cell_metadata_with_parcellation_annotation.csv:  18%|█▊        | 293M/1.61G [00:05<00:25, 52.3MMB/s]cell_metadata_with_parcellation_annotation.csv:  19%|█▊        | 300M/1.61G [00:06<00:22, 58.1MMB/s]cell_metadata_with_parcellation_annotation.csv:  19%|█▉        | 306M/1.61G [00:06<00:23, 55.3MMB/s]cell_metadata_with_parcellation_annotation.csv:  19%|█▉        | 313M/1.61G [00:06<00:24, 53.6MMB/s]cell_metadata_with_parcellation_annotation.csv:  20%|█▉        | 318M/1.61G [00:06<00:23, 53.8MMB/s]cell_metadata_with_parcellation_annotation.csv:  20%|██        | 324M/1.61G [00:06<00:24, 52.7MMB/s]cell_metadata_with_parcellation_annotation.csv:  21%|██        | 330M/1.61G [00:06<00:23, 54.2MMB/s]cell_metadata_with_parcellation_annotation.csv:  21%|██        | 336M/1.61G [00:06<00:24, 52.7MMB/s]cell_metadata_with_parcellation_annotation.csv:  21%|██▏       | 343M/1.61G [00:06<00:22, 56.8MMB/s]cell_metadata_with_parcellation_annotation.csv:  22%|██▏       | 349M/1.61G [00:06<00:23, 53.3MMB/s]cell_metadata_with_parcellation_annotation.csv:  22%|██▏       | 356M/1.61G [00:07<00:21, 58.3MMB/s]cell_metadata_with_parcellation_annotation.csv:  23%|██▎       | 362M/1.61G [00:07<00:22, 54.6MMB/s]cell_metadata_with_parcellation_annotation.csv:  23%|██▎       | 368M/1.61G [00:07<00:21, 56.3MMB/s]cell_metadata_with_parcellation_annotation.csv:  23%|██▎       | 374M/1.61G [00:07<00:26, 45.9MMB/s]cell_metadata_with_parcellation_annotation.csv:  24%|██▎       | 379M/1.61G [00:07<00:27, 44.6MMB/s]cell_metadata_with_parcellation_annotation.csv:  24%|██▍       | 385M/1.61G [00:07<00:26, 45.4MMB/s]cell_metadata_with_parcellation_annotation.csv:  24%|██▍       | 390M/1.61G [00:07<00:27, 44.4MMB/s]cell_metadata_with_parcellation_annotation.csv:  25%|██▍       | 395M/1.61G [00:07<00:26, 45.5MMB/s]cell_metadata_with_parcellation_annotation.csv:  25%|██▍       | 400M/1.61G [00:08<00:26, 46.2MMB/s]cell_metadata_with_parcellation_annotation.csv:  25%|██▌       | 406M/1.61G [00:08<00:25, 47.5MMB/s]cell_metadata_with_parcellation_annotation.csv:  26%|██▌       | 412M/1.61G [00:08<00:23, 50.9MMB/s]cell_metadata_with_parcellation_annotation.csv:  26%|██▌       | 418M/1.61G [00:08<00:23, 51.1MMB/s]cell_metadata_with_parcellation_annotation.csv:  26%|██▋       | 423M/1.61G [00:08<00:24, 48.8MMB/s]cell_metadata_with_parcellation_annotation.csv:  27%|██▋       | 428M/1.61G [00:08<00:24, 48.0MMB/s]cell_metadata_with_parcellation_annotation.csv:  27%|██▋       | 433M/1.61G [00:08<00:24, 47.8MMB/s]cell_metadata_with_parcellation_annotation.csv:  27%|██▋       | 440M/1.61G [00:08<00:23, 49.0MMB/s]cell_metadata_with_parcellation_annotation.csv:  28%|██▊       | 448M/1.61G [00:08<00:20, 56.8MMB/s]cell_metadata_with_parcellation_annotation.csv:  28%|██▊       | 454M/1.61G [00:09<00:21, 52.7MMB/s]cell_metadata_with_parcellation_annotation.csv:  29%|██▊       | 460M/1.61G [00:09<00:22, 52.1MMB/s]cell_metadata_with_parcellation_annotation.csv:  29%|██▉       | 468M/1.61G [00:09<00:19, 59.0MMB/s]cell_metadata_with_parcellation_annotation.csv:  30%|██▉       | 474M/1.61G [00:09<00:20, 53.9MMB/s]cell_metadata_with_parcellation_annotation.csv:  30%|██▉       | 480M/1.61G [00:09<00:21, 52.0MMB/s]cell_metadata_with_parcellation_annotation.csv:  30%|███       | 486M/1.61G [00:09<00:21, 51.1MMB/s]cell_metadata_with_parcellation_annotation.csv:  31%|███       | 491M/1.61G [00:09<00:21, 51.1MMB/s]cell_metadata_with_parcellation_annotation.csv:  31%|███       | 498M/1.61G [00:09<00:22, 49.8MMB/s]cell_metadata_with_parcellation_annotation.csv:  31%|███▏      | 503M/1.61G [00:10<00:23, 47.7MMB/s]cell_metadata_with_parcellation_annotation.csv:  32%|███▏      | 511M/1.61G [00:10<00:19, 55.1MMB/s]cell_metadata_with_parcellation_annotation.csv:  32%|███▏      | 517M/1.61G [00:10<00:20, 52.3MMB/s]cell_metadata_with_parcellation_annotation.csv:  33%|███▎      | 523M/1.61G [00:10<00:20, 51.9MMB/s]cell_metadata_with_parcellation_annotation.csv:  33%|███▎      | 531M/1.61G [00:10<00:18, 59.2MMB/s]cell_metadata_with_parcellation_annotation.csv:  33%|███▎      | 538M/1.61G [00:10<00:19, 55.1MMB/s]cell_metadata_with_parcellation_annotation.csv:  34%|███▍      | 544M/1.61G [00:10<00:20, 52.3MMB/s]cell_metadata_with_parcellation_annotation.csv:  34%|███▍      | 552M/1.61G [00:10<00:19, 53.8MMB/s]cell_metadata_with_parcellation_annotation.csv:  35%|███▍      | 559M/1.61G [00:11<00:17, 59.2MMB/s]cell_metadata_with_parcellation_annotation.csv:  35%|███▌      | 566M/1.61G [00:11<00:18, 55.9MMB/s]cell_metadata_with_parcellation_annotation.csv:  36%|███▌      | 572M/1.61G [00:11<00:19, 53.8MMB/s]cell_metadata_with_parcellation_annotation.csv:  36%|███▌      | 579M/1.61G [00:11<00:17, 58.8MMB/s]cell_metadata_with_parcellation_annotation.csv:  36%|███▋      | 585M/1.61G [00:11<00:21, 47.0MMB/s]cell_metadata_with_parcellation_annotation.csv:  37%|███▋      | 592M/1.61G [00:11<00:21, 48.2MMB/s]cell_metadata_with_parcellation_annotation.csv:  37%|███▋      | 600M/1.61G [00:11<00:18, 55.4MMB/s]cell_metadata_with_parcellation_annotation.csv:  38%|███▊      | 606M/1.61G [00:11<00:19, 51.5MMB/s]cell_metadata_with_parcellation_annotation.csv:  38%|███▊      | 612M/1.61G [00:12<00:19, 51.2MMB/s]cell_metadata_with_parcellation_annotation.csv:  39%|███▊      | 619M/1.61G [00:12<00:17, 56.8MMB/s]cell_metadata_with_parcellation_annotation.csv:  39%|███▉      | 625M/1.61G [00:12<00:19, 49.5MMB/s]cell_metadata_with_parcellation_annotation.csv:  39%|███▉      | 632M/1.61G [00:12<00:18, 53.6MMB/s]cell_metadata_with_parcellation_annotation.csv:  40%|███▉      | 638M/1.61G [00:12<00:18, 51.6MMB/s]cell_metadata_with_parcellation_annotation.csv:  40%|████      | 644M/1.61G [00:12<00:18, 51.1MMB/s]cell_metadata_with_parcellation_annotation.csv:  40%|████      | 649M/1.61G [00:12<00:18, 51.3MMB/s]cell_metadata_with_parcellation_annotation.csv:  41%|████      | 655M/1.61G [00:13<00:27, 34.9MMB/s]cell_metadata_with_parcellation_annotation.csv:  41%|████      | 662M/1.61G [00:13<00:21, 43.5MMB/s]cell_metadata_with_parcellation_annotation.csv:  42%|████▏     | 668M/1.61G [00:13<00:23, 40.8MMB/s]cell_metadata_with_parcellation_annotation.csv:  42%|████▏     | 675M/1.61G [00:13<00:21, 43.9MMB/s]cell_metadata_with_parcellation_annotation.csv:  42%|████▏     | 682M/1.61G [00:13<00:18, 50.1MMB/s]cell_metadata_with_parcellation_annotation.csv:  43%|████▎     | 687M/1.61G [00:13<00:18, 48.6MMB/s]cell_metadata_with_parcellation_annotation.csv:  43%|████▎     | 694M/1.61G [00:13<00:16, 54.2MMB/s]cell_metadata_with_parcellation_annotation.csv:  44%|████▎     | 700M/1.61G [00:13<00:17, 52.6MMB/s]cell_metadata_with_parcellation_annotation.csv:  44%|████▍     | 706M/1.61G [00:14<00:17, 50.9MMB/s]cell_metadata_with_parcellation_annotation.csv:  44%|████▍     | 711M/1.61G [00:14<00:19, 45.1MMB/s]cell_metadata_with_parcellation_annotation.csv:  45%|████▍     | 717M/1.61G [00:14<00:20, 44.0MMB/s]cell_metadata_with_parcellation_annotation.csv:  45%|████▍     | 722M/1.61G [00:14<00:18, 47.1MMB/s]cell_metadata_with_parcellation_annotation.csv:  45%|████▌     | 727M/1.61G [00:14<00:19, 44.9MMB/s]cell_metadata_with_parcellation_annotation.csv:  46%|████▌     | 732M/1.61G [00:14<00:20, 42.2MMB/s]cell_metadata_with_parcellation_annotation.csv:  46%|████▌     | 738M/1.61G [00:14<00:20, 43.4MMB/s]cell_metadata_with_parcellation_annotation.csv:  46%|████▌     | 743M/1.61G [00:14<00:18, 45.8MMB/s]cell_metadata_with_parcellation_annotation.csv:  47%|████▋     | 748M/1.61G [00:15<00:19, 43.2MMB/s]cell_metadata_with_parcellation_annotation.csv:  47%|████▋     | 752M/1.61G [00:15<00:19, 44.3MMB/s]cell_metadata_with_parcellation_annotation.csv:  47%|████▋     | 757M/1.61G [00:15<00:19, 43.6MMB/s]cell_metadata_with_parcellation_annotation.csv:  47%|████▋     | 762M/1.61G [00:15<00:18, 45.7MMB/s]cell_metadata_with_parcellation_annotation.csv:  48%|████▊     | 766M/1.61G [00:15<00:19, 44.2MMB/s]cell_metadata_with_parcellation_annotation.csv:  48%|████▊     | 771M/1.61G [00:15<00:19, 42.3MMB/s]cell_metadata_with_parcellation_annotation.csv:  48%|████▊     | 777M/1.61G [00:15<00:18, 45.5MMB/s]cell_metadata_with_parcellation_annotation.csv:  49%|████▊     | 781M/1.61G [00:15<00:18, 44.0MMB/s]cell_metadata_with_parcellation_annotation.csv:  49%|████▉     | 787M/1.61G [00:15<00:17, 47.6MMB/s]cell_metadata_with_parcellation_annotation.csv:  49%|████▉     | 792M/1.61G [00:16<00:17, 45.6MMB/s]cell_metadata_with_parcellation_annotation.csv:  50%|████▉     | 797M/1.61G [00:16<00:18, 42.9MMB/s]cell_metadata_with_parcellation_annotation.csv:  50%|████▉     | 801M/1.61G [00:16<00:21, 38.3MMB/s]cell_metadata_with_parcellation_annotation.csv:  50%|█████     | 805M/1.61G [00:16<00:21, 37.2MMB/s]cell_metadata_with_parcellation_annotation.csv:  50%|█████     | 810M/1.61G [00:16<00:22, 36.1MMB/s]cell_metadata_with_parcellation_annotation.csv:  51%|█████     | 815M/1.61G [00:16<00:22, 35.6MMB/s]cell_metadata_with_parcellation_annotation.csv:  51%|█████     | 819M/1.61G [00:16<00:22, 35.2MMB/s]cell_metadata_with_parcellation_annotation.csv:  51%|█████▏    | 824M/1.61G [00:16<00:22, 35.1MMB/s]cell_metadata_with_parcellation_annotation.csv:  52%|█████▏    | 829M/1.61G [00:17<00:22, 35.1MMB/s]cell_metadata_with_parcellation_annotation.csv:  52%|█████▏    | 834M/1.61G [00:17<00:22, 35.1MMB/s]cell_metadata_with_parcellation_annotation.csv:  52%|█████▏    | 838M/1.61G [00:17<00:21, 35.2MMB/s]cell_metadata_with_parcellation_annotation.csv:  52%|█████▏    | 843M/1.61G [00:17<00:21, 35.4MMB/s]cell_metadata_with_parcellation_annotation.csv:  53%|█████▎    | 848M/1.61G [00:17<00:21, 35.6MMB/s]cell_metadata_with_parcellation_annotation.csv:  53%|█████▎    | 853M/1.61G [00:17<00:21, 35.8MMB/s]cell_metadata_with_parcellation_annotation.csv:  53%|█████▎    | 858M/1.61G [00:17<00:19, 37.8MMB/s]cell_metadata_with_parcellation_annotation.csv:  54%|█████▎    | 861M/1.61G [00:17<00:20, 36.0MMB/s]cell_metadata_with_parcellation_annotation.csv:  54%|█████▍    | 866M/1.61G [00:18<00:20, 35.8MMB/s]cell_metadata_with_parcellation_annotation.csv:  54%|█████▍    | 871M/1.61G [00:18<00:18, 39.5MMB/s]cell_metadata_with_parcellation_annotation.csv:  54%|█████▍    | 875M/1.61G [00:18<00:19, 36.8MMB/s]cell_metadata_with_parcellation_annotation.csv:  55%|█████▍    | 878M/1.61G [00:18<00:20, 35.0MMB/s]cell_metadata_with_parcellation_annotation.csv:  55%|█████▍    | 883M/1.61G [00:18<00:19, 36.2MMB/s]cell_metadata_with_parcellation_annotation.csv:  55%|█████▌    | 888M/1.61G [00:18<00:18, 39.4MMB/s]cell_metadata_with_parcellation_annotation.csv:  56%|█████▌    | 892M/1.61G [00:18<00:19, 36.6MMB/s]cell_metadata_with_parcellation_annotation.csv:  56%|█████▌    | 896M/1.61G [00:18<00:19, 36.5MMB/s]cell_metadata_with_parcellation_annotation.csv:  56%|█████▌    | 900M/1.61G [00:19<00:18, 38.0MMB/s]cell_metadata_with_parcellation_annotation.csv:  56%|█████▋    | 904M/1.61G [00:19<00:19, 36.4MMB/s]cell_metadata_with_parcellation_annotation.csv:  57%|█████▋    | 909M/1.61G [00:19<00:18, 37.4MMB/s]cell_metadata_with_parcellation_annotation.csv:  57%|█████▋    | 913M/1.61G [00:19<00:17, 38.7MMB/s]cell_metadata_with_parcellation_annotation.csv:  57%|█████▋    | 917M/1.61G [00:19<00:18, 37.2MMB/s]cell_metadata_with_parcellation_annotation.csv:  57%|█████▋    | 922M/1.61G [00:19<00:17, 38.1MMB/s]cell_metadata_with_parcellation_annotation.csv:  58%|█████▊    | 926M/1.61G [00:19<00:17, 39.1MMB/s]cell_metadata_with_parcellation_annotation.csv:  58%|█████▊    | 930M/1.61G [00:19<00:17, 37.6MMB/s]cell_metadata_with_parcellation_annotation.csv:  58%|█████▊    | 935M/1.61G [00:19<00:16, 40.1MMB/s]cell_metadata_with_parcellation_annotation.csv:  58%|█████▊    | 939M/1.61G [00:20<00:17, 38.0MMB/s]cell_metadata_with_parcellation_annotation.csv:  59%|█████▊    | 943M/1.61G [00:20<00:17, 38.5MMB/s]cell_metadata_with_parcellation_annotation.csv:  59%|█████▉    | 947M/1.61G [00:20<00:17, 38.5MMB/s]cell_metadata_with_parcellation_annotation.csv:  59%|█████▉    | 951M/1.61G [00:20<00:16, 38.8MMB/s]cell_metadata_with_parcellation_annotation.csv:  59%|█████▉    | 956M/1.61G [00:20<00:16, 39.5MMB/s]cell_metadata_with_parcellation_annotation.csv:  60%|█████▉    | 959M/1.61G [00:20<00:16, 38.9MMB/s]cell_metadata_with_parcellation_annotation.csv:  60%|█████▉    | 963M/1.61G [00:20<00:16, 38.7MMB/s]cell_metadata_with_parcellation_annotation.csv:  60%|██████    | 967M/1.61G [00:20<00:16, 39.4MMB/s]cell_metadata_with_parcellation_annotation.csv:  60%|██████    | 971M/1.61G [00:20<00:16, 38.6MMB/s]cell_metadata_with_parcellation_annotation.csv:  61%|██████    | 976M/1.61G [00:20<00:15, 39.6MMB/s]cell_metadata_with_parcellation_annotation.csv:  61%|██████    | 980M/1.61G [00:21<00:16, 39.1MMB/s]cell_metadata_with_parcellation_annotation.csv:  61%|██████    | 984M/1.61G [00:21<00:15, 39.7MMB/s]cell_metadata_with_parcellation_annotation.csv:  61%|██████▏   | 988M/1.61G [00:21<00:15, 39.1MMB/s]cell_metadata_with_parcellation_annotation.csv:  62%|██████▏   | 992M/1.61G [00:21<00:15, 39.9MMB/s]cell_metadata_with_parcellation_annotation.csv:  62%|██████▏   | 996M/1.61G [00:21<00:15, 39.2MMB/s]cell_metadata_with_parcellation_annotation.csv:  62%|██████▏   | 1.00G/1.61G [00:21<00:15, 40.0MMB/s]cell_metadata_with_parcellation_annotation.csv:  63%|██████▎   | 1.00G/1.61G [00:21<00:15, 39.5MMB/s]cell_metadata_with_parcellation_annotation.csv:  63%|██████▎   | 1.01G/1.61G [00:21<00:14, 40.1MMB/s]cell_metadata_with_parcellation_annotation.csv:  63%|██████▎   | 1.01G/1.61G [00:21<00:14, 39.7MMB/s]cell_metadata_with_parcellation_annotation.csv:  63%|██████▎   | 1.02G/1.61G [00:22<00:14, 40.2MMB/s]cell_metadata_with_parcellation_annotation.csv:  64%|██████▎   | 1.02G/1.61G [00:22<00:14, 39.3MMB/s]cell_metadata_with_parcellation_annotation.csv:  64%|██████▍   | 1.02G/1.61G [00:22<00:14, 40.1MMB/s]cell_metadata_with_parcellation_annotation.csv:  64%|██████▍   | 1.03G/1.61G [00:22<00:14, 39.8MMB/s]cell_metadata_with_parcellation_annotation.csv:  64%|██████▍   | 1.03G/1.61G [00:22<00:14, 40.3MMB/s]cell_metadata_with_parcellation_annotation.csv:  65%|██████▍   | 1.04G/1.61G [00:22<00:14, 39.6MMB/s]cell_metadata_with_parcellation_annotation.csv:  65%|██████▍   | 1.04G/1.61G [00:22<00:14, 40.1MMB/s]cell_metadata_with_parcellation_annotation.csv:  65%|██████▌   | 1.05G/1.61G [00:22<00:14, 39.9MMB/s]cell_metadata_with_parcellation_annotation.csv:  65%|██████▌   | 1.05G/1.61G [00:22<00:13, 40.4MMB/s]cell_metadata_with_parcellation_annotation.csv:  66%|██████▌   | 1.05G/1.61G [00:22<00:13, 39.8MMB/s]cell_metadata_with_parcellation_annotation.csv:  66%|██████▌   | 1.06G/1.61G [00:23<00:13, 40.3MMB/s]cell_metadata_with_parcellation_annotation.csv:  66%|██████▌   | 1.06G/1.61G [00:23<00:13, 39.9MMB/s]cell_metadata_with_parcellation_annotation.csv:  66%|██████▋   | 1.07G/1.61G [00:23<00:13, 40.2MMB/s]cell_metadata_with_parcellation_annotation.csv:  67%|██████▋   | 1.07G/1.61G [00:23<00:13, 39.8MMB/s]cell_metadata_with_parcellation_annotation.csv:  67%|██████▋   | 1.07G/1.61G [00:23<00:13, 40.3MMB/s]cell_metadata_with_parcellation_annotation.csv:  67%|██████▋   | 1.08G/1.61G [00:23<00:13, 40.0MMB/s]cell_metadata_with_parcellation_annotation.csv:  67%|██████▋   | 1.08G/1.61G [00:23<00:13, 40.3MMB/s]cell_metadata_with_parcellation_annotation.csv:  68%|██████▊   | 1.09G/1.61G [00:23<00:13, 39.9MMB/s]cell_metadata_with_parcellation_annotation.csv:  68%|██████▊   | 1.09G/1.61G [00:23<00:12, 39.9MMB/s]cell_metadata_with_parcellation_annotation.csv:  68%|██████▊   | 1.09G/1.61G [00:23<00:12, 40.2MMB/s]cell_metadata_with_parcellation_annotation.csv:  68%|██████▊   | 1.10G/1.61G [00:24<00:12, 40.0MMB/s]cell_metadata_with_parcellation_annotation.csv:  69%|██████▊   | 1.10G/1.61G [00:24<00:12, 40.8MMB/s]cell_metadata_with_parcellation_annotation.csv:  69%|██████▉   | 1.11G/1.61G [00:24<00:12, 39.9MMB/s]cell_metadata_with_parcellation_annotation.csv:  69%|██████▉   | 1.11G/1.61G [00:24<00:12, 40.7MMB/s]cell_metadata_with_parcellation_annotation.csv:  69%|██████▉   | 1.12G/1.61G [00:24<00:12, 40.1MMB/s]cell_metadata_with_parcellation_annotation.csv:  70%|██████▉   | 1.12G/1.61G [00:24<00:11, 40.6MMB/s]cell_metadata_with_parcellation_annotation.csv:  70%|██████▉   | 1.12G/1.61G [00:24<00:12, 40.1MMB/s]cell_metadata_with_parcellation_annotation.csv:  70%|███████   | 1.13G/1.61G [00:24<00:11, 40.7MMB/s]cell_metadata_with_parcellation_annotation.csv:  70%|███████   | 1.13G/1.61G [00:24<00:11, 40.2MMB/s]cell_metadata_with_parcellation_annotation.csv:  71%|███████   | 1.14G/1.61G [00:24<00:11, 40.5MMB/s]cell_metadata_with_parcellation_annotation.csv:  71%|███████   | 1.14G/1.61G [00:25<00:11, 40.2MMB/s]cell_metadata_with_parcellation_annotation.csv:  71%|███████▏  | 1.14G/1.61G [00:25<00:11, 40.4MMB/s]cell_metadata_with_parcellation_annotation.csv:  72%|███████▏  | 1.15G/1.61G [00:25<00:11, 40.2MMB/s]cell_metadata_with_parcellation_annotation.csv:  72%|███████▏  | 1.15G/1.61G [00:25<00:11, 40.3MMB/s]cell_metadata_with_parcellation_annotation.csv:  72%|███████▏  | 1.16G/1.61G [00:25<00:11, 40.3MMB/s]cell_metadata_with_parcellation_annotation.csv:  72%|███████▏  | 1.16G/1.61G [00:25<00:11, 40.2MMB/s]cell_metadata_with_parcellation_annotation.csv:  73%|███████▎  | 1.17G/1.61G [00:25<00:10, 40.3MMB/s]cell_metadata_with_parcellation_annotation.csv:  73%|███████▎  | 1.17G/1.61G [00:25<00:10, 40.4MMB/s]cell_metadata_with_parcellation_annotation.csv:  73%|███████▎  | 1.17G/1.61G [00:25<00:10, 40.2MMB/s]cell_metadata_with_parcellation_annotation.csv:  73%|███████▎  | 1.18G/1.61G [00:26<00:10, 40.6MMB/s]cell_metadata_with_parcellation_annotation.csv:  74%|███████▎  | 1.18G/1.61G [00:26<00:10, 40.2MMB/s]cell_metadata_with_parcellation_annotation.csv:  74%|███████▍  | 1.19G/1.61G [00:26<00:10, 40.7MMB/s]cell_metadata_with_parcellation_annotation.csv:  74%|███████▍  | 1.19G/1.61G [00:26<00:10, 40.0MMB/s]cell_metadata_with_parcellation_annotation.csv:  74%|███████▍  | 1.19G/1.61G [00:26<00:10, 40.6MMB/s]cell_metadata_with_parcellation_annotation.csv:  75%|███████▍  | 1.20G/1.61G [00:26<00:10, 40.0MMB/s]cell_metadata_with_parcellation_annotation.csv:  75%|███████▍  | 1.20G/1.61G [00:26<00:10, 40.1MMB/s]cell_metadata_with_parcellation_annotation.csv:  75%|███████▌  | 1.21G/1.61G [00:26<00:11, 36.0MMB/s]cell_metadata_with_parcellation_annotation.csv:  75%|███████▌  | 1.21G/1.61G [00:26<00:11, 35.9MMB/s]cell_metadata_with_parcellation_annotation.csv:  76%|███████▌  | 1.22G/1.61G [00:27<00:10, 37.4MMB/s]cell_metadata_with_parcellation_annotation.csv:  76%|███████▌  | 1.22G/1.61G [00:27<00:10, 38.3MMB/s]cell_metadata_with_parcellation_annotation.csv:  76%|███████▋  | 1.23G/1.61G [00:27<00:09, 38.9MMB/s]cell_metadata_with_parcellation_annotation.csv:  77%|███████▋  | 1.23G/1.61G [00:27<00:09, 39.4MMB/s]cell_metadata_with_parcellation_annotation.csv:  77%|███████▋  | 1.24G/1.61G [00:27<00:09, 39.7MMB/s]cell_metadata_with_parcellation_annotation.csv:  77%|███████▋  | 1.24G/1.61G [00:27<00:09, 39.9MMB/s]cell_metadata_with_parcellation_annotation.csv:  78%|███████▊  | 1.25G/1.61G [00:27<00:08, 40.5MMB/s]cell_metadata_with_parcellation_annotation.csv:  78%|███████▊  | 1.26G/1.61G [00:27<00:08, 40.6MMB/s]cell_metadata_with_parcellation_annotation.csv:  78%|███████▊  | 1.26G/1.61G [00:28<00:08, 40.7MMB/s]cell_metadata_with_parcellation_annotation.csv:  79%|███████▉  | 1.27G/1.61G [00:28<00:08, 40.5MMB/s]cell_metadata_with_parcellation_annotation.csv:  79%|███████▉  | 1.27G/1.61G [00:28<00:08, 40.6MMB/s]cell_metadata_with_parcellation_annotation.csv:  80%|███████▉  | 1.28G/1.61G [00:28<00:07, 43.5MMB/s]cell_metadata_with_parcellation_annotation.csv:  80%|███████▉  | 1.28G/1.61G [00:28<00:07, 40.8MMB/s]cell_metadata_with_parcellation_annotation.csv:  80%|████████  | 1.29G/1.61G [00:28<00:08, 40.0MMB/s]cell_metadata_with_parcellation_annotation.csv:  80%|████████  | 1.29G/1.61G [00:28<00:07, 41.9MMB/s]cell_metadata_with_parcellation_annotation.csv:  81%|████████  | 1.29G/1.61G [00:28<00:07, 39.3MMB/s]cell_metadata_with_parcellation_annotation.csv:  81%|████████  | 1.30G/1.61G [00:29<00:07, 40.3MMB/s]cell_metadata_with_parcellation_annotation.csv:  81%|████████  | 1.30G/1.61G [00:29<00:07, 42.1MMB/s]cell_metadata_with_parcellation_annotation.csv:  81%|████████▏ | 1.31G/1.61G [00:29<00:07, 39.4MMB/s]cell_metadata_with_parcellation_annotation.csv:  82%|████████▏ | 1.31G/1.61G [00:29<00:07, 40.8MMB/s]cell_metadata_with_parcellation_annotation.csv:  82%|████████▏ | 1.32G/1.61G [00:29<00:07, 40.1MMB/s]cell_metadata_with_parcellation_annotation.csv:  82%|████████▏ | 1.32G/1.61G [00:29<00:07, 40.4MMB/s]cell_metadata_with_parcellation_annotation.csv:  83%|████████▎ | 1.33G/1.61G [00:29<00:07, 40.0MMB/s]cell_metadata_with_parcellation_annotation.csv:  83%|████████▎ | 1.33G/1.61G [00:29<00:06, 40.8MMB/s]cell_metadata_with_parcellation_annotation.csv:  83%|████████▎ | 1.33G/1.61G [00:29<00:06, 40.2MMB/s]cell_metadata_with_parcellation_annotation.csv:  83%|████████▎ | 1.34G/1.61G [00:30<00:06, 40.9MMB/s]cell_metadata_with_parcellation_annotation.csv:  84%|████████▎ | 1.34G/1.61G [00:30<00:06, 40.5MMB/s]cell_metadata_with_parcellation_annotation.csv:  84%|████████▍ | 1.35G/1.61G [00:30<00:06, 41.0MMB/s]cell_metadata_with_parcellation_annotation.csv:  84%|████████▍ | 1.35G/1.61G [00:30<00:06, 40.5MMB/s]cell_metadata_with_parcellation_annotation.csv:  84%|████████▍ | 1.36G/1.61G [00:30<00:06, 41.4MMB/s]cell_metadata_with_parcellation_annotation.csv:  85%|████████▍ | 1.36G/1.61G [00:30<00:06, 40.7MMB/s]cell_metadata_with_parcellation_annotation.csv:  85%|████████▍ | 1.36G/1.61G [00:30<00:05, 40.6MMB/s]cell_metadata_with_parcellation_annotation.csv:  85%|████████▌ | 1.37G/1.61G [00:30<00:05, 41.5MMB/s]cell_metadata_with_parcellation_annotation.csv:  85%|████████▌ | 1.37G/1.61G [00:30<00:05, 40.6MMB/s]cell_metadata_with_parcellation_annotation.csv:  86%|████████▌ | 1.38G/1.61G [00:30<00:05, 42.2MMB/s]cell_metadata_with_parcellation_annotation.csv:  86%|████████▌ | 1.38G/1.61G [00:31<00:05, 40.4MMB/s]cell_metadata_with_parcellation_annotation.csv:  86%|████████▋ | 1.39G/1.61G [00:31<00:05, 41.4MMB/s]cell_metadata_with_parcellation_annotation.csv:  87%|████████▋ | 1.39G/1.61G [00:31<00:05, 40.6MMB/s]cell_metadata_with_parcellation_annotation.csv:  87%|████████▋ | 1.40G/1.61G [00:31<00:05, 40.9MMB/s]cell_metadata_with_parcellation_annotation.csv:  87%|████████▋ | 1.40G/1.61G [00:31<00:04, 42.1MMB/s]cell_metadata_with_parcellation_annotation.csv:  87%|████████▋ | 1.40G/1.61G [00:31<00:05, 38.9MMB/s]cell_metadata_with_parcellation_annotation.csv:  88%|████████▊ | 1.41G/1.61G [00:31<00:04, 39.5MMB/s]cell_metadata_with_parcellation_annotation.csv:  88%|████████▊ | 1.42G/1.61G [00:31<00:04, 40.5MMB/s]cell_metadata_with_parcellation_annotation.csv:  88%|████████▊ | 1.42G/1.61G [00:32<00:04, 41.1MMB/s]cell_metadata_with_parcellation_annotation.csv:  89%|████████▉ | 1.43G/1.61G [00:32<00:04, 41.5MMB/s]cell_metadata_with_parcellation_annotation.csv:  89%|████████▉ | 1.43G/1.61G [00:32<00:04, 42.0MMB/s]cell_metadata_with_parcellation_annotation.csv:  90%|████████▉ | 1.44G/1.61G [00:32<00:03, 42.3MMB/s]cell_metadata_with_parcellation_annotation.csv:  90%|████████▉ | 1.44G/1.61G [00:32<00:03, 46.1MMB/s]cell_metadata_with_parcellation_annotation.csv:  90%|█████████ | 1.45G/1.61G [00:32<00:03, 43.2MMB/s]cell_metadata_with_parcellation_annotation.csv:  90%|█████████ | 1.45G/1.61G [00:32<00:03, 40.9MMB/s]cell_metadata_with_parcellation_annotation.csv:  91%|█████████ | 1.46G/1.61G [00:32<00:03, 42.3MMB/s]cell_metadata_with_parcellation_annotation.csv:  91%|█████████ | 1.46G/1.61G [00:33<00:03, 42.6MMB/s]cell_metadata_with_parcellation_annotation.csv:  91%|█████████▏| 1.47G/1.61G [00:33<00:03, 42.9MMB/s]cell_metadata_with_parcellation_annotation.csv:  92%|█████████▏| 1.47G/1.61G [00:33<00:03, 42.7MMB/s]cell_metadata_with_parcellation_annotation.csv:  92%|█████████▏| 1.48G/1.61G [00:33<00:02, 43.3MMB/s]cell_metadata_with_parcellation_annotation.csv:  92%|█████████▏| 1.48G/1.61G [00:33<00:02, 42.9MMB/s]cell_metadata_with_parcellation_annotation.csv:  92%|█████████▏| 1.49G/1.61G [00:33<00:02, 43.9MMB/s]cell_metadata_with_parcellation_annotation.csv:  93%|█████████▎| 1.49G/1.61G [00:33<00:02, 43.4MMB/s]cell_metadata_with_parcellation_annotation.csv:  93%|█████████▎| 1.49G/1.61G [00:33<00:02, 44.3MMB/s]cell_metadata_with_parcellation_annotation.csv:  93%|█████████▎| 1.50G/1.61G [00:33<00:02, 43.6MMB/s]cell_metadata_with_parcellation_annotation.csv:  94%|█████████▎| 1.50G/1.61G [00:33<00:02, 44.5MMB/s]cell_metadata_with_parcellation_annotation.csv:  94%|█████████▍| 1.51G/1.61G [00:34<00:02, 43.8MMB/s]cell_metadata_with_parcellation_annotation.csv:  94%|█████████▍| 1.51G/1.61G [00:34<00:02, 43.5MMB/s]cell_metadata_with_parcellation_annotation.csv:  94%|█████████▍| 1.52G/1.61G [00:34<00:02, 43.5MMB/s]cell_metadata_with_parcellation_annotation.csv:  95%|█████████▍| 1.52G/1.61G [00:34<00:01, 44.3MMB/s]cell_metadata_with_parcellation_annotation.csv:  95%|█████████▌| 1.53G/1.61G [00:34<00:01, 44.6MMB/s]cell_metadata_with_parcellation_annotation.csv:  95%|█████████▌| 1.53G/1.61G [00:34<00:01, 45.5MMB/s]cell_metadata_with_parcellation_annotation.csv:  96%|█████████▌| 1.54G/1.61G [00:34<00:01, 44.4MMB/s]cell_metadata_with_parcellation_annotation.csv:  96%|█████████▌| 1.54G/1.61G [00:34<00:01, 44.3MMB/s]cell_metadata_with_parcellation_annotation.csv:  96%|█████████▌| 1.54G/1.61G [00:34<00:01, 44.4MMB/s]cell_metadata_with_parcellation_annotation.csv:  96%|█████████▋| 1.55G/1.61G [00:34<00:01, 45.1MMB/s]cell_metadata_with_parcellation_annotation.csv:  97%|█████████▋| 1.55G/1.61G [00:35<00:01, 45.2MMB/s]cell_metadata_with_parcellation_annotation.csv:  97%|█████████▋| 1.56G/1.61G [00:35<00:01, 45.9MMB/s]cell_metadata_with_parcellation_annotation.csv:  97%|█████████▋| 1.56G/1.61G [00:35<00:00, 45.6MMB/s]cell_metadata_with_parcellation_annotation.csv:  98%|█████████▊| 1.57G/1.61G [00:35<00:00, 46.9MMB/s]cell_metadata_with_parcellation_annotation.csv:  98%|█████████▊| 1.57G/1.61G [00:35<00:00, 45.8MMB/s]cell_metadata_with_parcellation_annotation.csv:  98%|█████████▊| 1.58G/1.61G [00:35<00:00, 44.4MMB/s]cell_metadata_with_parcellation_annotation.csv:  99%|█████████▊| 1.59G/1.61G [00:35<00:00, 49.8MMB/s]cell_metadata_with_parcellation_annotation.csv:  99%|█████████▉| 1.59G/1.61G [00:35<00:00, 46.1MMB/s]cell_metadata_with_parcellation_annotation.csv:  99%|█████████▉| 1.60G/1.61G [00:35<00:00, 45.9MMB/s]cell_metadata_with_parcellation_annotation.csv: 100%|█████████▉| 1.60G/1.61G [00:36<00:00, 47.6MMB/s]cell_metadata_with_parcellation_annotation.csv: 100%|█████████▉| 1.61G/1.61G [00:36<00:00, 47.1MMB/s]cell_metadata_with_parcellation_annotation.csv: 100%|██████████| 1.61G/1.61G [00:39<00:00, 41.0MMB/s]
+  rows: 3,739,961
+  parcellation/taxonomy columns: ['class', 'subclass', 'supertype', 'cluster', 'parcellation_index', 'parcellation_organ', 'parcellation_category', 'parcellation_division', 'parcellation_structure', 'parcellation_substructure', 'parcellation_organ_color', 'parcellation_category_color', 'parcellation_division_color', 'parcellation_structure_color', 'parcellation_substructure_color']
+  rows after dropna(parcellation_structure, subclass): 3,739,961
+
+Wrote data/cell_type_priors/region_subclass_priors.parquet
+  rows: 14,638
+  unique regions:    354
+  unique subclasses: 338
+
+Wrote data/cell_type_priors/subclass_taxonomy.parquet
+  top 10 subclasses by total cells:
+    327 Oligo NN                                           476,819
+    319 Astro-TE NN                                        294,884
+    333 Endo NN                                            263,210
+    318 Astro-NT NN                                        192,666
+    314 CB Granule Glut                                    184,028
+    006 L4/5 IT CTX Glut                                   155,540
+    007 L2/3 IT CTX Glut                                   121,784
+    061 STR D1 Gaba                                        111,536
+    030 L6 CT CTX Glut                                     106,806
+    062 STR D2 Gaba                                        105,585
+
+  PO: top 5 subclasses
+    151 TH Prkcd Grin2c Glut                            0.538
+    327 Oligo NN                                        0.166
+    318 Astro-NT NN                                     0.109
+    333 Endo NN                                         0.097
+    331 Peri NN                                         0.023
+
+  LP: top 5 subclasses
+    151 TH Prkcd Grin2c Glut                            0.527
+    327 Oligo NN                                        0.170
+    318 Astro-NT NN                                     0.127
+    333 Endo NN                                         0.086
+    326 OPC NN                                          0.022
+
+  CA1: top 5 subclasses
+    016 CA1-ProS Glut                                   0.385
+    319 Astro-TE NN                                     0.224
+    333 Endo NN                                         0.078
+    327 Oligo NN                                        0.060
+    023 SUB-ProS Glut                                   0.047
+
+  DG-mo: NOT FOUND in ABC Atlas — acronym remap needed
+
+  SSp-tr5: NOT FOUND in ABC Atlas — acronym remap needed
+=== building BrainSet data ===
+/workspace/anatomical-neural-fm/.venv/lib/python3.11/site-packages/one/util.py:436: ALFWarning: Multiple revisions: "", "2025-03-03"
+  warnings.warn(f'Multiple revisions: {rev_list}', alferr.ALFWarning)
+Connected to https://openalyx.internationalbrainlab.org as user "intbrainlab"
+Loaded fixed manifest manifests/ibl_bwm_phase4.json (20 recordings)
+
+=== [1] Building 56956777-dca5-468c-87cb-78150432cc57 probe=probe01 ===
+Connected to https://openalyx.internationalbrainlab.org as user "intbrainlab"
+Loading alf/probe01/pykilosort...
+Loading trials + wheel...
+  trials: 425 (fields: ['stim_on_times', 'response_times', 'feedback_times', 'feedback_type', 'choice', 'contrast_left', 'contrast_right', 'probability_left'])
+  wheel: 621,256 samples
+Wrote data/brainsets/ibl_bwm/56956777-dca5-468c-87cb-78150432cc57_probe01.h5
+  subject=NYU-11  eid=56956777-dca5-468c-87cb-78150432cc57  probe=probe01
+  units=1100  spikes=25,986,075
+  duration=3770.7s  spike_rate=6891.6 Hz
+  unique regions=12
+  trials=425  wheel_samples=621,256
+
+=== [2] Building 7939711b-8b4d-4251-b698-b97c1eaa846e probe=probe01 ===
+Connected to https://openalyx.internationalbrainlab.org as user "intbrainlab"
+Loading alf/probe01/pykilosort...
+  0%|          | 0/3.0 [00:00<?, ?it/s] 33%|███▎      | 1/3.0 [00:00<00:01,  1.71it/s] 67%|██████▋   | 2/3.0 [00:01<00:00,  1.73it/s]100%|██████████| 3/3.0 [00:01<00:00,  2.49it/s]100%|██████████| 3/3.0 [00:01<00:00,  2.22it/s]
+  0%|          | 0/3.0 [00:00<?, ?it/s] 33%|███▎      | 1/3.0 [00:00<00:01,  1.72it/s] 67%|██████▋   | 2/3.0 [00:01<00:00,  1.74it/s]100%|██████████| 3/3.0 [00:01<00:00,  2.49it/s]100%|██████████| 3/3.0 [00:01<00:00,  2.23it/s]
+  0%|          | 0/3.0 [00:00<?, ?it/s] 33%|███▎      | 1/3.0 [00:00<00:01,  1.73it/s] 67%|██████▋   | 2/3.0 [00:01<00:00,  1.73it/s]100%|██████████| 3/3.0 [00:01<00:00,  2.52it/s]100%|██████████| 3/3.0 [00:01<00:00,  2.24it/s]
+  0%|          | 0/3.0 [00:00<?, ?it/s] 33%|███▎      | 1/3.0 [00:00<00:01,  1.71it/s] 67%|██████▋   | 2/3.0 [00:01<00:00,  1.73it/s]100%|██████████| 3/3.0 [00:01<00:00,  2.49it/s]100%|██████████| 3/3.0 [00:01<00:00,  2.22it/s]
+/workspace/anatomical-neural-fm/.venv/lib/python3.11/site-packages/one/util.py:436: ALFWarning: Multiple revisions: "", "2025-03-03"
+  warnings.warn(f'Multiple revisions: {rev_list}', alferr.ALFWarning)
+/workspace/anatomical-neural-fm/.venv/lib/python3.11/site-packages/one/util.py:436: ALFWarning: Multiple revisions: "", "2025-03-03"
+  warnings.warn(f'Multiple revisions: {rev_list}', alferr.ALFWarning)
+/workspace/anatomical-neural-fm/.venv/lib/python3.11/site-packages/one/util.py:436: ALFWarning: Multiple revisions: "", "2025-03-03"
+  warnings.warn(f'Multiple revisions: {rev_list}', alferr.ALFWarning)
+/workspace/anatomical-neural-fm/.venv/lib/python3.11/site-packages/one/util.py:436: ALFWarning: Multiple revisions: "2024-05-06", ""
+  warnings.warn(f'Multiple revisions: {rev_list}', alferr.ALFWarning)
+Inconsistent dimensions for object: clusters 
+(1014,),	amps
+(632,),	brainLocationAcronyms_ccf_2017
+(632,),	brainLocationIds_ccf_2017
+(1014,),	channels
+(1014,),	depths
+(1014, 22),	metrics
+(632, 3),	mlapdv
+(1014,),	peakToTrough
+(1014, 82, 32),	waveforms
+(1014, 32),	waveformsChannels
+/workspace/anatomical-neural-fm/.venv/lib/python3.11/site-packages/one/util.py:436: ALFWarning: Multiple revisions: "", "2025-03-03"
+  warnings.warn(f'Multiple revisions: {rev_list}', alferr.ALFWarning)
+/workspace/anatomical-neural-fm/.venv/lib/python3.11/site-packages/one/util.py:436: ALFWarning: Multiple revisions: "", "2025-03-03"
+  warnings.warn(f'Multiple revisions: {rev_list}', alferr.ALFWarning)
+/workspace/anatomical-neural-fm/.venv/lib/python3.11/site-packages/one/util.py:436: ALFWarning: Multiple revisions: "2024-05-06", ""
+  warnings.warn(f'Multiple revisions: {rev_list}', alferr.ALFWarning)
+/workspace/anatomical-neural-fm/.venv/lib/python3.11/site-packages/one/util.py:436: ALFWarning: Multiple revisions: "", "2025-03-03"
+  warnings.warn(f'Multiple revisions: {rev_list}', alferr.ALFWarning)
+/workspace/anatomical-neural-fm/.venv/lib/python3.11/site-packages/one/util.py:436: ALFWarning: Multiple revisions: "", "2025-03-03"
+  warnings.warn(f'Multiple revisions: {rev_list}', alferr.ALFWarning)
+/workspace/anatomical-neural-fm/.venv/lib/python3.11/site-packages/one/util.py:436: ALFWarning: Multiple revisions: "", "2025-03-03"
+  warnings.warn(f'Multiple revisions: {rev_list}', alferr.ALFWarning)
+/workspace/anatomical-neural-fm/.venv/lib/python3.11/site-packages/one/util.py:436: ALFWarning: Multiple revisions: "", "2025-03-03"
+  warnings.warn(f'Multiple revisions: {rev_list}', alferr.ALFWarning)
+/workspace/anatomical-neural-fm/.venv/lib/python3.11/site-packages/one/util.py:436: ALFWarning: Multiple revisions: "", "2025-03-03"
+  warnings.warn(f'Multiple revisions: {rev_list}', alferr.ALFWarning)
+/workspace/anatomical-neural-fm/.venv/lib/python3.11/site-packages/one/util.py:436: ALFWarning: Multiple revisions: "", "2025-03-03"
+  warnings.warn(f'Multiple revisions: {rev_list}', alferr.ALFWarning)
+/workspace/anatomical-neural-fm/.venv/lib/python3.11/site-packages/one/util.py:436: ALFWarning: Multiple revisions: "", "2025-03-03"
+  warnings.warn(f'Multiple revisions: {rev_list}', alferr.ALFWarning)
+/workspace/anatomical-neural-fm/.venv/lib/python3.11/site-packages/one/util.py:436: ALFWarning: Multiple revisions: "", "2025-03-03"
+  warnings.warn(f'Multiple revisions: {rev_list}', alferr.ALFWarning)
+Loading trials + wheel...
+  trials: 1019 (fields: ['stim_on_times', 'response_times', 'feedback_times', 'feedback_type', 'choice', 'contrast_left', 'contrast_right', 'probability_left'])
+  wheel: 1,721,625 samples
+Wrote data/brainsets/ibl_bwm/7939711b-8b4d-4251-b698-b97c1eaa846e_probe01.h5
+  subject=CSHL045  eid=7939711b-8b4d-4251-b698-b97c1eaa846e  probe=probe01
+  units=1237  spikes=77,917,009
+  duration=6773.2s  spike_rate=11503.7 Hz
+  unique regions=13
+  trials=1019  wheel_samples=1,721,625
+
+=== [3] Building ca4ecb4c-4b60-4723-9b9e-2c54a6290a53 probe=probe00 ===
+Connected to https://openalyx.internationalbrainlab.org as user "intbrainlab"
+Loading alf/probe00/pykilosort...
+Loading trials + wheel...
+  trials: 620 (fields: ['stim_on_times', 'response_times', 'feedback_times', 'feedback_type', 'choice', 'contrast_left', 'contrast_right', 'probability_left'])
+  wheel: 681,083 samples
+Wrote data/brainsets/ibl_bwm/ca4ecb4c-4b60-4723-9b9e-2c54a6290a53_probe00.h5
+  subject=MFD_05  eid=ca4ecb4c-4b60-4723-9b9e-2c54a6290a53  probe=probe00
+  units=1117  spikes=38,390,885
+  duration=4921.9s  spike_rate=7800.0 Hz
+  unique regions=19
+  trials=620  wheel_samples=681,083
+
+=== [4] Building 16693458-0801-4d35-a3f1-9115c7e5acfd probe=probe00 ===
+Connected to https://openalyx.internationalbrainlab.org as user "intbrainlab"
+Loading alf/probe00/pykilosort...
+Loading trials + wheel...
+  trials: 531 (fields: ['stim_on_times', 'response_times', 'feedback_times', 'feedback_type', 'choice', 'contrast_left', 'contrast_right', 'probability_left'])
+  wheel: 528,230 samples
+Wrote data/brainsets/ibl_bwm/16693458-0801-4d35-a3f1-9115c7e5acfd_probe00.h5
+  subject=KS014  eid=16693458-0801-4d35-a3f1-9115c7e5acfd  probe=probe00
+  units=917  spikes=27,839,253
+  duration=2926.3s  spike_rate=9513.3 Hz
+  unique regions=8
+  trials=531  wheel_samples=528,230
+
+=== [5] Building 0f25376f-2b78-4ddc-8c39-b6cdbe7bf5b9 probe=probe00 ===
+Connected to https://openalyx.internationalbrainlab.org as user "intbrainlab"
+Loading alf/probe00/pykilosort...
+Loading trials + wheel...
+  trials: 471 (fields: ['stim_on_times', 'response_times', 'feedback_times', 'feedback_type', 'choice', 'contrast_left', 'contrast_right', 'probability_left'])
+  wheel: 632,405 samples
+Wrote data/brainsets/ibl_bwm/0f25376f-2b78-4ddc-8c39-b6cdbe7bf5b9_probe00.h5
+  subject=DY_008  eid=0f25376f-2b78-4ddc-8c39-b6cdbe7bf5b9  probe=probe00
+  units=1014  spikes=25,464,183
+  duration=3642.7s  spike_rate=6990.5 Hz
+  unique regions=16
+  trials=471  wheel_samples=632,405
+
+=== [6] Building 9a6e127b-bb07-4be2-92e2-53dd858c2762 probe=probe00 ===
+Connected to https://openalyx.internationalbrainlab.org as user "intbrainlab"
+Loading alf/probe00/pykilosort...
+Loading trials + wheel...
+  trials: 653 (fields: ['stim_on_times', 'response_times', 'feedback_times', 'feedback_type', 'choice', 'contrast_left', 'contrast_right', 'probability_left'])
+  wheel: 547,237 samples
+Wrote data/brainsets/ibl_bwm/9a6e127b-bb07-4be2-92e2-53dd858c2762_probe00.h5
+  subject=PL015  eid=9a6e127b-bb07-4be2-92e2-53dd858c2762  probe=probe00
+  units=875  spikes=19,364,817
+  duration=2880.2s  spike_rate=6723.4 Hz
+  unique regions=14
+  trials=653  wheel_samples=547,237
+
+=== [7] Building f9860a11-24d3-452e-ab95-39e199f20a93 probe=probe00 ===
+Connected to https://openalyx.internationalbrainlab.org as user "intbrainlab"
+Loading alf/probe00/pykilosort...
+Loading trials + wheel...
+  trials: 463 (fields: ['stim_on_times', 'response_times', 'feedback_times', 'feedback_type', 'choice', 'contrast_left', 'contrast_right', 'probability_left'])
+  wheel: 625,297 samples
+Wrote data/brainsets/ibl_bwm/f9860a11-24d3-452e-ab95-39e199f20a93_probe00.h5
+  subject=SWC_042  eid=f9860a11-24d3-452e-ab95-39e199f20a93  probe=probe00
+  units=1294  spikes=57,086,307
+  duration=6049.5s  spike_rate=9436.5 Hz
+  unique regions=13
+  trials=463  wheel_samples=625,297
+
+=== [8] Building c4432264-e1ae-446f-8a07-6280abade813 probe=probe01 ===
+Connected to https://openalyx.internationalbrainlab.org as user "intbrainlab"
+Loading alf/probe01/pykilosort...
+Loading trials + wheel...
+  trials: 848 (fields: ['stim_on_times', 'response_times', 'feedback_times', 'feedback_type', 'choice', 'contrast_left', 'contrast_right', 'probability_left'])
+  wheel: 1,359,672 samples
+Wrote data/brainsets/ibl_bwm/c4432264-e1ae-446f-8a07-6280abade813_probe01.h5
+  subject=ZFM-01576  eid=c4432264-e1ae-446f-8a07-6280abade813  probe=probe01
+  units=982  spikes=63,554,390
+  duration=5400.1s  spike_rate=11769.0 Hz
+  unique regions=12
+  trials=848  wheel_samples=1,359,672
+
+=== [9] Building 4d8c7767-981c-4347-8e5e-5d5fffe38534 probe=probe01 ===
+Connected to https://openalyx.internationalbrainlab.org as user "intbrainlab"
+Loading alf/probe01/pykilosort...
+Loading trials + wheel...
+  trials: 767 (fields: ['stim_on_times', 'response_times', 'feedback_times', 'feedback_type', 'choice', 'contrast_left', 'contrast_right', 'probability_left'])
+  wheel: 1,119,179 samples
+Wrote data/brainsets/ibl_bwm/4d8c7767-981c-4347-8e5e-5d5fffe38534_probe01.h5
+  subject=SWC_038  eid=4d8c7767-981c-4347-8e5e-5d5fffe38534  probe=probe01
+  units=1455  spikes=23,306,962
+  duration=5623.5s  spike_rate=4144.5 Hz
+  unique regions=8
+  trials=767  wheel_samples=1,119,179
+
+=== [10] Building 63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9 probe=probe00 ===
+Connected to https://openalyx.internationalbrainlab.org as user "intbrainlab"
+Loading alf/probe00/pykilosort...
+Loading trials + wheel...
+  trials: 900 (fields: ['stim_on_times', 'response_times', 'feedback_times', 'feedback_type', 'choice', 'contrast_left', 'contrast_right', 'probability_left'])
+  wheel: 1,184,277 samples
+Wrote data/brainsets/ibl_bwm/63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe00.h5
+  subject=NR_0019  eid=63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9  probe=probe00
+  units=910  spikes=43,923,956
+  duration=5453.2s  spike_rate=8054.7 Hz
+  unique regions=14
+  trials=900  wheel_samples=1,184,277
+
+=== [11] Building 56956777-dca5-468c-87cb-78150432cc57 probe=probe00 ===
+Connected to https://openalyx.internationalbrainlab.org as user "intbrainlab"
+Loading alf/probe00/pykilosort...
+Loading trials + wheel...
+  trials: 425 (fields: ['stim_on_times', 'response_times', 'feedback_times', 'feedback_type', 'choice', 'contrast_left', 'contrast_right', 'probability_left'])
+  wheel: 621,256 samples
+Wrote data/brainsets/ibl_bwm/56956777-dca5-468c-87cb-78150432cc57_probe00.h5
+  subject=NYU-11  eid=56956777-dca5-468c-87cb-78150432cc57  probe=probe00
+  units=628  spikes=17,100,006
+  duration=3770.7s  spike_rate=4535.0 Hz
+  unique regions=19
+  trials=425  wheel_samples=621,256
+
+=== [12] Building dfd8e7df-dc51-4589-b6ca-7baccfeb94b4 probe=probe01 ===
+Connected to https://openalyx.internationalbrainlab.org as user "intbrainlab"
+Loading alf/probe01/pykilosort...
+Loading trials + wheel...
+  trials: 528 (fields: ['stim_on_times', 'response_times', 'feedback_times', 'feedback_type', 'choice', 'contrast_left', 'contrast_right', 'probability_left'])
+  wheel: 506,891 samples
+Wrote data/brainsets/ibl_bwm/dfd8e7df-dc51-4589-b6ca-7baccfeb94b4_probe01.h5
+  subject=CSHL045  eid=dfd8e7df-dc51-4589-b6ca-7baccfeb94b4  probe=probe01
+  units=652  spikes=40,870,694
+  duration=5753.3s  spike_rate=7103.8 Hz
+  unique regions=11
+  trials=528  wheel_samples=506,891
+
+=== [13] Building 004d8fd5-41e7-4f1b-a45b-0d4ad76fe446 probe=probe00 ===
+Connected to https://openalyx.internationalbrainlab.org as user "intbrainlab"
+Loading alf/probe00/pykilosort...
+Loading trials + wheel...
+  trials: 692 (fields: ['stim_on_times', 'response_times', 'feedback_times', 'feedback_type', 'choice', 'contrast_left', 'contrast_right', 'probability_left'])
+  wheel: 890,708 samples
+Wrote data/brainsets/ibl_bwm/004d8fd5-41e7-4f1b-a45b-0d4ad76fe446_probe00.h5
+  subject=MFD_05  eid=004d8fd5-41e7-4f1b-a45b-0d4ad76fe446  probe=probe00
+  units=1239  spikes=50,570,481
+  duration=4943.3s  spike_rate=10230.2 Hz
+  unique regions=13
+  trials=692  wheel_samples=890,708
+
+=== [14] Building e1931de1-cf7b-49af-af33-2ade15e8abe7 probe=probe00 ===
+Connected to https://openalyx.internationalbrainlab.org as user "intbrainlab"
+Loading alf/probe00/pykilosort...
+Loading trials + wheel...
+  trials: 688 (fields: ['stim_on_times', 'response_times', 'feedback_times', 'feedback_type', 'choice', 'contrast_left', 'contrast_right', 'probability_left'])/workspace/anatomical-neural-fm/.venv/lib/python3.11/site-packages/one/util.py:436: ALFWarning: Multiple revisions: "2024-05-06", ""
+  warnings.warn(f'Multiple revisions: {rev_list}', alferr.ALFWarning)
+Inconsistent dimensions for object: clusters 
+(685,),	amps
+(419,),	brainLocationAcronyms_ccf_2017
+(419,),	brainLocationIds_ccf_2017
+(685,),	channels
+(685,),	depths
+(685, 22),	metrics
+(419, 3),	mlapdv
+(685,),	peakToTrough
+(685, 82, 32),	waveforms
+(685, 32),	waveformsChannels
+/workspace/anatomical-neural-fm/.venv/lib/python3.11/site-packages/one/util.py:436: ALFWarning: Multiple revisions: "", "2025-03-03"
+  warnings.warn(f'Multiple revisions: {rev_list}', alferr.ALFWarning)
+/workspace/anatomical-neural-fm/.venv/lib/python3.11/site-packages/one/util.py:436: ALFWarning: Multiple revisions: "", "2025-03-03"
+  warnings.warn(f'Multiple revisions: {rev_list}', alferr.ALFWarning)
+/workspace/anatomical-neural-fm/.venv/lib/python3.11/site-packages/one/util.py:436: ALFWarning: Multiple revisions: "", "2024-05-06"
+  warnings.warn(f'Multiple revisions: {rev_list}', alferr.ALFWarning)
+/workspace/anatomical-neural-fm/.venv/lib/python3.11/site-packages/one/util.py:436: ALFWarning: Multiple revisions: "", "2025-03-03"
+  warnings.warn(f'Multiple revisions: {rev_list}', alferr.ALFWarning)
+/workspace/anatomical-neural-fm/.venv/lib/python3.11/site-packages/one/util.py:436: ALFWarning: Multiple revisions: "", "2025-03-03"
+  warnings.warn(f'Multiple revisions: {rev_list}', alferr.ALFWarning)
+/workspace/anatomical-neural-fm/.venv/lib/python3.11/site-packages/one/util.py:436: ALFWarning: Multiple revisions: "", "2025-03-03"
+  warnings.warn(f'Multiple revisions: {rev_list}', alferr.ALFWarning)
+/workspace/anatomical-neural-fm/.venv/lib/python3.11/site-packages/one/util.py:414: ALFWarning: No default revision for dataset alf/probe00/pykilosort/#2024-03-12#/clusters.metrics.pqt; using most recent
+  warnings.warn(
+/workspace/anatomical-neural-fm/.venv/lib/python3.11/site-packages/one/util.py:436: ALFWarning: Multiple revisions: "", "2025-03-03"
+  warnings.warn(f'Multiple revisions: {rev_list}', alferr.ALFWarning)
+
+  wheel: 696,583 samples
+Wrote data/brainsets/ibl_bwm/e1931de1-cf7b-49af-af33-2ade15e8abe7_probe00.h5
+  subject=KS014  eid=e1931de1-cf7b-49af-af33-2ade15e8abe7  probe=probe00
+  units=419  spikes=21,727,819
+  duration=3664.0s  spike_rate=5930.1 Hz
+  unique regions=17
+  trials=688  wheel_samples=696,583
+
+=== [15] Building ee13c19e-2790-4418-97ca-48f02e8013bb probe=probe00 ===
+Connected to https://openalyx.internationalbrainlab.org as user "intbrainlab"
+Loading alf/probe00/pykilosort...
+Loading trials + wheel...
+  trials: 409 (fields: ['stim_on_times', 'response_times', 'feedback_times', 'feedback_type', 'choice', 'contrast_left', 'contrast_right', 'probability_left'])
+  wheel: 531,528 samples
+Wrote data/brainsets/ibl_bwm/ee13c19e-2790-4418-97ca-48f02e8013bb_probe00.h5
+  subject=DY_008  eid=ee13c19e-2790-4418-97ca-48f02e8013bb  probe=probe00
+  units=685  spikes=29,078,378
+  duration=4760.4s  spike_rate=6108.4 Hz
+  unique regions=15
+  trials=409  wheel_samples=531,528
+
+=== [16] Building 09156021-9a1d-4e1d-ae59-48cbde3c5d42 probe=probe00 ===
+Connected to https://openalyx.internationalbrainlab.org as user "intbrainlab"
+Loading alf/probe00/pykilosort...
+Loading trials + wheel...
+  trials: 630 (fields: ['stim_on_times', 'response_times', 'feedback_times', 'feedback_type', 'choice', 'contrast_left', 'contrast_right', 'probability_left'])
+  wheel: 474,584 samples
+Wrote data/brainsets/ibl_bwm/09156021-9a1d-4e1d-ae59-48cbde3c5d42_probe00.h5
+  subject=PL015  eid=09156021-9a1d-4e1d-ae59-48cbde3c5d42  probe=probe00
+  units=759  spikes=16,281,689
+  duration=2831.8s  spike_rate=5749.6 Hz
+  unique regions=16
+  trials=630  wheel_samples=474,584
+
+=== [17] Building 66d98e6e-bcd9-4e78-8fbb-636f7e808b29 probe=probe00 ===
+Connected to https://openalyx.internationalbrainlab.org as user "intbrainlab"
+Loading alf/probe00/pykilosort...
+Loading trials + wheel...
+  trials: 564 (fields: ['stim_on_times', 'response_times', 'feedback_times', 'feedback_type', 'choice', 'contrast_left', 'contrast_right', 'probability_left'])
+  wheel: 792,406 samples
+Wrote data/brainsets/ibl_bwm/66d98e6e-bcd9-4e78-8fbb-636f7e808b29_probe00.h5
+  subject=SWC_042  eid=66d98e6e-bcd9-4e78-8fbb-636f7e808b29  probe=probe00
+  units=1370  spikes=51,855,662
+  duration=6132.1s  spike_rate=8456.4 Hz
+  unique regions=18
+  trials=564  wheel_samples=792,406
+
+=== [18] Building 9e9c6fc0-4769-4d83-9ea4-b59a1230510e probe=probe00 ===
+Connected to https://openalyx.internationalbrainlab.org as user "intbrainlab"
+Loading alf/probe00/pykilosort...
+Loading trials + wheel...
+  trials: 1007 (fields: ['stim_on_times', 'response_times', 'feedback_times', 'feedback_type', 'choice', 'contrast_left', 'contrast_right', 'probability_left'])
+  wheel: 1,552,315 samples
+Wrote data/brainsets/ibl_bwm/9e9c6fc0-4769-4d83-9ea4-b59a1230510e_probe00.h5
+  subject=ZFM-01576  eid=9e9c6fc0-4769-4d83-9ea4-b59a1230510e  probe=probe00
+  units=644  spikes=22,974,778
+  duration=6558.3s  spike_rate=3503.2 Hz
+  unique regions=18
+  trials=1007  wheel_samples=1,552,315
+
+=== [19] Building 1e45d992-c356-40e1-9be1-a506d944896f probe=probe01 ===
+Connected to https://openalyx.internationalbrainlab.org as user "intbrainlab"
+Loading alf/probe01/pykilosort...
+Loading trials + wheel...
+  trials: 623 (fields: ['stim_on_times', 'response_times', 'feedback_times', 'feedback_type', 'choice', 'contrast_left', 'contrast_right', 'probability_left'])
+  wheel: 781,979 samples
+Wrote data/brainsets/ibl_bwm/1e45d992-c356-40e1-9be1-a506d944896f_probe01.h5
+  subject=SWC_038  eid=1e45d992-c356-40e1-9be1-a506d944896f  probe=probe01
+  units=1280  spikes=27,955,974
+  duration=6375.8s  spike_rate=4384.7 Hz
+  unique regions=8
+  trials=623  wheel_samples=781,979
+
+=== [20] Building b887df2c-bb9c-44c9-a9c0-538da87b2cab probe=probe00 ===
+Connected to https://openalyx.internationalbrainlab.org as user "intbrainlab"
+Loading alf/probe00/pykilosort...
+Loading trials + wheel...
+  trials: 478 (fields: ['stim_on_times', 'response_times', 'feedback_times', 'feedback_type', 'choice', 'contrast_left', 'contrast_right', 'probability_left'])
+  wheel: 498,596 samples
+Wrote data/brainsets/ibl_bwm/b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe00.h5
+  subject=NR_0019  eid=b887df2c-bb9c-44c9-a9c0-538da87b2cab  probe=probe00
+  units=638  spikes=20,397,106
+  duration=2605.1s  spike_rate=7829.8 Hz
+  unique regions=7
+  trials=478  wheel_samples=498,596
+
+Built 20/20 in 252s (20 attempted, 0 failed)
+
+Files in data/brainsets/ibl_bwm:
+   782.1 MB  004d8fd5-41e7-4f1b-a45b-0d4ad76fe446_probe00.h5
+   254.1 MB  09156021-9a1d-4e1d-ae59-48cbde3c5d42_probe00.h5
+   396.0 MB  0f25376f-2b78-4ddc-8c39-b6cdbe7bf5b9_probe00.h5
+   431.0 MB  16693458-0801-4d35-a3f1-9115c7e5acfd_probe00.h5
+   435.8 MB  1e45d992-c356-40e1-9be1-a506d944896f_probe01.h5
+   368.8 MB  4d8c7767-981c-4347-8e5e-5d5fffe38534_probe01.h5
+   268.2 MB  56956777-dca5-468c-87cb-78150432cc57_probe00.h5
+   403.9 MB  56956777-dca5-468c-87cb-78150432cc57_probe01.h5
+   684.1 MB  63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe00.h5
+   800.6 MB  66d98e6e-bcd9-4e78-8fbb-636f7e808b29_probe00.h5
+  1209.0 MB  7939711b-8b4d-4251-b698-b97c1eaa846e_probe01.h5
+   302.0 MB  9a6e127b-bb07-4be2-92e2-53dd858c2762_probe00.h5
+   368.6 MB  9e9c6fc0-4769-4d83-9ea4-b59a1230510e_probe00.h5
+   317.1 MB  b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe00.h5
+   985.6 MB  c4432264-e1ae-446f-8a07-6280abade813_probe01.h5
+   593.9 MB  ca4ecb4c-4b60-4723-9b9e-2c54a6290a53_probe00.h5
+   629.7 MB  dfd8e7df-dc51-4589-b6ca-7baccfeb94b4_probe01.h5
+   339.7 MB  e1931de1-cf7b-49af-af33-2ade15e8abe7_probe00.h5
+   450.0 MB  ee13c19e-2790-4418-97ca-48f02e8013bb_probe00.h5
+   878.5 MB  f9860a11-24d3-452e-ab95-39e199f20a93_probe00.h5
+wrote /workspace/anatomical-neural-fm/manifests/ibl_bwm.local.json
+recordings=20 subjects=10 units=19215 trials=12741
+=== running phase 3-5 sweep ===
+wrote runs/subject_conditioned_audit_a100/summary.md
