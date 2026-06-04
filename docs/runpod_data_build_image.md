@@ -4,8 +4,22 @@ The matched-region cache build does not need model training dependencies. The
 cheap RunPod data-only attempts stalled before the first cache log because each
 fresh pod had to install the Python stack before doing any IBL work.
 
-Use `docker/runpod-data-build.Dockerfile` to preinstall only the packages needed
-for public IBL HDF5 construction and S3 cache sync:
+Use `.github/workflows/build-data-image.yml` to build and publish the image to
+GHCR without spending RunPod time:
+
+```bash
+gh workflow run build-data-image.yml --ref runpod-pilot-phases-3-5 -f tag=py311
+gh run watch
+```
+
+The workflow publishes:
+
+```text
+ghcr.io/txmed82/anatomical-neural-fm-data-build:py311
+```
+
+For a local build, `docker/runpod-data-build.Dockerfile` preinstalls only the
+packages needed for public IBL HDF5 construction and S3 cache sync:
 
 ```bash
 docker build -f docker/runpod-data-build.Dockerfile \
@@ -20,7 +34,7 @@ Then launch the shard with the prebuilt image and minimal setup:
 uv run python scripts/runpod_clone_a100.py --poll \
   --datacenter ANY \
   --gpu-type 'NVIDIA L4,NVIDIA RTX 4000 Ada Generation,NVIDIA RTX A4000,NVIDIA RTX A4500,NVIDIA RTX A5000,NVIDIA RTX A6000,NVIDIA GeForce RTX 4090' \
-  --image-name <registry>/anatomical-neural-fm-data-build:py311 \
+  --image-name ghcr.io/txmed82/anatomical-neural-fm-data-build:py311 \
   --container-disk-gb 80 \
   --max-runtime-seconds 1800 \
   --skip-verification \
