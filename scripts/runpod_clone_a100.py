@@ -520,6 +520,52 @@ def summarize_pod(pod: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def s3_log_key(config: ClonePilotConfig) -> str:
+    prefix = config.s3_prefix.strip("/")
+    key = f"logs/{config.result_doc.replace('/', '_').removesuffix('.md')}.log"
+    return f"{prefix}/{key}" if prefix else key
+
+
+def remote_log_contains(config: ClonePilotConfig, env: dict[str, str], marker: str) -> bool:
+    if not config.s3_bucket:
+        return False
+    try:
+        import boto3
+    except Exception:
+        return False
+    access_key = (
+        os.environ.get("BRAINSET_S3_ACCESS_KEY")
+        or os.environ.get("RUNPOD_S3_ACCESS_KEY")
+        or env.get("BRAINSET_S3_ACCESS_KEY")
+        or env.get("RUNPOD_S3_ACCESS_KEY")
+        or ""
+    )
+    secret_key = (
+        os.environ.get("BRAINSET_S3_SECRET_KEY")
+        or os.environ.get("RUNPOD_S3_SECRET_KEY")
+        or env.get("BRAINSET_S3_SECRET_KEY")
+        or env.get("RUNPOD_S3_SECRET_KEY")
+        or ""
+    )
+    endpoint_url = config.s3_endpoint_url
+    if not endpoint_url and config.s3_datacenter:
+        endpoint_url = S3_ENDPOINTS.get(config.s3_datacenter, "")
+    if not access_key or not secret_key or not endpoint_url:
+        return False
+    client = boto3.client(
+        "s3",
+        aws_access_key_id=access_key,
+        aws_secret_access_key=secret_key,
+        endpoint_url=endpoint_url,
+        region_name=config.s3_datacenter.lower() if config.s3_datacenter else "auto",
+    )
+    try:
+        body = client.get_object(Bucket=config.s3_bucket, Key=s3_log_key(config))["Body"].read()
+    except Exception:
+        return False
+    return marker in body.decode("utf-8", errors="replace")
+
+
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser()
     p.add_argument("--branch", default=current_branch())
@@ -639,6 +685,7 @@ def main() -> int:
         pod_id = pod["id"]
         print("Polling pod status; the pod has a self-termination trap.", flush=True)
         provision_deadline = time.time() + args.max_provision_seconds
+        diagnostic_stop_marker = "=== dependency diagnostic complete ==="
         while True:
             time.sleep(30)
             try:
@@ -648,6 +695,10 @@ def main() -> int:
                 break
             print(json.dumps(summarize_pod(current), indent=2), flush=True)
             if current.get("desiredStatus") in {"EXITED", "TERMINATED"}:
+                break
+            if config.dependency_diagnostic and remote_log_contains(config, env, diagnostic_stop_marker):
+                print("Dependency diagnostic marker found in S3 log; terminating pod.", flush=True)
+                client.terminate_pod(pod_id)
                 break
             machine = current.get("machine") or {}
             public_ip = current.get("publicIp")

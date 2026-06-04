@@ -9,6 +9,7 @@ from scripts.runpod_clone_a100 import (
     authenticated_repo_url,
     build_pod_body,
     build_start_script,
+    s3_log_key,
     summarize_pod,
 )
 
@@ -294,6 +295,16 @@ def test_start_script_can_sync_brainset_cache() -> None:
         "--report runs/phase2_cloud_a100/cache_audit.md"
     ) in script
     assert "## Cache Audit" in script
+
+
+def test_s3_log_key_matches_uploaded_result_log() -> None:
+    cfg = replace(
+        config(),
+        s3_prefix="brainsets/ibl_bwm",
+        result_doc="docs/runpod_dependency_diagnostic.md",
+    )
+
+    assert s3_log_key(cfg) == "brainsets/ibl_bwm/logs/docs_runpod_dependency_diagnostic.log"
 
 
 def test_pod_body_passes_s3_credentials_when_cache_enabled(monkeypatch) -> None:
