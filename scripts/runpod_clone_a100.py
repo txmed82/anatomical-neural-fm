@@ -14,6 +14,7 @@ import subprocess
 import sys
 import time
 from dataclasses import dataclass
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
@@ -526,7 +527,13 @@ def s3_log_key(config: ClonePilotConfig) -> str:
     return f"{prefix}/{key}" if prefix else key
 
 
-def remote_log_contains(config: ClonePilotConfig, env: dict[str, str], marker: str) -> bool:
+def remote_log_contains(
+    config: ClonePilotConfig,
+    env: dict[str, str],
+    marker: str,
+    *,
+    modified_after: datetime | None = None,
+) -> bool:
     if not config.s3_bucket:
         return False
     try:
@@ -560,9 +567,13 @@ def remote_log_contains(config: ClonePilotConfig, env: dict[str, str], marker: s
         region_name=config.s3_datacenter.lower() if config.s3_datacenter else "auto",
     )
     try:
-        body = client.get_object(Bucket=config.s3_bucket, Key=s3_log_key(config))["Body"].read()
+        obj = client.get_object(Bucket=config.s3_bucket, Key=s3_log_key(config))
     except Exception:
         return False
+    last_modified = obj.get("LastModified")
+    if modified_after is not None and last_modified is not None and last_modified < modified_after:
+        return False
+    body = obj["Body"].read()
     return marker in body.decode("utf-8", errors="replace")
 
 
@@ -684,6 +695,7 @@ def main() -> int:
     if args.poll:
         pod_id = pod["id"]
         print("Polling pod status; the pod has a self-termination trap.", flush=True)
+        poll_started_at = datetime.now(timezone.utc)
         provision_deadline = time.time() + args.max_provision_seconds
         diagnostic_stop_marker = "=== dependency diagnostic complete ==="
         while True:
@@ -696,7 +708,12 @@ def main() -> int:
             print(json.dumps(summarize_pod(current), indent=2), flush=True)
             if current.get("desiredStatus") in {"EXITED", "TERMINATED"}:
                 break
-            if config.dependency_diagnostic and remote_log_contains(config, env, diagnostic_stop_marker):
+            if config.dependency_diagnostic and remote_log_contains(
+                config,
+                env,
+                diagnostic_stop_marker,
+                modified_after=poll_started_at,
+            ):
                 print("Dependency diagnostic marker found in S3 log; terminating pod.", flush=True)
                 client.terminate_pod(pod_id)
                 break
