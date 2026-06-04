@@ -19,6 +19,7 @@ TARGET_MODE="${TARGET_MODE:-stimulus_side}"
 OUT_ROOT="${OUT_ROOT:-runs/lso_region_balanced_a100}"
 SUBJECTS="${SUBJECTS:-DY_008 MFD_05 CSHL045 KS014}"
 ARMS="${ARMS:-shared_baseline region_only pure_anatomy}"
+MANIFEST="${MANIFEST:-}"
 
 COMMON_ARGS=(
   --device "$DEVICE"
@@ -32,12 +33,16 @@ COMMON_ARGS=(
   --split-mode animal
   --region-filter shared_regions
 )
+if [ -n "$MANIFEST" ]; then
+  COMMON_ARGS+=(--manifest "$MANIFEST")
+fi
 
 mkdir -p "$OUT_ROOT"
 echo "subjects: $SUBJECTS"
 echo "arms: $ARMS"
 echo "seeds: $SEEDS"
 echo "region_filter: shared_regions"
+echo "manifest: ${MANIFEST:-<all local recordings>}"
 
 for holdout in $SUBJECTS; do
   safe_holdout="$(printf '%s' "$holdout" | tr -c '[:alnum:]_.-' '_')"

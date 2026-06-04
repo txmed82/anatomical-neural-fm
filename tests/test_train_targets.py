@@ -5,7 +5,9 @@ import numpy as np
 from scripts.train import (
     build_inputs_for_window,
     build_trial_samples,
+    manifest_recording_ids,
     region_acronym_at_granularity,
+    select_recording_ids,
     shared_split_regions,
 )
 
@@ -13,6 +15,37 @@ from scripts.train import (
 class Obj:
     def __init__(self, **kwargs):
         self.__dict__.update(kwargs)
+
+
+def test_manifest_recording_ids_use_session_probe_stems(tmp_path) -> None:
+    manifest = tmp_path / "manifest.json"
+    manifest.write_text(
+        """
+        {
+          "recordings": [
+            {"session_id": "eid-a", "probe_name": "probe00"},
+            {"eid": "eid-b", "probe": "probe01"}
+          ]
+        }
+        """
+    )
+
+    assert manifest_recording_ids(manifest) == ["eid-a_probe00", "eid-b_probe01"]
+
+
+def test_select_recording_ids_filters_to_manifest_order(tmp_path) -> None:
+    manifest = tmp_path / "manifest.json"
+    manifest.write_text(
+        """
+        {"recordings": [
+          {"session_id": "eid-b", "probe_name": "probe01"},
+          {"session_id": "eid-a", "probe_name": "probe00"}
+        ]}
+        """
+    )
+    ds = Obj(recording_ids=["extra", "eid-a_probe00", "eid-b_probe01"])
+
+    assert select_recording_ids(ds, manifest, tmp_path) == ["eid-b_probe01", "eid-a_probe00"]
 
 
 def test_build_trial_samples_choice_skips_nogo_and_nan_stim() -> None:

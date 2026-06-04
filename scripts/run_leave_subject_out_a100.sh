@@ -19,6 +19,7 @@ TARGET_MODE="${TARGET_MODE:-stimulus_side}"
 OUT_ROOT="${OUT_ROOT:-runs/leave_subject_out_a100}"
 SUBJECTS="${SUBJECTS:-}"
 ARMS="${ARMS:-shared_baseline region_only cell_type_only pure_anatomy waveform_only}"
+MANIFEST="${MANIFEST:-}"
 
 COMMON_ARGS=(
   --device "$DEVICE"
@@ -31,14 +32,21 @@ COMMON_ARGS=(
   --target-mode "$TARGET_MODE"
   --split-mode animal
 )
+if [ -n "$MANIFEST" ]; then
+  COMMON_ARGS+=(--manifest "$MANIFEST")
+fi
 
 if [ -z "$SUBJECTS" ]; then
-  SUBJECTS="$(uv run python - <<'PY'
+  SUBJECTS="$(MANIFEST="$MANIFEST" uv run python - <<'PY'
+import os
+from pathlib import Path
 from torch_brain.dataset import Dataset
-from scripts.train import build_vocab
+from scripts.train import build_vocab, select_recording_ids
 
 ds = Dataset(dataset_dir="data/brainsets/ibl_bwm", keep_files_open=True)
-vocab = build_vocab(ds)
+manifest = Path(os.environ["MANIFEST"]) if os.environ.get("MANIFEST") else None
+selected = select_recording_ids(ds, manifest, "data/brainsets/ibl_bwm")
+vocab = build_vocab(ds, recording_ids=selected)
 print(" ".join(sorted(set(vocab["subject_by_rid"].values()))))
 PY
 )"
@@ -48,6 +56,7 @@ mkdir -p "$OUT_ROOT"
 echo "subjects: $SUBJECTS"
 echo "arms: $ARMS"
 echo "seeds: $SEEDS"
+echo "manifest: ${MANIFEST:-<all local recordings>}"
 
 for holdout in $SUBJECTS; do
   safe_holdout="$(printf '%s' "$holdout" | tr -c '[:alnum:]_.-' '_')"

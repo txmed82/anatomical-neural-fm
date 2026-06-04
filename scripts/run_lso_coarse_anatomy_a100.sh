@@ -19,6 +19,7 @@ REGION_GRANULARITY="${REGION_GRANULARITY:-parent}"
 OUT_ROOT="${OUT_ROOT:-runs/lso_coarse_anatomy_a100}"
 SUBJECTS="${SUBJECTS:-DY_008 MFD_05 CSHL045 KS014}"
 ARMS="${ARMS:-shared_baseline region_only pure_anatomy}"
+MANIFEST="${MANIFEST:-}"
 
 COMMON_ARGS=(
   --device "$DEVICE"
@@ -33,6 +34,9 @@ COMMON_ARGS=(
   --region-filter shared_regions
   --region-granularity "$REGION_GRANULARITY"
 )
+if [ -n "$MANIFEST" ]; then
+  COMMON_ARGS+=(--manifest "$MANIFEST")
+fi
 
 mkdir -p "$OUT_ROOT"
 echo "subjects: $SUBJECTS"
@@ -40,6 +44,7 @@ echo "arms: $ARMS"
 echo "seeds: $SEEDS"
 echo "region_filter: shared_regions"
 echo "region_granularity: $REGION_GRANULARITY"
+echo "manifest: ${MANIFEST:-<all local recordings>}"
 
 for holdout in $SUBJECTS; do
   safe_holdout="$(printf '%s' "$holdout" | tr -c '[:alnum:]_.-' '_')"

@@ -53,6 +53,7 @@ def test_start_script_clones_branch_builds_data_and_pushes_results() -> None:
     assert "export MAX_STEPS=600" in script
     assert "export EVAL_BATCHES=50" in script
     assert "export TARGET_MODE=stimulus_side" in script
+    assert "export MANIFEST=manifests/ibl_bwm_phase4.json" in script
     assert "export OUT_ROOT=runs/phase2_cloud_a100" in script
     assert "- target mode: stimulus_side" in script
     assert "bash scripts/run_phase2_cloud_a100.sh" in script

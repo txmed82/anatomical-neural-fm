@@ -200,6 +200,7 @@ PY
             f"  export MAX_STEPS={max_steps}\n"
             f"  export EVAL_BATCHES={eval_batches}\n"
             f"  export TARGET_MODE={target_mode}\n"
+            f"  export MANIFEST={manifest_path}\n"
             f"  export OUT_ROOT={output_root}\n"
             f"  bash {sweep_script}\n"
         )

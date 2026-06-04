@@ -55,6 +55,9 @@ N_OUTPUT_QUERIES = 1     # single binary logit at trial-end
 def parse_args():
     p = argparse.ArgumentParser()
     p.add_argument("--data-dir", type=Path, default=REPO_ROOT / "data/brainsets/ibl_bwm")
+    p.add_argument("--manifest", type=Path, default=None,
+                   help="Optional recording manifest. When set, train/eval only use matching "
+                        "HDF5 recording ids from --data-dir.")
     p.add_argument("--priors-path", type=Path, default=PRIORS_PATH)
     p.add_argument("--taxonomy-path", type=Path, default=TAXONOMY_PATH)
     p.add_argument("--out-dir", type=Path, default=REPO_ROOT / "runs/baseline")
@@ -163,9 +166,40 @@ def map_region_acronyms(acronyms, granularity: str) -> list[str]:
     return out
 
 
-def build_vocab(ds: Dataset, region_granularity: str = "fine"):
+def manifest_recording_ids(path: Path) -> list[str]:
+    payload = json.loads(path.read_text())
+    rows = payload["recordings"] if isinstance(payload, dict) else payload
+    out: list[str] = []
+    for row in rows:
+        eid = row.get("session_id") or row.get("eid") or row.get("session")
+        probe = row.get("probe_name") or row.get("probe") or row.get("name")
+        if eid and probe:
+            out.append(f"{eid}_{probe}")
+    return out
+
+
+def select_recording_ids(ds: Dataset, manifest: Path | None, data_dir: Path | None = None) -> list[str]:
+    if manifest is None:
+        return list(ds.recording_ids)
+    requested = manifest_recording_ids(manifest)
+    available = set(ds.recording_ids)
+    selected = [rid for rid in requested if rid in available]
+    missing = sorted(set(requested) - available)
+    if missing:
+        preview = ", ".join(missing[:5])
+        suffix = "" if len(missing) <= 5 else f", ... ({len(missing)} total)"
+        location = str(data_dir) if data_dir is not None else "dataset"
+        raise SystemExit(f"Manifest recordings missing from {location}: {preview}{suffix}")
+    if not selected:
+        location = str(data_dir) if data_dir is not None else "dataset"
+        raise SystemExit(f"Manifest {manifest} did not match any recordings in {location}")
+    return selected
+
+
+def build_vocab(ds: Dataset, region_granularity: str = "fine", recording_ids: list[str] | None = None):
     """Collect global unit_ids / session_ids / region info / waveform features across all recordings."""
-    recs = {rid: ds.get_recording(rid) for rid in ds.recording_ids}
+    recording_ids = list(ds.recording_ids) if recording_ids is None else recording_ids
+    recs = {rid: ds.get_recording(rid) for rid in recording_ids}
     all_unit_ids: list[str] = []
     all_region_acronyms: list[str] = []
     all_region_labels: list[str] = []
@@ -521,7 +555,8 @@ def main():
          "device": str(device)})
 
     ds = Dataset(dataset_dir=args.data_dir, keep_files_open=True)
-    vocab = build_vocab(ds, args.region_granularity)
+    selected_recording_ids = select_recording_ids(ds, args.manifest, args.data_dir)
+    vocab = build_vocab(ds, args.region_granularity, selected_recording_ids)
 
     if args.split_mode == "animal":
         animal_split = split_recordings_by_subject(vocab["subject_by_rid"], args.holdout)
@@ -562,7 +597,9 @@ def main():
             "n_allowed_regions": len(allowed_region_acronyms),
             "allowed_regions": sorted(allowed_region_acronyms),
         })
-    log({"event": "split", "n_recordings": len(ds.recording_ids),
+    log({"event": "split", "n_recordings": len(selected_recording_ids),
+         "data_recordings_available": len(ds.recording_ids),
+         "manifest": str(args.manifest) if args.manifest else None,
          **split_info,
          **region_filter_info,
          "region_granularity": args.region_granularity,
