@@ -63,6 +63,26 @@ def test_start_script_clones_branch_builds_data_and_pushes_results() -> None:
     assert "DELETE" in script
 
 
+def test_start_script_can_export_sweep_env() -> None:
+    cfg = replace(
+        config(),
+        sweep_env=("SUBJECTS=NR_0019", "REGION_GRANULARITY=parent"),
+    )
+
+    script = build_start_script(cfg)
+
+    assert "export SUBJECTS=NR_0019" in script
+    assert "export REGION_GRANULARITY=parent" in script
+    assert "- sweep env: \\`SUBJECTS=NR_0019, REGION_GRANULARITY=parent\\`" in script
+
+
+def test_start_script_rejects_invalid_sweep_env() -> None:
+    cfg = replace(config(), sweep_env=("BAD-NAME=value",))
+
+    with pytest.raises(ValueError):
+        build_start_script(cfg)
+
+
 def test_pod_body_uses_container_disk_no_network_volume() -> None:
     body = build_pod_body("pilot", config(), "runpod", "github")
 

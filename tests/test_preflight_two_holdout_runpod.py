@@ -14,7 +14,7 @@ def test_estimate_cost_uses_larger_provision_guard() -> None:
     assert estimate_cost(5400, 1.50, max_provision_seconds=7200) == 3.0
 
 
-def test_build_launch_command_targets_two_holdout_sweep() -> None:
+def test_build_launch_command_targets_nr0019_sweep() -> None:
     command = build_launch_command(PreflightConfig(max_runtime_seconds=5400, max_dollars=10.0))
     joined = shell_join(command)
 
@@ -27,14 +27,15 @@ def test_build_launch_command_targets_two_holdout_sweep() -> None:
     assert "--target-mode stimulus_side" in joined
     assert "--manifest-path manifests/ibl_bwm_region_matched_support80_best6.json" in joined
     assert "--sweep-script scripts/run_lso_two_holdout_shared_parent_shuffle_a100.sh" in joined
-    assert "--result-doc docs/lso_two_holdout_shared_parent_shuffle_results.md" in joined
+    assert "--result-doc docs/lso_nr0019_shared_parent_shuffle_results.md" in joined
+    assert "--sweep-env SUBJECTS=NR_0019" in joined
     assert "--s3-bucket rppfvo6ifn" in joined
-    assert "--name-prefix anfm-two-parent-compact" in joined
+    assert "--name-prefix anfm-nr0019-parent-compact" in joined
     assert "--sweep-script t.sh" not in joined
     assert "--manifest-path m.json" not in joined
     assert "--result-doc d.md" not in joined
-    assert command[command.index("--output-root") + 1] == "runs/lso_two_holdout_shared_parent_shuffle"
-    assert command[command.index("--result-doc") + 1] == "docs/lso_two_holdout_shared_parent_shuffle_results.md"
+    assert command[command.index("--output-root") + 1] == "runs/lso_nr0019_shared_parent_shuffle"
+    assert command[command.index("--result-doc") + 1] == "docs/lso_nr0019_shared_parent_shuffle_results.md"
 
 
 def test_build_launch_command_can_run_dependency_diagnostic() -> None:

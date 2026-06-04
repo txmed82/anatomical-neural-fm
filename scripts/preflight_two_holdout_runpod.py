@@ -24,12 +24,13 @@ class PreflightConfig:
     gpu_type: str = "NVIDIA A100 80GB PCIe,NVIDIA A100-SXM4-80GB"
     s3_bucket: str = "rppfvo6ifn"
     s3_datacenter: str = "US-IL-1"
-    name_prefix: str = "anfm-two-parent-compact"
+    name_prefix: str = "anfm-nr0019-parent-compact"
     manifest_path: str = "manifests/ibl_bwm_region_matched_support80_best6.json"
     sweep_script: str = "scripts/run_lso_two_holdout_shared_parent_shuffle_a100.sh"
-    output_root: str = "runs/lso_two_holdout_shared_parent_shuffle"
-    result_doc: str = "docs/lso_two_holdout_shared_parent_shuffle_results.md"
+    output_root: str = "runs/lso_nr0019_shared_parent_shuffle"
+    result_doc: str = "docs/lso_nr0019_shared_parent_shuffle_results.md"
     dependency_diagnostic: bool = False
+    sweep_env: tuple[str, ...] = ("SUBJECTS=NR_0019",)
 
 
 def estimate_cost(
@@ -73,6 +74,8 @@ def build_launch_command(config: PreflightConfig) -> list[str]:
         "--s3-datacenter", config.s3_datacenter,
         "--name-prefix", name_prefix,
     ]
+    for item in config.sweep_env:
+        command.extend(["--sweep-env", item])
     if config.dependency_diagnostic:
         command.append("--dependency-diagnostic")
     return command
@@ -111,7 +114,10 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--gpu-type", default="NVIDIA A100 80GB PCIe,NVIDIA A100-SXM4-80GB")
     parser.add_argument("--s3-bucket", default="rppfvo6ifn")
     parser.add_argument("--s3-datacenter", default="US-IL-1")
-    parser.add_argument("--name-prefix", default="anfm-two-parent-compact")
+    parser.add_argument("--name-prefix", default="anfm-nr0019-parent-compact")
+    parser.add_argument("--output-root", default="runs/lso_nr0019_shared_parent_shuffle")
+    parser.add_argument("--result-doc", default="docs/lso_nr0019_shared_parent_shuffle_results.md")
+    parser.add_argument("--sweep-env", action="append", default=["SUBJECTS=NR_0019"])
     parser.add_argument("--dependency-diagnostic", action="store_true")
     return parser.parse_args()
 
@@ -128,7 +134,10 @@ def main() -> int:
         s3_bucket=args.s3_bucket,
         s3_datacenter=args.s3_datacenter,
         name_prefix=args.name_prefix,
+        output_root=args.output_root,
+        result_doc=args.result_doc,
         dependency_diagnostic=args.dependency_diagnostic,
+        sweep_env=tuple(args.sweep_env),
     )
 
     branch, git_ready = git_branch_status()
@@ -157,6 +166,7 @@ def main() -> int:
     print(f"sweep_script: {config.sweep_script}")
     print(f"output_root: {config.output_root}")
     print(f"result_doc: {config.result_doc}")
+    print(f"sweep_env: {', '.join(config.sweep_env) or '<none>'}")
     print(f"dependency_diagnostic: {config.dependency_diagnostic}")
     print("")
     print("Launch command:")

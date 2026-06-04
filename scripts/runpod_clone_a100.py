@@ -56,6 +56,7 @@ class ClonePilotConfig:
     setup_mode: str = "project"
     startup_smoke_only: bool = False
     dependency_diagnostic: bool = False
+    sweep_env: tuple[str, ...] = ()
 
 
 def current_branch() -> str:
@@ -95,6 +96,14 @@ def build_start_script(config: ClonePilotConfig) -> str:
     result_doc = shlex.quote(config.result_doc)
     build_extra_args = config.build_extra_args.strip()
     build_extra = f" {build_extra_args}" if build_extra_args else ""
+    sweep_env_exports = ""
+    for item in config.sweep_env:
+        if "=" not in item:
+            raise ValueError(f"Invalid sweep env value {item!r}; expected KEY=VALUE")
+        key, value = item.split("=", 1)
+        if not key.isidentifier() or key.startswith("_"):
+            raise ValueError(f"Invalid sweep env key {key!r}")
+        sweep_env_exports += f"  export {key}={shlex.quote(value)}\n"
     sync_args = ""
     bootstrap_log_block = ""
     if config.s3_bucket:
@@ -233,6 +242,7 @@ PY
             f"  export TARGET_MODE={target_mode}\n"
             f"  export MANIFEST={manifest_path}\n"
             f"  export OUT_ROOT={output_root}\n"
+            f"{sweep_env_exports}"
             f"  bash {sweep_script}\n"
         )
     )
@@ -274,6 +284,7 @@ Configuration:
 - dependency diagnostic: {config.dependency_diagnostic}
 - max runtime seconds: {config.max_runtime_seconds}
 - output root: \`{config.output_root}\`
+- sweep env: \`{', '.join(config.sweep_env) or '<none>'}\`
 
 EOF
     if [ -f {output_root}/build_report.md ]; then
@@ -623,6 +634,8 @@ def parse_args() -> argparse.Namespace:
                    help="Stop after dependency setup and first S3 log upload.")
     p.add_argument("--dependency-diagnostic", action="store_true",
                    help="Stop after dependency setup and log dependency/import diagnostics.")
+    p.add_argument("--sweep-env", action="append", default=[],
+                   help="Additional KEY=VALUE environment variable exported before the sweep script.")
     p.add_argument("--dry-run", action="store_true")
     p.add_argument("--poll", action="store_true")
     p.add_argument("--max-provision-seconds", type=int, default=600,
@@ -663,6 +676,7 @@ def main() -> int:
         setup_mode=args.setup_mode,
         startup_smoke_only=args.startup_smoke_only,
         dependency_diagnostic=args.dependency_diagnostic,
+        sweep_env=tuple(args.sweep_env),
     )
     env = load_dotenv(REPO_ROOT / ".env")
     runpod_key = require_env(env, "RUNPOD_API_KEY")
