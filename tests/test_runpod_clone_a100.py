@@ -109,3 +109,32 @@ def test_start_script_can_pass_build_shard_args() -> None:
         "--num-shards 8 --shard-index 0 --allow-partial"
     ) in script
     assert "## Build Report" in script
+
+
+def test_start_script_can_sync_brainset_cache() -> None:
+    cfg = replace(
+        config(),
+        s3_bucket="brainset-cache",
+        s3_prefix="ibl/test",
+        s3_endpoint_url="https://s3.example.test",
+    )
+
+    script = build_start_script(cfg)
+
+    assert "=== downloading cached BrainSet data ===" in script
+    assert (
+        "scripts/sync_brainset_s3.py download --manifest manifests/ibl_bwm_phase4.json "
+        "--bucket brainset-cache --prefix ibl/test --endpoint-url https://s3.example.test"
+    ) in script
+    assert "=== uploading built BrainSet data ===" in script
+
+
+def test_pod_body_passes_s3_credentials_when_cache_enabled(monkeypatch) -> None:
+    monkeypatch.setenv("BRAINSET_S3_ACCESS_KEY", "access")
+    monkeypatch.setenv("BRAINSET_S3_SECRET_KEY", "secret")
+    cfg = replace(config(), s3_bucket="brainset-cache")
+
+    body = build_pod_body("pilot", cfg, "runpod", "github")
+
+    assert body["env"]["BRAINSET_S3_ACCESS_KEY"] == "access"
+    assert body["env"]["BRAINSET_S3_SECRET_KEY"] == "secret"

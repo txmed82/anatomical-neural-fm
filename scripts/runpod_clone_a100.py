@@ -44,6 +44,10 @@ class ClonePilotConfig:
     result_doc: str
     skip_verification: bool = False
     build_extra_args: str = ""
+    s3_bucket: str = ""
+    s3_prefix: str = "brainsets/ibl_bwm"
+    s3_endpoint_url: str = ""
+    s3_datacenter: str = ""
 
 
 def current_branch() -> str:
@@ -83,6 +87,13 @@ def build_start_script(config: ClonePilotConfig) -> str:
     result_doc = shlex.quote(config.result_doc)
     build_extra_args = config.build_extra_args.strip()
     build_extra = f" {build_extra_args}" if build_extra_args else ""
+    sync_args = ""
+    if config.s3_bucket:
+        sync_args = f" --bucket {shlex.quote(config.s3_bucket)} --prefix {shlex.quote(config.s3_prefix)}"
+        if config.s3_endpoint_url:
+            sync_args += f" --endpoint-url {shlex.quote(config.s3_endpoint_url)}"
+        if config.s3_datacenter:
+            sync_args += f" --datacenter {shlex.quote(config.s3_datacenter)}"
     repo_dir_q = shlex.quote(repo_dir)
     verification_block = (
         '  echo "=== skipping local verification ==="\n'
@@ -210,9 +221,17 @@ cat > /tmp/run_phase3_5_body.sh <<'RUNSCRIPT'
   if [ ! -f {manifest_path} ]; then
     uv run python scripts/select_ibl_manifest.py --target {build_recordings} --out {manifest_path}
   fi
+  if [ -n "{config.s3_bucket}" ]; then
+    echo "=== downloading cached BrainSet data ==="
+    uv run python scripts/sync_brainset_s3.py download --manifest {manifest_path}{sync_args} || true
+  fi
   echo "=== building BrainSet data ==="
   mkdir -p {output_root}
   uv run python scripts/build_ibl_brainset_batch.py --manifest {manifest_path} --report {output_root}/build_report.md{build_extra}
+  if [ -n "{config.s3_bucket}" ]; then
+    echo "=== uploading built BrainSet data ==="
+    uv run python scripts/sync_brainset_s3.py upload --manifest {manifest_path}{sync_args}
+  fi
   uv run python scripts/write_dataset_manifest.py
   echo "=== running phase 3-5 sweep ==="
   export SEEDS={seeds}
@@ -227,6 +246,28 @@ timeout {run_timeout} bash /tmp/run_phase3_5_body.sh
 
 
 def build_pod_body(name: str, config: ClonePilotConfig, runpod_key: str, github_key: str) -> dict[str, Any]:
+    env = {
+        "RUNPOD_API_KEY": runpod_key,
+        "GITHUB_TOKEN": github_key,
+    }
+    if config.s3_bucket:
+        s3_env = load_dotenv(REPO_ROOT / ".env")
+        access_key = (
+            os.environ.get("BRAINSET_S3_ACCESS_KEY")
+            or os.environ.get("RUNPOD_S3_ACCESS_KEY")
+            or s3_env.get("BRAINSET_S3_ACCESS_KEY")
+            or s3_env.get("RUNPOD_S3_ACCESS_KEY")
+            or ""
+        )
+        secret_key = (
+            os.environ.get("BRAINSET_S3_SECRET_KEY")
+            or os.environ.get("RUNPOD_S3_SECRET_KEY")
+            or s3_env.get("BRAINSET_S3_SECRET_KEY")
+            or s3_env.get("RUNPOD_S3_SECRET_KEY")
+            or ""
+        )
+        env["BRAINSET_S3_ACCESS_KEY"] = access_key
+        env["BRAINSET_S3_SECRET_KEY"] = secret_key
     return {
         "name": name,
         "imageName": config.image_name,
@@ -242,10 +283,7 @@ def build_pod_body(name: str, config: ClonePilotConfig, runpod_key: str, github_
         "volumeMountPath": "/workspace",
         "ports": [],
         "interruptible": False,
-        "env": {
-            "RUNPOD_API_KEY": runpod_key,
-            "GITHUB_TOKEN": github_key,
-        },
+        "env": env,
         "dockerStartCmd": ["bash", "-lc", build_start_script(config)],
     }
 
@@ -284,6 +322,11 @@ def parse_args() -> argparse.Namespace:
                    help="Skip pytest and the IBL smoke test on the pod after local verification.")
     p.add_argument("--build-extra-args", default="",
                    help="Additional arguments passed to build_ibl_brainset_batch.py.")
+    p.add_argument("--s3-bucket", default="",
+                   help="Optional S3 bucket for persistent BrainSet HDF5 cache.")
+    p.add_argument("--s3-prefix", default="brainsets/ibl_bwm")
+    p.add_argument("--s3-endpoint-url", default="")
+    p.add_argument("--s3-datacenter", default="")
     p.add_argument("--dry-run", action="store_true")
     p.add_argument("--poll", action="store_true")
     return p.parse_args()
@@ -311,9 +354,28 @@ def main() -> int:
         result_doc=args.result_doc,
         skip_verification=args.skip_verification,
         build_extra_args=args.build_extra_args,
+        s3_bucket=args.s3_bucket,
+        s3_prefix=args.s3_prefix,
+        s3_endpoint_url=args.s3_endpoint_url,
+        s3_datacenter=args.s3_datacenter or (args.datacenter if args.s3_bucket else ""),
     )
     env = load_dotenv(REPO_ROOT / ".env")
     runpod_key = require_env(env, "RUNPOD_API_KEY")
+    if config.s3_bucket:
+        if not (
+            os.environ.get("BRAINSET_S3_ACCESS_KEY")
+            or os.environ.get("RUNPOD_S3_ACCESS_KEY")
+            or env.get("BRAINSET_S3_ACCESS_KEY")
+            or env.get("RUNPOD_S3_ACCESS_KEY")
+        ):
+            raise SystemExit("Missing S3 access key for --s3-bucket.")
+        if not (
+            os.environ.get("BRAINSET_S3_SECRET_KEY")
+            or os.environ.get("RUNPOD_S3_SECRET_KEY")
+            or env.get("BRAINSET_S3_SECRET_KEY")
+            or env.get("RUNPOD_S3_SECRET_KEY")
+        ):
+            raise SystemExit("Missing S3 secret key for --s3-bucket.")
     gh_key = github_token()
     name = f"{args.name_prefix}-{time.strftime('%Y%m%d-%H%M%S')}"
     body = build_pod_body(name, config, runpod_key, gh_key)

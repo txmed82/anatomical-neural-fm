@@ -273,3 +273,10 @@ include the build report in the pushed result document. A tiny 2-recording
 probe launch was attempted, but no pod was created because the checked A100
 datacenters had no compatible capacity. Cleanup after those create attempts
 left zero pods and zero network volumes.
+
+Persistence correction: sharded build reports do not by themselves preserve the
+HDF5 data needed for later scoring. The repo now has `scripts/sync_brainset_s3.py`
+and optional RunPod launcher flags (`--s3-bucket`, `--s3-prefix`,
+`--s3-datacenter`/`--s3-endpoint-url`) so each shard can download an existing
+cache, build missing recordings, upload `.h5` files, and then exit. The next
+paid run should use that S3 cache path, not a throwaway shard-only pod.

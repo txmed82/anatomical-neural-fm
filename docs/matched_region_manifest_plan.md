@@ -92,6 +92,43 @@ document. The next low-cost probe should build at most 1-2 recordings first,
 then scale to 8 shards of roughly 6 recordings each only after that path has
 produced an artifact.
 
+Important correction: shard reports alone are not enough. The `.h5` files must
+survive pod deletion, otherwise the shards cannot be aggregated into a full
+matched-region cache. The repo now includes `scripts/sync_brainset_s3.py` for
+uploading/downloading built HDF5 files to an S3-compatible cache:
+
+```bash
+uv run python scripts/sync_brainset_s3.py upload \
+  --manifest manifests/ibl_bwm_region_matched_candidates.json \
+  --bucket "$BRAINSET_S3_BUCKET" \
+  --prefix brainsets/ibl_bwm \
+  --datacenter CA-MTL-3
+```
+
+The RunPod clone launcher can use the same cache with `--s3-bucket`,
+`--s3-prefix`, and either `--s3-datacenter` or `--s3-endpoint-url`. A corrected
+2-recording probe should look like:
+
+```bash
+uv run python scripts/runpod_clone_a100.py \
+  --datacenter CA-MTL-3 \
+  --container-disk-gb 80 \
+  --max-runtime-seconds 5400 \
+  --skip-verification \
+  --manifest-path manifests/ibl_bwm_region_matched_candidates.json \
+  --sweep-script scripts/run_matched_region_audit_a100.sh \
+  --output-root runs/matched_region_shard00_probe_a100 \
+  --result-doc docs/matched_region_shard00_probe.md \
+  --build-extra-args '--num-shards 24 --shard-index 0 --max-builds 2 --allow-partial' \
+  --s3-bucket "$BRAINSET_S3_BUCKET" \
+  --s3-prefix brainsets/ibl_bwm \
+  --s3-datacenter CA-MTL-3
+```
+
+Only after that command produces both a pushed build report and uploaded HDF5
+objects should we launch the remaining shards. The full region-family scoring
+gate should be run after the cache contains all 48 candidate HDF5 files.
+
 Probe launch attempted after adding shard support:
 
 ```bash
