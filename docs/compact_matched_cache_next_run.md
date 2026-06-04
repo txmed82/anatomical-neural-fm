@@ -65,15 +65,17 @@ The RunPod clone launcher can pass the same compact flags through:
 ```bash
 python scripts/runpod_clone_a100.py \
   --compute-type CPU \
-  --datacenter US-IL-1 \
+  --datacenter ANY \
   --setup-mode minimal-data \
+  --container-disk-gb 20 \
   --manifest-path manifests/ibl_bwm_region_matched_support80_best6.json \
   --s3-bucket rppfvo6ifn \
   --s3-datacenter US-IL-1 \
   --skip-sweep \
   --skip-verification \
   --skip-cell-type-priors \
-  --build-extra-args "--no-wheel --trial-window-only --window-len 1.0" \
+  --build-extra-args "--num-shards 4 --shard-index 0 --no-wheel --trial-window-only --window-len 1.0" \
+  --result-doc docs/compact_support80_best6_shard0_results.md \
   --max-provision-seconds 600 \
   --poll
 ```
@@ -81,6 +83,9 @@ python scripts/runpod_clone_a100.py \
 Before and after every cloud attempt, verify `/pods` is zero or only contains
 the intended active pod. If provisioning stalls before the command starts, stop
 the pod and do not retry the same shape repeatedly.
+
+For CPU pods, RunPod may report `machineReady=false` while the container is
+actually running. Check S3 logs before killing a pod for that reason.
 
 ## Verification Gate
 
