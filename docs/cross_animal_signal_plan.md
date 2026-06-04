@@ -213,11 +213,37 @@ The next constructive step is an analysis-only benchmark redesign: choose a
 larger manifest with matched region families across subjects, predefine
 region-family holdout strata, and only then rerun a small seed sweep.
 
+## Completed Planning Step: Larger Matched-Region Candidate Manifest
+
+Run `scripts/plan_matched_region_manifest.py` without GPU training to select a
+larger candidate benchmark from Alyx metadata:
+
+- candidate manifest: `manifests/ibl_bwm_region_matched_candidates.json`
+- planning report: `docs/matched_region_manifest_plan.md`
+- target: 48 recordings
+- subjects: 12
+- labs: 12
+- max recordings per subject: 4
+- region granularity for later scoring: `parent`
+
+Result: the metadata-balanced candidate manifest is ready, but it is not yet a
+training benchmark. The local HDF5 cache does not contain these candidate
+subjects, so anatomical region-family matching cannot be scored locally yet.
+
+Decision gate before any more training:
+
+- Build the 48 candidate recordings only as a data/audit job.
+- Rerun `scripts/plan_matched_region_manifest.py` against that built cache.
+- Require at least 80% held-out unit support for most subjects at parent-region
+  granularity.
+- Only then launch another small seed sweep.
+
 ## Budget Guard
 
 Hard cap from user: do not spend more than $100.
 
 The targeted multi-seed confirmation, full-dataset coverage audits,
 region-balanced LSO rerun, and coarse-anatomy rerun completed under the cap and
-left zero pods and zero network volumes. Avoid additional paid training until
-the manifest/evaluation design is tightened.
+left zero pods and zero network volumes. The matched-region candidate manifest
+was generated locally from Alyx metadata with no GPU spend. Avoid additional
+paid training until the candidate manifest has been built and region-scored.
