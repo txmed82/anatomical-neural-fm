@@ -1,6 +1,6 @@
 # Cloud Phase 3-5 Results
 
-Date: 2026-06-04T15:38:55Z
+Date: 2026-06-04T15:41:20Z
 
 RunPod target: A100 pilot.
 
@@ -25,9 +25,9 @@ Manifest: `manifests/ibl_bwm_region_matched_candidates.json`
 Shard: 1/24
 Selected recordings: 2
 Available recordings: 2
-Skipped existing: 0
+Skipped existing: 2
 Failures: 0
-Elapsed seconds: 90
+Elapsed seconds: 0
 
 ## Available
 
