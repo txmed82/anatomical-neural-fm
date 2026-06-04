@@ -283,3 +283,55 @@ paid run should use that S3 cache path, not a throwaway shard-only pod.
 The cache can be audited with `scripts/sync_brainset_s3.py audit`; require
 `Present: 48/48` before rerunning `scripts/plan_matched_region_manifest.py`
 against the rebuilt cache for the 80% held-out unit-support gate.
+
+## Completed Data Step: Compact Matched Support80/Best6 Cache
+
+The 48-recording plan was narrowed to a compact support80/best6 manifest that
+is cheap enough to train against while still matching anatomical support better
+than the original 20-recording benchmark:
+
+- manifest: `manifests/ibl_bwm_region_matched_support80_best6.json`
+- cache audit: `docs/compact_support80_best6_s3_audit.md`
+- recordings: 28
+- subjects: 7
+- S3 cache: 28/28 present
+- build mode: `--no-wheel --trial-window-only --window-len 1.0`
+
+This clears the previous decision gate for a small training screen. It does
+not prove transfer; it only makes the next training comparison legitimate.
+
+## Partial Matched-Cache LSO Screen
+
+Run a one-seed matched-cache leave-subject-out screen with:
+
+- subjects: all 7 matched-cache subjects
+- arms: `shared_baseline pure_anatomy region_only`
+- seed: `0`
+- max steps: `300`
+- eval batches: `20`
+- target: `stimulus_side`
+- report: `docs/lso_matched_support80_best6_seed0_results.md`
+
+Result: the cloud run was partial but useful. It completed all three arms for
+`CSH_ZAD_019`, `KS014`, and `MFD_06`, plus `shared_baseline` and
+`pure_anatomy` for `NR_0019`. The recovered best-AUC deltas were:
+
+- `MFD_06`: `pure_anatomy` +0.067, `region_only` +0.067
+- `KS014`: `pure_anatomy` +0.017, `region_only` +0.038
+- `CSH_ZAD_019`: `pure_anatomy` +0.002, `region_only` +0.029
+- `NR_0019`: `pure_anatomy` -0.005
+
+Interpretation: this is still not demo-grade because it is one seed and
+partial. It does, however, produce a cleaner candidate than the earlier
+20-recording benchmark: `MFD_06` is the first matched-cache holdout where both
+anatomy arms beat the shared null by more than +0.03 on the screen seed.
+
+Next paid run: confirm only the candidate holdouts before broadening:
+
+- subjects: `MFD_06 KS014 CSH_ZAD_019`
+- arms: `shared_baseline pure_anatomy region_only`
+- seeds: `1 2`
+- same 300-step/20-eval-batch budget
+- success gate: an anatomy arm keeps at least +0.03 mean delta on `MFD_06`
+  across seeds 0-2, and at least 2/3 seeds positive. Broader claims require
+  more holdouts and another seed.

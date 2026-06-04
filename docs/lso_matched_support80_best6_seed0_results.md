@@ -114,8 +114,52 @@ none
 | `e1931de1-cf7b-49af-af33-2ade15e8abe7_probe00.h5` |
 | `edd22318-216c-44ff-bc24-49ce8be78374_probe00.h5` |
 
-## Within-Animal Summary
+## Partial LSO Summary
 
+The cloud log contains a partial leave-subject-out sweep. It completed all
+three planned arms for `CSH_ZAD_019`, `KS014`, and `MFD_06`, plus
+`shared_baseline` and `pure_anatomy` for `NR_0019`. The run exited before
+writing `runs/lso_matched_support80_best6_seed0/summary.md`, so this table was
+recovered from `docs/cloud_phase3_5_runpod.log` with
+`scripts/analyze_lso_log.py`.
 
-## Cross-Animal Summary
+### Per-Run Best AUC
 
+| holdout | arm | seed | complete | best_AUC | step |
+|---|---|---:|:---:|---:|---:|
+| CSH_ZAD_019 | pure_anatomy | 0 | yes | 0.542 | 300 |
+| CSH_ZAD_019 | region_only | 0 | yes | 0.569 | 150 |
+| CSH_ZAD_019 | shared_baseline | 0 | yes | 0.541 | 300 |
+| KS014 | pure_anatomy | 0 | yes | 0.555 | 300 |
+| KS014 | region_only | 0 | yes | 0.576 | 300 |
+| KS014 | shared_baseline | 0 | yes | 0.538 | 300 |
+| MFD_06 | pure_anatomy | 0 | yes | 0.573 | 300 |
+| MFD_06 | region_only | 0 | yes | 0.573 | 300 |
+| MFD_06 | shared_baseline | 0 | yes | 0.506 | 300 |
+| NR_0019 | pure_anatomy | 0 | yes | 0.524 | 150 |
+| NR_0019 | shared_baseline | 0 | yes | 0.529 | 150 |
+
+### Delta vs Shared Baseline
+
+| holdout | arm | n_pairs | mean_delta | seed_deltas |
+|---|---|---:|---:|---|
+| CSH_ZAD_019 | pure_anatomy | 1 | +0.002 | +0.002 |
+| CSH_ZAD_019 | region_only | 1 | +0.029 | +0.029 |
+| KS014 | pure_anatomy | 1 | +0.017 | +0.017 |
+| KS014 | region_only | 1 | +0.038 | +0.038 |
+| MFD_06 | pure_anatomy | 1 | +0.067 | +0.067 |
+| MFD_06 | region_only | 1 | +0.067 | +0.067 |
+| NR_0019 | pure_anatomy | 1 | -0.005 | -0.005 |
+
+### Aggregate Delta vs Shared Baseline
+
+| arm | n_pairs | mean_delta | positive_pairs |
+|---|---:|---:|---:|
+| pure_anatomy | 4 | +0.020 | 3/4 |
+| region_only | 3 | +0.045 | 3/3 |
+
+Interpretation: this is not a demo-grade result yet because it is one seed and
+partial. It is enough to prioritize the next spend: confirm `MFD_06` and
+`KS014` with seeds 1-2 before broadening the sweep. `MFD_06` is the strongest
+candidate because both `pure_anatomy` and `region_only` were +0.067 AUC over
+the shared null on seed 0.
