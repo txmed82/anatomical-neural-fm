@@ -10,8 +10,11 @@ import argparse
 import json
 import sys
 from collections import Counter, defaultdict
+from itertools import combinations
 from pathlib import Path
 from typing import Any
+
+import numpy as np
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO_ROOT / "vendor" / "torch_brain"))
@@ -74,6 +77,24 @@ def _as_list(values) -> list:
     return values.tolist() if hasattr(values, "tolist") else list(values)
 
 
+def local_subject_row(
+    out: dict[str, dict],
+    *,
+    subject: str,
+    recording_id: str,
+    regions: list[str],
+) -> None:
+    row = out.setdefault(subject, {
+        "subject": subject,
+        "recording_ids": [],
+        "n_units": 0,
+        "regions": Counter(),
+    })
+    row["recording_ids"].append(recording_id)
+    row["n_units"] += len(regions)
+    row["regions"].update(regions)
+
+
 def summarize_local_regions(data_dir: Path, region_granularity: str) -> dict[str, dict]:
     if not data_dir.exists() or not any(data_dir.glob("*.h5")):
         return {}
@@ -86,16 +107,72 @@ def summarize_local_regions(data_dir: Path, region_granularity: str) -> dict[str
         subject = str(rec.subject.id)
         fine_regions = [str(r) for r in _as_list(rec.units.region_acronym)]
         regions = map_region_acronyms(fine_regions, region_granularity)
-        row = out.setdefault(subject, {
-            "subject": subject,
-            "recording_ids": [],
-            "n_units": 0,
-            "regions": Counter(),
-        })
-        row["recording_ids"].append(rid)
-        row["n_units"] += len(regions)
-        row["regions"].update(regions)
+        local_subject_row(out, subject=subject, recording_id=rid, regions=regions)
     return out
+
+
+def _probe_collection(one, eid: str, probe_name: str) -> str:
+    collections = one.list_collections(eid)
+    probe_collections = [str(c) for c in collections if probe_name in str(c)]
+    coll = next((c for c in probe_collections if "pykilosort" in c), None)
+    if coll is None:
+        raise ValueError(f"No pykilosort collection for {eid} {probe_name}; got {probe_collections}")
+    return coll
+
+
+def _subject_from_details(one, eid: str) -> str:
+    details = one.get_details(eid)
+    if isinstance(details, dict):
+        return str(details.get("subject", "unknown"))
+    return str(getattr(details, "subject", "unknown"))
+
+
+def summarize_manifest_regions_from_alyx(
+    manifest: dict[str, Any],
+    region_granularity: str,
+    *,
+    max_recordings: int | None = None,
+) -> tuple[dict[str, dict], list[dict[str, str]]]:
+    """Score region support from small ALF metadata, without full spike HDF5s."""
+    from iblatlas.regions import BrainRegions
+    from one.api import ONE
+
+    ONE.setup(base_url=OPEN_ALYX, silent=True)
+    one = ONE(base_url=OPEN_ALYX, username=PUBLIC_USER, password=PUBLIC_PASS)
+    br = BrainRegions()
+    out: dict[str, dict] = {}
+    failures: list[dict[str, str]] = []
+    rows = manifest["recordings"]
+    if max_recordings is not None:
+        rows = rows[:max_recordings]
+    for row in rows:
+        eid = str(row.get("session_id") or row.get("eid") or row.get("session"))
+        probe_name = str(row.get("probe_name") or row.get("probe") or row.get("name"))
+        try:
+            subject = str(row.get("subject_id") or "") or _subject_from_details(one, eid)
+            coll = _probe_collection(one, eid, probe_name)
+            cluster_channels = np.asarray(
+                one.load_dataset(eid, "clusters.channels.npy", collection=coll),
+                dtype=np.int64,
+            )
+            channel_region_ids = np.asarray(
+                one.load_dataset(eid, "channels.brainLocationIds_ccf_2017.npy", collection=coll),
+                dtype=np.int64,
+            )
+            valid = (
+                (cluster_channels >= 0)
+                & (cluster_channels < len(channel_region_ids))
+            )
+            if not valid.any():
+                raise ValueError("no valid cluster channel indices")
+            region_ids = channel_region_ids[cluster_channels[valid]]
+            fine_regions = [str(r) for r in br.id2acronym(region_ids)]
+            regions = map_region_acronyms(fine_regions, region_granularity)
+            recording_id = f"{eid}_{probe_name}"
+            local_subject_row(out, subject=subject, recording_id=recording_id, regions=regions)
+        except Exception as exc:
+            failures.append({"session": eid, "probe": probe_name, "error": str(exc)})
+    return out, failures
 
 
 def support_against_others(local_subjects: dict[str, dict], subject: str) -> dict | None:
@@ -138,12 +215,140 @@ def lab_counts(selected: list[dict[str, Any]]) -> Counter:
     return Counter(str(row["lab"]) for row in selected)
 
 
+def support_summary(local_subjects: dict[str, dict]) -> dict[str, dict[str, Any]]:
+    out: dict[str, dict[str, Any]] = {}
+    for subject in sorted(local_subjects):
+        row = local_subjects[subject]
+        support = support_against_others(local_subjects, subject)
+        out[subject] = {
+            "cached_recordings": len(row["recording_ids"]),
+            "n_units": int(row["n_units"]),
+            "n_region_families": len(row["regions"]),
+            "unit_support_frac": None if support is None else support["unit_support_frac"],
+            "top_supported": None if support is None else support["top_supported"],
+            "top_total": None if support is None else support["top_total"],
+            "missing_top": [] if support is None else support["missing_top"],
+        }
+    return out
+
+
+def subjects_passing_support_gate(
+    local_subjects: dict[str, dict],
+    min_support: float,
+    *,
+    iterative: bool = True,
+) -> set[str]:
+    active = set(local_subjects)
+    while True:
+        scoped = {subject: local_subjects[subject] for subject in active}
+        failing = {
+            subject
+            for subject in active
+            if (
+                (support := support_against_others(scoped, subject)) is None
+                or support["unit_support_frac"] < min_support
+            )
+        }
+        if not iterative:
+            return active - failing
+        if not failing:
+            return active
+        next_active = active - failing
+        if next_active == active:
+            return active
+        if len(next_active) < 2:
+            return next_active
+        active = next_active
+
+
+def filter_manifest_to_subjects(
+    manifest: dict[str, Any],
+    subjects: set[str],
+    *,
+    min_support: float,
+) -> dict[str, Any]:
+    selected = [
+        row for row in manifest["recordings"]
+        if str(row["subject_id"]) in subjects
+    ]
+    filtered = dict(manifest)
+    filtered["selection"] = dict(manifest.get("selection", {}))
+    filtered["selection"]["filter_min_support"] = min_support
+    filtered["selection"]["pre_filter_recordings"] = manifest["n_recordings"]
+    filtered["selection"]["pre_filter_subjects"] = manifest["n_subjects"]
+    filtered["recordings"] = selected
+    filtered["n_recordings"] = len(selected)
+    filtered["n_subjects"] = len({str(row["subject_id"]) for row in selected})
+    filtered["labs"] = sorted({str(row["lab"]) for row in selected})
+    return filtered
+
+
+def filter_metadata_failures_to_manifest(
+    failures: list[dict[str, str]],
+    manifest: dict[str, Any],
+) -> list[dict[str, str]]:
+    selected_keys = {
+        (
+            str(row.get("session_id") or row.get("eid") or row.get("session")),
+            str(row.get("probe_name") or row.get("probe") or row.get("name")),
+        )
+        for row in manifest["recordings"]
+    }
+    return [
+        row for row in failures
+        if (str(row["session"]), str(row["probe"])) in selected_keys
+    ]
+
+
+def best_support_subset(
+    local_subjects: dict[str, dict],
+    *,
+    min_support: float,
+    min_subjects: int,
+) -> tuple[set[str], dict[str, Any]]:
+    subjects = sorted(local_subjects)
+    best_subjects: set[str] = set()
+    best_meta: dict[str, Any] = {}
+    best_score: tuple = (-1.0, -1, -1.0, -1, -1)
+    for size in range(min_subjects, len(subjects) + 1):
+        for combo in combinations(subjects, size):
+            scoped = {subject: local_subjects[subject] for subject in combo}
+            summary = support_summary(scoped)
+            fracs = [
+                row["unit_support_frac"]
+                for row in summary.values()
+                if row["unit_support_frac"] is not None
+            ]
+            if len(fracs) != len(combo):
+                continue
+            pass_count = sum(1 for frac in fracs if frac >= min_support)
+            pass_frac = pass_count / len(combo)
+            min_frac = min(fracs)
+            total_units = sum(int(scoped[subject]["n_units"]) for subject in combo)
+            score = (pass_frac, pass_count, min_frac, len(combo), total_units)
+            if score > best_score:
+                best_score = score
+                best_subjects = set(combo)
+                best_meta = {
+                    "min_support": min_support,
+                    "min_subjects": min_subjects,
+                    "pass_count": pass_count,
+                    "subject_count": len(combo),
+                    "pass_frac": pass_frac,
+                    "min_unit_support_frac": min_frac,
+                    "total_units": total_units,
+                }
+    return best_subjects, best_meta
+
+
 def write_report(
     *,
     manifest: dict[str, Any],
     local_subjects: dict[str, dict],
     out_path: Path,
     data_dir: Path,
+    region_source: str,
+    metadata_failures: list[dict[str, str]] | None = None,
 ) -> None:
     selected = manifest["recordings"]
     subjects = sorted({str(row["subject_id"]) for row in selected})
@@ -156,6 +361,7 @@ def write_report(
         f"Candidate subjects: {manifest['n_subjects']}",
         f"Region granularity: `{manifest['selection']['region_granularity']}`",
         f"Local BrainSet cache: `{data_dir}`",
+        f"Region source: {region_source}",
         "",
         "## Metadata Balance",
         "",
@@ -188,7 +394,7 @@ def write_report(
         "## Region-Family Scoring Status",
         "",
         (
-            f"The local cache covers {len(cached_subjects)} subjects and "
+            f"The region source covers {len(cached_subjects)} subjects and "
             f"{sum(len(v['recording_ids']) for v in local_subjects.values())} recordings."
         ),
         "",
@@ -196,9 +402,9 @@ def write_report(
     if not full_cache:
         missing = [subject for subject in subjects if subject not in local_subjects]
         lines += [
-            "The candidate manifest is not fully built locally, so region-family matching cannot be scored yet.",
+            "The candidate manifest is not fully covered by the selected region source, so region-family matching is partial.",
             "",
-            f"Missing candidate subjects in local cache: {', '.join(missing[:20])}"
+            f"Missing candidate subjects in region source: {', '.join(missing[:20])}"
             + (" ..." if len(missing) > 20 else ""),
             "",
         ]
@@ -225,12 +431,23 @@ def write_report(
                 f"{subject} | {len(row['recording_ids'])} | {row['n_units']} | "
                 f"{len(row['regions'])} | {support_cells} |"
             )
+    if metadata_failures:
+        lines += [
+            "",
+            "## Metadata Region Failures",
+            "",
+            "| session | probe | error |",
+            "|---|---|---|",
+        ]
+        for row in metadata_failures:
+            lines.append(f"| {row['session']} | {row['probe']} | {row['error']} |")
     lines += [
         "",
         "## Decision Gate",
         "",
         "Build this candidate manifest only if we are ready to spend on data construction, not training.",
-        "After build, rerun this planner and require at least 80% held-out unit support for most subjects before launching another seed sweep.",
+        "Before launching another seed sweep, require at least 80% held-out unit support for most subjects.",
+        "If this report used metadata-only scoring, use it to choose the cache target, then confirm support again after the HDF5 build.",
         "",
     ]
     out_path.parent.mkdir(parents=True, exist_ok=True)
@@ -249,6 +466,18 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--data-dir", type=Path, default=REPO_ROOT / "data/brainsets/ibl_bwm")
     p.add_argument("--out-manifest", type=Path, default=REPO_ROOT / "manifests/ibl_bwm_region_matched_candidates.json")
     p.add_argument("--out-report", type=Path, default=REPO_ROOT / "docs/matched_region_manifest_plan.md")
+    p.add_argument("--score-from-alyx-metadata", action="store_true",
+                   help="Score unit region support from small OpenAlyx cluster/channel metadata instead of local HDF5s.")
+    p.add_argument("--metadata-max-recordings", type=int, default=None,
+                   help="Optional cap for metadata scoring smoke tests.")
+    p.add_argument("--filter-min-support", type=float, default=None,
+                   help="Drop subjects below this held-out unit support fraction before writing outputs.")
+    p.add_argument("--filter-support-mode", choices=["initial", "iterative"], default="initial",
+                   help="initial filters by support in the full candidate set; iterative recomputes until stable.")
+    p.add_argument("--optimize-support-subset", type=float, default=None,
+                   help="Search subject subsets and keep the one maximizing support-pass fraction at this threshold.")
+    p.add_argument("--optimize-min-subjects", type=int, default=6,
+                   help="Minimum subjects for --optimize-support-subset.")
     return p.parse_args()
 
 
@@ -263,14 +492,59 @@ def main() -> int:
         if len(selected) < args.target:
             raise SystemExit(f"selected only {len(selected)}/{args.target}; lower filters or scan more")
         manifest = write_manifest(selected=selected, candidates=candidates, args=args)
+    metadata_failures: list[dict[str, str]] = []
+    if args.score_from_alyx_metadata:
+        local_subjects, metadata_failures = summarize_manifest_regions_from_alyx(
+            manifest,
+            args.region_granularity,
+            max_recordings=args.metadata_max_recordings,
+        )
+        region_source = "OpenAlyx cluster/channel metadata"
+    else:
+        local_subjects = summarize_local_regions(args.data_dir, args.region_granularity)
+        region_source = "local BrainSet HDF5 cache"
+    if args.filter_min_support is not None:
+        keep_subjects = subjects_passing_support_gate(
+            local_subjects,
+            args.filter_min_support,
+            iterative=args.filter_support_mode == "iterative",
+        )
+        manifest = filter_manifest_to_subjects(
+            manifest,
+            keep_subjects,
+            min_support=args.filter_min_support,
+        )
+        local_subjects = {
+            subject: row for subject, row in local_subjects.items()
+            if subject in keep_subjects
+        }
+    if args.optimize_support_subset is not None:
+        keep_subjects, subset_meta = best_support_subset(
+            local_subjects,
+            min_support=args.optimize_support_subset,
+            min_subjects=args.optimize_min_subjects,
+        )
+        manifest = filter_manifest_to_subjects(
+            manifest,
+            keep_subjects,
+            min_support=args.optimize_support_subset,
+        )
+        manifest["selection"]["optimized_support_subset"] = subset_meta
+        local_subjects = {
+            subject: row for subject, row in local_subjects.items()
+            if subject in keep_subjects
+        }
+    manifest["region_support"] = support_summary(local_subjects)
+    metadata_failures = filter_metadata_failures_to_manifest(metadata_failures, manifest)
     args.out_manifest.parent.mkdir(parents=True, exist_ok=True)
     args.out_manifest.write_text(json.dumps(manifest, indent=2) + "\n")
-    local_subjects = summarize_local_regions(args.data_dir, args.region_granularity)
     write_report(
         manifest=manifest,
         local_subjects=local_subjects,
         out_path=args.out_report,
         data_dir=args.data_dir,
+        region_source=region_source,
+        metadata_failures=metadata_failures,
     )
     print(f"wrote {args.out_manifest}")
     print(f"wrote {args.out_report}")
@@ -278,7 +552,7 @@ def main() -> int:
         f"selected recordings={manifest['n_recordings']} "
         f"subjects={manifest['n_subjects']} labs={len(manifest['labs'])}"
     )
-    for subject, count in sorted(selected_subject_counts(selected).items()):
+    for subject, count in sorted(selected_subject_counts(manifest["recordings"]).items()):
         print(f"  {subject}: {count}")
     return 0
 
