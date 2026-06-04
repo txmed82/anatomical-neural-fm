@@ -2,7 +2,13 @@ from __future__ import annotations
 
 import json
 
-from scripts.sync_brainset_s3 import local_h5_files, manifest_recording_names, s3_key
+from scripts.sync_brainset_s3 import (
+    cache_audit_rows,
+    local_h5_files,
+    manifest_recording_names,
+    s3_key,
+    write_audit_report,
+)
 
 
 def test_manifest_recording_names_accepts_committed_schema(tmp_path) -> None:
@@ -35,3 +41,33 @@ def test_local_h5_files_filters_by_manifest_names(tmp_path) -> None:
     other.write_text("x")
 
     assert local_h5_files(tmp_path, {"keep.h5"}) == [keep]
+
+
+def test_cache_audit_rows_splits_present_and_missing() -> None:
+    matched, missing = cache_audit_rows(
+        {"a.h5", "b.h5", "c.h5"},
+        {"a.h5", "c.h5", "extra.h5"},
+    )
+
+    assert matched == ["a.h5", "c.h5"]
+    assert missing == ["b.h5"]
+
+
+def test_write_audit_report_includes_gate_counts(tmp_path) -> None:
+    report = tmp_path / "audit.md"
+    manifest = tmp_path / "manifest.json"
+    manifest.write_text("{}")
+
+    write_audit_report(
+        report,
+        manifest=manifest,
+        bucket="cache",
+        prefix="brainsets/ibl_bwm",
+        matched=["a.h5"],
+        missing=["b.h5", "c.h5"],
+    )
+
+    text = report.read_text()
+    assert "Present: 1/3 (33.3%)" in text
+    assert "`b.h5`" in text
+    assert "`a.h5`" in text

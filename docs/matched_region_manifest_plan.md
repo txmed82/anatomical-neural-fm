@@ -132,6 +132,19 @@ Only after that command produces both a pushed build report and uploaded HDF5
 objects should we launch the remaining shards. The full region-family scoring
 gate should be run after the cache contains all 48 candidate HDF5 files.
 
+Cache completeness can be checked without launching a GPU pod:
+
+```bash
+uv run python scripts/sync_brainset_s3.py audit \
+  --manifest manifests/ibl_bwm_region_matched_candidates.json \
+  --bucket "$BRAINSET_S3_BUCKET" \
+  --prefix brainsets/ibl_bwm \
+  --datacenter CA-MTL-3 \
+  --report docs/matched_region_cache_audit.md
+```
+
+Do not run the region-family scoring gate until this reports `Present: 48/48`.
+
 Probe launch attempted after adding shard support:
 
 ```bash

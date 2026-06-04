@@ -280,3 +280,6 @@ and optional RunPod launcher flags (`--s3-bucket`, `--s3-prefix`,
 `--s3-datacenter`/`--s3-endpoint-url`) so each shard can download an existing
 cache, build missing recordings, upload `.h5` files, and then exit. The next
 paid run should use that S3 cache path, not a throwaway shard-only pod.
+The cache can be audited with `scripts/sync_brainset_s3.py audit`; require
+`Present: 48/48` before rerunning `scripts/plan_matched_region_manifest.py`
+against the rebuilt cache for the 80% held-out unit-support gate.

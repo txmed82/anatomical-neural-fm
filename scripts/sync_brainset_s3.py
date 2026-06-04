@@ -167,9 +167,59 @@ def download_files(client, *, bucket: str, prefix: str, data_dir: Path, names: s
     return count
 
 
+def remote_h5_filenames(client, *, bucket: str, prefix: str) -> set[str]:
+    return {Path(key).name for key in iter_remote_h5_keys(client, bucket=bucket, prefix=prefix)}
+
+
+def cache_audit_rows(expected: set[str], present: set[str]) -> tuple[list[str], list[str]]:
+    matched = sorted(expected & present)
+    missing = sorted(expected - present)
+    return matched, missing
+
+
+def write_audit_report(
+    path: Path,
+    *,
+    manifest: Path,
+    bucket: str,
+    prefix: str,
+    matched: list[str],
+    missing: list[str],
+) -> None:
+    total = len(matched) + len(missing)
+    pct = (len(matched) / total * 100.0) if total else 0.0
+    lines = [
+        "# BrainSet S3 Cache Audit",
+        "",
+        f"Manifest: `{manifest}`",
+        f"Cache: `s3://{bucket}/{prefix.strip('/')}`",
+        f"Present: {len(matched)}/{total} ({pct:.1f}%)",
+        "",
+        "## Missing",
+        "",
+    ]
+    if missing:
+        lines += ["| filename |", "|---|"]
+        lines += [f"| `{name}` |" for name in missing]
+    else:
+        lines.append("none")
+    lines += [
+        "",
+        "## Present",
+        "",
+    ]
+    if matched:
+        lines += ["| filename |", "|---|"]
+        lines += [f"| `{name}` |" for name in matched]
+    else:
+        lines.append("none")
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text("\n".join(lines) + "\n")
+
+
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser()
-    p.add_argument("command", choices=["upload", "download", "list"])
+    p.add_argument("command", choices=["upload", "download", "list", "audit"])
     p.add_argument("--data-dir", type=Path, default=DEFAULT_DATA_DIR)
     p.add_argument("--manifest", type=Path, default=None,
                    help="Optional manifest used to filter local/remote HDF5 filenames.")
@@ -179,6 +229,8 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--datacenter", default=None)
     p.add_argument("--access-key", default=None)
     p.add_argument("--secret-key", default=None)
+    p.add_argument("--report", type=Path, default=None,
+                   help="Optional markdown report path for the audit command.")
     return p.parse_args()
 
 
@@ -203,12 +255,36 @@ def main() -> int:
                 data_dir=args.data_dir,
                 names=names,
             )
-        else:
+        elif args.command == "list":
             count = 0
             for key in iter_remote_h5_keys(client, bucket=bucket, prefix=args.prefix):
                 if names is None or Path(key).name in names:
                     print(key)
                     count += 1
+        else:
+            if args.manifest is None:
+                raise SystemExit("audit requires --manifest")
+            expected = manifest_recording_names(args.manifest)
+            present = remote_h5_filenames(client, bucket=bucket, prefix=args.prefix)
+            matched, missing = cache_audit_rows(expected, present)
+            count = len(matched)
+            total = len(expected)
+            pct = (count / total * 100.0) if total else 0.0
+            print(f"present: {count}/{total} ({pct:.1f}%)")
+            if missing:
+                print("missing:")
+                for name in missing:
+                    print(f"  {name}")
+            if args.report is not None:
+                write_audit_report(
+                    args.report,
+                    manifest=args.manifest,
+                    bucket=bucket,
+                    prefix=args.prefix,
+                    matched=matched,
+                    missing=missing,
+                )
+                print(f"wrote {args.report}")
     except ClientError as exc:
         print(f"S3 sync failed: {exc}", file=sys.stderr)
         return 1
