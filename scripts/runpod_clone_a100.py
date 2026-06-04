@@ -109,6 +109,14 @@ def build_start_script(config: ClonePilotConfig) -> str:
         )
     )
     if config.setup_mode == "minimal-data":
+        system_setup_command = (
+            "if command -v git >/dev/null 2>&1 && command -v curl >/dev/null 2>&1 && command -v python3 >/dev/null 2>&1; then\n"
+            "  echo \"minimal data-build system tools already installed\"\n"
+            "else\n"
+            "  apt-get update\n"
+            "  apt-get install -y --no-install-recommends git curl ca-certificates python3-pip\n"
+            "fi"
+        )
         dependency_sync_command = (
             "if python3 - <<'PY'\n"
             "import importlib.util\n"
@@ -125,6 +133,10 @@ def build_start_script(config: ClonePilotConfig) -> str:
         python_runner = "python3"
         dataset_manifest_block = '  echo "=== skipping dataset manifest (minimal-data setup) ==="\n'
     else:
+        system_setup_command = (
+            "apt-get update\n"
+            "apt-get install -y --no-install-recommends git curl ca-certificates python3-pip"
+        )
         dependency_sync_command = "uv sync --no-dev" if config.skip_verification else "uv sync --dev"
         python_runner = "uv run python"
         dataset_manifest_block = "  uv run python scripts/write_dataset_manifest.py\n"
@@ -252,8 +264,7 @@ trap cleanup EXIT
 
 set -euo pipefail
 export DEBIAN_FRONTEND=noninteractive
-apt-get update
-apt-get install -y --no-install-recommends git curl ca-certificates python3-pip
+{system_setup_command}
 
 cd /workspace
 rm -rf {repo_dir_q}
