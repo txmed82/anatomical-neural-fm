@@ -1,26 +1,26 @@
-Get:1 http://archive.ubuntu.com/ubuntu jammy InRelease [270 kB]
-Get:2 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  InRelease [1581 B]
+Get:1 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  InRelease [1581 B]
+Get:2 http://archive.ubuntu.com/ubuntu jammy InRelease [270 kB]
 Get:3 http://security.ubuntu.com/ubuntu jammy-security InRelease [129 kB]
 Get:4 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  Packages [2705 kB]
 Get:5 http://archive.ubuntu.com/ubuntu jammy-updates InRelease [128 kB]
-Get:6 http://archive.ubuntu.com/ubuntu jammy-backports InRelease [127 kB]
-Get:7 http://archive.ubuntu.com/ubuntu jammy/restricted amd64 Packages [164 kB]
-Get:8 http://archive.ubuntu.com/ubuntu jammy/multiverse amd64 Packages [266 kB]
-Get:9 http://archive.ubuntu.com/ubuntu jammy/universe amd64 Packages [17.5 MB]
-Get:10 http://security.ubuntu.com/ubuntu jammy-security/main amd64 Packages [4005 kB]
+Get:6 http://security.ubuntu.com/ubuntu jammy-security/main amd64 Packages [4005 kB]
+Get:7 http://security.ubuntu.com/ubuntu jammy-security/restricted amd64 Packages [7183 kB]
+Get:8 http://archive.ubuntu.com/ubuntu jammy-backports InRelease [127 kB]
+Get:9 http://security.ubuntu.com/ubuntu jammy-security/multiverse amd64 Packages [77.8 kB]
+Get:10 http://security.ubuntu.com/ubuntu jammy-security/universe amd64 Packages [1300 kB]
 Get:11 http://archive.ubuntu.com/ubuntu jammy/main amd64 Packages [1792 kB]
-Get:12 http://archive.ubuntu.com/ubuntu jammy-updates/restricted amd64 Packages [7451 kB]
-Get:13 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 Packages [4344 kB]
-Get:14 http://archive.ubuntu.com/ubuntu jammy-updates/multiverse amd64 Packages [86.4 kB]
-Get:15 http://archive.ubuntu.com/ubuntu jammy-updates/universe amd64 Packages [1607 kB]
-Get:16 http://security.ubuntu.com/ubuntu jammy-security/restricted amd64 Packages [7183 kB]
-Get:17 http://archive.ubuntu.com/ubuntu jammy-backports/main amd64 Packages [82.8 kB]
-Get:18 http://archive.ubuntu.com/ubuntu jammy-backports/universe amd64 Packages [35.6 kB]
-Get:19 https://ppa.launchpadcontent.net/deadsnakes/ppa/ubuntu jammy InRelease [18.1 kB]
-Get:20 http://security.ubuntu.com/ubuntu jammy-security/universe amd64 Packages [1300 kB]
-Get:21 http://security.ubuntu.com/ubuntu jammy-security/multiverse amd64 Packages [77.8 kB]
+Get:12 http://archive.ubuntu.com/ubuntu jammy/multiverse amd64 Packages [266 kB]
+Get:13 http://archive.ubuntu.com/ubuntu jammy/universe amd64 Packages [17.5 MB]
+Get:14 https://ppa.launchpadcontent.net/deadsnakes/ppa/ubuntu jammy InRelease [18.1 kB]
+Get:15 http://archive.ubuntu.com/ubuntu jammy/restricted amd64 Packages [164 kB]
+Get:16 http://archive.ubuntu.com/ubuntu jammy-updates/restricted amd64 Packages [7451 kB]
+Get:17 http://archive.ubuntu.com/ubuntu jammy-updates/multiverse amd64 Packages [86.4 kB]
+Get:18 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 Packages [4344 kB]
+Get:19 http://archive.ubuntu.com/ubuntu jammy-updates/universe amd64 Packages [1607 kB]
+Get:20 http://archive.ubuntu.com/ubuntu jammy-backports/main amd64 Packages [82.8 kB]
+Get:21 http://archive.ubuntu.com/ubuntu jammy-backports/universe amd64 Packages [35.6 kB]
 Get:22 https://ppa.launchpadcontent.net/deadsnakes/ppa/ubuntu jammy/main amd64 Packages [38.9 kB]
-Fetched 49.3 MB in 2s (22.8 MB/s)
+Fetched 49.3 MB in 2s (25.6 MB/s)
 Reading package lists...
 Reading package lists...
 Building dependency tree...
@@ -48,7 +48,7 @@ Get:6 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 python3-setuptoo
 Get:7 http://archive.ubuntu.com/ubuntu jammy-updates/universe amd64 python3-wheel all 0.37.1-2ubuntu0.22.04.1 [32.0 kB]
 Get:8 http://archive.ubuntu.com/ubuntu jammy-updates/universe amd64 python3-pip all 22.0.2+dfsg-1ubuntu0.7 [1306 kB]
 debconf: delaying package configuration, since apt-utils is not installed
-Fetched 5631 kB in 0s (40.2 MB/s)
+Fetched 5631 kB in 0s (44.3 MB/s)
 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 24135 files and directories currently installed.)
 Preparing to unpack .../0-ca-certificates_20240203~22.04.1_all.deb ...
 Unpacking ca-certificates (20240203~22.04.1) over (20230311ubuntu0.22.04.1) ...
@@ -93,84 +93,84 @@ installing to /root/.local/bin
   uvx
 everything's installed!
 uv 0.11.19 (x86_64-unknown-linux-gnu)
-=== syncing environment ===
+=== dependency sync start ===
 Using CPython 3.11.10 interpreter at: /usr/bin/python3.11
 Creating virtual environment at: .venv
-Resolved 134 packages in 1ms
+Resolved 134 packages in 0.96ms
    Updating https://github.com/AllenInstitute/abc_atlas_access (HEAD)
-Downloading networkx (2.0MiB)
-Downloading pygments (1.2MiB)
+Downloading pillow (6.8MiB)
+Downloading setuptools (1.0MiB)
+Downloading nvidia-cufft-cu12 (201.7MiB)
 Downloading pandas (12.2MiB)
 Downloading pydantic-core (2.0MiB)
-Downloading setuptools (1.0MiB)
-Downloading pillow (6.8MiB)
-Downloading numpy (16.1MiB)
-Downloading sympy (5.9MiB)
-Downloading triton (199.8MiB)
-Downloading torch (864.5MiB)
-Downloading wandb (26.0MiB)
-Downloading numba (3.6MiB)
-Downloading ruff (10.9MiB)
 Downloading pyarrow (46.6MiB)
-Downloading h5py (4.8MiB)
-Downloading scipy (33.7MiB)
-Downloading nvidia-cuda-nvrtc-cu12 (23.5MiB)
-Downloading botocore (14.3MiB)
-Downloading nvidia-nccl-cu12 (179.9MiB)
-Downloading nvidia-nvjitlink-cu12 (20.1MiB)
-Downloading fonttools (4.8MiB)
-Downloading nvidia-cusolver-cu12 (122.0MiB)
-Downloading llvmlite (53.7MiB)
-Downloading numcodecs (8.7MiB)
-Downloading matplotlib (8.4MiB)
-Downloading nvidia-curand-cu12 (53.7MiB)
 Downloading kiwisolver (1.4MiB)
-Downloading nvidia-cublas-cu12 (346.6MiB)
-Downloading nvidia-cufft-cu12 (201.7MiB)
-Downloading polars-runtime-32 (53.6MiB)
-Downloading nvidia-cudnn-cu12 (634.0MiB)
+Downloading sympy (5.9MiB)
+Downloading matplotlib (8.4MiB)
+Downloading pygments (1.2MiB)
+Downloading ruff (10.9MiB)
+Downloading fonttools (4.8MiB)
+Downloading triton (199.8MiB)
 Downloading nvidia-cuda-cupti-cu12 (13.2MiB)
+Downloading nvidia-nccl-cu12 (179.9MiB)
+Downloading networkx (2.0MiB)
+Downloading scipy (33.7MiB)
+Downloading nvidia-cublas-cu12 (346.6MiB)
 Downloading nvidia-cusparse-cu12 (197.8MiB)
+Downloading nvidia-cuda-nvrtc-cu12 (23.5MiB)
+Downloading nvidia-nvjitlink-cu12 (20.1MiB)
+Downloading nvidia-cusolver-cu12 (122.0MiB)
+Downloading nvidia-curand-cu12 (53.7MiB)
+Downloading numpy (16.1MiB)
+Downloading wandb (26.0MiB)
+Downloading polars-runtime-32 (53.6MiB)
+Downloading llvmlite (53.7MiB)
+Downloading numba (3.6MiB)
+Downloading botocore (14.3MiB)
+Downloading numcodecs (8.7MiB)
+Downloading torch (864.5MiB)
+Downloading nvidia-cudnn-cu12 (634.0MiB)
  Downloaded kiwisolver
  Downloaded pydantic-core
    Building antlr4-python3-runtime==4.9.3
  Downloaded pygments
  Downloaded setuptools
  Downloaded networkx
+Downloading h5py (4.8MiB)
  Downloaded numba
- Downloaded h5py
  Downloaded fonttools
-      Built antlr4-python3-runtime==4.9.3
  Downloaded pillow
+      Built antlr4-python3-runtime==4.9.3
  Downloaded numcodecs
  Downloaded matplotlib
- Downloaded sympy
+ Downloaded h5py
  Downloaded ruff
+ Downloaded sympy
  Downloaded nvidia-cuda-cupti-cu12
- Downloaded numpy
  Downloaded nvidia-nvjitlink-cu12
- Downloaded botocore
+ Downloaded numpy
  Downloaded nvidia-cuda-nvrtc-cu12
- Downloaded pandas
+ Downloaded botocore
  Downloaded scipy
- Downloaded wandb
+ Downloaded pandas
  Downloaded nvidia-curand-cu12
  Downloaded polars-runtime-32
  Downloaded llvmlite
+ Downloaded wandb
  Downloaded pyarrow
  Downloaded nvidia-cusolver-cu12
  Downloaded nvidia-nccl-cu12
  Downloaded triton
  Downloaded nvidia-cusparse-cu12
  Downloaded nvidia-cufft-cu12
- Downloaded nvidia-cublas-cu12
- Downloaded nvidia-cudnn-cu12
- Downloaded torch
     Updated https://github.com/AllenInstitute/abc_atlas_access (f7cc551f9e327cd1c413ebc54c006bf20ffe0b27)
    Building abc-atlas-access @ git+https://github.com/AllenInstitute/abc_atlas_access@f7cc551f9e327cd1c413ebc54c006bf20ffe0b27
+ Downloaded nvidia-cublas-cu12
       Built abc-atlas-access @ git+https://github.com/AllenInstitute/abc_atlas_access@f7cc551f9e327cd1c413ebc54c006bf20ffe0b27
-Prepared 100 packages in 41.38s
-Installed 100 packages in 1.70s
+ Downloaded nvidia-cudnn-cu12
+ Downloaded torch
+Prepared 100 packages in 26.71s
+Installed 100 packages in 5.02s
  + abc-atlas-access==1.3.2 (from git+https://github.com/AllenInstitute/abc_atlas_access@f7cc551f9e327cd1c413ebc54c006bf20ffe0b27)
  + anndata==0.12.14
  + annotated-types==0.7.0
@@ -271,24 +271,36 @@ Installed 100 packages in 1.70s
  + wadler-lindig==0.1.7
  + wandb==0.27.0
  + zarr==3.1.6
-Downloading jedi (4.7MiB)
+=== dependency sync complete ===
 Downloading debugpy (3.0MiB)
+Downloading jedi (4.7MiB)
  Downloaded debugpy
  Downloaded jedi
-Installed 27 packages in 1.39s
-upload /tmp/runpod_phase3_5.log -> s3://rppfvo6ifn/brainsets/ibl_bwm/logs/docs_lso_two_holdout_shared_parent_shuffle_results.log
+Installed 27 packages in 2.46s
+upload /tmp/runpod_phase3_5.log -> s3://rppfvo6ifn/brainsets/ibl_bwm/logs/docs_runpod_dependency_diagnostic.log
 upload-log count: 1
-=== skipping local verification ===
-upload /tmp/runpod_phase3_5.log -> s3://rppfvo6ifn/brainsets/ibl_bwm/logs/docs_lso_two_holdout_shared_parent_shuffle_results.log
+=== dependency diagnostic ===
+Thu Jun  4 23:07:51 UTC 2026
+/workspace/anatomical-neural-fm
+Filesystem      Size  Used Avail Use% Mounted on
+overlay          80G   14G   67G  17% /
+overlay          80G   14G   67G  17% /
+overlay          80G   14G   67G  17% /
+6.1G	.venv
+/root/.local/bin/uv
+uv 0.11.19 (x86_64-unknown-linux-gnu)
+python 3.11.10
+importable torch: True
+importable boto3: True
+importable h5py: True
+importable numpy: True
+importable one: True
+importable iblatlas: True
+importable temporaldata: True
+torch 2.5.1+cu124
+cuda_available True
+cuda_device_count 1
+disk_free_workspace 71354961920
+upload /tmp/runpod_phase3_5.log -> s3://rppfvo6ifn/brainsets/ibl_bwm/logs/docs_runpod_dependency_diagnostic.log
 upload-log count: 1
-=== skipping cell-type priors ===
-upload /tmp/runpod_phase3_5.log -> s3://rppfvo6ifn/brainsets/ibl_bwm/logs/docs_lso_two_holdout_shared_parent_shuffle_results.log
-upload-log count: 1
-=== downloading cached BrainSet data ===
-download s3://rppfvo6ifn/brainsets/ibl_bwm/03063955-2523-47bd-ae57-f7489dd40f15_probe01.h5 -> /workspace/anatomical-neural-fm/data/brainsets/ibl_bwm/03063955-2523-47bd-ae57-f7489dd40f15_probe01.h5
-download s3://rppfvo6ifn/brainsets/ibl_bwm/032ffcdf-7692-40b3-b9ff-8def1fc18b2e_probe00.h5 -> /workspace/anatomical-neural-fm/data/brainsets/ibl_bwm/032ffcdf-7692-40b3-b9ff-8def1fc18b2e_probe00.h5
-download s3://rppfvo6ifn/brainsets/ibl_bwm/16693458-0801-4d35-a3f1-9115c7e5acfd_probe00.h5 -> /workspace/anatomical-neural-fm/data/brainsets/ibl_bwm/16693458-0801-4d35-a3f1-9115c7e5acfd_probe00.h5
-download s3://rppfvo6ifn/brainsets/ibl_bwm/16693458-0801-4d35-a3f1-9115c7e5acfd_probe01.h5 -> /workspace/anatomical-neural-fm/data/brainsets/ibl_bwm/16693458-0801-4d35-a3f1-9115c7e5acfd_probe01.h5
-download s3://rppfvo6ifn/brainsets/ibl_bwm/1e45d992-c356-40e1-9be1-a506d944896f_probe01.h5 -> /workspace/anatomical-neural-fm/data/brainsets/ibl_bwm/1e45d992-c356-40e1-9be1-a506d944896f_probe01.h5
-download s3://rppfvo6ifn/brainsets/ibl_bwm/35eeb752-8f4f-4040-9714-ba0f5b7ccdfe_probe00.h5 -> /workspace/anatomical-neural-fm/data/brainsets/ibl_bwm/35eeb752-8f4f-4040-9714-ba0f5b7ccdfe_probe00.h5
-download s3://rppfvo6ifn/brainsets/ibl_bwm/3f71aa98-08c6-4e79-b4c8-00eae4f03eff_probe00.h5 -> /workspace/anatomical-neural-fm/data/brainsets/ibl_bwm/3f71aa98-08c6-4e79-b4c8-00eae4f03eff_probe00.h5
+=== dependency diagnostic complete ===
