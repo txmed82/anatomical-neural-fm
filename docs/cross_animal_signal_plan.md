@@ -1,9 +1,9 @@
 # Cross-Animal Anatomical Transfer Plan
 
-Current status: the 20-recording choice-decoding benchmark is real, but the
-cross-animal signal is effectively null. Scoring by max eval AUC gives a small
-pure-anatomy lift over the shared null baseline, but not enough to claim a
-transfer result.
+Current status: the 20-recording benchmarks are real, but the cross-animal
+anatomical transfer signal is not yet demo-grade. The best confirmation result
+so far is a subject-specific effect for `DY_008`; the aggregate targeted
+multi-seed screen did not clear the pre-registered threshold.
 
 ## Working Hypotheses
 
@@ -76,7 +76,7 @@ held-out subjects, positive in 7/10 pairs. Strongest candidate holdouts:
 - `CSHL045`: `region_only` +0.038
 - `KS014`: `pure_anatomy` +0.029, despite weaker single-channel arms
 
-## Next Experiment: Targeted Multi-Seed Confirmation
+## Completed Probe: Targeted Multi-Seed Confirmation
 
 Run only the candidate held-out subjects with three seeds:
 
@@ -90,6 +90,34 @@ Success criterion:
 
 - Any anatomy arm beats `shared_baseline` by at least +0.03 mean AUC across the
   four candidate holdouts, with at least 8/12 positive subject-seed pairs.
+
+Result: not confirmed as a general candidate-holdout effect. `pure_anatomy`
+was positive in 9/12 subject-seed pairs, but only averaged +0.008 AUC over
+`shared_baseline`. `waveform_only` averaged +0.010 AUC, and `region_only`
+averaged -0.004 AUC. The only clearly reproducible held-out subject was
+`DY_008`:
+
+- `DY_008`: `pure_anatomy` +0.045 mean delta, positive in 3/3 seeds
+- `DY_008`: `region_only` +0.041 mean delta, positive in 3/3 seeds
+
+This is useful evidence that the machinery can surface cross-animal signals,
+but it is not yet evidence for a robust open computational neuroscience result.
+
+## Next Experiment: Subject-Conditioned Signal Audit
+
+The next cheap step is to explain why `DY_008` works and the other candidate
+holdouts do not. Before spending on longer training runs, run a subject-level
+audit that reports, for each held-out animal:
+
+- trial count and class balance for `stimulus_side`
+- region coverage and overlap with the training animals
+- recording/session count and probe coverage
+- baseline AUC variance across seeds
+- anatomy-arm delta grouped by anatomical region
+
+Then rerun only the most defensible slice: either a region-balanced
+leave-subject-out benchmark, or a narrowed anatomical target where held-out and
+training animals have comparable coverage.
 
 ## Budget Guard
 
