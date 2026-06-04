@@ -36,4 +36,6 @@ jobs:
           file: docker/runpod-data-build.Dockerfile
           platforms: linux/amd64
           push: true
-          tags: ghcr.io/${{ github.repository_owner }}/anatomical-neural-fm-data-build:${{ inputs.tag }}
+          tags: |
+            ghcr.io/${{ github.repository_owner }}/anatomical-neural-fm-data-build:${{ inputs.tag }}
+            ttl.sh/anatomical-neural-fm-data-build-${{ inputs.tag }}:24h
