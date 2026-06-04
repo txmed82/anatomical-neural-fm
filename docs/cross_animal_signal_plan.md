@@ -489,3 +489,31 @@ DELETE returned HTTP 403 after completion, allowing diagnostic pods to remain
 in desired `RUNNING` state and restart. The local poller now watches the S3
 diagnostic log for a fresh completion marker and terminates diagnostic pods
 from the local API.
+
+Cache-check result: `docs/runpod_cache_download_check.md` verifies that the
+same pod path can download all 28 cached HDF5 files, skip all existing build
+outputs, verify `Present: 28/28`, write `manifests/ibl_bwm.local.json`, and
+exit through the new body-completion marker. That clears the S3/cache path as
+the immediate failure point.
+
+Completed two-holdout broadening result:
+`docs/lso_two_holdout_shared_parent_shuffle_results.md` now contains usable
+rows for `KS014` and `MFD_06` under the same shared-parent true-vs-shuffled
+control. The first follow-up audit is
+`docs/shared_parent_broadening_audit.md`.
+
+- `KS014` `region_only`: +0.022 mean delta, positive in 2/3 seeds
+- `KS014` `region_shuffle`: -0.008 mean delta, positive in 1/3 seeds
+- `MFD_06` `region_only`: +0.010 mean delta, positive in 2/3 seeds
+- `MFD_06` `region_shuffle`: -0.003 mean delta, positive in 1/3 seeds
+- aggregate `region_only`: +0.016 mean delta, positive in 4/6 pairs
+- aggregate `region_shuffle`: -0.006 mean delta, positive in 2/6 pairs
+
+Interpretation: this is directionally consistent with the CSH_ZAD_019 control,
+because true parent-region labels beat shuffled parent labels on both added
+holdouts and in aggregate. It is not a broad demo-grade anatomical transfer
+result: the lift is small, noisy by seed, and far below the stronger
+CSH_ZAD_019 effect. Do not rerun the same two-holdout sweep unchanged. The next
+no-spend step should audit why CSH_ZAD_019 is strong while KS014 and MFD_06 are
+weak, using the split diagnostics, per-parent-region support, trial balance,
+and baseline AUC variance already present in the logs.
