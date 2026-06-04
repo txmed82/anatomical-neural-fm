@@ -182,11 +182,42 @@ more informative next check is to compare fine acronyms against coarser atlas
 ancestor groups, because the audit showed substantial ancestor resolution in
 the CCF mapping and fine-region labels may be too sparse across animals.
 
+## Completed Probe: Coarse-Anatomy LSO Rerun
+
+Run `scripts/run_lso_coarse_anatomy_a100.sh` with Allen parent acronyms for
+region embeddings and shared-region masking:
+
+- subjects: `DY_008 MFD_05 CSHL045 KS014`
+- arms: `shared_baseline region_only pure_anatomy`
+- seeds: `0 1 2`
+- region granularity: `parent`
+- report: `docs/lso_coarse_anatomy_results.md`
+
+Result: coarse parent regions did not create a robust aggregate effect.
+
+- aggregate `pure_anatomy`: -0.000 mean delta, positive in 6/12 pairs
+- aggregate `region_only`: +0.005 mean delta, positive in 7/12 pairs
+- `DY_008` `pure_anatomy`: +0.024 mean delta, positive in 2/3 clearly and
+  one seed at +0.000
+- `CSHL045` `pure_anatomy`: +0.033 mean delta, positive in 3/3 seeds
+
+This shifts the best subject-specific candidate from `DY_008` to `CSHL045`,
+but it is still not a general cross-animal anatomical transfer result. The
+signal is now hopping across subjects depending on anatomical encoding, which
+argues against making a claim from the current 20-recording benchmark.
+
+Next decision: stop spending on architecture/encoding sweeps until the
+benchmark is redesigned. The most likely failure mode is that stimulus-side
+decoding at this sample size is dominated by subject/probe/session composition.
+The next constructive step is an analysis-only benchmark redesign: choose a
+larger manifest with matched region families across subjects, predefine
+region-family holdout strata, and only then rerun a small seed sweep.
+
 ## Budget Guard
 
 Hard cap from user: do not spend more than $100.
 
-The targeted multi-seed confirmation, full-dataset coverage audits, and
-region-balanced LSO rerun completed under the cap and left zero pods and zero
-network volumes. The next paid run should be a narrow coarse-anatomy comparison,
-not a broad exploratory sweep.
+The targeted multi-seed confirmation, full-dataset coverage audits,
+region-balanced LSO rerun, and coarse-anatomy rerun completed under the cap and
+left zero pods and zero network volumes. Avoid additional paid training until
+the manifest/evaluation design is tightened.
