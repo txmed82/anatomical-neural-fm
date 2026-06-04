@@ -10,6 +10,10 @@ def test_estimate_cost_uses_runtime_hours() -> None:
     assert estimate_cost(5400, 1.50) == 2.25
 
 
+def test_estimate_cost_uses_larger_provision_guard() -> None:
+    assert estimate_cost(5400, 1.50, max_provision_seconds=7200) == 3.0
+
+
 def test_build_launch_command_targets_two_holdout_sweep() -> None:
     command = build_launch_command(PreflightConfig(max_runtime_seconds=5400, max_dollars=10.0))
     joined = shell_join(command)

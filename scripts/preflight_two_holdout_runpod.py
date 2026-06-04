@@ -17,6 +17,7 @@ except ModuleNotFoundError:
 @dataclass(frozen=True)
 class PreflightConfig:
     max_runtime_seconds: int = 5400
+    max_provision_seconds: int = 7200
     max_dollars: float = 10.0
     assumed_cost_per_hr: float = 1.50
     datacenter: str = "ANY"
@@ -29,8 +30,13 @@ class PreflightConfig:
     result_doc: str = "docs/lso_two_holdout_shared_parent_shuffle_results.md"
 
 
-def estimate_cost(max_runtime_seconds: int, assumed_cost_per_hr: float) -> float:
-    return (max_runtime_seconds / 3600.0) * assumed_cost_per_hr
+def estimate_cost(
+    max_runtime_seconds: int,
+    assumed_cost_per_hr: float,
+    max_provision_seconds: int | None = None,
+) -> float:
+    billable_guard_seconds = max(max_runtime_seconds, max_provision_seconds or 0)
+    return (billable_guard_seconds / 3600.0) * assumed_cost_per_hr
 
 
 def build_launch_command(config: PreflightConfig) -> list[str]:
@@ -40,7 +46,7 @@ def build_launch_command(config: PreflightConfig) -> list[str]:
         "--datacenter", config.datacenter,
         "--container-disk-gb", "80",
         "--max-runtime-seconds", str(config.max_runtime_seconds),
-        "--max-provision-seconds", str(config.max_runtime_seconds + 1800),
+        "--max-provision-seconds", str(config.max_provision_seconds),
         "--skip-verification",
         "--skip-cell-type-priors",
         "--build-recordings", "0",
@@ -86,6 +92,7 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument("--max-dollars", type=float, default=10.0)
     parser.add_argument("--max-runtime-seconds", type=int, default=5400)
+    parser.add_argument("--max-provision-seconds", type=int, default=7200)
     parser.add_argument("--assumed-cost-per-hr", type=float, default=1.50)
     parser.add_argument("--datacenter", default="ANY")
     parser.add_argument("--s3-bucket", default="rppfvo6ifn")
@@ -98,6 +105,7 @@ def main() -> int:
     args = parse_args()
     config = PreflightConfig(
         max_runtime_seconds=args.max_runtime_seconds,
+        max_provision_seconds=args.max_provision_seconds,
         max_dollars=args.max_dollars,
         assumed_cost_per_hr=args.assumed_cost_per_hr,
         datacenter=args.datacenter,
@@ -110,7 +118,11 @@ def main() -> int:
     env = load_dotenv(REPO_ROOT / ".env")
     client = RunpodClient(require_env(env, "RUNPOD_API_KEY"))
     pods = active_pods(client)
-    cost = estimate_cost(config.max_runtime_seconds, config.assumed_cost_per_hr)
+    cost = estimate_cost(
+        config.max_runtime_seconds,
+        config.assumed_cost_per_hr,
+        config.max_provision_seconds,
+    )
     command = build_launch_command(config)
 
     print("# Two-holdout RunPod preflight")
@@ -121,6 +133,8 @@ def main() -> int:
         print(f"- {pod.get('id')} {pod.get('name')} cost={pod.get('costPerHr')} status={pod.get('desiredStatus') or pod.get('status')}")
     print(f"estimated_max_cost: ${cost:.2f}")
     print(f"max_dollars: ${config.max_dollars:.2f}")
+    print(f"max_runtime_seconds: {config.max_runtime_seconds}")
+    print(f"max_provision_seconds: {config.max_provision_seconds}")
     print(f"manifest_path: {config.manifest_path}")
     print(f"sweep_script: {config.sweep_script}")
     print(f"output_root: {config.output_root}")

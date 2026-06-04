@@ -451,8 +451,9 @@ uv run python scripts/preflight_two_holdout_runpod.py --max-dollars 10
 
 The preflight does not rent a pod. It verifies that the Git branch is clean and
 synced, active RunPod pods are zero, and the estimated one-pod worst-case cost
-is below the cap. With the current 5400-second guard and a conservative
-`$1.50/hr` assumption, the estimated maximum is `$2.25`.
+is below the cap. With the current 5400-second runtime guard, 7200-second
+provisioning guard, and a conservative `$1.50/hr` assumption, the estimated
+maximum is `$3.00`.
 
 Latest status: a later short-alias cloud attempt wrote `d.md` using `t.sh` and
 output root `r`, but it also produced `Missing Sweep Summary`; treat it as
