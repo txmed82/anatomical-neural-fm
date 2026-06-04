@@ -1,6 +1,6 @@
 # Cloud Phase 3-5 Results
 
-Date: 2026-06-04T06:31:04Z
+Date: 2026-06-04T06:54:29Z
 
 RunPod target: A100 pilot.
 
@@ -68,8 +68,19 @@ The 20-recording manifest contains 10 subjects. The local HDF5 cache currently c
 | SWC_042 | 2 | 913 | L:441, R:472 | 2664 | 28 | CA3:591, LGv:244, DG-mo:237, DG-sg:222, SSp-bfd6a:153, HATA:151, void:133, SSp-bfd4:113 |
 | ZFM-01576 | 2 | 1624 | L:900, R:724 | 1626 | 30 | SIM:293, LAV:259, MOp5:123, MOp2/3:111, PVT:99, MOs6a:86, arb:83, PARN:75 |
 
+## Held-Out Region Support
+
+For each candidate subject, support is computed against all other cached subjects, matching the leave-subject-out training split.
+
+| subject | heldout_region_units_supported_by_train | top8_regions_seen_in_train | top8_regions_missing_from_train |
+|---|---:|---:|---|
+| CSHL045 | 57.0% | 6/8 | CUL4 5, MEA |
+| DY_008 | 69.0% | 6/8 | PO, LP |
+| KS014 | 93.3% | 7/8 | SCsg |
+| MFD_05 | 77.0% | 6/8 | SPVI, CENT3 |
+
 ## Interpretation
 
-`DY_008` remains the only confirmed subject where both `pure_anatomy` and `region_only` beat the shared null by more than +0.03 across all three seeds. The current local cache is insufficient to prove whether that is due to region coverage, trial balance, or a real transferable anatomical factor.
+`DY_008` remains the only confirmed subject where both `pure_anatomy` and `region_only` beat the shared null by more than +0.03 across all three seeds. The full-cache audit makes a pure class-balance explanation less likely: `DY_008` has 405 left vs 376 right valid stimulus-side trials. Its held-out units have 69.0% region support in the other subjects, and 6/8 top regions are seen in training.
 
-Next action: rerun this audit on the full RunPod-built 20-recording dataset, then launch only a region-balanced LSO rerun if `DY_008` has comparable training/eval region support.
+Next action: run a region-balanced LSO rerun focused on `DY_008` plus matched controls. If the lift survives matched region support, it becomes a stronger candidate transfer demo; if it disappears, treat the current lift as coverage-driven.
