@@ -103,7 +103,7 @@ averaged -0.004 AUC. The only clearly reproducible held-out subject was
 This is useful evidence that the machinery can surface cross-animal signals,
 but it is not yet evidence for a robust open computational neuroscience result.
 
-## Next Experiment: Subject-Conditioned Signal Audit
+## Completed Probe: Local Subject-Conditioned Signal Audit
 
 The next cheap step is to explain why `DY_008` works and the other candidate
 holdouts do not. Before spending on longer training runs, run a subject-level
@@ -119,10 +119,31 @@ Then rerun only the most defensible slice: either a region-balanced
 leave-subject-out benchmark, or a narrowed anatomical target where held-out and
 training animals have comparable coverage.
 
+Local result: `docs/subject_conditioned_signal_audit.md` now combines the
+20-recording manifest with the targeted LSO confirmation table. It confirms
+that `DY_008` is the only subject where both `pure_anatomy` and `region_only`
+clear +0.03 across three seeds. The local HDF5 cache is not the 20-recording
+benchmark cache, though, so local trial-balance and region-coverage rows are
+partial and cannot explain the signal.
+
+## Next Experiment: Full-Dataset Coverage Audit
+
+Run `scripts/audit_subject_signal.py` on a fresh RunPod clone after rebuilding
+the 20-recording BrainSet data, but do not train. This should be a sub-$2 job
+at the observed A100 rate because it only builds data and writes the audit.
+
+Decision gate:
+
+- If `DY_008` has comparable region support and class balance, run a
+  region-balanced LSO rerun focused on `DY_008` plus matched controls.
+- If `DY_008` has unusual coverage or imbalance, treat the current lift as a
+  dataset-composition artifact and redesign the benchmark before spending on
+  more seeds.
+
 ## Budget Guard
 
 Hard cap from user: do not spend more than $100.
 
-The targeted multi-seed confirmation should use the existing 3-hour timeout and
-is expected to cost roughly $2-$4 at the observed $1.39/hr rate. Always verify
-zero pods and zero network volumes after the run.
+The targeted multi-seed confirmation completed under the cap and left zero pods
+and zero network volumes. The next full-dataset audit should avoid training and
+use a short timeout; expected spend is below $2 at the observed $1.39/hr rate.
