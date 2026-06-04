@@ -58,6 +58,7 @@ def test_start_script_clones_branch_builds_data_and_pushes_results() -> None:
     assert "export OUT_ROOT=runs/phase2_cloud_a100" in script
     assert "- target mode: stimulus_side" in script
     assert "bash scripts/run_phase2_cloud_a100.sh" in script
+    assert "=== phase 3-5 body complete ===" in script
     assert "git push origin HEAD:runpod-pilot-phases-3-5" in script
     assert "DELETE" in script
 

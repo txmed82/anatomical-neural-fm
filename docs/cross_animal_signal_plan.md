@@ -480,3 +480,12 @@ download, then stopped during HDF5 download before training. The launcher now
 has a body-level ERR trap and optional `--dependency-diagnostic` mode so the
 next paid step should first capture dependency/disk/CUDA diagnostics or a
 download-only cache check before retrying the full two-holdout sweep.
+
+Dependency diagnostic result: dependency setup is not the blocker. The pod
+completed `uv sync --no-dev`, imported the required Python/GPU stack, saw one
+CUDA device, and had about 67 GB free on the 80 GB container disk. The real
+launcher bug found by the diagnostic was cleanup control: pod-side RunPod
+DELETE returned HTTP 403 after completion, allowing diagnostic pods to remain
+in desired `RUNNING` state and restart. The local poller now watches the S3
+diagnostic log for a fresh completion marker and terminates diagnostic pods
+from the local API.

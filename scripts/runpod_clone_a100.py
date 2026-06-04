@@ -448,6 +448,8 @@ cat > /tmp/run_phase3_5_body.sh <<'RUNSCRIPT'
   upload_log
 {sweep_block.rstrip()}
   upload_log
+  echo "=== phase 3-5 body complete ==="
+  upload_log
 RUNSCRIPT
 timeout {run_timeout} bash /tmp/run_phase3_5_body.sh
 """
@@ -698,6 +700,7 @@ def main() -> int:
         poll_started_at = datetime.now(timezone.utc)
         provision_deadline = time.time() + args.max_provision_seconds
         diagnostic_stop_marker = "=== dependency diagnostic complete ==="
+        body_stop_marker = "=== phase 3-5 body complete ==="
         while True:
             time.sleep(30)
             try:
@@ -715,6 +718,15 @@ def main() -> int:
                 modified_after=poll_started_at,
             ):
                 print("Dependency diagnostic marker found in S3 log; terminating pod.", flush=True)
+                client.terminate_pod(pod_id)
+                break
+            if remote_log_contains(
+                config,
+                env,
+                body_stop_marker,
+                modified_after=poll_started_at,
+            ):
+                print("Body completion marker found in S3 log; terminating pod.", flush=True)
                 client.terminate_pod(pod_id)
                 break
             machine = current.get("machine") or {}
