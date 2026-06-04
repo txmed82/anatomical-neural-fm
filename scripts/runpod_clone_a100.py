@@ -110,8 +110,17 @@ def build_start_script(config: ClonePilotConfig) -> str:
     )
     if config.setup_mode == "minimal-data":
         dependency_sync_command = (
-            "python3 -m pip install --user --upgrade pip\n"
-            "  python3 -m pip install --user boto3 h5py numpy one-api iblatlas temporaldata"
+            "if python3 - <<'PY'\n"
+            "import importlib.util\n"
+            "missing = [m for m in ['boto3', 'h5py', 'numpy', 'one', 'iblatlas', 'temporaldata'] if importlib.util.find_spec(m) is None]\n"
+            "raise SystemExit(1 if missing else 0)\n"
+            "PY\n"
+            "  then\n"
+            "    echo \"minimal data-build dependencies already installed\"\n"
+            "  else\n"
+            "    python3 -m pip install --user --upgrade pip\n"
+            "    python3 -m pip install --user boto3 h5py numpy one-api iblatlas temporaldata\n"
+            "  fi"
         )
         python_runner = "python3"
         dataset_manifest_block = '  echo "=== skipping dataset manifest (minimal-data setup) ==="\n'
