@@ -423,6 +423,8 @@ failure modes before broadening.
 `docs/csh_zad_019_signal_audit.md` is the current canonical evidence ladder for
 the CSH_ZAD_019 claim. It combines the matched seed-0 screen, seeds 1-2
 confirmation, fine-region shuffle control, and shared-parent shuffle control.
+`docs/cross_animal_demo_brief.md` is the concise demo-facing version of the
+same evidence and limitations.
 
 Current claim:
 
@@ -455,5 +457,6 @@ is below the cap. With the current 5400-second guard and a conservative
 Latest status: a later short-alias cloud attempt wrote `d.md` using `t.sh` and
 output root `r`, but it also produced `Missing Sweep Summary`; treat it as
 another aborted/non-evidence run. Do not count `d.md` toward the evidence
-ladder. The next paid attempt should use only the canonical preflight command
-above and should not start if any unexpected RunPod pod already exists.
+ladder. Those short-alias root files have been removed from the branch. The
+next paid attempt should use only the canonical preflight command above and
+should not start if any unexpected RunPod pod already exists.
