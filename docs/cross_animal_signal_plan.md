@@ -265,3 +265,11 @@ candidate manifest into smaller persisted build shards, use a persistent
 RunPod volume/cache for ONE downloads, or run the data construction on cheaper
 CPU/storage before using GPU time for training. Do not launch another training
 sweep until the matched-region cache has been scored.
+
+Implemented next step: the IBL batch builder now supports deterministic shard
+selection, per-shard markdown build reports, and partial-success exits. The
+RunPod clone launcher can pass shard arguments through to the builder and
+include the build report in the pushed result document. A tiny 2-recording
+probe launch was attempted, but no pod was created because the checked A100
+datacenters had no compatible capacity. Cleanup after those create attempts
+left zero pods and zero network volumes.

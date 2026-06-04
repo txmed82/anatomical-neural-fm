@@ -72,3 +72,37 @@ project budget guard.
 Estimated combined spend was about $8.45, and cleanup left zero pods and zero
 network volumes. The practical next step is to split or persist the data build
 before retrying the region-family scoring gate.
+
+## Sharded Build Plan
+
+The batch builder now supports deterministic manifest shards:
+
+```bash
+uv run python scripts/build_ibl_brainset_batch.py \
+  --manifest manifests/ibl_bwm_region_matched_candidates.json \
+  --num-shards 8 \
+  --shard-index 0 \
+  --allow-partial \
+  --report runs/matched_region_shard00/build_report.md
+```
+
+The RunPod launcher can pass the same shard controls through
+`--build-extra-args`, and it copies `build_report.md` into the pushed result
+document. The next low-cost probe should build at most 1-2 recordings first,
+then scale to 8 shards of roughly 6 recordings each only after that path has
+produced an artifact.
+
+Probe launch attempted after adding shard support:
+
+```bash
+uv run python scripts/runpod_clone_a100.py \
+  --max-runtime-seconds 5400 \
+  --skip-verification \
+  --build-extra-args '--num-shards 24 --shard-index 0 --max-builds 2 --allow-partial' \
+  --sweep-script scripts/run_matched_region_audit_a100.sh
+```
+
+No pod was created: `CA-MTL-3` had no A100 instances available, `US-MO-1` is no
+longer accepted by the RunPod API schema, and `US-IL-1` had no matching A100
+capacity. Resource cleanup after these failed create attempts: zero pods and
+zero network volumes.
