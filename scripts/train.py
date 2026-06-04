@@ -84,6 +84,9 @@ def parse_args():
     p.add_argument("--region-granularity", default="fine", choices=["fine", "parent", "grandparent"],
                    help="Granularity for region embeddings and region filtering. Cell-type priors "
                         "still use original fine acronyms with their existing ancestor fallback.")
+    p.add_argument("--region-label-control", default="none", choices=["none", "shuffle"],
+                   help="'shuffle' permutes region labels across unit tokens after vocab build, "
+                        "preserving the marginal region distribution but breaking anatomy-to-unit identity.")
     # Model
     p.add_argument("--dim", type=int, default=64)
     p.add_argument("--depth", type=int, default=2)
@@ -239,6 +242,23 @@ def build_vocab(ds: Dataset, region_granularity: str = "fine", recording_ids: li
         "waveform_features": waveform_features,
         "subject_by_rid": subject_by_rid,
     }
+
+
+def apply_region_label_control(vocab: dict, control: str, seed: int) -> dict:
+    if control == "none":
+        return vocab
+    if control != "shuffle":
+        raise ValueError(f"unknown region label control {control!r}")
+    rng = np.random.default_rng(seed + 17_003)
+    shuffled = dict(vocab)
+    region_idx = np.asarray(vocab["region_idx_per_unit"], dtype=np.int64).copy()
+    region_acronyms = np.asarray(vocab["region_acronyms"]).copy()
+    cell_type_acronyms = np.asarray(vocab["cell_type_region_acronyms"]).copy()
+    perm = rng.permutation(len(region_idx))
+    shuffled["region_idx_per_unit"] = region_idx[perm]
+    shuffled["region_acronyms"] = region_acronyms[perm]
+    shuffled["cell_type_region_acronyms"] = cell_type_acronyms[perm]
+    return shuffled
 
 
 def build_model(vocab, args, n_cell_types: int):
@@ -557,6 +577,7 @@ def main():
     ds = Dataset(dataset_dir=args.data_dir, keep_files_open=True)
     selected_recording_ids = select_recording_ids(ds, args.manifest, args.data_dir)
     vocab = build_vocab(ds, args.region_granularity, selected_recording_ids)
+    vocab = apply_region_label_control(vocab, args.region_label_control, args.seed)
 
     if args.split_mode == "animal":
         animal_split = split_recordings_by_subject(vocab["subject_by_rid"], args.holdout)
@@ -603,6 +624,7 @@ def main():
          **split_info,
          **region_filter_info,
          "region_granularity": args.region_granularity,
+         "region_label_control": args.region_label_control,
          "target_mode": args.target_mode,
          "n_train_trials": len(train_trials),
          "n_eval_trials": len(eval_trials),

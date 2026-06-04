@@ -3,6 +3,7 @@ from __future__ import annotations
 import numpy as np
 
 from scripts.train import (
+    apply_region_label_control,
     build_inputs_for_window,
     build_trial_samples,
     manifest_recording_ids,
@@ -46,6 +47,23 @@ def test_select_recording_ids_filters_to_manifest_order(tmp_path) -> None:
     ds = Obj(recording_ids=["extra", "eid-a_probe00", "eid-b_probe01"])
 
     assert select_recording_ids(ds, manifest, tmp_path) == ["eid-b_probe01", "eid-a_probe00"]
+
+
+def test_region_label_shuffle_preserves_distribution_but_changes_assignments() -> None:
+    vocab = {
+        "region_idx_per_unit": np.arange(20, dtype=np.int64),
+        "region_acronyms": np.array([f"R{i}" for i in range(20)]),
+        "cell_type_region_acronyms": np.array([f"F{i}" for i in range(20)]),
+        "other": object(),
+    }
+
+    shuffled = apply_region_label_control(vocab, "shuffle", seed=3)
+
+    assert shuffled["other"] is vocab["other"]
+    assert sorted(shuffled["region_idx_per_unit"].tolist()) == list(range(20))
+    assert sorted(shuffled["region_acronyms"].tolist()) == sorted(f"R{i}" for i in range(20))
+    assert sorted(shuffled["cell_type_region_acronyms"].tolist()) == sorted(f"F{i}" for i in range(20))
+    assert shuffled["region_idx_per_unit"].tolist() != vocab["region_idx_per_unit"].tolist()
 
 
 def test_build_trial_samples_choice_skips_nogo_and_nan_stim() -> None:
