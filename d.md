@@ -1,6 +1,6 @@
 # Cloud Phase 3-5 Results
 
-Date: 2026-06-04T22:42:11Z
+Date: 2026-06-04T22:43:55Z
 
 RunPod target: A100 pilot.
 
@@ -18,7 +18,7 @@ Configuration:
 - skip cell-type priors: True
 - skip sweep: False
 - startup smoke only: False
-- max runtime seconds: 5400
+- max runtime seconds: 7200
 - output root: `r`
 
 ## Missing Sweep Summary

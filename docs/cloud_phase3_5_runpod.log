@@ -3,24 +3,24 @@ Get:2 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64
 Get:3 http://archive.ubuntu.com/ubuntu jammy InRelease [270 kB]
 Get:4 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  Packages [2705 kB]
 Get:5 http://security.ubuntu.com/ubuntu jammy-security/multiverse amd64 Packages [77.8 kB]
-Get:6 http://security.ubuntu.com/ubuntu jammy-security/main amd64 Packages [4005 kB]
-Get:7 http://security.ubuntu.com/ubuntu jammy-security/universe amd64 Packages [1300 kB]
-Get:8 http://security.ubuntu.com/ubuntu jammy-security/restricted amd64 Packages [7183 kB]
-Get:9 http://archive.ubuntu.com/ubuntu jammy-updates InRelease [128 kB]
-Get:10 http://archive.ubuntu.com/ubuntu jammy-backports InRelease [127 kB]
-Get:11 http://archive.ubuntu.com/ubuntu jammy/restricted amd64 Packages [164 kB]
-Get:12 http://archive.ubuntu.com/ubuntu jammy/main amd64 Packages [1792 kB]
-Get:13 https://ppa.launchpadcontent.net/deadsnakes/ppa/ubuntu jammy InRelease [18.1 kB]
-Get:14 http://archive.ubuntu.com/ubuntu jammy/multiverse amd64 Packages [266 kB]
-Get:15 http://archive.ubuntu.com/ubuntu jammy/universe amd64 Packages [17.5 MB]
-Get:16 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 Packages [4344 kB]
-Get:17 http://archive.ubuntu.com/ubuntu jammy-updates/restricted amd64 Packages [7451 kB]
-Get:18 http://archive.ubuntu.com/ubuntu jammy-updates/multiverse amd64 Packages [86.4 kB]
-Get:19 http://archive.ubuntu.com/ubuntu jammy-updates/universe amd64 Packages [1607 kB]
-Get:20 http://archive.ubuntu.com/ubuntu jammy-backports/main amd64 Packages [82.8 kB]
+Get:6 http://security.ubuntu.com/ubuntu jammy-security/universe amd64 Packages [1300 kB]
+Get:7 http://security.ubuntu.com/ubuntu jammy-security/restricted amd64 Packages [7183 kB]
+Get:8 https://ppa.launchpadcontent.net/deadsnakes/ppa/ubuntu jammy InRelease [18.1 kB]
+Get:9 http://security.ubuntu.com/ubuntu jammy-security/main amd64 Packages [4005 kB]
+Get:10 http://archive.ubuntu.com/ubuntu jammy-updates InRelease [128 kB]
+Get:11 https://ppa.launchpadcontent.net/deadsnakes/ppa/ubuntu jammy/main amd64 Packages [38.9 kB]
+Get:12 http://archive.ubuntu.com/ubuntu jammy-backports InRelease [127 kB]
+Get:13 http://archive.ubuntu.com/ubuntu jammy/multiverse amd64 Packages [266 kB]
+Get:14 http://archive.ubuntu.com/ubuntu jammy/universe amd64 Packages [17.5 MB]
+Get:15 http://archive.ubuntu.com/ubuntu jammy/main amd64 Packages [1792 kB]
+Get:16 http://archive.ubuntu.com/ubuntu jammy/restricted amd64 Packages [164 kB]
+Get:17 http://archive.ubuntu.com/ubuntu jammy-updates/universe amd64 Packages [1607 kB]
+Get:18 http://archive.ubuntu.com/ubuntu jammy-updates/restricted amd64 Packages [7451 kB]
+Get:19 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 Packages [4344 kB]
+Get:20 http://archive.ubuntu.com/ubuntu jammy-updates/multiverse amd64 Packages [86.4 kB]
 Get:21 http://archive.ubuntu.com/ubuntu jammy-backports/universe amd64 Packages [35.6 kB]
-Get:22 https://ppa.launchpadcontent.net/deadsnakes/ppa/ubuntu jammy/main amd64 Packages [38.9 kB]
-Fetched 49.3 MB in 2s (23.3 MB/s)
+Get:22 http://archive.ubuntu.com/ubuntu jammy-backports/main amd64 Packages [82.8 kB]
+Fetched 49.3 MB in 2s (20.8 MB/s)
 Reading package lists...
 Reading package lists...
 Building dependency tree...
@@ -48,7 +48,7 @@ Get:6 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 python3-setuptoo
 Get:7 http://archive.ubuntu.com/ubuntu jammy-updates/universe amd64 python3-wheel all 0.37.1-2ubuntu0.22.04.1 [32.0 kB]
 Get:8 http://archive.ubuntu.com/ubuntu jammy-updates/universe amd64 python3-pip all 22.0.2+dfsg-1ubuntu0.7 [1306 kB]
 debconf: delaying package configuration, since apt-utils is not installed
-Fetched 5631 kB in 0s (15.6 MB/s)
+Fetched 5631 kB in 0s (26.5 MB/s)
 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 24135 files and directories currently installed.)
 Preparing to unpack .../0-ca-certificates_20240203~22.04.1_all.deb ...
 Unpacking ca-certificates (20240203~22.04.1) over (20230311ubuntu0.22.04.1) ...
@@ -98,64 +98,179 @@ Using CPython 3.11.10 interpreter at: /usr/bin/python3.11
 Creating virtual environment at: .venv
 Resolved 134 packages in 1ms
    Updating https://github.com/AllenInstitute/abc_atlas_access (HEAD)
-Downloading pygments (1.2MiB)
-Downloading pillow (6.8MiB)
-Downloading pydantic-core (2.0MiB)
-Downloading setuptools (1.0MiB)
-Downloading llvmlite (53.7MiB)
-Downloading numcodecs (8.7MiB)
 Downloading networkx (2.0MiB)
-Downloading pandas (12.2MiB)
-Downloading pyarrow (46.6MiB)
-Downloading botocore (14.3MiB)
-Downloading triton (199.8MiB)
-Downloading nvidia-nccl-cu12 (179.9MiB)
-Downloading h5py (4.8MiB)
-Downloading torch (864.5MiB)
-Downloading kiwisolver (1.4MiB)
-Downloading nvidia-cuda-cupti-cu12 (13.2MiB)
-Downloading nvidia-cudnn-cu12 (634.0MiB)
-Downloading fonttools (4.8MiB)
-Downloading nvidia-cublas-cu12 (346.6MiB)
-Downloading numba (3.6MiB)
-Downloading nvidia-curand-cu12 (53.7MiB)
-Downloading ruff (10.9MiB)
-Downloading wandb (26.0MiB)
-Downloading nvidia-cusparse-cu12 (197.8MiB)
+Downloading pygments (1.2MiB)
+Downloading setuptools (1.0MiB)
 Downloading matplotlib (8.4MiB)
-Downloading sympy (5.9MiB)
-Downloading numpy (16.1MiB)
-Downloading polars-runtime-32 (53.6MiB)
+Downloading pyarrow (46.6MiB)
+Downloading nvidia-cusparse-cu12 (197.8MiB)
+Downloading nvidia-curand-cu12 (53.7MiB)
 Downloading nvidia-nvjitlink-cu12 (20.1MiB)
-Downloading nvidia-cufft-cu12 (201.7MiB)
+Downloading nvidia-cudnn-cu12 (634.0MiB)
+Downloading pandas (12.2MiB)
+Downloading fonttools (4.8MiB)
+Downloading pillow (6.8MiB)
 Downloading scipy (33.7MiB)
-Downloading nvidia-cusolver-cu12 (122.0MiB)
+Downloading ruff (10.9MiB)
+Downloading numba (3.6MiB)
+Downloading nvidia-nccl-cu12 (179.9MiB)
+Downloading llvmlite (53.7MiB)
+Downloading botocore (14.3MiB)
+Downloading pydantic-core (2.0MiB)
+Downloading numcodecs (8.7MiB)
+Downloading sympy (5.9MiB)
+Downloading kiwisolver (1.4MiB)
+Downloading nvidia-cufft-cu12 (201.7MiB)
+Downloading polars-runtime-32 (53.6MiB)
 Downloading nvidia-cuda-nvrtc-cu12 (23.5MiB)
+Downloading nvidia-cusolver-cu12 (122.0MiB)
+Downloading triton (199.8MiB)
+Downloading wandb (26.0MiB)
+Downloading torch (864.5MiB)
+Downloading numpy (16.1MiB)
+Downloading nvidia-cublas-cu12 (346.6MiB)
+Downloading h5py (4.8MiB)
+Downloading nvidia-cuda-cupti-cu12 (13.2MiB)
  Downloaded kiwisolver
- Downloaded pydantic-core
    Building antlr4-python3-runtime==4.9.3
+ Downloaded pydantic-core
  Downloaded pygments
  Downloaded setuptools
  Downloaded networkx
- Downloaded numba
  Downloaded fonttools
  Downloaded h5py
+ Downloaded numba
+      Built antlr4-python3-runtime==4.9.3
  Downloaded pillow
- Downloaded sympy
  Downloaded numcodecs
  Downloaded matplotlib
  Downloaded ruff
+ Downloaded sympy
  Downloaded nvidia-cuda-cupti-cu12
  Downloaded numpy
  Downloaded nvidia-nvjitlink-cu12
  Downloaded nvidia-cuda-nvrtc-cu12
  Downloaded botocore
  Downloaded scipy
- Downloaded pandas
-      Built antlr4-python3-runtime==4.9.3
  Downloaded polars-runtime-32
  Downloaded nvidia-curand-cu12
  Downloaded llvmlite
- Downloaded wandb
- Downloaded pyarrow
+ Downloaded pandas
  Downloaded nvidia-cusolver-cu12
+ Downloaded wandb
+ Downloaded nvidia-nccl-cu12
+ Downloaded pyarrow
+ Downloaded nvidia-cusparse-cu12
+ Downloaded triton
+ Downloaded nvidia-cufft-cu12
+ Downloaded nvidia-cublas-cu12
+    Updated https://github.com/AllenInstitute/abc_atlas_access (f7cc551f9e327cd1c413ebc54c006bf20ffe0b27)
+   Building abc-atlas-access @ git+https://github.com/AllenInstitute/abc_atlas_access@f7cc551f9e327cd1c413ebc54c006bf20ffe0b27
+      Built abc-atlas-access @ git+https://github.com/AllenInstitute/abc_atlas_access@f7cc551f9e327cd1c413ebc54c006bf20ffe0b27
+ Downloaded nvidia-cudnn-cu12
+ Downloaded torch
+Prepared 100 packages in 35.38s
+Installed 100 packages in 3.02s
+ + abc-atlas-access==1.3.2 (from git+https://github.com/AllenInstitute/abc_atlas_access@f7cc551f9e327cd1c413ebc54c006bf20ffe0b27)
+ + anndata==0.12.14
+ + annotated-types==0.7.0
+ + antlr4-python3-runtime==4.9.3
+ + array-api-compat==1.14.0
+ + boto3==1.43.8
+ + botocore==1.43.8
+ + certifi==2026.4.22
+ + charset-normalizer==3.4.7
+ + click==8.3.3
+ + colorlog==6.10.1
+ + contourpy==1.3.3
+ + cycler==0.12.1
+ + donfig==0.8.1.post1
+ + einops==0.6.1
+ + filelock==3.29.0
+ + fonttools==4.63.0
+ + fsspec==2026.4.0
+ + gitdb==4.0.12
+ + gitpython==3.1.50
+ + google-crc32c==1.8.0
+ + h5py==3.16.0
+ + hydra-core==1.3.2
+ + iblatlas==1.0.0
+ + iblutil==1.20.0
+ + idna==3.15
+ + jaxtyping==0.3.9
+ + jinja2==3.1.6
+ + jmespath==1.1.0
+ + kiwisolver==1.5.0
+ + legacy-api-wrap==1.5
+ + lightning-utilities==0.15.3
+ + llvmlite==0.47.0
+ + markdown-it-py==4.2.0
+ + markupsafe==3.0.3
+ + matplotlib==3.10.9
+ + mdurl==0.1.2
+ + mpmath==1.3.0
+ + natsort==8.4.0
+ + networkx==3.6.1
+ + numba==0.65.1
+ + numcodecs==0.16.5
+ + numpy==2.4.4
+ + nvidia-cublas-cu12==12.4.5.8
+ + nvidia-cuda-cupti-cu12==12.4.127
+ + nvidia-cuda-nvrtc-cu12==12.4.127
+ + nvidia-cuda-runtime-cu12==12.4.127
+ + nvidia-cudnn-cu12==9.1.0.70
+ + nvidia-cufft-cu12==11.2.1.3
+ + nvidia-curand-cu12==10.3.5.147
+ + nvidia-cusolver-cu12==11.6.1.9
+ + nvidia-cusparse-cu12==12.3.1.170
+ + nvidia-nccl-cu12==2.21.5
+ + nvidia-nvjitlink-cu12==12.4.127
+ + nvidia-nvtx-cu12==12.4.127
+ + omegaconf==2.3.0
+ + one-api==3.4.1
+ + packaging==26.2
+ + pandas==2.3.3
+ + pillow==12.2.0
+ + platformdirs==4.9.6
+ + polars==1.40.1
+ + polars-runtime-32==1.40.1
+ + protobuf==7.34.1
+ + pyarrow==24.0.0
+ + pydantic==2.13.4
+ + pydantic-core==2.46.4
+ + pygments==2.20.0
+ + pynrrd==1.1.3
+ + pyparsing==3.3.2
+ + python-dateutil==2.9.0.post0
+ + pytz==2026.2
+ + pyyaml==6.0.3
+ + requests==2.34.2
+ + rich==15.0.0
+ + ruff==0.15.13
+ + s3transfer==0.17.0
+ + scipy==1.17.1
+ + scverse-misc==0.0.3
+ + sentry-sdk==2.60.0
+ + session-info2==0.4.1
+ + setuptools==81.0.0
+ + six==1.17.0
+ + smmap==5.0.3
+ + sympy==1.13.1
+ + temporaldata==0.1.4
+ + torch==2.5.1
+ + torch-brain==0.1.2
+ + torchmetrics==1.9.0
+ + torchtyping==0.1.5
+ + tqdm==4.67.3
+ + triton==3.1.0
+ + typeguard==2.13.3
+ + typing-extensions==4.15.0
+ + typing-inspection==0.4.2
+ + tzdata==2026.2
+ + urllib3==2.7.0
+ + wadler-lindig==0.1.7
+ + wandb==0.27.0
+ + zarr==3.1.6
+Downloading debugpy (3.0MiB)
+Downloading jedi (4.7MiB)
+ Downloaded debugpy
