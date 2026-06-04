@@ -35,3 +35,23 @@ def test_build_launch_command_targets_two_holdout_sweep() -> None:
     assert "--result-doc d.md" not in joined
     assert command[command.index("--output-root") + 1] == "runs/lso_two_holdout_shared_parent_shuffle"
     assert command[command.index("--result-doc") + 1] == "docs/lso_two_holdout_shared_parent_shuffle_results.md"
+
+
+def test_build_launch_command_can_run_dependency_diagnostic() -> None:
+    command = build_launch_command(
+        PreflightConfig(
+            max_runtime_seconds=900,
+            max_provision_seconds=1800,
+            dependency_diagnostic=True,
+        )
+    )
+    joined = shell_join(command)
+
+    assert "--dependency-diagnostic" in command
+    assert "--max-runtime-seconds 900" in joined
+    assert "--max-provision-seconds 1800" in joined
+    assert "--skip-cell-type-priors" in command
+    assert "--sweep-script scripts/run_lso_two_holdout_shared_parent_shuffle_a100.sh" in joined
+    assert "--output-root runs/runpod_dependency_diagnostic" in joined
+    assert "--result-doc docs/runpod_dependency_diagnostic.md" in joined
+    assert "--name-prefix anfm-depdiag" in joined

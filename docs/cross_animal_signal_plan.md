@@ -473,3 +473,10 @@ so it only preserved partial KS014 seed-0 evidence. Active pods returned to
 zero. Do not manually terminate future polled pods based only on those
 readiness fields; rely on the runtime guard unless cost or API state clearly
 violates the cap.
+
+Follow-up rerun: a clean relaunch self-terminated early and pushed another
+`Missing Sweep Summary` artifact. Its log reached dependency setup and S3 cache
+download, then stopped during HDF5 download before training. The launcher now
+has a body-level ERR trap and optional `--dependency-diagnostic` mode so the
+next paid step should first capture dependency/disk/CUDA diagnostics or a
+download-only cache check before retrying the full two-holdout sweep.

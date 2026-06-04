@@ -54,6 +54,7 @@ class ClonePilotConfig:
     skip_sweep: bool = False
     setup_mode: str = "project"
     startup_smoke_only: bool = False
+    dependency_diagnostic: bool = False
 
 
 def current_branch() -> str:
@@ -191,6 +192,35 @@ PY
         if config.startup_smoke_only
         else ""
     )
+    dependency_diagnostic_block = (
+        '  echo "=== dependency diagnostic ==="\n'
+        "  date -u\n"
+        "  pwd\n"
+        "  df -h . /workspace /tmp || true\n"
+        "  du -sh .venv 2>/dev/null || true\n"
+        "  command -v uv && uv --version\n"
+        "  uv run python - <<'PY'\n"
+        "import importlib.util\n"
+        "import platform\n"
+        "import shutil\n"
+        "\n"
+        "print('python', platform.python_version())\n"
+        "for name in ['torch', 'boto3', 'h5py', 'numpy', 'one', 'iblatlas', 'temporaldata']:\n"
+        "    spec = importlib.util.find_spec(name)\n"
+        "    print(f'importable {name}: {bool(spec)}')\n"
+        "if importlib.util.find_spec('torch'):\n"
+        "    import torch\n"
+        "    print('torch', torch.__version__)\n"
+        "    print('cuda_available', torch.cuda.is_available())\n"
+        "    print('cuda_device_count', torch.cuda.device_count())\n"
+        "print('disk_free_workspace', shutil.disk_usage('/workspace').free)\n"
+        "PY\n"
+        "  upload_log\n"
+        '  echo "=== dependency diagnostic complete ==="\n'
+        "  exit 0"
+        if config.dependency_diagnostic
+        else ""
+    )
     sweep_block = (
         '  echo "=== skipping phase 3-5 sweep ==="\n'
         if config.skip_sweep
@@ -240,6 +270,7 @@ Configuration:
 - skip cell-type priors: {config.skip_cell_type_priors}
 - skip sweep: {config.skip_sweep}
 - startup smoke only: {config.startup_smoke_only}
+- dependency diagnostic: {config.dependency_diagnostic}
 - max runtime seconds: {config.max_runtime_seconds}
 - output root: \`{config.output_root}\`
 
@@ -381,9 +412,12 @@ cat > /tmp/run_phase3_5_body.sh <<'RUNSCRIPT'
       {python_runner} scripts/sync_brainset_s3.py upload-log --local-path "$LOG_PATH" --key {log_key}{sync_args} || true
     fi
   }}
-  echo "=== syncing environment ==="
+  trap 'rc=$?; echo "=== body failed rc=$rc line=$LINENO cmd=$BASH_COMMAND ==="; upload_log || true; exit "$rc"' ERR
+  echo "=== dependency sync start ==="
   {dependency_sync_command}
+  echo "=== dependency sync complete ==="
   upload_log
+{dependency_diagnostic_block}
 {startup_smoke_block}
 {verification_block.rstrip()}
   upload_log
@@ -528,6 +562,8 @@ def parse_args() -> argparse.Namespace:
                    help="Dependency setup strategy. minimal-data avoids torch/project sync for cache builds.")
     p.add_argument("--startup-smoke-only", action="store_true",
                    help="Stop after dependency setup and first S3 log upload.")
+    p.add_argument("--dependency-diagnostic", action="store_true",
+                   help="Stop after dependency setup and log dependency/import diagnostics.")
     p.add_argument("--dry-run", action="store_true")
     p.add_argument("--poll", action="store_true")
     p.add_argument("--max-provision-seconds", type=int, default=600,
@@ -567,6 +603,7 @@ def main() -> int:
         skip_sweep=args.skip_sweep,
         setup_mode=args.setup_mode,
         startup_smoke_only=args.startup_smoke_only,
+        dependency_diagnostic=args.dependency_diagnostic,
     )
     env = load_dotenv(REPO_ROOT / ".env")
     runpod_key = require_env(env, "RUNPOD_API_KEY")

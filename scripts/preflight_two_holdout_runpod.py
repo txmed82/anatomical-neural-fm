@@ -29,6 +29,7 @@ class PreflightConfig:
     sweep_script: str = "scripts/run_lso_two_holdout_shared_parent_shuffle_a100.sh"
     output_root: str = "runs/lso_two_holdout_shared_parent_shuffle"
     result_doc: str = "docs/lso_two_holdout_shared_parent_shuffle_results.md"
+    dependency_diagnostic: bool = False
 
 
 def estimate_cost(
@@ -41,7 +42,14 @@ def estimate_cost(
 
 
 def build_launch_command(config: PreflightConfig) -> list[str]:
-    return [
+    output_root = config.output_root
+    result_doc = config.result_doc
+    name_prefix = config.name_prefix
+    if config.dependency_diagnostic:
+        output_root = "runs/runpod_dependency_diagnostic"
+        result_doc = "docs/runpod_dependency_diagnostic.md"
+        name_prefix = "anfm-depdiag"
+    command = [
         "uv", "run", "python", "scripts/runpod_clone_a100.py",
         "--poll",
         "--datacenter", config.datacenter,
@@ -58,13 +66,16 @@ def build_launch_command(config: PreflightConfig) -> list[str]:
         "--manifest-path", config.manifest_path,
         "--seeds", "0 1 2",
         "--sweep-script", config.sweep_script,
-        "--output-root", config.output_root,
-        "--result-doc", config.result_doc,
+        "--output-root", output_root,
+        "--result-doc", result_doc,
         "--s3-bucket", config.s3_bucket,
         "--s3-prefix", "brainsets/ibl_bwm",
         "--s3-datacenter", config.s3_datacenter,
-        "--name-prefix", config.name_prefix,
+        "--name-prefix", name_prefix,
     ]
+    if config.dependency_diagnostic:
+        command.append("--dependency-diagnostic")
+    return command
 
 
 def shell_join(argv: list[str]) -> str:
@@ -101,6 +112,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--s3-bucket", default="rppfvo6ifn")
     parser.add_argument("--s3-datacenter", default="US-IL-1")
     parser.add_argument("--name-prefix", default="anfm-two-parent-compact")
+    parser.add_argument("--dependency-diagnostic", action="store_true")
     return parser.parse_args()
 
 
@@ -116,6 +128,7 @@ def main() -> int:
         s3_bucket=args.s3_bucket,
         s3_datacenter=args.s3_datacenter,
         name_prefix=args.name_prefix,
+        dependency_diagnostic=args.dependency_diagnostic,
     )
 
     branch, git_ready = git_branch_status()
@@ -144,6 +157,7 @@ def main() -> int:
     print(f"sweep_script: {config.sweep_script}")
     print(f"output_root: {config.output_root}")
     print(f"result_doc: {config.result_doc}")
+    print(f"dependency_diagnostic: {config.dependency_diagnostic}")
     print("")
     print("Launch command:")
     print(shell_join(command))

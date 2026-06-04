@@ -230,6 +230,27 @@ def test_start_script_can_run_startup_smoke_only() -> None:
     assert "scripts/build_ibl_brainset_batch.py" not in script.split("=== startup smoke complete ===", 1)[0]
 
 
+def test_start_script_can_run_dependency_diagnostic() -> None:
+    cfg = replace(
+        config(),
+        skip_verification=True,
+        skip_cell_type_priors=True,
+        s3_bucket="brainset-cache",
+        dependency_diagnostic=True,
+    )
+
+    script = build_start_script(cfg)
+
+    assert "- dependency diagnostic: True" in script
+    assert "=== dependency sync start ===" in script
+    assert "=== dependency sync complete ===" in script
+    assert "=== dependency diagnostic ===" in script
+    assert "cuda_available" in script
+    assert "=== dependency diagnostic complete ===" in script
+    assert "scripts/build_ibl_brainset_batch.py" not in script.split("=== dependency diagnostic complete ===", 1)[0]
+    assert "=== body failed rc=$rc line=$LINENO cmd=$BASH_COMMAND ===" in script
+
+
 def test_start_script_can_pass_build_shard_args() -> None:
     cfg = replace(
         config(),
