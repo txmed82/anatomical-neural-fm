@@ -37,6 +37,23 @@ if [ -n "$MANIFEST" ]; then
 fi
 
 if [ -z "$SUBJECTS" ]; then
+  if [ -n "$MANIFEST" ]; then
+    SUBJECTS="$(MANIFEST="$MANIFEST" uv run python - <<'PY'
+import json
+import os
+from pathlib import Path
+
+manifest = Path(os.environ["MANIFEST"])
+payload = json.loads(manifest.read_text())
+rows = payload["recordings"] if isinstance(payload, dict) else payload
+subjects = sorted({str(row["subject_id"]) for row in rows if row.get("subject_id")})
+print(" ".join(subjects))
+PY
+)"
+  fi
+fi
+
+if [ -z "$SUBJECTS" ]; then
   SUBJECTS="$(MANIFEST="$MANIFEST" uv run python - <<'PY'
 import os
 from pathlib import Path
