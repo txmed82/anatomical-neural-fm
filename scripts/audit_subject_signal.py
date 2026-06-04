@@ -162,6 +162,32 @@ def counter_keys(counter: Counter) -> str:
     return ", ".join(f"{k}:{v}" for k, v in sorted(counter.items()))
 
 
+def region_support(local_subjects: dict[str, dict], subject: str) -> dict | None:
+    row = local_subjects.get(subject)
+    if row is None:
+        return None
+    train_regions = Counter()
+    for other_subject, other_row in local_subjects.items():
+        if other_subject != subject:
+            train_regions.update(other_row["regions"])
+    subject_regions = Counter(row["regions"])
+    if not subject_regions:
+        return None
+    supported_units = sum(
+        count for region, count in subject_regions.items()
+        if train_regions.get(region, 0) > 0
+    )
+    top_regions = subject_regions.most_common(8)
+    top_supported = sum(1 for region, _count in top_regions if train_regions.get(region, 0) > 0)
+    missing_top = [region for region, _count in top_regions if train_regions.get(region, 0) == 0]
+    return {
+        "unit_support_frac": supported_units / sum(subject_regions.values()),
+        "top_supported": top_supported,
+        "top_total": len(top_regions),
+        "missing_top": missing_top,
+    }
+
+
 def write_report(
     *,
     manifest_path: Path,
@@ -181,6 +207,11 @@ def write_report(
     subjects = sorted(manifest_subjects)
     candidate_subjects = sorted({r.holdout for r in results})
     local_only = sorted(set(local_subjects) - set(manifest_subjects))
+    full_local_coverage = (
+        len(local_subjects) >= len(subjects)
+        and not local_only
+        and all(subject in local_subjects for subject in subjects)
+    )
 
     lines = [
         "# Subject-Conditioned Signal Audit",
@@ -277,21 +308,73 @@ def write_report(
                 f"{len(row['regions'])} | {top_regions or 'n/a'} |"
             )
 
+    if candidate_subjects and local_subjects:
+        lines += [
+            "",
+            "## Held-Out Region Support",
+            "",
+            "For each candidate subject, support is computed against all other cached subjects, matching the leave-subject-out training split.",
+            "",
+            "| subject | heldout_region_units_supported_by_train | top8_regions_seen_in_train | top8_regions_missing_from_train |",
+            "|---|---:|---:|---|",
+        ]
+        for subject in candidate_subjects:
+            support = region_support(local_subjects, subject)
+            if support is None:
+                lines.append(f"| {subject} | n/a | n/a | n/a |")
+                continue
+            lines.append(
+                "| "
+                f"{subject} | {support['unit_support_frac']:.1%} | "
+                f"{support['top_supported']}/{support['top_total']} | "
+                f"{', '.join(support['missing_top']) or 'none'} |"
+            )
+
     lines += [
         "",
         "## Interpretation",
         "",
-        (
+    ]
+    if full_local_coverage:
+        dy_support = region_support(local_subjects, "DY_008")
+        dy_support_text = ""
+        if dy_support is not None:
+            dy_support_text = (
+                f" Its held-out units have {dy_support['unit_support_frac']:.1%} "
+                "region support in the other subjects, and "
+                f"{dy_support['top_supported']}/{dy_support['top_total']} top regions "
+                "are seen in training."
+            )
+        lines.append(
+            "`DY_008` remains the only confirmed subject where both `pure_anatomy` "
+            "and `region_only` beat the shared null by more than +0.03 across all "
+            "three seeds. The full-cache audit makes a pure class-balance explanation "
+            "less likely: `DY_008` has 405 left vs 376 right valid stimulus-side "
+            f"trials.{dy_support_text}"
+        )
+        lines += [
+            "",
+            (
+                "Next action: run a region-balanced LSO rerun focused on `DY_008` "
+                "plus matched controls. If the lift survives matched region support, "
+                "it becomes a stronger candidate transfer demo; if it disappears, "
+                "treat the current lift as coverage-driven."
+            ),
+            "",
+        ]
+    else:
+        lines.append(
             "`DY_008` remains the only confirmed subject where both `pure_anatomy` "
             "and `region_only` beat the shared null by more than +0.03 across all "
             "three seeds. The current local cache is insufficient to prove whether "
             "that is due to region coverage, trial balance, or a real transferable "
             "anatomical factor."
-        ),
-        "",
-        "Next action: rerun this audit on the full RunPod-built 20-recording dataset, then launch only a region-balanced LSO rerun if `DY_008` has comparable training/eval region support.",
-        "",
-    ]
+        )
+        lines += [
+            "",
+            "Next action: rerun this audit on the full RunPod-built 20-recording dataset, then launch only a region-balanced LSO rerun if `DY_008` has comparable training/eval region support.",
+            "",
+        ]
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_text("\n".join(lines))
 

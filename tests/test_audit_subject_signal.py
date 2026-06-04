@@ -5,6 +5,7 @@ from scripts.audit_subject_signal import (
     best_result_by_subject,
     display_path,
     parse_lso_results,
+    region_support,
     summarize_manifest_subjects,
 )
 
@@ -70,3 +71,19 @@ def test_best_result_by_subject_uses_largest_delta():
 
 def test_display_path_accepts_relative_paths():
     assert display_path(Path("manifests/ibl_bwm_phase4.json")) == "manifests/ibl_bwm_phase4.json"
+
+
+def test_region_support_compares_subject_against_other_subjects():
+    local_subjects = {
+        "heldout": {"regions": {"A": 3, "B": 1}},
+        "train1": {"regions": {"A": 10}},
+        "train2": {"regions": {"C": 5}},
+    }
+
+    support = region_support(local_subjects, "heldout")
+
+    assert support is not None
+    assert support["unit_support_frac"] == 0.75
+    assert support["top_supported"] == 1
+    assert support["top_total"] == 2
+    assert support["missing_top"] == ["B"]
