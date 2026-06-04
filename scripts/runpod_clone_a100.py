@@ -283,7 +283,8 @@ EOF
       cat {output_root}/cross_summary.md >> {result_doc} 2>/dev/null || true
     fi
 
-    git add {result_doc} docs/cloud_phase3_5_runpod.log manifests/ibl_bwm.local.json 2>/dev/null || true
+    git add {result_doc} docs/cloud_phase3_5_runpod.log 2>/dev/null || true
+    git add manifests/ibl_bwm.local.json 2>/dev/null || true
     git commit -m "Add cloud phase 3-5 pilot results" || true
     git push origin HEAD:{branch_raw} || true
   fi
