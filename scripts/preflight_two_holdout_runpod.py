@@ -19,8 +19,9 @@ class PreflightConfig:
     max_runtime_seconds: int = 5400
     max_provision_seconds: int = 7200
     max_dollars: float = 10.0
-    assumed_cost_per_hr: float = 1.50
+    assumed_cost_per_hr: float = 3.00
     datacenter: str = "ANY"
+    gpu_type: str = "NVIDIA A100 80GB PCIe,NVIDIA A100-SXM4-80GB"
     s3_bucket: str = "rppfvo6ifn"
     s3_datacenter: str = "US-IL-1"
     name_prefix: str = "anfm-two-parent-compact"
@@ -44,6 +45,7 @@ def build_launch_command(config: PreflightConfig) -> list[str]:
         "uv", "run", "python", "scripts/runpod_clone_a100.py",
         "--poll",
         "--datacenter", config.datacenter,
+        "--gpu-type", config.gpu_type,
         "--container-disk-gb", "80",
         "--max-runtime-seconds", str(config.max_runtime_seconds),
         "--max-provision-seconds", str(config.max_provision_seconds),
@@ -93,8 +95,9 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--max-dollars", type=float, default=10.0)
     parser.add_argument("--max-runtime-seconds", type=int, default=5400)
     parser.add_argument("--max-provision-seconds", type=int, default=7200)
-    parser.add_argument("--assumed-cost-per-hr", type=float, default=1.50)
+    parser.add_argument("--assumed-cost-per-hr", type=float, default=3.00)
     parser.add_argument("--datacenter", default="ANY")
+    parser.add_argument("--gpu-type", default="NVIDIA A100 80GB PCIe,NVIDIA A100-SXM4-80GB")
     parser.add_argument("--s3-bucket", default="rppfvo6ifn")
     parser.add_argument("--s3-datacenter", default="US-IL-1")
     parser.add_argument("--name-prefix", default="anfm-two-parent-compact")
@@ -109,6 +112,7 @@ def main() -> int:
         max_dollars=args.max_dollars,
         assumed_cost_per_hr=args.assumed_cost_per_hr,
         datacenter=args.datacenter,
+        gpu_type=args.gpu_type,
         s3_bucket=args.s3_bucket,
         s3_datacenter=args.s3_datacenter,
         name_prefix=args.name_prefix,
@@ -135,6 +139,7 @@ def main() -> int:
     print(f"max_dollars: ${config.max_dollars:.2f}")
     print(f"max_runtime_seconds: {config.max_runtime_seconds}")
     print(f"max_provision_seconds: {config.max_provision_seconds}")
+    print(f"gpu_type: {config.gpu_type}")
     print(f"manifest_path: {config.manifest_path}")
     print(f"sweep_script: {config.sweep_script}")
     print(f"output_root: {config.output_root}")

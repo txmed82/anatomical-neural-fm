@@ -19,6 +19,7 @@ def test_build_launch_command_targets_two_holdout_sweep() -> None:
     joined = shell_join(command)
 
     assert "--poll" in command
+    assert "--gpu-type 'NVIDIA A100 80GB PCIe,NVIDIA A100-SXM4-80GB'" in joined
     assert "--max-runtime-seconds 5400" in joined
     assert "--max-provision-seconds 7200" in joined
     assert "--max-steps 300" in joined

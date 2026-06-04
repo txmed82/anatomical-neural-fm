@@ -451,9 +451,10 @@ uv run python scripts/preflight_two_holdout_runpod.py --max-dollars 10
 
 The preflight does not rent a pod. It verifies that the Git branch is clean and
 synced, active RunPod pods are zero, and the estimated one-pod worst-case cost
-is below the cap. With the current 5400-second runtime guard, 7200-second
-provisioning guard, and a conservative `$1.50/hr` assumption, the estimated
-maximum is `$3.00`.
+is below the cap. The canonical launch now tries both `NVIDIA A100 80GB PCIe`
+and `NVIDIA A100-SXM4-80GB` by availability. With the current 5400-second
+runtime guard, 7200-second provisioning guard, and a conservative `$3.00/hr`
+assumption, the estimated maximum is `$6.00`.
 
 Latest status: a later short-alias cloud attempt wrote `d.md` using `t.sh` and
 output root `r`, but it also produced `Missing Sweep Summary`; treat it as
@@ -461,3 +462,7 @@ another aborted/non-evidence run. Do not count `d.md` toward the evidence
 ladder. Those short-alias root files have been removed from the branch. The
 next paid attempt should use only the canonical preflight command above and
 should not start if any unexpected RunPod pod already exists.
+
+Capacity note: an `ANY` datacenter create attempt with only
+`NVIDIA A100 80GB PCIe` failed before allocation because no matching instances
+were available. No pod was created and active pods remained zero.
