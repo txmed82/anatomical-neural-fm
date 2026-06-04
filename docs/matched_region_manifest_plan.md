@@ -125,6 +125,9 @@ uv run python scripts/runpod_clone_a100.py \
   --s3-datacenter CA-MTL-3
 ```
 
+`CA-MTL-3` is included in the repo's RunPod S3 endpoint map, so the command can
+derive `https://s3api-ca-mtl-3.runpod.io/` without spelling out the endpoint.
+
 Only after that command produces both a pushed build report and uploaded HDF5
 objects should we launch the remaining shards. The full region-family scoring
 gate should be run after the cache contains all 48 candidate HDF5 files.

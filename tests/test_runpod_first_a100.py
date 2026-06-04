@@ -12,6 +12,7 @@ from scripts.runpod_first_a100 import (
 
 def test_s3_endpoint_known_datacenter() -> None:
     assert s3_endpoint("US-MO-1") == "https://s3api-us-mo-1.runpod.io/"
+    assert s3_endpoint("CA-MTL-3") == "https://s3api-ca-mtl-3.runpod.io/"
 
 
 def test_s3_endpoint_rejects_unknown_datacenter() -> None:
