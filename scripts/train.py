@@ -638,16 +638,20 @@ def main():
         log({"event": "fatal", "msg": "no trials available in train or eval split"})
         return 1
 
-    priors_df = pd.read_parquet(args.priors_path)
-    taxonomy = pd.read_parquet(args.taxonomy_path)["subclass"].tolist()
-    n_cell_types = len(taxonomy)
-    model, flags = build_model(vocab, args, n_cell_types)
+    flags = arm_flags(args.arm)
+    priors_df = None
+    taxonomy: list[str] = []
+    if flags["use_cell_type_emb"]:
+        priors_df = pd.read_parquet(args.priors_path)
+        taxonomy = pd.read_parquet(args.taxonomy_path)["subclass"].tolist()
+    model, flags = build_model(vocab, args, len(taxonomy))
     model.unit_emb.initialize_vocab(vocab["all_unit_ids"])
     model.session_emb.initialize_vocab(
         build_session_vocab(vocab["session_ids"], args.output_query_mode)
     )
     model.register_unit_anatomy(vocab["all_unit_ids"], vocab["region_idx_per_unit"])
     if flags["use_cell_type_emb"]:
+        assert priors_df is not None
         model.register_unit_cell_types(
             vocab["all_unit_ids"], vocab["cell_type_region_acronyms"], priors_df, taxonomy,
         )
