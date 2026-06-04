@@ -147,6 +147,16 @@ EOF
 
 EOF
     fi
+    if [ -f {output_root}/cache_audit.md ]; then
+      cat >> {result_doc} <<EOF
+## Cache Audit
+
+EOF
+      cat {output_root}/cache_audit.md >> {result_doc} 2>/dev/null || true
+      cat >> {result_doc} <<EOF
+
+EOF
+    fi
     if [ -f {output_root}/summary.md ]; then
       cat >> {result_doc} <<EOF
 ## Summary
@@ -231,6 +241,8 @@ cat > /tmp/run_phase3_5_body.sh <<'RUNSCRIPT'
   if [ -n "{config.s3_bucket}" ]; then
     echo "=== uploading built BrainSet data ==="
     uv run python scripts/sync_brainset_s3.py upload --manifest {manifest_path}{sync_args}
+    echo "=== verifying BrainSet cache upload ==="
+    uv run python scripts/sync_brainset_s3.py verify-local --manifest {manifest_path}{sync_args} --report {output_root}/cache_audit.md
   fi
   uv run python scripts/write_dataset_manifest.py
   echo "=== running phase 3-5 sweep ==="

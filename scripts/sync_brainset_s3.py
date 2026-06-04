@@ -182,6 +182,11 @@ def cache_audit_rows(expected: set[str], present: set[str]) -> tuple[list[str], 
     return matched, missing
 
 
+def verify_local_cache_rows(local_files: Iterable[Path], present: set[str]) -> tuple[list[str], list[str]]:
+    expected = {path.name for path in local_files}
+    return cache_audit_rows(expected, present)
+
+
 def write_audit_report(
     path: Path,
     *,
@@ -224,7 +229,7 @@ def write_audit_report(
 
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser()
-    p.add_argument("command", choices=["upload", "download", "list", "audit"])
+    p.add_argument("command", choices=["upload", "download", "list", "audit", "verify-local"])
     p.add_argument("--data-dir", type=Path, default=DEFAULT_DATA_DIR)
     p.add_argument("--manifest", type=Path, default=None,
                    help="Optional manifest used to filter local/remote HDF5 filenames.")
@@ -266,7 +271,7 @@ def main() -> int:
                 if names is None or Path(key).name in names:
                     print(key)
                     count += 1
-        else:
+        elif args.command == "audit":
             if args.manifest is None:
                 raise SystemExit("audit requires --manifest")
             expected = manifest_recording_names(args.manifest)
@@ -290,6 +295,31 @@ def main() -> int:
                     missing=missing,
                 )
                 print(f"wrote {args.report}")
+        else:
+            local_files = local_h5_files(args.data_dir, names)
+            present = remote_h5_filenames(client, bucket=bucket, prefix=args.prefix)
+            matched, missing = verify_local_cache_rows(local_files, present)
+            count = len(matched)
+            total = len(matched) + len(missing)
+            pct = (count / total * 100.0) if total else 0.0
+            print(f"local files present remotely: {count}/{total} ({pct:.1f}%)")
+            if missing:
+                print("missing remote copies:")
+                for name in missing:
+                    print(f"  {name}")
+            if args.report is not None:
+                manifest = args.manifest if args.manifest is not None else Path("<all local h5>")
+                write_audit_report(
+                    args.report,
+                    manifest=manifest,
+                    bucket=bucket,
+                    prefix=args.prefix,
+                    matched=matched,
+                    missing=missing,
+                )
+                print(f"wrote {args.report}")
+            if missing:
+                return 1
     except ClientError as exc:
         print(f"S3 sync failed: {exc}", file=sys.stderr)
         return 1

@@ -127,6 +127,13 @@ def test_start_script_can_sync_brainset_cache() -> None:
         "--bucket brainset-cache --prefix ibl/test --endpoint-url https://s3.example.test"
     ) in script
     assert "=== uploading built BrainSet data ===" in script
+    assert "=== verifying BrainSet cache upload ===" in script
+    assert (
+        "scripts/sync_brainset_s3.py verify-local --manifest manifests/ibl_bwm_phase4.json "
+        "--bucket brainset-cache --prefix ibl/test --endpoint-url https://s3.example.test "
+        "--report runs/phase2_cloud_a100/cache_audit.md"
+    ) in script
+    assert "## Cache Audit" in script
 
 
 def test_pod_body_passes_s3_credentials_when_cache_enabled(monkeypatch) -> None:

@@ -9,6 +9,7 @@ from scripts.sync_brainset_s3 import (
     parse_args,
     region_from_args,
     s3_key,
+    verify_local_cache_rows,
     write_audit_report,
 )
 
@@ -53,6 +54,18 @@ def test_cache_audit_rows_splits_present_and_missing() -> None:
 
     assert matched == ["a.h5", "c.h5"]
     assert missing == ["b.h5"]
+
+
+def test_verify_local_cache_rows_checks_built_files_are_remote(tmp_path) -> None:
+    built = tmp_path / "built.h5"
+    missing = tmp_path / "missing.h5"
+    built.write_text("x")
+    missing.write_text("x")
+
+    matched, missing_names = verify_local_cache_rows([built, missing], {"built.h5", "other.h5"})
+
+    assert matched == ["built.h5"]
+    assert missing_names == ["missing.h5"]
 
 
 def test_write_audit_report_includes_gate_counts(tmp_path) -> None:
