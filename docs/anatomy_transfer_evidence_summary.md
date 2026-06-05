@@ -151,3 +151,13 @@ anatomy-specific gate because centered AUC still favored shuffle (`0.480` true
 vs `0.494` shuffle) and only `1/4` held-out recordings had positive
 true-minus-shuffle AUC. This is a useful mechanism lead, not yet a demo-quality
 cross-animal anatomical transfer result.
+
+Pairwise mismatch audit: `docs/lso_csh_pairwise_rank_pilot_mismatch.md` shows
+that the apparent paired improvement was not target-aware. Raw probabilities
+moved downward on every paired trial; target-0 true-class probability improved
+on `1.000` of trials while target-1 improved on `0.000`. That explains how the
+paired metric reached `0.552` in a target-0-majority held-out set while
+recording-centered AUC still failed. The next candidate objective is
+`recording_pairwise_rank_centered_bce`, tested first with no-spend CPU smoke and
+only then with the bounded L4 preflight
+`uv run python scripts/preflight_pairwise_rank_centered_bce_pilot_runpod.py`.

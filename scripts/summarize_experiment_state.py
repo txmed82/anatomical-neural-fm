@@ -59,6 +59,7 @@ SLICE_RESULT_FILES = (
 )
 MECHANISM_AUDIT_FILE = "docs/csh_mechanism_audit.json"
 PAIRWISE_MECHANISM_AUDIT_FILE = "docs/lso_csh_pairwise_rank_pilot_mechanism.json"
+PAIRWISE_MISMATCH_AUDIT_FILE = "docs/lso_csh_pairwise_rank_pilot_mismatch.json"
 
 
 def display_path(path: Path) -> str:
@@ -185,6 +186,7 @@ def render_markdown(
     slice_rows: list[SliceRow],
     mechanism: dict | None = None,
     pairwise_mechanism: dict | None = None,
+    pairwise_mismatch: dict | None = None,
 ) -> str:
     summary = summarize(strict_rows, slice_rows)
     lines = [
@@ -267,6 +269,7 @@ def render_markdown(
     if pairwise_mechanism is not None:
         global_metrics = pairwise_mechanism.get("global", {})
         true_vs_shuffle = global_metrics.get("paired_true_vs_shuffle", {})
+        mismatch_summary = {} if pairwise_mismatch is None else pairwise_mismatch.get("summary", {})
         gate_row = next((row for row in strict_rows if "pairwise-rank" in row.label), None)
         lines += [
             "## Pairwise-Rank Objective Pilot",
@@ -290,12 +293,36 @@ def render_markdown(
         lines += [
             "",
             (
-                "Updated decision: promising mechanism candidate, not demo evidence. Do not "
-                "broaden yet. The next step should be local/no-spend analysis or a very small "
-                "objective tweak that makes the paired improvement recording-stable."
+                "Updated decision before the mismatch audit: possible mechanism candidate, "
+                "not demo evidence. Do not broaden yet; require a diagnostic that separates "
+                "bidirectional target-aware ranking from one-direction probability shifts."
             ),
             "",
         ]
+        if pairwise_mismatch is not None:
+            lines += [
+                "Pairwise mismatch audit: `docs/lso_csh_pairwise_rank_pilot_mismatch.md`",
+                f"classifies the paired improvement as `{pairwise_mismatch.get('decision')}`.",
+                f"Raw probabilities moved downward on `{fmt_float(mismatch_summary.get('raw_prob_delta_negative_fraction'))}`",
+                "of paired trials; target-0 true-class probability improved on",
+                f"`{fmt_float(mismatch_summary.get('target0_true_class_improved_fraction'))}`",
+                "of trials while target-1 improved on",
+                f"`{fmt_float(mismatch_summary.get('target1_true_class_improved_fraction'))}`.",
+                "",
+                (
+                    "Next candidate objective: `recording_pairwise_rank_centered_bce`, "
+                    "which keeps the recording-local pairwise rank term but adds "
+                    "recording-centered BCE so a one-direction probability shift is not "
+                    "mistaken for anatomical ranking evidence."
+                ),
+                "",
+                (
+                    "Updated decision after mismatch audit: the scalar paired metric should "
+                    "not be used as a success gate. Require bidirectional target-class "
+                    "improvement and positive recording-local AUC against the shuffled control."
+                ),
+                "",
+            ]
     return "\n".join(lines)
 
 
@@ -318,8 +345,15 @@ def main() -> int:
     ]
     mechanism = read_mechanism_audit(REPO_ROOT / MECHANISM_AUDIT_FILE)
     pairwise_mechanism = read_mechanism_audit(REPO_ROOT / PAIRWISE_MECHANISM_AUDIT_FILE)
+    pairwise_mismatch = read_mechanism_audit(REPO_ROOT / PAIRWISE_MISMATCH_AUDIT_FILE)
     args.out_md.parent.mkdir(parents=True, exist_ok=True)
-    args.out_md.write_text(render_markdown(strict_rows, slice_rows, mechanism, pairwise_mechanism))
+    args.out_md.write_text(render_markdown(
+        strict_rows,
+        slice_rows,
+        mechanism,
+        pairwise_mechanism,
+        pairwise_mismatch,
+    ))
     args.out_json.parent.mkdir(parents=True, exist_ok=True)
     args.out_json.write_text(json.dumps({
         "summary": summarize(strict_rows, slice_rows),
@@ -327,6 +361,7 @@ def main() -> int:
         "fixed_slices": [row.__dict__ | {"source": display_path(row.source)} for row in slice_rows],
         "mechanism": mechanism,
         "pairwise_mechanism": pairwise_mechanism,
+        "pairwise_mismatch": pairwise_mismatch,
     }, indent=2, sort_keys=True) + "\n")
     print(f"wrote {args.out_md}")
     print(f"wrote {args.out_json}")

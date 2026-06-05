@@ -117,12 +117,19 @@ def parse_args():
                         "recording, which is intended for recording-centered training losses. "
                         "Sampled eval remains uniform.")
     p.add_argument("--loss-mode", default="bce",
-                   choices=["bce", "recording_centered_bce", "recording_pairwise_rank"],
+                   choices=[
+                       "bce",
+                       "recording_centered_bce",
+                       "recording_pairwise_rank",
+                       "recording_pairwise_rank_centered_bce",
+                   ],
                    help="'bce' trains on raw logits. 'recording_centered_bce' subtracts each "
                         "recording's mean logit within the accepted batch before BCE, reducing "
                         "recording-offset shortcuts. 'recording_pairwise_rank' optimizes "
                         "same-recording target-1 logits above target-0 logits with a logistic "
-                        "pairwise ranking loss.")
+                        "pairwise ranking loss. 'recording_pairwise_rank_centered_bce' adds "
+                        "recording-centered BCE to the pairwise rank loss to discourage "
+                        "class-direction probability shifts without recording-local ranking.")
     p.add_argument("--lr", type=float, default=3e-4)
     p.add_argument("--weight-decay", type=float, default=1e-4)
     p.add_argument("--max-steps", type=int, default=500)
@@ -687,13 +694,22 @@ def training_loss(
 ) -> torch.Tensor:
     if loss_mode == "bce":
         return F.binary_cross_entropy_with_logits(logits, target)
-    if loss_mode in {"recording_centered_bce", "recording_pairwise_rank"}:
+    if loss_mode in {
+        "recording_centered_bce",
+        "recording_pairwise_rank",
+        "recording_pairwise_rank_centered_bce",
+    }:
         recording_ids = [] if batch_meta is None else list(batch_meta.get("recording_ids", []))
         if len(recording_ids) != logits.shape[0]:
             raise ValueError(f"{loss_mode} requires one recording id per batch row")
         if loss_mode == "recording_pairwise_rank":
             return recording_pairwise_rank_loss(logits, target, recording_ids)
         centered_logits = center_logits_by_group(logits, recording_ids)
+        if loss_mode == "recording_pairwise_rank_centered_bce":
+            return (
+                recording_pairwise_rank_loss(logits, target, recording_ids)
+                + F.binary_cross_entropy_with_logits(centered_logits, target)
+            )
         return F.binary_cross_entropy_with_logits(centered_logits, target)
     raise ValueError(f"unknown loss_mode {loss_mode!r}")
 

@@ -55,4 +55,16 @@ The strict anatomy-specific gate still failed:
 - specificity gap: `+0.103`
 - recording sign-flip p-value: `0.562`
 
-Updated decision: promising mechanism candidate, not demo evidence. Do not broaden yet. The next step should be local/no-spend analysis or a very small objective tweak that makes the paired improvement recording-stable.
+Updated decision before the mismatch audit: possible mechanism candidate, not demo evidence. Do not broaden yet; require a diagnostic that separates bidirectional target-aware ranking from one-direction probability shifts.
+
+Pairwise mismatch audit: `docs/lso_csh_pairwise_rank_pilot_mismatch.md`
+classifies the paired improvement as `paired_metric_explained_by_downward_shift`.
+Raw probabilities moved downward on `1.000`
+of paired trials; target-0 true-class probability improved on
+`1.000`
+of trials while target-1 improved on
+`0.000`.
+
+Next candidate objective: `recording_pairwise_rank_centered_bce`, which keeps the recording-local pairwise rank term but adds recording-centered BCE so a one-direction probability shift is not mistaken for anatomical ranking evidence.
+
+Updated decision after mismatch audit: the scalar paired metric should not be used as a success gate. Require bidirectional target-class improvement and positive recording-local AUC against the shuffled control.

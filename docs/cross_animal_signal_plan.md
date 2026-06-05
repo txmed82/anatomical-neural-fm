@@ -395,6 +395,17 @@ recording support was `1/4`, and the recording sign-flip p-value was `0.562`.
 This is enough to justify no-spend mechanism analysis or a very small objective
 tweak; it is not enough to justify broadening across more subjects yet.
 
+The no-spend mismatch audit resolved that ambiguity:
+`docs/lso_csh_pairwise_rank_pilot_mismatch.md` classifies the paired improvement
+as `paired_metric_explained_by_downward_shift`. Region-only probabilities were
+lower than shuffle on every paired trial, which helps target-0 and hurts
+target-1. The next gate should therefore require bidirectional target evidence:
+true labels must beat the shuffled control separately for target-0 and target-1
+subsets, in addition to improving recording-local ranking. The next implemented
+objective candidate is `recording_pairwise_rank_centered_bce`; its bounded
+preflight is
+`uv run python scripts/preflight_pairwise_rank_centered_bce_pilot_runpod.py`.
+
 Conclusion: building all 48 public IBL recordings inside a throwaway A100
 container is the wrong next spend. The next attempt should either split the
 candidate manifest into smaller persisted build shards, use a persistent
