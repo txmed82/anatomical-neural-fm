@@ -307,3 +307,15 @@ that same recording.
 | SWC_043 | -0.014 | 0.738 | 0.212 | 0/4 | reject: centered delta |
 
 Decision: this closes the weak-positive loophole for the current matched panel. Only `NYU-12` has even one bidirectional held-out recording, and it still has negative centered true-minus-shuffle AUC. Do not spend on training until a new target/control produces at least one local pass under this recording-bidirectional gate.
+
+## Alternative Target Bidirectional Gates
+
+Two additional trial targets exposed by the cached IBL trials were tested
+through the same recording-bidirectional model-free gate.
+
+| target | candidates | positive deltas | mean bidir rec frac | notable positive holdouts | decision |
+|---|---:|---:|---:|---|---|
+| prior_side | 0/7 | 3/7 | 0.000 | KS014, NR_0019, SWC_043 | `no_recording_bidirectional_model_free_signal` |
+| feedback | 0/7 | 4/7 | 0.000 | MFD_06, NR_0019, SWC_038, SWC_043 | `no_recording_bidirectional_model_free_signal` |
+
+Decision: `prior_side` and `feedback` do not rescue the matched-panel branch. Both produce zero candidate holdouts and zero mean same-recording bidirectional support. More positive global centered deltas are still class-direction artifacts under the stricter gate.

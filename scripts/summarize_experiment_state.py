@@ -106,6 +106,8 @@ MATCHED_REGION_S3_PRESENT_SUPPORT80_HDF5_ITERATIVE_FILE = (
 MODEL_FREE_MATCHED_SUPPORT80_PANEL_FILE = "docs/model_free_matched_support80_hdf5_panel.json"
 MODEL_FREE_POSITIVE_HOLDOUTS_MECHANISM_FILE = "docs/model_free_positive_holdouts_mechanism.json"
 MODEL_FREE_RECORDING_BIDIRECTIONAL_GATE_FILE = "docs/model_free_recording_bidirectional_gate.json"
+MODEL_FREE_RECORDING_BIDIRECTIONAL_PRIOR_FILE = "docs/model_free_recording_bidirectional_gate_prior_side.json"
+MODEL_FREE_RECORDING_BIDIRECTIONAL_FEEDBACK_FILE = "docs/model_free_recording_bidirectional_gate_feedback.json"
 LOCAL_PROBE_FILES = (
     (
         "local AUC surrogate",
@@ -393,6 +395,8 @@ def render_markdown(
     model_free_matched_panel: dict | None = None,
     model_free_positive_holdouts: dict | None = None,
     model_free_recording_bidirectional_gate: dict | None = None,
+    model_free_recording_bidirectional_prior: dict | None = None,
+    model_free_recording_bidirectional_feedback: dict | None = None,
 ) -> str:
     summary = summarize(strict_rows, slice_rows)
     lines = [
@@ -1008,6 +1012,41 @@ def render_markdown(
             ),
             "",
         ]
+    alternative_target_gates = [
+        row for row in [
+            model_free_recording_bidirectional_prior,
+            model_free_recording_bidirectional_feedback,
+        ] if row is not None
+    ]
+    if alternative_target_gates:
+        lines += [
+            "## Alternative Target Bidirectional Gates",
+            "",
+            "Two additional trial targets exposed by the cached IBL trials were tested",
+            "through the same recording-bidirectional model-free gate.",
+            "",
+            "| target | candidates | positive deltas | mean bidir rec frac | notable positive holdouts | decision |",
+            "|---|---:|---:|---:|---|---|",
+        ]
+        for gate in alternative_target_gates:
+            summary = gate["summary"]
+            positives = ", ".join(summary["positive_delta_holdouts"]) or "none"
+            lines.append(
+                f"| {gate['target_mode']} | {summary['n_candidates']}/{summary['n_holdouts']} | "
+                f"{summary['n_positive_delta_holdouts']}/{summary['n_holdouts']} | "
+                f"{summary['mean_bidirectional_recording_fraction']:.3f} | "
+                f"{positives} | `{summary['decision']}` |"
+            )
+        lines += [
+            "",
+            (
+                "Decision: `prior_side` and `feedback` do not rescue the matched-panel "
+                "branch. Both produce zero candidate holdouts and zero mean same-recording "
+                "bidirectional support. More positive global centered deltas are still "
+                "class-direction artifacts under the stricter gate."
+            ),
+            "",
+        ]
     return "\n".join(lines)
 
 
@@ -1061,6 +1100,12 @@ def main() -> int:
     model_free_recording_bidirectional_gate = read_mechanism_audit(
         REPO_ROOT / MODEL_FREE_RECORDING_BIDIRECTIONAL_GATE_FILE
     )
+    model_free_recording_bidirectional_prior = read_mechanism_audit(
+        REPO_ROOT / MODEL_FREE_RECORDING_BIDIRECTIONAL_PRIOR_FILE
+    )
+    model_free_recording_bidirectional_feedback = read_mechanism_audit(
+        REPO_ROOT / MODEL_FREE_RECORDING_BIDIRECTIONAL_FEEDBACK_FILE
+    )
     args.out_md.parent.mkdir(parents=True, exist_ok=True)
     args.out_md.write_text(render_markdown(
         strict_rows,
@@ -1089,6 +1134,8 @@ def main() -> int:
         model_free_matched_panel,
         model_free_positive_holdouts,
         model_free_recording_bidirectional_gate,
+        model_free_recording_bidirectional_prior,
+        model_free_recording_bidirectional_feedback,
     ))
     args.out_json.parent.mkdir(parents=True, exist_ok=True)
     args.out_json.write_text(json.dumps({
@@ -1146,6 +1193,8 @@ def main() -> int:
         "model_free_matched_support80_panel": model_free_matched_panel,
         "model_free_positive_holdouts_mechanism": model_free_positive_holdouts,
         "model_free_recording_bidirectional_gate": model_free_recording_bidirectional_gate,
+        "model_free_recording_bidirectional_prior_side": model_free_recording_bidirectional_prior,
+        "model_free_recording_bidirectional_feedback": model_free_recording_bidirectional_feedback,
     }, indent=2, sort_keys=True) + "\n")
     print(f"wrote {args.out_md}")
     print(f"wrote {args.out_json}")

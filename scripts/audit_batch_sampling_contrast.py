@@ -140,7 +140,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--data-dir", type=Path, default=REPO_ROOT / "data/brainsets/ibl_bwm")
     parser.add_argument("--manifest", type=Path, default=REPO_ROOT / "manifests/ibl_bwm_region_matched_support80_best6.json")
     parser.add_argument("--holdout", nargs="*", default=["CSH_ZAD_019"])
-    parser.add_argument("--target-mode", default="stimulus_side", choices=["choice", "stimulus_side"])
+    parser.add_argument("--target-mode", default="stimulus_side", choices=["choice", "stimulus_side", "feedback", "prior_side"])
     parser.add_argument("--region-granularity", default="parent", choices=["fine", "parent", "grandparent"])
     parser.add_argument("--region-label-control", default="none", choices=["none", "shuffle", "within_recording_shuffle"])
     parser.add_argument("--window-len", type=float, default=1.0)

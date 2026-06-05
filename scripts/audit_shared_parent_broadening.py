@@ -465,7 +465,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--log", type=Path, default=REPO_ROOT / "docs/cloud_phase3_5_runpod.log")
     parser.add_argument("--out", type=Path, default=REPO_ROOT / "docs/parent_region_support_signal_audit.md")
     parser.add_argument("--ranking-out", type=Path, default=REPO_ROOT / "docs/csh_composition_candidate_ranking.md")
-    parser.add_argument("--target-mode", default="stimulus_side", choices=["choice", "stimulus_side"])
+    parser.add_argument("--target-mode", default="stimulus_side", choices=["choice", "stimulus_side", "feedback", "prior_side"])
     parser.add_argument("--window-len", type=float, default=1.0)
     return parser.parse_args()
 

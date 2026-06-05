@@ -1372,3 +1372,17 @@ holdouts (`KS014`, `NR_0019`) both have `0/4` bidirectional recordings. This
 is the current stop condition for phases 3-5: do not spend on A100 training.
 The next constructive no-spend work is to redesign the behavioral target or
 anatomical control so this gate can pass locally before a bounded cloud run.
+
+Alternative target sweep:
+The cached matched-panel trials also expose `feedback_type` and
+`probability_left`, so `scripts/train.py` now supports `--target-mode feedback`
+and `--target-mode prior_side` for local audits and future wrappers. Both
+targets have both classes in all 28 matched-panel recordings, but neither
+passes the recording-bidirectional model-free gate. `prior_side` has zero
+candidates and zero mean bidirectional recording fraction despite three
+positive centered-delta holdouts. `feedback` also has zero candidates and zero
+mean bidirectional recording fraction; its positive deltas are one-class
+artifacts. This closes the cheap alternative-target branch available in the
+current cached trial schema. The next no-spend step should change the
+anatomical control or feature representation, not launch GPU training on a new
+target.

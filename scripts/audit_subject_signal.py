@@ -385,7 +385,7 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--results", type=Path, default=REPO_ROOT / "docs/lso_promising_results.md")
     p.add_argument("--data-dir", type=Path, default=REPO_ROOT / "data/brainsets/ibl_bwm")
     p.add_argument("--out", type=Path, default=REPO_ROOT / "docs/subject_conditioned_signal_audit.md")
-    p.add_argument("--target-mode", default="stimulus_side", choices=["choice", "stimulus_side"])
+    p.add_argument("--target-mode", default="stimulus_side", choices=["choice", "stimulus_side", "feedback", "prior_side"])
     p.add_argument("--window-len", type=float, default=1.0)
     return p.parse_args()
 

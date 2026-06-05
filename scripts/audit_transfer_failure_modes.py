@@ -245,7 +245,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--two-holdout-results", type=Path, default=REPO_ROOT / "docs/lso_two_holdout_shared_parent_shuffle_results.md")
     parser.add_argument("--nr0019-results", type=Path, default=REPO_ROOT / "docs/lso_nr0019_shared_parent_shuffle_results.md")
     parser.add_argument("--out", type=Path, default=REPO_ROOT / "docs/cross_holdout_failure_mode_audit.md")
-    parser.add_argument("--target-mode", default="stimulus_side", choices=["choice", "stimulus_side"])
+    parser.add_argument("--target-mode", default="stimulus_side", choices=["choice", "stimulus_side", "feedback", "prior_side"])
     parser.add_argument("--window-len", type=float, default=1.0)
     return parser.parse_args()
 

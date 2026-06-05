@@ -321,7 +321,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--data-dir", type=Path, default=REPO_ROOT / "data/brainsets/ibl_bwm")
     parser.add_argument("--out", type=Path, default=REPO_ROOT / "docs/parent_region_slice_plan.md")
     parser.add_argument("--reference-subject", default="CSH_ZAD_019")
-    parser.add_argument("--target-mode", default="stimulus_side", choices=["choice", "stimulus_side"])
+    parser.add_argument("--target-mode", default="stimulus_side", choices=["choice", "stimulus_side", "feedback", "prior_side"])
     parser.add_argument("--window-len", type=float, default=1.0)
     parser.add_argument("--min-reference-units", type=int, default=100)
     parser.add_argument("--min-reference-unit-mass", type=float, default=0.03)

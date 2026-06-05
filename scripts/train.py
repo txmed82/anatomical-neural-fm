@@ -48,7 +48,8 @@ from torch_brain.utils import create_linspace_latent_tokens  # noqa: E402
 
 # --------------------------------------------------------------------- config
 
-# Choice decoding: one binary target per trial-aligned window.
+# Binary trial decoding targets available to local audits and training wrappers.
+TARGET_MODES = ("choice", "stimulus_side", "feedback", "prior_side")
 N_OUTPUT_QUERIES = 1     # single binary logit at trial-end
 
 
@@ -75,9 +76,11 @@ def parse_args():
                    help="'shared' uses one trainable task query for all recordings, which is "
                         "the primary cross-animal setting. 'session' preserves the original "
                         "per-recording query for diagnostics.")
-    p.add_argument("--target-mode", default="choice", choices=["choice", "stimulus_side"],
+    p.add_argument("--target-mode", default="choice", choices=TARGET_MODES,
                    help="'choice' decodes animal L/R choice. 'stimulus_side' decodes whether "
-                        "the visual stimulus contrast was stronger on the right than left.")
+                        "the visual stimulus contrast was stronger on the right than left. "
+                        "'feedback' decodes correct vs error feedback. 'prior_side' decodes "
+                        "the IBL block prior side from probability_left.")
     p.add_argument("--region-filter", default="none", choices=["none", "shared_regions", "include_regions"],
                    help="'shared_regions' keeps only units whose region acronym appears in both "
                         "the train and held-out recordings for the current split. "
@@ -361,6 +364,16 @@ def _target_from_trial(rec, idx: int, target_mode: str) -> float | None:
         if left == right:
             return None
         return 1.0 if right > left else 0.0
+    if target_mode == "feedback":
+        feedback = int(np.asarray(rec.trials.feedback_type, dtype=np.int64)[idx])
+        if feedback == 0:
+            return None
+        return 1.0 if feedback > 0 else 0.0
+    if target_mode == "prior_side":
+        probability_left = float(np.asarray(rec.trials.probability_left, dtype=np.float64)[idx])
+        if not np.isfinite(probability_left) or probability_left == 0.5:
+            return None
+        return 0.0 if probability_left > 0.5 else 1.0
     raise ValueError(f"unknown target_mode {target_mode!r}")
 
 
@@ -373,8 +386,9 @@ def build_trial_samples(
     """Return a flat list of (recording_id, window_start_time, choice_binary) triples.
 
     Each entry is a trial-aligned window: t0 = trials.stim_on_times, t1 = t0 + window_len.
-    Target is 0.0 for left and 1.0 for right. Invalid/no-go/equal-contrast trials
-    and trials with NaN stim_on_time or windows past the recording domain are skipped.
+    Target is a binary value from _target_from_trial. Invalid/no-go/equal-contrast
+    trials and trials with NaN stim_on_time or windows past the recording domain
+    are skipped.
     """
     out: list[tuple[str, float, float]] = []
     for rid in rids:

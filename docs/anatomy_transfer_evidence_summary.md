@@ -307,3 +307,15 @@ mean bidirectional recording fraction is `0.036`, `KS014` and `NR_0019` have
 negative. Decision: stop before GPU training. A future target/control redesign
 must pass this same-recording bidirectional gate locally before any paid
 confirmation run.
+
+Alternative target sweep:
+`feedback` and `prior_side` were added as binary trial targets from the cached
+IBL trial fields and run through the same recording-bidirectional model-free
+gate. Both are available in all 28 matched-panel recordings. `prior_side` has
+zero candidates, three positive centered-delta holdouts, and mean
+bidirectional recording fraction `0.000`; `KS014` has global target0 `0.582`
+and target1 `0.566` but still `0/4` bidirectional recordings. `feedback` also
+has zero candidates and mean bidirectional recording fraction `0.000`; its
+positive deltas are strongly class-directional, for example `SWC_043` target0
+`0.000` and target1 `1.000`. Decision: these alternative behavioral targets
+do not justify GPU training either.

@@ -141,6 +141,44 @@ def test_build_trial_samples_stimulus_side_uses_contrast_not_choice() -> None:
     assert samples == [("rec", 0.1, 0.0), ("rec", 0.2, 1.0), ("rec", 0.4, 1.0)]
 
 
+def test_build_trial_samples_feedback_decodes_correct_vs_error() -> None:
+    rec = Obj(
+        trials=Obj(
+            feedback_type=np.array([1, -1, 0, 1]),
+            stim_on_times=np.array([0.1, 0.2, 0.3, np.nan]),
+        ),
+        domain=Obj(end=np.array([2.0])),
+    )
+
+    samples = build_trial_samples(
+        {"rec": rec},
+        ["rec"],
+        window_len=1.0,
+        target_mode="feedback",
+    )
+
+    assert samples == [("rec", 0.1, 1.0), ("rec", 0.2, 0.0)]
+
+
+def test_build_trial_samples_prior_side_skips_neutral_blocks() -> None:
+    rec = Obj(
+        trials=Obj(
+            probability_left=np.array([0.8, 0.2, 0.5, np.nan]),
+            stim_on_times=np.array([0.1, 0.2, 0.3, 0.4]),
+        ),
+        domain=Obj(end=np.array([2.0])),
+    )
+
+    samples = build_trial_samples(
+        {"rec": rec},
+        ["rec"],
+        window_len=1.0,
+        target_mode="prior_side",
+    )
+
+    assert samples == [("rec", 0.1, 0.0), ("rec", 0.2, 1.0)]
+
+
 def test_trial_indices_by_target_groups_binary_targets() -> None:
     trials = [
         ("a", 0.1, 0.0),

@@ -269,7 +269,7 @@ def parse_args() -> argparse.Namespace:
         default=REPO_ROOT / "manifests/ibl_bwm_region_matched_candidates_s3_present_support80_hdf5_scored.json",
     )
     parser.add_argument("--holdout", nargs="+", default=["KS014", "NR_0019"])
-    parser.add_argument("--target-mode", default="stimulus_side", choices=["choice", "stimulus_side"])
+    parser.add_argument("--target-mode", default="stimulus_side", choices=["choice", "stimulus_side", "feedback", "prior_side"])
     parser.add_argument("--region-granularity", default="parent", choices=["fine", "parent", "grandparent"])
     parser.add_argument("--window-len", type=float, default=1.0)
     parser.add_argument("--seed", type=int, default=0)
