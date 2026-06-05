@@ -1484,6 +1484,15 @@ single shared-family branch as a training trigger; any next no-spend redesign
 must address recording-local consistency directly, not just choose a conserved
 family and target.
 
+Shared-family near-miss mechanism:
+`scripts/audit_shared_family_near_miss.py` decomposes the best row. It shows a
+clear target1-only recording pattern: all four CSH recordings improve target1,
+but only one improves target0 enough. This is a useful mechanistic clue, not a
+demo. The next local branch should explicitly counter one-sided target effects,
+for example by scoring sign-symmetric recording-level effects or by requiring a
+family/control to improve target0 and target1 in each recording before any
+global delta is considered.
+
 Recording-centered feature check:
 The gate also supports `--feature-mode recording_centered`, which subtracts
 each recording's mean parent-region feature vector before fitting. This reduces

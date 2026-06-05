@@ -38599,6 +38599,110 @@
       "true_minus_shuffle_auc": -3.0741807988288183e-05
     }
   },
+  "shared_family_choice_fiber_csh_near_miss": {
+    "family": "fiber_tracts",
+    "feature_mode": "recording_centered",
+    "global": {
+      "centered_delta_vs_shuffle": 0.19905789519737221,
+      "centered_delta_vs_total": 0.2207837824276181,
+      "eval_centered_auc": 0.609925566339016,
+      "paired_improved_vs_shuffle": 0.5853187379265937,
+      "shuffle_centered_auc": 0.41086767114164374,
+      "target0_improved_vs_shuffle": 0.5575333757151939,
+      "target1_improved_vs_shuffle": 0.6138290932811481,
+      "total_centered_auc": 0.38914178391139786
+    },
+    "holdout": "CSH_ZAD_019",
+    "recordings": [
+      {
+        "feature_contrast_delta": -2.898294448852539,
+        "improved_fraction": 0.6473922902494331,
+        "interpretation": "bidirectional",
+        "mean_true_class_delta": 0.0017637705980880127,
+        "n_trials": 882,
+        "recording": "49e0ab27-827a-4c91-bcaa-97eea27a1b8d_probe01",
+        "shuffle_auc": 0.3581214922416639,
+        "shuffle_feature_target1_minus_target0": 19.862133979797363,
+        "target0_improved": 0.6630901287553648,
+        "target1_fraction": 0.47165532879818595,
+        "target1_improved": 0.6298076923076923,
+        "total_auc": 0.3366777401782767,
+        "true_auc": 0.641414245625619,
+        "true_feature_target1_minus_target0": 16.963839530944824,
+        "true_minus_shuffle_auc": 0.2832927533839551,
+        "true_minus_total_auc": 0.3047365054473423
+      },
+      {
+        "feature_contrast_delta": -4.258117437362671,
+        "improved_fraction": 0.5667166416791605,
+        "interpretation": "target1_only",
+        "mean_true_class_delta": 0.0009717033628515563,
+        "n_trials": 667,
+        "recording": "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe01",
+        "shuffle_auc": 0.4193362505177102,
+        "shuffle_feature_target1_minus_target0": 11.244215488433838,
+        "target0_improved": 0.5317919075144508,
+        "target1_fraction": 0.48125937031484256,
+        "target1_improved": 0.6043613707165109,
+        "total_auc": 0.42254155187005926,
+        "true_auc": 0.5898024597986783,
+        "true_feature_target1_minus_target0": 6.986098051071167,
+        "true_minus_shuffle_auc": 0.17046620928096812,
+        "true_minus_total_auc": 0.16726090792861903
+      },
+      {
+        "feature_contrast_delta": -1.0171546936035156,
+        "improved_fraction": 0.5606741573033708,
+        "interpretation": "target1_only",
+        "mean_true_class_delta": 0.012246012105823146,
+        "n_trials": 890,
+        "recording": "edd22318-216c-44ff-bc24-49ce8be78374_probe00",
+        "shuffle_auc": 0.3964083703233989,
+        "shuffle_feature_target1_minus_target0": 135.78007888793945,
+        "target0_improved": 0.5060240963855421,
+        "target1_fraction": 0.5337078651685393,
+        "target1_improved": 0.608421052631579,
+        "total_auc": 0.4003297400126823,
+        "true_auc": 0.6255878249841471,
+        "true_feature_target1_minus_target0": 134.76292419433594,
+        "true_minus_shuffle_auc": 0.22917945466074824,
+        "true_minus_total_auc": 0.22525808497146482
+      },
+      {
+        "feature_contrast_delta": 5.909116744995117,
+        "improved_fraction": 0.5547226386806596,
+        "interpretation": "target1_only",
+        "mean_true_class_delta": 0.0034133476375330304,
+        "n_trials": 667,
+        "recording": "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe00",
+        "shuffle_auc": 0.40351682783209986,
+        "shuffle_feature_target1_minus_target0": 36.9799690246582,
+        "target0_improved": 0.5028901734104047,
+        "target1_fraction": 0.48125937031484256,
+        "target1_improved": 0.6105919003115264,
+        "total_auc": 0.3865539409000054,
+        "true_auc": 0.5915221579961464,
+        "true_feature_target1_minus_target0": 42.88908576965332,
+        "true_minus_shuffle_auc": 0.18800533016404652,
+        "true_minus_total_auc": 0.204968217096141
+      }
+    ],
+    "summary": {
+      "decision": "one_sided_target1_recording_effect",
+      "interpretation_counts": {
+        "bidirectional": 1,
+        "target1_only": 3
+      },
+      "n_bidirectional_recordings": 1,
+      "n_recordings": 4,
+      "n_target0_positive_recordings": 1,
+      "n_target1_positive_recordings": 4
+    },
+    "target_mode": "choice",
+    "thresholds": {
+      "min_target_improvement": 0.55
+    }
+  },
   "shared_family_target_control_gate": {
     "families": [
       "broad_named_anatomy",

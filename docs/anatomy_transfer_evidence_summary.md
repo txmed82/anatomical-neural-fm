@@ -414,6 +414,15 @@ shuffle deltas, but the maximum same-recording bidirectional support is only
 target0 `0.558`, target1 `0.614`, but only `1/4` bidirectional recordings.
 Decision: shared-family single-feature narrowing is not a GPU trigger.
 
+Shared-family near-miss mechanism:
+`docs/shared_family_choice_fiber_csh_near_miss.md` decomposes that strongest
+row by recording. The global effect is not noise, but it is one-sided:
+target1 improves in `4/4` recordings while target0 clears the recording gate
+in only `1/4`. The decision is `one_sided_target1_recording_effect`.
+Decision: do not promote this to neural training; a model run would likely
+learn the same target1-local artifact rather than bidirectional anatomical
+transfer.
+
 Recording-centered feature check:
 `docs/model_free_recording_bidirectional_gate_recording_centered.md` subtracts
 each recording's own mean parent-region feature vector before ridge fitting.

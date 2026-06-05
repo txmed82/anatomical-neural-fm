@@ -283,6 +283,23 @@ true-vs-shuffled and recording-bidirectional promotion gate.
 
 Decision: shared-family target/control narrowing does not yet produce a promotable local signal. The best row has real centered deltas and global bidirectional target support, but fails same-recording support at `1/4`; do not launch GPU training from this branch.
 
+## Shared-Family Near-Miss Mechanism
+
+`docs/shared_family_choice_fiber_csh_near_miss.md` decomposes the
+strongest shared-family row, `choice` + `fiber_tracts` on `CSH_ZAD_019`,
+by held-out recording.
+
+- centered delta vs shuffle: `+0.199`
+- centered delta vs total: `+0.221`
+- global target0: `0.558`
+- global target1: `0.614`
+- bidirectional recordings: `1/4`
+- target0-positive recordings: `1/4`
+- target1-positive recordings: `4/4`
+- decision: `one_sided_target1_recording_effect`
+
+Decision: this large-delta near miss is not a training trigger. It is recording-local target1 support with target0 clearing in only one recording, so a neural run would likely amplify the same one-sided artifact rather than demonstrate bidirectional anatomical transfer.
+
 ## Matched-Region Model-Free Panel
 
 `docs/model_free_matched_support80_hdf5_panel.md` runs the closed-form

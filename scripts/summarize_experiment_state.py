@@ -105,6 +105,7 @@ MATCHED_REGION_S3_PRESENT_SUPPORT80_HDF5_ITERATIVE_FILE = (
 )
 MANIFEST_TARGET_ANATOMY_FEASIBILITY_FILE = "docs/manifest_target_anatomy_feasibility.json"
 SHARED_FAMILY_TARGET_CONTROL_GATE_FILE = "docs/shared_family_target_control_gate.json"
+SHARED_FAMILY_CHOICE_FIBER_CSH_NEAR_MISS_FILE = "docs/shared_family_choice_fiber_csh_near_miss.json"
 MODEL_FREE_MATCHED_SUPPORT80_PANEL_FILE = "docs/model_free_matched_support80_hdf5_panel.json"
 MODEL_FREE_POSITIVE_HOLDOUTS_MECHANISM_FILE = "docs/model_free_positive_holdouts_mechanism.json"
 MODEL_FREE_RECORDING_BIDIRECTIONAL_GATE_FILE = "docs/model_free_recording_bidirectional_gate.json"
@@ -431,6 +432,7 @@ def render_markdown(
     matched_support80_hdf5_iterative: dict | None = None,
     manifest_target_anatomy_feasibility: dict | None = None,
     shared_family_target_control_gate: dict | None = None,
+    shared_family_choice_fiber_csh_near_miss: dict | None = None,
     model_free_matched_panel: dict | None = None,
     model_free_positive_holdouts: dict | None = None,
     model_free_recording_bidirectional_gate: dict | None = None,
@@ -1026,6 +1028,33 @@ def render_markdown(
             ),
             "",
         ]
+    if shared_family_choice_fiber_csh_near_miss is not None:
+        summary = shared_family_choice_fiber_csh_near_miss["summary"]
+        global_row = shared_family_choice_fiber_csh_near_miss["global"]
+        lines += [
+            "## Shared-Family Near-Miss Mechanism",
+            "",
+            "`docs/shared_family_choice_fiber_csh_near_miss.md` decomposes the",
+            "strongest shared-family row, `choice` + `fiber_tracts` on `CSH_ZAD_019`,",
+            "by held-out recording.",
+            "",
+            f"- centered delta vs shuffle: `{global_row['centered_delta_vs_shuffle']:+.3f}`",
+            f"- centered delta vs total: `{global_row['centered_delta_vs_total']:+.3f}`",
+            f"- global target0: `{global_row['target0_improved_vs_shuffle']:.3f}`",
+            f"- global target1: `{global_row['target1_improved_vs_shuffle']:.3f}`",
+            f"- bidirectional recordings: `{summary['n_bidirectional_recordings']}/{summary['n_recordings']}`",
+            f"- target0-positive recordings: `{summary['n_target0_positive_recordings']}/{summary['n_recordings']}`",
+            f"- target1-positive recordings: `{summary['n_target1_positive_recordings']}/{summary['n_recordings']}`",
+            f"- decision: `{summary['decision']}`",
+            "",
+            (
+                "Decision: this large-delta near miss is not a training trigger. It is "
+                "recording-local target1 support with target0 clearing in only one "
+                "recording, so a neural run would likely amplify the same one-sided "
+                "artifact rather than demonstrate bidirectional anatomical transfer."
+            ),
+            "",
+        ]
     if model_free_matched_panel is not None:
         summary = model_free_matched_panel["summary"]
         lines += [
@@ -1600,6 +1629,9 @@ def main() -> int:
         REPO_ROOT / MANIFEST_TARGET_ANATOMY_FEASIBILITY_FILE
     )
     shared_family_target_control_gate = read_mechanism_audit(REPO_ROOT / SHARED_FAMILY_TARGET_CONTROL_GATE_FILE)
+    shared_family_choice_fiber_csh_near_miss = read_mechanism_audit(
+        REPO_ROOT / SHARED_FAMILY_CHOICE_FIBER_CSH_NEAR_MISS_FILE
+    )
     model_free_matched_panel = read_mechanism_audit(REPO_ROOT / MODEL_FREE_MATCHED_SUPPORT80_PANEL_FILE)
     model_free_positive_holdouts = read_mechanism_audit(REPO_ROOT / MODEL_FREE_POSITIVE_HOLDOUTS_MECHANISM_FILE)
     model_free_recording_bidirectional_gate = read_mechanism_audit(
@@ -1679,6 +1711,7 @@ def main() -> int:
         matched_support80_hdf5_iterative,
         manifest_target_anatomy_feasibility,
         shared_family_target_control_gate,
+        shared_family_choice_fiber_csh_near_miss,
         model_free_matched_panel,
         model_free_positive_holdouts,
         model_free_recording_bidirectional_gate,
@@ -1755,6 +1788,7 @@ def main() -> int:
         ),
         "manifest_target_anatomy_feasibility": manifest_target_anatomy_feasibility,
         "shared_family_target_control_gate": shared_family_target_control_gate,
+        "shared_family_choice_fiber_csh_near_miss": shared_family_choice_fiber_csh_near_miss,
         "model_free_matched_support80_panel": model_free_matched_panel,
         "model_free_positive_holdouts_mechanism": model_free_positive_holdouts,
         "model_free_recording_bidirectional_gate": model_free_recording_bidirectional_gate,
