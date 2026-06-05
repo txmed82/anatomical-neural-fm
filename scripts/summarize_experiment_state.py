@@ -1273,10 +1273,10 @@ def render_markdown(
                 (
                     "Decision: the current cached target, contextual target, "
                     "wheel-derived target, reaction-dynamics target, cell-type "
-                    "prior target/control, and waveform target/control branches are "
-                    "closed as GPU triggers. The next aligned work is a prospectively "
-                    "supported benchmark/control redesign, still gated locally before "
-                    "any paid training."
+                    "prior target/control, waveform target/control, and meta-failure "
+                    "synthesis branches are closed as GPU triggers. The next aligned "
+                    "work is a prospectively supported benchmark/control redesign, "
+                    "still gated locally before any paid training."
                 ),
                 "",
             ]

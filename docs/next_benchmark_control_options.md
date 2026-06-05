@@ -3,7 +3,7 @@
 Ranks remaining no-spend branches after the current local audits. This is the planning gate before any new RunPod training.
 
 - recommended next: `new manifest with prospective bidirectional support`
-- closed branches: `13`
+- closed branches: `14`
 - decision: `no_local_training_trigger`
 - GPU trigger: At least one local row on the proposed manifest must clear delta_vs_shuffle>=0, delta_vs_total>=0, target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75 before training.
 
@@ -14,15 +14,16 @@ Ranks remaining no-spend branches after the current local audits. This is the pl
 | 87 | reaction-dynamics wheel targets | `closed` | Do not spend on reaction-dynamics wheel targets; the near miss fails true-vs-shuffle and does not replicate across feature modes. |
 | 88 | cell-type prior target/control gate | `closed` | Do not spend on broad ABC cell-class prior channels; they do not pass the local bidirectional gate. |
 | 89 | waveform target/control gate | `closed` | Do not spend on simple waveform-channel controls; they do not pass the local bidirectional gate. |
-| 90 | behavior-inclusive cache rebuild | `closed` | Cache rebuild is complete; all matched recordings now expose wheel. Use the wheel-derived local target gate before any training. |
-| 91 | direct cached-field derived targets | `closed` | Do not launch GPU training from contrast_strength, response_latency, or prior_engaged. |
-| 92 | contextual cached trial-state targets | `closed` | Do not spend on contextual trial-sequence targets from the compact cache. |
-| 93 | more feature-mode or l2 sweeps on shared broad anatomy | `closed` | Do not spend more local or GPU time on simple broad-anatomy feature/regularization repair. |
-| 94 | narrow existing manifest further | `closed` | Do not keep shrinking the existing cache as the primary rescue path. |
-| 95 | recording-subset selection from current artifacts | `closed` | Do not train on selected current recordings unless a new target/control first passes locally. |
-| 96 | current shared-family target/control grid | `closed` | Do not rerun the same target/family grid without a new target/control definition. |
-| 97 | alternative cached targets plus family aggregation | `closed` | Do not expect prior_side or feedback alone to rescue the signal under current controls. |
-| 98 | source-target pair narrowing | `closed` | Do not run a paid source-target pair sweep without a new local gate pass. |
+| 90 | local gate meta-failure synthesis | `closed` | Use the meta-audit redesign rule: require prospectively defined same-recording target0+target1 evidence before any GPU run. |
+| 91 | behavior-inclusive cache rebuild | `closed` | Cache rebuild is complete; all matched recordings now expose wheel. Use the wheel-derived local target gate before any training. |
+| 92 | direct cached-field derived targets | `closed` | Do not launch GPU training from contrast_strength, response_latency, or prior_engaged. |
+| 93 | contextual cached trial-state targets | `closed` | Do not spend on contextual trial-sequence targets from the compact cache. |
+| 94 | more feature-mode or l2 sweeps on shared broad anatomy | `closed` | Do not spend more local or GPU time on simple broad-anatomy feature/regularization repair. |
+| 95 | narrow existing manifest further | `closed` | Do not keep shrinking the existing cache as the primary rescue path. |
+| 96 | recording-subset selection from current artifacts | `closed` | Do not train on selected current recordings unless a new target/control first passes locally. |
+| 97 | current shared-family target/control grid | `closed` | Do not rerun the same target/family grid without a new target/control definition. |
+| 98 | alternative cached targets plus family aggregation | `closed` | Do not expect prior_side or feedback alone to rescue the signal under current controls. |
+| 99 | source-target pair narrowing | `closed` | Do not run a paid source-target pair sweep without a new local gate pass. |
 
 ## Evidence
 
@@ -33,6 +34,7 @@ Ranks remaining no-spend branches after the current local audits. This is the pl
 - strict iterative 8-recording manifest has 0 candidates and max bidir 0.250
 - projected support80 shared-family gate has 0 candidates across 128 rows and max bidir 0.500
 - projected support80 all-family feature-mode sweep has 0 candidates across 1280 rows, 4 feature modes, and max bidir 0.500
+- local gate meta-failure audit has 0 candidates across 1924 rows; recording bidirectionality fails in 1919 rows
 - recording-subset replication selected zero stable validation rows
 - GPU trigger: At least one local row on the proposed manifest must clear delta_vs_shuffle>=0, delta_vs_total>=0, target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75 before training.
 
@@ -54,6 +56,11 @@ Ranks remaining no-spend branches after the current local audits. This is the pl
 ### waveform target/control gate
 - waveform target/control gate has 0 candidates across 84 rows and max bidir 0.500
 - best depth/choice near miss clears global target fractions but reaches only 2/4 same-recording bidirectional support
+- GPU trigger: none
+
+### local gate meta-failure synthesis
+- meta-audit aggregates 1924 rows from 11 artifacts with 0 candidates and 11 one-failure rows
+- recording bidirectionality is the dominant blocker; it appears in 1919 rows
 - GPU trigger: none
 
 ### behavior-inclusive cache rebuild

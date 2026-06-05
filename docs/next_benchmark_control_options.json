@@ -9,6 +9,7 @@
     "family_alt_prior": "docs/model_free_family_bidirectional_gate_prior_side_recording_centered.json",
     "iterative_manifest": "docs/shared_family_iterative_manifest_gate.json",
     "local_cached_manifest_candidates": "docs/local_cached_manifest_candidates.json",
+    "local_gate_meta_failures": "docs/local_gate_meta_failure_audit.json",
     "projected_support80_all_families_counts": "docs/shared_family_target_control_gate_projected_support80_all_families_counts.json",
     "projected_support80_all_families_fractions": "docs/shared_family_target_control_gate_projected_support80_all_families_fractions.json",
     "projected_support80_all_families_recording_centered": "docs/shared_family_target_control_gate_projected_support80_all_families.json",
@@ -36,6 +37,7 @@
         "strict iterative 8-recording manifest has 0 candidates and max bidir 0.250",
         "projected support80 shared-family gate has 0 candidates across 128 rows and max bidir 0.500",
         "projected support80 all-family feature-mode sweep has 0 candidates across 1280 rows, 4 feature modes, and max bidir 0.500",
+        "local gate meta-failure audit has 0 candidates across 1924 rows; recording bidirectionality fails in 1919 rows",
         "recording-subset replication selected zero stable validation rows"
       ],
       "gpu_trigger": "At least one local row on the proposed manifest must clear delta_vs_shuffle>=0, delta_vs_total>=0, target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75 before training.",
@@ -90,6 +92,17 @@
     },
     {
       "evidence": [
+        "meta-audit aggregates 1924 rows from 11 artifacts with 0 candidates and 11 one-failure rows",
+        "recording bidirectionality is the dominant blocker; it appears in 1919 rows"
+      ],
+      "gpu_trigger": "none",
+      "name": "local gate meta-failure synthesis",
+      "next_action": "Use the meta-audit redesign rule: require prospectively defined same-recording target0+target1 evidence before any GPU run.",
+      "priority": 90,
+      "status": "closed"
+    },
+    {
+      "evidence": [
         "current cached trial targets and shared-family controls all fail strict same-recording bidirectionality",
         "direct derived cached-field target gate has 0 candidates and max bidir 0.750",
         "contextual trial-state target gate has 0 candidates and max bidir 0.500",
@@ -100,7 +113,7 @@
       "gpu_trigger": "At least one local row must clear delta_vs_shuffle>=0, delta_vs_total>=0, target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75.",
       "name": "behavior-inclusive cache rebuild",
       "next_action": "Cache rebuild is complete; all matched recordings now expose wheel. Use the wheel-derived local target gate before any training.",
-      "priority": 90,
+      "priority": 91,
       "status": "closed"
     },
     {
@@ -111,7 +124,7 @@
       "gpu_trigger": "none",
       "name": "direct cached-field derived targets",
       "next_action": "Do not launch GPU training from contrast_strength, response_latency, or prior_engaged.",
-      "priority": 91,
+      "priority": 92,
       "status": "closed"
     },
     {
@@ -122,7 +135,7 @@
       "gpu_trigger": "none",
       "name": "contextual cached trial-state targets",
       "next_action": "Do not spend on contextual trial-sequence targets from the compact cache.",
-      "priority": 92,
+      "priority": 93,
       "status": "closed"
     },
     {
@@ -132,7 +145,7 @@
       "gpu_trigger": "none",
       "name": "more feature-mode or l2 sweeps on shared broad anatomy",
       "next_action": "Do not spend more local or GPU time on simple broad-anatomy feature/regularization repair.",
-      "priority": 93,
+      "priority": 94,
       "status": "closed"
     },
     {
@@ -143,7 +156,7 @@
       "gpu_trigger": "none",
       "name": "narrow existing manifest further",
       "next_action": "Do not keep shrinking the existing cache as the primary rescue path.",
-      "priority": 94,
+      "priority": 95,
       "status": "closed"
     },
     {
@@ -153,7 +166,7 @@
       "gpu_trigger": "none",
       "name": "recording-subset selection from current artifacts",
       "next_action": "Do not train on selected current recordings unless a new target/control first passes locally.",
-      "priority": 95,
+      "priority": 96,
       "status": "closed"
     },
     {
@@ -164,7 +177,7 @@
       "gpu_trigger": "none",
       "name": "current shared-family target/control grid",
       "next_action": "Do not rerun the same target/family grid without a new target/control definition.",
-      "priority": 96,
+      "priority": 97,
       "status": "closed"
     },
     {
@@ -174,7 +187,7 @@
       "gpu_trigger": "none",
       "name": "alternative cached targets plus family aggregation",
       "next_action": "Do not expect prior_side or feedback alone to rescue the signal under current controls.",
-      "priority": 97,
+      "priority": 98,
       "status": "closed"
     },
     {
@@ -184,12 +197,12 @@
       "gpu_trigger": "none",
       "name": "source-target pair narrowing",
       "next_action": "Do not run a paid source-target pair sweep without a new local gate pass.",
-      "priority": 98,
+      "priority": 99,
       "status": "closed"
     }
   ],
   "summary": {
-    "closed_branches": 13,
+    "closed_branches": 14,
     "decision": "no_local_training_trigger",
     "gpu_training_trigger": "At least one local row on the proposed manifest must clear delta_vs_shuffle>=0, delta_vs_total>=0, target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75 before training.",
     "recommended_next": "new manifest with prospective bidirectional support"

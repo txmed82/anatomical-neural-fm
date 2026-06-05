@@ -24,6 +24,7 @@ ARTIFACTS = {
     "reaction_dynamics_target_family_unit_residuals": "docs/reaction_dynamics_target_family_gate_unit_residuals.json",
     "cell_type_prior_target_control": "docs/cell_type_prior_target_control_gate.json",
     "waveform_target_control": "docs/waveform_target_control_gate.json",
+    "local_gate_meta_failures": "docs/local_gate_meta_failure_audit.json",
     "local_cached_manifest_candidates": "docs/local_cached_manifest_candidates.json",
     "projected_support80_shared_family": "docs/shared_family_target_control_gate_projected_support80.json",
     "projected_support80_all_families_recording_centered": (
@@ -140,6 +141,8 @@ def build_report() -> dict:
     cell_type_prior_done = cell_type_prior is not None
     waveform = artifacts["waveform_target_control"]
     waveform_done = waveform is not None
+    meta_failures = artifacts["local_gate_meta_failures"]
+    meta_summary = meta_failures.get("summary", {}) if meta_failures is not None else {}
     local_manifest_summary = local_manifest_candidates.get("summary", {}) if local_manifest_candidates is not None else {}
     local_manifest_decision = local_manifest_summary.get("decision")
     local_projected_panel_ready = local_manifest_decision == "local_expanded_candidate_ready_for_model_free_gate"
@@ -156,7 +159,7 @@ def build_report() -> dict:
         branch(
             name="behavior-inclusive cache rebuild",
             status="closed" if behavior_ready else "recommended_next",
-            priority=90 if behavior_ready else 1,
+            priority=91 if behavior_ready else 1,
             evidence=[
                 "current cached trial targets and shared-family controls all fail strict same-recording bidirectionality",
                 (
@@ -298,6 +301,16 @@ def build_report() -> dict:
                         f"{projected_feature_modes['max_bidirectional_recording_fraction']:.3f}"
                     )
                 ),
+                (
+                    "local gate meta-failure audit has not been run yet"
+                    if meta_failures is None
+                    else (
+                        "local gate meta-failure audit has "
+                        f"{meta_summary.get('n_candidates', 'n/a')} candidates across "
+                        f"{meta_summary.get('n_rows', 'n/a')} rows; recording bidirectionality fails in "
+                        f"{meta_summary.get('failure_counts', {}).get('recording_bidirectionality', 'n/a')} rows"
+                    )
+                ),
                 "recording-subset replication selected zero stable validation rows",
             ],
             next_action=(
@@ -336,7 +349,7 @@ def build_report() -> dict:
         branch(
             name="direct cached-field derived targets",
             status="closed",
-            priority=91,
+            priority=92,
             evidence=[
                 (
                     "derived target family gate has "
@@ -457,9 +470,39 @@ def build_report() -> dict:
             ),
         ),
         branch(
+            name="local gate meta-failure synthesis",
+            status="closed" if meta_failures is not None else "recommended_next",
+            priority=90 if meta_failures is not None else 1,
+            evidence=[
+                (
+                    "local gate meta-failure audit has not been run yet"
+                    if meta_failures is None
+                    else (
+                        "meta-audit aggregates "
+                        f"{meta_summary.get('n_rows', 'n/a')} rows from "
+                        f"{meta_summary.get('n_artifacts_present', 'n/a')} artifacts with "
+                        f"{meta_summary.get('n_candidates', 'n/a')} candidates and "
+                        f"{meta_summary.get('n_one_failure_rows', 'n/a')} one-failure rows"
+                    )
+                ),
+                (
+                    "recording bidirectionality is the dominant blocker; it appears in "
+                    f"{meta_summary.get('failure_counts', {}).get('recording_bidirectionality', 'n/a')} rows"
+                    if meta_failures is not None
+                    else "aggregate closed gates to identify the next target/control redesign rule"
+                ),
+            ],
+            next_action=(
+                "Use the meta-audit redesign rule: require prospectively defined same-recording target0+target1 evidence before any GPU run."
+                if meta_failures is not None
+                else "Run scripts/audit_local_gate_meta_failures.py and update the redesign rule."
+            ),
+            gpu_trigger="none",
+        ),
+        branch(
             name="contextual cached trial-state targets",
             status="closed",
-            priority=92,
+            priority=93,
             evidence=[
                 (
                     "contextual target family gate has "
@@ -475,7 +518,7 @@ def build_report() -> dict:
         branch(
             name="more feature-mode or l2 sweeps on shared broad anatomy",
             status="closed",
-            priority=93,
+            priority=94,
             evidence=[
                 (
                     "shared broad-anatomy repair sweep has "
@@ -490,7 +533,7 @@ def build_report() -> dict:
         branch(
             name="narrow existing manifest further",
             status="closed",
-            priority=94,
+            priority=95,
             evidence=[
                 (
                     "iterative manifest gate has "
@@ -505,7 +548,7 @@ def build_report() -> dict:
         branch(
             name="recording-subset selection from current artifacts",
             status="closed",
-            priority=95,
+            priority=96,
             evidence=[
                 (
                     "recording replication audit selected "
@@ -519,7 +562,7 @@ def build_report() -> dict:
         branch(
             name="current shared-family target/control grid",
             status="closed",
-            priority=96,
+            priority=97,
             evidence=[
                 (
                     "shared-family gate has "
@@ -534,7 +577,7 @@ def build_report() -> dict:
         branch(
             name="alternative cached targets plus family aggregation",
             status="closed",
-            priority=97,
+            priority=98,
             evidence=[
                 (
                     "prior_side family gate candidates="
@@ -549,7 +592,7 @@ def build_report() -> dict:
         branch(
             name="source-target pair narrowing",
             status="closed",
-            priority=98,
+            priority=99,
             evidence=[
                 (
                     "family source-target pair gate candidates="
