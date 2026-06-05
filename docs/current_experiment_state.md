@@ -403,16 +403,16 @@ Decision: stricter manifest support alone does not rescue the signal. The clean 
 branches after the current local negative audits.
 
 - recommended next: `new manifest with prospective bidirectional support`
-- closed branches: `21`
+- closed branches: `23`
 - decision: `no_local_training_trigger`
 - GPU trigger: At least one local row on the proposed manifest must clear delta_vs_shuffle>=0, delta_vs_total>=0, target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75 before training.
 
 | priority | branch | status | next action |
 |---:|---|---|---|
 | 1 | new manifest with prospective bidirectional support | `recommended_next` | Do not launch GPU training from the projected support80 panel; its model-free family and feature-mode gates have no candidates. Redesign the target/control locally. |
-| 82 | prior-aligned choice target redesign | `closed` | Do not train: prior-aligned choice does not pass the projected-panel local gate. |
-| 83 | correct low-contrast choice target redesign | `closed` | Do not train: correct-only low-contrast choice removes the projected-panel candidate. |
-| 84 | low-contrast choice target redesign | `closed` | Do not train: the low-contrast choice candidate does not remain a strict candidate across shuffle seeds. |
+| 81 | neutral-prior low-contrast choice target redesign | `closed` | Do not train: neutral-prior low-contrast choice fails projected-panel and seed-stability gates. |
+| 82 | recording-zscore anatomy representation | `closed` | Do not train: recording-zscore anatomy features do not pass the local gate. |
+| 83 | prior-aligned choice target redesign | `closed` | Do not train: prior-aligned choice does not pass the projected-panel local gate. |
 
 Decision: the current cached target, contextual target, wheel-derived target, reaction-dynamics target, cell-type prior target/control, waveform target/control, and meta-failure synthesis branches are closed as GPU triggers. The next aligned work is a prospectively supported benchmark/control redesign, still gated locally before any paid training.
 
@@ -596,6 +596,83 @@ low-contrast choice candidate across multiple within-recording shuffle seeds.
 | low_contrast_choice_le_0.125 | fiber_tracts | CSH_ZAD_019 | 4/5 | 1/5 | +0.0186 | +0.2152 | 0.527/0.560 | 0-3 |
 
 Decision: do not train from the low-contrast choice row. It was a valid seed-0 projected-manifest candidate, but only 1/5 shuffle seeds remain strict candidates.
+
+## Neutral-Prior Low-Contrast Choice Family Gate
+
+`docs/neutral_prior_low_contrast_choice_family_gate.md` keeps only
+neutral-prior low-contrast trials before classifying left-vs-right choice
+under the unchanged shared-family local gate.
+
+- rows: `280`
+- candidates: `1`
+- positive centered-delta rows: `112`
+- max bidirectional recording fraction: `0.750`
+- decision: `neutral_prior_low_contrast_choice_family_candidate`
+
+| target | trials | eligible recordings | recordings |
+|---|---:|---:|---:|
+| neutral_prior_low_contrast_choice_le_0.0625 | 840 | 0 | 28 |
+| neutral_prior_low_contrast_choice_le_0.125 | 1400 | 0 | 28 |
+| neutral_prior_low_contrast_choice_le_0.25 | 1960 | 0 | 28 |
+| neutral_prior_low_contrast_choice_le_1 | 2520 | 10 | 28 |
+
+| target | family | holdout | decision | delta shuffle | delta total | targets | bidir recs |
+|---|---|---|---|---:|---:|---|---:|
+| neutral_prior_low_contrast_choice_le_1 | fiber_tracts | CSH_ZAD_019 | candidate | +0.042 | +0.126 | 0.550/0.613 | 3/4 |
+| neutral_prior_low_contrast_choice_le_0.25 | broad_named_anatomy | CSH_ZAD_019 | reject: recording bidirectionality | +0.430 | +0.424 | 0.600/0.695 | 2/4 |
+| neutral_prior_low_contrast_choice_le_0.0625 | fiber_tracts | SWC_038 | reject: target1 | +0.255 | +0.332 | 0.703/0.410 | 2/4 |
+| neutral_prior_low_contrast_choice_le_1 | brainstem_interbrain | CSH_ZAD_019 | reject: target0 | +0.239 | +0.354 | 0.312/0.852 | 2/4 |
+| neutral_prior_low_contrast_choice_le_0.125 | midbrain | NR_0019 | reject: target1 | +0.082 | +0.072 | 0.824/0.422 | 2/4 |
+| neutral_prior_low_contrast_choice_le_0.25 | cortical_sensorimotor | CSH_ZAD_019 | reject: target1 | +0.046 | +0.261 | 0.806/0.343 | 2/4 |
+
+Decision before validation: the current panel has one seed-0 candidate, but it is not a GPU trigger until it survives shuffle seeds and projected-manifest validation.
+
+## Neutral-Prior Low-Contrast Choice Projected Manifest Gate
+
+`docs/neutral_prior_low_contrast_choice_family_gate_projected_hdf5.md`
+reruns the same neutral-prior target on the projected local manifest.
+
+- rows: `320`
+- candidates: `0`
+- positive centered-delta rows: `133`
+- max bidirectional recording fraction: `0.750`
+- decision: `no_neutral_prior_low_contrast_choice_family_candidate`
+
+| target | trials | eligible recordings | recordings |
+|---|---:|---:|---:|
+| neutral_prior_low_contrast_choice_le_0.0625 | 930 | 0 | 31 |
+| neutral_prior_low_contrast_choice_le_0.125 | 1550 | 0 | 31 |
+| neutral_prior_low_contrast_choice_le_0.25 | 2170 | 0 | 31 |
+| neutral_prior_low_contrast_choice_le_1 | 2790 | 11 | 31 |
+
+| target | family | holdout | decision | delta shuffle | delta total | targets | bidir recs |
+|---|---|---|---|---:|---:|---|---:|
+| neutral_prior_low_contrast_choice_le_1 | broad_named_anatomy | CSH_ZAD_019 | reject: shuffle | -0.003 | -0.006 | 0.596/0.683 | 3/4 |
+| neutral_prior_low_contrast_choice_le_0.125 | fiber_tracts | ZFM-01577 | reject: target1 | +0.146 | +0.146 | 0.783/0.463 | 2/3 |
+| neutral_prior_low_contrast_choice_le_0.25 | brainstem_interbrain | CSH_ZAD_019 | reject: target0 | +0.251 | +0.436 | 0.309/0.838 | 2/4 |
+| neutral_prior_low_contrast_choice_le_0.0625 | basal_ganglia | SWC_038 | reject: target1 | +0.125 | +0.164 | 0.865/0.325 | 2/4 |
+| neutral_prior_low_contrast_choice_le_0.125 | midbrain | NR_0019 | reject: target1 | +0.079 | +0.465 | 0.846/0.469 | 2/4 |
+| neutral_prior_low_contrast_choice_le_1 | brainstem_interbrain | CSH_ZAD_019 | reject: target0 | +0.063 | +0.234 | 0.317/0.831 | 2/4 |
+
+Decision: projected support removes the seed-0 current-panel candidate. The best projected rows reach 3/4 bidirectional recordings but fail shuffle or target-direction gates.
+
+## Neutral-Prior Low-Contrast Choice Seed Sensitivity
+
+`docs/neutral_prior_low_contrast_choice_seed_sensitivity.md` reruns
+the current-panel neutral-prior low-contrast candidate across multiple
+within-recording shuffle seeds.
+
+- cases: `1`
+- robust neutral-prior low-contrast choice seed candidates: `0`
+- max positive shuffle-delta fraction: `1.000`
+- decision: `no_neutral_prior_low_contrast_choice_seed_candidate`
+- gpu training ready: `False`
+
+| target | family | holdout | positive seeds | candidate seeds | mean shuffle delta | mean total delta | mean targets | bidir range |
+|---|---|---|---:|---:|---:|---:|---:|---:|
+| neutral_prior_low_contrast_choice_le_1 | fiber_tracts | CSH_ZAD_019 | 5/5 | 2/5 | +0.0607 | +0.1260 | 0.562/0.637 | 1-3 |
+
+Decision: do not train from the neutral-prior low-contrast choice row. The true-vs-shuffle delta is positive in every seed, but only 2/5 seeds remain strict candidates and projected-manifest validation has no candidates.
 
 ## Correct Low-Contrast Choice Family Gate
 

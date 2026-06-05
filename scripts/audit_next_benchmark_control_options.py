@@ -21,6 +21,13 @@ ARTIFACTS = {
     "low_contrast_choice_family": "docs/low_contrast_choice_family_gate.json",
     "low_contrast_choice_projected": "docs/low_contrast_choice_family_gate_projected_hdf5.json",
     "low_contrast_choice_seed_sensitivity": "docs/low_contrast_choice_seed_sensitivity.json",
+    "neutral_prior_low_contrast_choice_family": "docs/neutral_prior_low_contrast_choice_family_gate.json",
+    "neutral_prior_low_contrast_choice_projected": (
+        "docs/neutral_prior_low_contrast_choice_family_gate_projected_hdf5.json"
+    ),
+    "neutral_prior_low_contrast_choice_seed_sensitivity": (
+        "docs/neutral_prior_low_contrast_choice_seed_sensitivity.json"
+    ),
     "correct_low_contrast_choice_family": "docs/correct_low_contrast_choice_family_gate.json",
     "correct_low_contrast_choice_projected": "docs/correct_low_contrast_choice_family_gate_projected_hdf5.json",
     "prior_aligned_choice_family": "docs/prior_aligned_choice_family_gate.json",
@@ -181,6 +188,27 @@ def build_report() -> dict:
     low_contrast_seed_robust = int(
         low_contrast_seed_summary.get("n_robust_low_contrast_choice_seed_candidates", 0) or 0
     )
+    neutral_prior_low_contrast = artifacts["neutral_prior_low_contrast_choice_family"]
+    neutral_prior_low_contrast_summary = (
+        neutral_prior_low_contrast.get("summary", {}) if neutral_prior_low_contrast is not None else {}
+    )
+    neutral_prior_low_contrast_projected = artifacts["neutral_prior_low_contrast_choice_projected"]
+    neutral_prior_low_contrast_projected_summary = (
+        neutral_prior_low_contrast_projected.get("summary", {})
+        if neutral_prior_low_contrast_projected is not None
+        else {}
+    )
+    neutral_prior_low_contrast_seed = artifacts["neutral_prior_low_contrast_choice_seed_sensitivity"]
+    neutral_prior_low_contrast_seed_summary = (
+        neutral_prior_low_contrast_seed.get("summary", {}) if neutral_prior_low_contrast_seed is not None else {}
+    )
+    neutral_prior_low_contrast_seed_robust = int(
+        neutral_prior_low_contrast_seed_summary.get(
+            "n_robust_neutral_prior_low_contrast_choice_seed_candidates",
+            0,
+        )
+        or 0
+    )
     correct_low_contrast = artifacts["correct_low_contrast_choice_family"]
     correct_low_contrast_summary = (
         correct_low_contrast.get("summary", {}) if correct_low_contrast is not None else {}
@@ -319,7 +347,7 @@ def build_report() -> dict:
                 if not wheel_done or (wheel_candidates or 0) > 0
                 else "closed"
             ),
-            priority=2 if not behavior_ready else (1 if not wheel_done or (wheel_candidates or 0) > 0 else 86),
+            priority=2 if not behavior_ready else (1 if not wheel_done or (wheel_candidates or 0) > 0 else 87),
             evidence=[
                 (
                     f"behavior-cache preflight has wheel in {wheel_count}/{n_behavior_recordings} "
@@ -353,13 +381,59 @@ def build_report() -> dict:
             ),
         ),
         branch(
+            name="neutral-prior low-contrast choice target redesign",
+            status=(
+                "closed"
+                if neutral_prior_low_contrast_projected is not None and neutral_prior_low_contrast_seed is not None
+                else "secondary_after_new_target"
+            ),
+            priority=81 if neutral_prior_low_contrast_projected is not None else 3,
+            evidence=[
+                (
+                    "current-panel neutral-prior low-contrast choice gate has not been run yet"
+                    if neutral_prior_low_contrast is None
+                    else (
+                        "current-panel neutral-prior low-contrast choice gate found "
+                        f"{neutral_prior_low_contrast_summary.get('n_candidates', 'n/a')} candidates across "
+                        f"{neutral_prior_low_contrast_summary.get('n_rows', 'n/a')} rows and max bidir "
+                        f"{neutral_prior_low_contrast_summary.get('max_bidirectional_recording_fraction', 0.0):.3f}"
+                    )
+                ),
+                (
+                    "projected-panel neutral-prior low-contrast choice gate has not been run yet"
+                    if neutral_prior_low_contrast_projected is None
+                    else (
+                        "projected-panel neutral-prior low-contrast choice gate found "
+                        f"{neutral_prior_low_contrast_projected_summary.get('n_candidates', 'n/a')} candidates across "
+                        f"{neutral_prior_low_contrast_projected_summary.get('n_rows', 'n/a')} rows and max bidir "
+                        f"{neutral_prior_low_contrast_projected_summary.get('max_bidirectional_recording_fraction', 0.0):.3f}"
+                    )
+                ),
+                (
+                    "neutral-prior low-contrast seed sensitivity has not been run yet"
+                    if neutral_prior_low_contrast_seed is None
+                    else (
+                        "neutral-prior low-contrast seed sensitivity found "
+                        f"{neutral_prior_low_contrast_seed_robust} robust candidates; max positive seed fraction="
+                        f"{neutral_prior_low_contrast_seed_summary.get('max_positive_shuffle_delta_fraction', 0.0):.3f}"
+                    )
+                ),
+            ],
+            next_action=(
+                "Do not train: neutral-prior low-contrast choice fails projected-panel and seed-stability gates."
+                if neutral_prior_low_contrast_projected is not None and neutral_prior_low_contrast_seed is not None
+                else "Run the neutral-prior low-contrast choice local gate on current and projected manifests."
+            ),
+            gpu_trigger="none",
+        ),
+        branch(
             name="recording-zscore anatomy representation",
             status=(
                 "closed"
                 if artifacts["projected_support80_all_families_recording_zscore"] is not None
                 else "secondary_after_new_target"
             ),
-            priority=81 if artifacts["projected_support80_all_families_recording_zscore"] is not None else 3,
+            priority=82 if artifacts["projected_support80_all_families_recording_zscore"] is not None else 3,
             evidence=[
                 (
                     "projected support80 recording-zscore family gate has not been run yet"
@@ -384,7 +458,7 @@ def build_report() -> dict:
         branch(
             name="prior-aligned choice target redesign",
             status="closed" if prior_aligned_projected is not None else "secondary_after_new_target",
-            priority=82 if prior_aligned_projected is not None else 3,
+            priority=83 if prior_aligned_projected is not None else 3,
             evidence=[
                 (
                     "current-panel prior-aligned choice gate has not been run yet"
@@ -417,7 +491,7 @@ def build_report() -> dict:
         branch(
             name="correct low-contrast choice target redesign",
             status="closed" if correct_low_contrast_projected is not None else "secondary_after_new_target",
-            priority=83 if correct_low_contrast_projected is not None else 3,
+            priority=84 if correct_low_contrast_projected is not None else 3,
             evidence=[
                 (
                     "current-panel correct low-contrast choice gate has not been run yet"
@@ -458,7 +532,7 @@ def build_report() -> dict:
                 if low_contrast_seed is not None
                 else "secondary_after_new_target"
             ),
-            priority=84 if low_contrast_seed is not None else (1 if low_contrast_projected is not None else 3),
+            priority=85 if low_contrast_seed is not None else (1 if low_contrast_projected is not None else 3),
             evidence=[
                 (
                     "current-panel low-contrast choice gate has not been run yet"
@@ -517,7 +591,7 @@ def build_report() -> dict:
                 if extreme_seed is not None
                 else "secondary_after_cache"
             ),
-            priority=85 if extreme_seed is not None else (1 if extreme_quantile_done else 3),
+            priority=86 if extreme_seed is not None else (1 if extreme_quantile_done else 3),
             evidence=[
                 (
                     "extreme-quantile target family gate has not been run yet"
@@ -774,7 +848,7 @@ def build_report() -> dict:
         branch(
             name="reaction-dynamics wheel targets",
             status="closed" if reaction_feature_modes["n_modes"] else "recommended_next",
-            priority=87 if reaction_feature_modes["n_modes"] else 1,
+            priority=88 if reaction_feature_modes["n_modes"] else 1,
             evidence=[
                 (
                     "reaction-dynamics target family feature-mode sweep has not been run yet"
@@ -810,7 +884,7 @@ def build_report() -> dict:
         branch(
             name="cell-type prior target/control gate",
             status="closed" if cell_type_prior_done else "recommended_next",
-            priority=88 if cell_type_prior_done else 1,
+            priority=89 if cell_type_prior_done else 1,
             evidence=[
                 (
                     "cell-type prior target/control gate has not been run yet"
@@ -846,7 +920,7 @@ def build_report() -> dict:
         branch(
             name="waveform target/control gate",
             status="closed" if waveform_done else "recommended_next",
-            priority=89 if waveform_done else 1,
+            priority=90 if waveform_done else 1,
             evidence=[
                 (
                     "waveform target/control gate has not been run yet"

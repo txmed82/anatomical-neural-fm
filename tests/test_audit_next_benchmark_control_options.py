@@ -81,6 +81,7 @@ def test_render_markdown_lists_closed_branches() -> None:
     assert "# Next Benchmark/Control Options Audit" in markdown
     assert "behavior-inclusive cache rebuild" in markdown
     assert "wheel-derived target family gate" in markdown
+    assert "neutral-prior low-contrast choice target redesign" in markdown
     assert "prior-aligned choice target redesign" in markdown
     assert "recording-zscore anatomy representation" in markdown
     assert "correct low-contrast choice target redesign" in markdown

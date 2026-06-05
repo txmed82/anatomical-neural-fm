@@ -115,6 +115,13 @@ WHEEL_TARGET_FAMILY_GATE_FILE = "docs/wheel_target_family_gate.json"
 LOW_CONTRAST_CHOICE_FAMILY_GATE_FILE = "docs/low_contrast_choice_family_gate.json"
 LOW_CONTRAST_CHOICE_PROJECTED_GATE_FILE = "docs/low_contrast_choice_family_gate_projected_hdf5.json"
 LOW_CONTRAST_CHOICE_SEED_SENSITIVITY_FILE = "docs/low_contrast_choice_seed_sensitivity.json"
+NEUTRAL_PRIOR_LOW_CONTRAST_CHOICE_FAMILY_GATE_FILE = "docs/neutral_prior_low_contrast_choice_family_gate.json"
+NEUTRAL_PRIOR_LOW_CONTRAST_CHOICE_PROJECTED_GATE_FILE = (
+    "docs/neutral_prior_low_contrast_choice_family_gate_projected_hdf5.json"
+)
+NEUTRAL_PRIOR_LOW_CONTRAST_CHOICE_SEED_SENSITIVITY_FILE = (
+    "docs/neutral_prior_low_contrast_choice_seed_sensitivity.json"
+)
 CORRECT_LOW_CONTRAST_CHOICE_FAMILY_GATE_FILE = "docs/correct_low_contrast_choice_family_gate.json"
 CORRECT_LOW_CONTRAST_CHOICE_PROJECTED_GATE_FILE = (
     "docs/correct_low_contrast_choice_family_gate_projected_hdf5.json"
@@ -522,6 +529,9 @@ def render_markdown(
     low_contrast_choice_family_gate: dict | None = None,
     low_contrast_choice_projected_gate: dict | None = None,
     low_contrast_choice_seed_sensitivity: dict | None = None,
+    neutral_prior_low_contrast_choice_family_gate: dict | None = None,
+    neutral_prior_low_contrast_choice_projected_gate: dict | None = None,
+    neutral_prior_low_contrast_choice_seed_sensitivity: dict | None = None,
     correct_low_contrast_choice_family_gate: dict | None = None,
     correct_low_contrast_choice_projected_gate: dict | None = None,
     prior_aligned_choice_family_gate: dict | None = None,
@@ -1685,6 +1695,133 @@ def render_markdown(
                 "Decision: do not train from the low-contrast choice row. It was a "
                 "valid seed-0 projected-manifest candidate, but only 1/5 shuffle seeds "
                 "remain strict candidates."
+            ),
+            "",
+        ]
+    if neutral_prior_low_contrast_choice_family_gate is not None:
+        summary = neutral_prior_low_contrast_choice_family_gate["summary"]
+        balances = summary["target_balances"]
+        top = summary["top_rows"][:6]
+        lines += [
+            "## Neutral-Prior Low-Contrast Choice Family Gate",
+            "",
+            "`docs/neutral_prior_low_contrast_choice_family_gate.md` keeps only",
+            "neutral-prior low-contrast trials before classifying left-vs-right choice",
+            "under the unchanged shared-family local gate.",
+            "",
+            f"- rows: `{summary['n_rows']}`",
+            f"- candidates: `{summary['n_candidates']}`",
+            f"- positive centered-delta rows: `{summary['n_positive_centered_delta']}`",
+            f"- max bidirectional recording fraction: `{summary['max_bidirectional_recording_fraction']:.3f}`",
+            f"- decision: `{summary['decision']}`",
+            "",
+            "| target | trials | eligible recordings | recordings |",
+            "|---|---:|---:|---:|",
+        ]
+        for target, row in balances.items():
+            lines.append(
+                f"| {target} | {row['n_trials']} | {row['eligible_recordings']} | {row['n_recordings']} |"
+            )
+        lines += [
+            "",
+            "| target | family | holdout | decision | delta shuffle | delta total | targets | bidir recs |",
+            "|---|---|---|---|---:|---:|---|---:|",
+        ]
+        for row in top:
+            lines.append(
+                f"| {row['target_mode']} | {row['family']} | {row['holdout']} | {row['decision']} | "
+                f"{row['centered_delta_vs_shuffle']:+.3f} | {row['centered_delta_vs_total']:+.3f} | "
+                f"{row['target0_improved_vs_shuffle']:.3f}/{row['target1_improved_vs_shuffle']:.3f} | "
+                f"{row['n_bidirectional_recordings']}/{row['n_recordings']} |"
+            )
+        lines += [
+            "",
+            (
+                "Decision before validation: the current panel has one seed-0 candidate, "
+                "but it is not a GPU trigger until it survives shuffle seeds and projected-manifest validation."
+            ),
+            "",
+        ]
+    if neutral_prior_low_contrast_choice_projected_gate is not None:
+        summary = neutral_prior_low_contrast_choice_projected_gate["summary"]
+        balances = summary["target_balances"]
+        top = summary["top_rows"][:6]
+        lines += [
+            "## Neutral-Prior Low-Contrast Choice Projected Manifest Gate",
+            "",
+            "`docs/neutral_prior_low_contrast_choice_family_gate_projected_hdf5.md`",
+            "reruns the same neutral-prior target on the projected local manifest.",
+            "",
+            f"- rows: `{summary['n_rows']}`",
+            f"- candidates: `{summary['n_candidates']}`",
+            f"- positive centered-delta rows: `{summary['n_positive_centered_delta']}`",
+            f"- max bidirectional recording fraction: `{summary['max_bidirectional_recording_fraction']:.3f}`",
+            f"- decision: `{summary['decision']}`",
+            "",
+            "| target | trials | eligible recordings | recordings |",
+            "|---|---:|---:|---:|",
+        ]
+        for target, row in balances.items():
+            lines.append(
+                f"| {target} | {row['n_trials']} | {row['eligible_recordings']} | {row['n_recordings']} |"
+            )
+        lines += [
+            "",
+            "| target | family | holdout | decision | delta shuffle | delta total | targets | bidir recs |",
+            "|---|---|---|---|---:|---:|---|---:|",
+        ]
+        for row in top:
+            lines.append(
+                f"| {row['target_mode']} | {row['family']} | {row['holdout']} | {row['decision']} | "
+                f"{row['centered_delta_vs_shuffle']:+.3f} | {row['centered_delta_vs_total']:+.3f} | "
+                f"{row['target0_improved_vs_shuffle']:.3f}/{row['target1_improved_vs_shuffle']:.3f} | "
+                f"{row['n_bidirectional_recordings']}/{row['n_recordings']} |"
+            )
+        lines += [
+            "",
+            (
+                "Decision: projected support removes the seed-0 current-panel candidate. "
+                "The best projected rows reach 3/4 bidirectional recordings but fail "
+                "shuffle or target-direction gates."
+            ),
+            "",
+        ]
+    if neutral_prior_low_contrast_choice_seed_sensitivity is not None:
+        summary = neutral_prior_low_contrast_choice_seed_sensitivity["summary"]
+        top = neutral_prior_low_contrast_choice_seed_sensitivity["rows"][:5]
+        lines += [
+            "## Neutral-Prior Low-Contrast Choice Seed Sensitivity",
+            "",
+            "`docs/neutral_prior_low_contrast_choice_seed_sensitivity.md` reruns",
+            "the current-panel neutral-prior low-contrast candidate across multiple",
+            "within-recording shuffle seeds.",
+            "",
+            f"- cases: `{summary['n_cases']}`",
+            "- robust neutral-prior low-contrast choice seed candidates: "
+            f"`{summary['n_robust_neutral_prior_low_contrast_choice_seed_candidates']}`",
+            f"- max positive shuffle-delta fraction: `{summary['max_positive_shuffle_delta_fraction']:.3f}`",
+            f"- decision: `{summary['decision']}`",
+            f"- gpu training ready: `{summary['gpu_training_ready']}`",
+            "",
+            "| target | family | holdout | positive seeds | candidate seeds | mean shuffle delta | mean total delta | mean targets | bidir range |",
+            "|---|---|---|---:|---:|---:|---:|---:|---:|",
+        ]
+        for row in top:
+            lines.append(
+                f"| {row['target_mode']} | {row['family']} | {row['holdout']} | "
+                f"{row['n_positive_shuffle_delta_seeds']}/{row['n_seeds']} | "
+                f"{row['n_candidate_seeds']}/{row['n_seeds']} | "
+                f"{row['mean_centered_delta_vs_shuffle']:+.4f} | "
+                f"{row['mean_centered_delta_vs_total']:+.4f} | "
+                f"{row['mean_target0']:.3f}/{row['mean_target1']:.3f} | "
+                f"{row['min_bidirectional_recordings']}-{row['max_bidirectional_recordings']} |"
+            )
+        lines += [
+            "",
+            (
+                "Decision: do not train from the neutral-prior low-contrast choice row. "
+                "The true-vs-shuffle delta is positive in every seed, but only 2/5 "
+                "seeds remain strict candidates and projected-manifest validation has no candidates."
             ),
             "",
         ]
@@ -3142,6 +3279,15 @@ def main() -> int:
     low_contrast_choice_seed_sensitivity = read_mechanism_audit(
         REPO_ROOT / LOW_CONTRAST_CHOICE_SEED_SENSITIVITY_FILE
     )
+    neutral_prior_low_contrast_choice_family_gate = read_mechanism_audit(
+        REPO_ROOT / NEUTRAL_PRIOR_LOW_CONTRAST_CHOICE_FAMILY_GATE_FILE
+    )
+    neutral_prior_low_contrast_choice_projected_gate = read_mechanism_audit(
+        REPO_ROOT / NEUTRAL_PRIOR_LOW_CONTRAST_CHOICE_PROJECTED_GATE_FILE
+    )
+    neutral_prior_low_contrast_choice_seed_sensitivity = read_mechanism_audit(
+        REPO_ROOT / NEUTRAL_PRIOR_LOW_CONTRAST_CHOICE_SEED_SENSITIVITY_FILE
+    )
     correct_low_contrast_choice_family_gate = read_mechanism_audit(
         REPO_ROOT / CORRECT_LOW_CONTRAST_CHOICE_FAMILY_GATE_FILE
     )
@@ -3295,6 +3441,9 @@ def main() -> int:
         low_contrast_choice_family_gate,
         low_contrast_choice_projected_gate,
         low_contrast_choice_seed_sensitivity,
+        neutral_prior_low_contrast_choice_family_gate,
+        neutral_prior_low_contrast_choice_projected_gate,
+        neutral_prior_low_contrast_choice_seed_sensitivity,
         correct_low_contrast_choice_family_gate,
         correct_low_contrast_choice_projected_gate,
         prior_aligned_choice_family_gate,
@@ -3409,6 +3558,9 @@ def main() -> int:
         "low_contrast_choice_family_gate": low_contrast_choice_family_gate,
         "low_contrast_choice_projected_gate": low_contrast_choice_projected_gate,
         "low_contrast_choice_seed_sensitivity": low_contrast_choice_seed_sensitivity,
+        "neutral_prior_low_contrast_choice_family_gate": neutral_prior_low_contrast_choice_family_gate,
+        "neutral_prior_low_contrast_choice_projected_gate": neutral_prior_low_contrast_choice_projected_gate,
+        "neutral_prior_low_contrast_choice_seed_sensitivity": neutral_prior_low_contrast_choice_seed_sensitivity,
         "correct_low_contrast_choice_family_gate": correct_low_contrast_choice_family_gate,
         "correct_low_contrast_choice_projected_gate": correct_low_contrast_choice_projected_gate,
         "prior_aligned_choice_family_gate": prior_aligned_choice_family_gate,

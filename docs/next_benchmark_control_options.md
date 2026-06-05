@@ -3,22 +3,23 @@
 Ranks remaining no-spend branches after the current local audits. This is the planning gate before any new RunPod training.
 
 - recommended next: `new manifest with prospective bidirectional support`
-- closed branches: `22`
+- closed branches: `23`
 - decision: `no_local_training_trigger`
 - GPU trigger: At least one local row on the proposed manifest must clear delta_vs_shuffle>=0, delta_vs_total>=0, target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75 before training.
 
 | priority | branch | status | next action |
 |---:|---|---|---|
 | 1 | new manifest with prospective bidirectional support | `recommended_next` | Do not launch GPU training from the projected support80 panel; its model-free family and feature-mode gates have no candidates. Redesign the target/control locally. |
-| 81 | recording-zscore anatomy representation | `closed` | Do not train: recording-zscore anatomy features do not pass the local gate. |
-| 82 | prior-aligned choice target redesign | `closed` | Do not train: prior-aligned choice does not pass the projected-panel local gate. |
-| 83 | correct low-contrast choice target redesign | `closed` | Do not train: correct-only low-contrast choice removes the projected-panel candidate. |
-| 84 | low-contrast choice target redesign | `closed` | Do not train: the low-contrast choice candidate does not remain a strict candidate across shuffle seeds. |
-| 85 | extreme-quantile behavioral target gate | `closed` | Do not train: exploratory interpretable region-pair candidates do not remain strict candidates across shuffle seeds. |
-| 86 | wheel-derived target family gate | `closed` | Do not spend on the tested wheel targets; move to a prospectively supported manifest. |
-| 87 | reaction-dynamics wheel targets | `closed` | Do not spend on reaction-dynamics wheel targets; the near miss fails true-vs-shuffle and does not replicate across feature modes. |
-| 88 | cell-type prior target/control gate | `closed` | Do not spend on broad ABC cell-class prior channels; they do not pass the local bidirectional gate. |
-| 89 | waveform target/control gate | `closed` | Do not spend on simple waveform-channel controls; they do not pass the local bidirectional gate. |
+| 81 | neutral-prior low-contrast choice target redesign | `closed` | Do not train: neutral-prior low-contrast choice fails projected-panel and seed-stability gates. |
+| 82 | recording-zscore anatomy representation | `closed` | Do not train: recording-zscore anatomy features do not pass the local gate. |
+| 83 | prior-aligned choice target redesign | `closed` | Do not train: prior-aligned choice does not pass the projected-panel local gate. |
+| 84 | correct low-contrast choice target redesign | `closed` | Do not train: correct-only low-contrast choice removes the projected-panel candidate. |
+| 85 | low-contrast choice target redesign | `closed` | Do not train: the low-contrast choice candidate does not remain a strict candidate across shuffle seeds. |
+| 86 | extreme-quantile behavioral target gate | `closed` | Do not train: exploratory interpretable region-pair candidates do not remain strict candidates across shuffle seeds. |
+| 87 | wheel-derived target family gate | `closed` | Do not spend on the tested wheel targets; move to a prospectively supported manifest. |
+| 88 | reaction-dynamics wheel targets | `closed` | Do not spend on reaction-dynamics wheel targets; the near miss fails true-vs-shuffle and does not replicate across feature modes. |
+| 89 | cell-type prior target/control gate | `closed` | Do not spend on broad ABC cell-class prior channels; they do not pass the local bidirectional gate. |
+| 90 | waveform target/control gate | `closed` | Do not spend on simple waveform-channel controls; they do not pass the local bidirectional gate. |
 | 90 | local gate meta-failure synthesis | `closed` | Use the meta-audit redesign rule: require prospectively defined same-recording target0+target1 evidence before any GPU run. |
 | 90 | recording bidirectionality prospectus | `closed` | Run the unchanged local gate on manifests/ibl_bwm_recording_bidirectionality_prospect_leads.json; treat any pass as a local redesign candidate, not a training trigger. |
 | 90 | prospect-lead derived target validation | `closed` | Do not train on prospect-lead candidates; same-subject non-lead recordings do not validate them. |
@@ -48,6 +49,12 @@ Ranks remaining no-spend branches after the current local audits. This is the pl
 - subject-stable shuffle-seed sensitivity found 0 robust candidates; max positive seed fraction=0.4
 - recording-subset replication selected zero stable validation rows
 - GPU trigger: At least one local row on the proposed manifest must clear delta_vs_shuffle>=0, delta_vs_total>=0, target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75 before training.
+
+### neutral-prior low-contrast choice target redesign
+- current-panel neutral-prior low-contrast choice gate found 1 candidates across 280 rows and max bidir 0.750
+- projected-panel neutral-prior low-contrast choice gate found 0 candidates across 320 rows and max bidir 0.750
+- neutral-prior low-contrast seed sensitivity found 0 robust candidates; max positive seed fraction=1.000
+- GPU trigger: none
 
 ### recording-zscore anatomy representation
 - projected support80 recording-zscore family gate has 0 candidates across 320 rows and max bidir 0.500

@@ -437,6 +437,75 @@ def test_render_markdown_includes_low_contrast_choice_seed_veto() -> None:
     assert "do not train from the low-contrast choice row" in markdown
 
 
+def test_render_markdown_includes_neutral_prior_low_contrast_choice_veto() -> None:
+    gate_payload = {
+        "summary": {
+            "n_rows": 320,
+            "n_candidates": 0,
+            "n_positive_centered_delta": 133,
+            "max_bidirectional_recording_fraction": 0.75,
+            "decision": "no_neutral_prior_low_contrast_choice_family_candidate",
+            "target_balances": {
+                "neutral_prior_low_contrast_choice_le_1": {
+                    "n_trials": 2790,
+                    "eligible_recordings": 11,
+                    "n_recordings": 31,
+                }
+            },
+            "top_rows": [
+                {
+                    "target_mode": "neutral_prior_low_contrast_choice_le_1",
+                    "family": "broad_named_anatomy",
+                    "holdout": "CSH_ZAD_019",
+                    "decision": "reject: shuffle",
+                    "centered_delta_vs_shuffle": -0.003,
+                    "centered_delta_vs_total": -0.006,
+                    "target0_improved_vs_shuffle": 0.596,
+                    "target1_improved_vs_shuffle": 0.683,
+                    "n_bidirectional_recordings": 3,
+                    "n_recordings": 4,
+                }
+            ],
+        }
+    }
+    markdown = render_markdown(
+        [],
+        [],
+        neutral_prior_low_contrast_choice_family_gate=gate_payload,
+        neutral_prior_low_contrast_choice_projected_gate=gate_payload,
+        neutral_prior_low_contrast_choice_seed_sensitivity={
+            "summary": {
+                "n_cases": 1,
+                "n_robust_neutral_prior_low_contrast_choice_seed_candidates": 0,
+                "max_positive_shuffle_delta_fraction": 1.0,
+                "decision": "no_neutral_prior_low_contrast_choice_seed_candidate",
+                "gpu_training_ready": False,
+            },
+            "rows": [
+                {
+                    "target_mode": "neutral_prior_low_contrast_choice_le_1",
+                    "family": "fiber_tracts",
+                    "holdout": "CSH_ZAD_019",
+                    "n_positive_shuffle_delta_seeds": 5,
+                    "n_candidate_seeds": 2,
+                    "n_seeds": 5,
+                    "mean_centered_delta_vs_shuffle": 0.0607,
+                    "mean_centered_delta_vs_total": 0.126,
+                    "mean_target0": 0.562,
+                    "mean_target1": 0.637,
+                    "min_bidirectional_recordings": 1,
+                    "max_bidirectional_recordings": 3,
+                }
+            ],
+        },
+    )
+
+    assert "Neutral-Prior Low-Contrast Choice Family Gate" in markdown
+    assert "Neutral-Prior Low-Contrast Choice Projected Manifest Gate" in markdown
+    assert "Neutral-Prior Low-Contrast Choice Seed Sensitivity" in markdown
+    assert "do not train from the neutral-prior low-contrast choice row" in markdown
+
+
 def test_render_markdown_includes_correct_low_contrast_choice_veto() -> None:
     gate_payload = {
         "summary": {
