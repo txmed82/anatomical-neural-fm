@@ -881,6 +881,17 @@ criterion. The next paid experiment should replicate the centered-AUC delta on a
 second held-out animal or switch the gate to a recording-centered true-vs-shuffle
 AUC/permutation test before spending on broader sweeps.
 
+Second-holdout replication: a bounded L4 run for `NR_0019` completed under
+`runs/lso_nr0019_full_eval_centered_shared_parent_shuffle`. It is negative:
+the executable gate has `n_passing_seeds=0/3`, paired true-vs-shuffle
+improvements are `0.500`, `0.493`, and `0.512`, and the seed ensemble has
+paired `region_only_vs_shuffle=0.493`. Although the NR_0019 ensemble has a small
+full/centered AUC separation from shuffled regions (`region_only` full AUC
+`0.508`, centered `0.505`; shuffle full `0.494`, centered `0.493`), it does not
+replicate the CSH centered-AUC pattern strongly enough for a demo. Do not spend
+on more same-setup held-out sweeps until the objective/gate is redesigned around
+a statistically defensible anatomy-specific contrast.
+
 After cleanup, run:
 
 ```bash

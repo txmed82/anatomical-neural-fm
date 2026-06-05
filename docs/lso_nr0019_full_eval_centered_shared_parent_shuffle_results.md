@@ -164,3 +164,28 @@ root: `runs/lso_nr0019_full_eval_centered_shared_parent_shuffle`
 | NR_0019 | 0 | 2424 | 0.500 | 0.550 | fail |
 | NR_0019 | 1 | 2424 | 0.493 | 0.550 | fail |
 | NR_0019 | 2 | 2424 | 0.512 | 0.550 | fail |
+
+## Post-Pull Diagnostic Refresh
+
+Executable gate and seed-ensemble diagnostics were recomputed locally from the
+committed `eval_predictions.jsonl` files after pulling the RunPod artifacts.
+
+- gate artifact: `docs/lso_nr0019_full_eval_centered_shared_parent_shuffle_gate.json`
+- ensemble artifact: `docs/lso_nr0019_full_eval_centered_ensemble_diagnostics.json`
+- gate pass: `false`
+- passing seeds: `0/3`
+- paired true-vs-shuffle improvements: `0.500`, `0.493`, `0.512`
+- threshold: `0.550`
+
+Seed-ensemble prediction metrics:
+
+| arm | full AUC | recording-centered AUC |
+|---|---:|---:|
+| shared_baseline | 0.494 | 0.495 |
+| region_only | 0.508 | 0.505 |
+| region_shuffle | 0.494 | 0.493 |
+
+The ensemble has a small AUC separation, but the paired true-vs-shuffle
+improvement is `0.493`, below chance and far below the demo threshold. This is a
+negative replication of the CSH centered-AUC hint rather than evidence of a
+general cross-animal anatomical-transfer signal.
