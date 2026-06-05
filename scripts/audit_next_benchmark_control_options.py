@@ -22,6 +22,7 @@ ARTIFACTS = {
     "reaction_dynamics_target_family_counts": "docs/reaction_dynamics_target_family_gate_counts.json",
     "reaction_dynamics_target_family_fractions": "docs/reaction_dynamics_target_family_gate_fractions.json",
     "reaction_dynamics_target_family_unit_residuals": "docs/reaction_dynamics_target_family_gate_unit_residuals.json",
+    "cell_type_prior_target_control": "docs/cell_type_prior_target_control_gate.json",
     "local_cached_manifest_candidates": "docs/local_cached_manifest_candidates.json",
     "projected_support80_shared_family": "docs/shared_family_target_control_gate_projected_support80.json",
     "projected_support80_all_families_recording_centered": (
@@ -134,6 +135,8 @@ def build_report() -> dict:
     wheel_candidates = summary_value(wheel, "n_candidates", None)
     wheel_done = wheel is not None
     reaction_feature_modes = reaction_feature_mode_summary(artifacts)
+    cell_type_prior = artifacts["cell_type_prior_target_control"]
+    cell_type_prior_done = cell_type_prior is not None
     local_manifest_summary = local_manifest_candidates.get("summary", {}) if local_manifest_candidates is not None else {}
     local_manifest_decision = local_manifest_summary.get("decision")
     local_projected_panel_ready = local_manifest_decision == "local_expanded_candidate_ready_for_model_free_gate"
@@ -150,7 +153,7 @@ def build_report() -> dict:
         branch(
             name="behavior-inclusive cache rebuild",
             status="closed" if behavior_ready else "recommended_next",
-            priority=88 if behavior_ready else 1,
+            priority=89 if behavior_ready else 1,
             evidence=[
                 "current cached trial targets and shared-family controls all fail strict same-recording bidirectionality",
                 (
@@ -239,8 +242,8 @@ def build_report() -> dict:
         ),
         branch(
             name="new manifest with prospective bidirectional support",
-            status="recommended_next" if behavior_ready and wheel_done and reaction_feature_modes["n_modes"] and not (wheel_candidates or 0) else "secondary_after_new_target",
-            priority=1 if behavior_ready and wheel_done and reaction_feature_modes["n_modes"] and not (wheel_candidates or 0) else 2,
+            status="recommended_next" if behavior_ready and wheel_done and reaction_feature_modes["n_modes"] and cell_type_prior_done and not (wheel_candidates or 0) else "secondary_after_new_target",
+            priority=1 if behavior_ready and wheel_done and reaction_feature_modes["n_modes"] and cell_type_prior_done and not (wheel_candidates or 0) else 2,
             evidence=[
                 "current 28-recording manifest is feasible but not clean enough to pass the local gate",
                 (
@@ -330,7 +333,7 @@ def build_report() -> dict:
         branch(
             name="direct cached-field derived targets",
             status="closed",
-            priority=89,
+            priority=90,
             evidence=[
                 (
                     "derived target family gate has "
@@ -379,9 +382,45 @@ def build_report() -> dict:
             ),
         ),
         branch(
+            name="cell-type prior target/control gate",
+            status="closed" if cell_type_prior_done else "recommended_next",
+            priority=88 if cell_type_prior_done else 1,
+            evidence=[
+                (
+                    "cell-type prior target/control gate has not been run yet"
+                    if not cell_type_prior_done
+                    else (
+                        "cell-type prior target/control gate has "
+                        f"{summary_value(cell_type_prior, 'n_candidates', 'n/a')} candidates across "
+                        f"{summary_value(cell_type_prior, 'n_rows', 'n/a')} rows and max bidir "
+                        f"{summary_value(cell_type_prior, 'max_bidirectional_recording_fraction', 0.0):.3f}"
+                    )
+                ),
+                (
+                    "best rows clear global target fractions but reach only 2/4 same-recording bidirectional support"
+                    if cell_type_prior_done
+                    else "project fine-region spike counts through ABC subclass priors before any cell-type-prior GPU run"
+                ),
+            ],
+            next_action=(
+                "Do not spend on broad ABC cell-class prior channels; they do not pass the local bidirectional gate."
+                if cell_type_prior_done
+                else "Run scripts/audit_cell_type_prior_target_control_gate.py locally before any cell-type-prior GPU training."
+            ),
+            gpu_trigger=(
+                "none"
+                if cell_type_prior_done
+                else (
+                    "At least one local cell-type-prior row must clear delta_vs_shuffle>=0, "
+                    "delta_vs_total>=0, target0>=0.55, target1>=0.55, and "
+                    "bidirectional_recording_fraction>=0.75."
+                )
+            ),
+        ),
+        branch(
             name="contextual cached trial-state targets",
             status="closed",
-            priority=90,
+            priority=91,
             evidence=[
                 (
                     "contextual target family gate has "
@@ -397,7 +436,7 @@ def build_report() -> dict:
         branch(
             name="more feature-mode or l2 sweeps on shared broad anatomy",
             status="closed",
-            priority=91,
+            priority=92,
             evidence=[
                 (
                     "shared broad-anatomy repair sweep has "
@@ -412,7 +451,7 @@ def build_report() -> dict:
         branch(
             name="narrow existing manifest further",
             status="closed",
-            priority=92,
+            priority=93,
             evidence=[
                 (
                     "iterative manifest gate has "
@@ -427,7 +466,7 @@ def build_report() -> dict:
         branch(
             name="recording-subset selection from current artifacts",
             status="closed",
-            priority=93,
+            priority=94,
             evidence=[
                 (
                     "recording replication audit selected "
@@ -441,7 +480,7 @@ def build_report() -> dict:
         branch(
             name="current shared-family target/control grid",
             status="closed",
-            priority=94,
+            priority=95,
             evidence=[
                 (
                     "shared-family gate has "
@@ -456,7 +495,7 @@ def build_report() -> dict:
         branch(
             name="alternative cached targets plus family aggregation",
             status="closed",
-            priority=95,
+            priority=96,
             evidence=[
                 (
                     "prior_side family gate candidates="
@@ -471,7 +510,7 @@ def build_report() -> dict:
         branch(
             name="source-target pair narrowing",
             status="closed",
-            priority=96,
+            priority=97,
             evidence=[
                 (
                     "family source-target pair gate candidates="
