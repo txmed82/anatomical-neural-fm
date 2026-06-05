@@ -138,6 +138,9 @@ MODEL_FREE_SOURCE_TARGET_PAIR_FAMILIES_RECORDING_CENTERED_FILE = (
 )
 MODEL_FREE_GATE_BLOCKER_AUDIT_FILE = "docs/model_free_gate_blocker_audit.json"
 MODEL_FREE_RECORDING_SUPPORT_AUDIT_FILE = "docs/model_free_recording_support_audit.json"
+RECORDING_BIDIRECTIONALITY_PROSPECTUS_FILE = "docs/recording_bidirectionality_prospectus.json"
+DERIVED_TARGET_FAMILY_PROSPECT_LEADS_FILE = "docs/derived_target_family_gate_prospect_leads.json"
+PROSPECT_LEAD_CANDIDATE_VALIDATION_FILE = "docs/prospect_lead_candidate_validation.json"
 MODEL_FREE_RECORDING_DIRECTIONALITY_AUDIT_FILE = "docs/model_free_recording_directionality_audit.json"
 SYMMETRIC_RECORDING_SUPPORT_AUDIT_FILE = "docs/symmetric_recording_support_audit.json"
 SYMMETRIC_THRESHOLD_SENSITIVITY_AUDIT_FILE = "docs/symmetric_threshold_sensitivity_audit.json"
@@ -468,6 +471,9 @@ def render_markdown(
     model_free_source_target_pair_families_recording_centered: dict | None = None,
     model_free_gate_blocker_audit: dict | None = None,
     model_free_recording_support_audit: dict | None = None,
+    recording_bidirectionality_prospectus: dict | None = None,
+    derived_target_family_prospect_leads: dict | None = None,
+    prospect_lead_candidate_validation: dict | None = None,
     model_free_recording_directionality_audit: dict | None = None,
     symmetric_recording_support_audit: dict | None = None,
     symmetric_threshold_sensitivity_audit: dict | None = None,
@@ -1804,6 +1810,91 @@ def render_markdown(
             ),
             "",
         ]
+    if recording_bidirectionality_prospectus is not None:
+        summary = recording_bidirectionality_prospectus["summary"]
+        top = summary["top_recordings"][:4]
+        lines += [
+            "## Recording Bidirectionality Prospectus",
+            "",
+            "`docs/recording_bidirectionality_prospectus.md` aggregates per-recording",
+            "target0/target1 support across the current local-gate artifacts, including",
+            "the newer wheel, reaction-dynamics, cell-prior, waveform, and projected",
+            "support80 sweeps.",
+            "",
+            f"- observations: `{summary['n_observations']}`",
+            f"- recordings: `{summary['n_recordings']}`",
+            f"- bidirectional observations: `{summary['n_bidirectional_observations']}`",
+            f"- recordings with bidirectional support: `{summary['recordings_with_bidirectional_support']}`",
+            f"- prospect recordings: `{summary['n_prospect_recordings']}`",
+            f"- decision: `{summary['decision']}`",
+            "",
+            "| recording | holdouts | observations | bidir obs | bidir sources | bidir targets | mean sym |",
+            "|---|---|---:|---:|---:|---:|---:|",
+        ]
+        for row in top:
+            lines.append(
+                f"| {row['recording']} | {', '.join(row['holdouts'])} | "
+                f"{row['n_observations']} | {row['n_bidirectional_observations']} | "
+                f"{row['n_bidirectional_sources']} | {row['n_bidirectional_target_modes']} | "
+                f"{row['mean_symmetric_support']:.3f} |"
+            )
+        lines += [
+            "",
+            (
+                "Decision: this prospectus can only inform the next prospective "
+                "target/control rule. It is not a GPU trigger; the unchanged local "
+                "gate must pass before training."
+            ),
+            "",
+        ]
+    if derived_target_family_prospect_leads is not None:
+        summary = derived_target_family_prospect_leads["summary"]
+        top = summary["top_rows"][:4]
+        lines += [
+            "## Prospect-Lead Derived Target Gate",
+            "",
+            "`docs/derived_target_family_gate_prospect_leads.md` reruns the derived",
+            "cached-target local gate on the 18-recording prospect-lead manifest.",
+            "",
+            f"- rows: `{summary['n_rows']}`",
+            f"- candidates: `{summary['n_candidates']}`",
+            f"- max bidirectional recordings: `{summary['max_bidirectional_recordings']}`",
+            f"- max bidirectional recording fraction: `{summary['max_bidirectional_recording_fraction']:.3f}`",
+            f"- decision: `{summary['decision']}`",
+            "",
+            "| target | family | holdout | decision | delta shuffle | delta total | target0 | target1 | bidir recs |",
+            "|---|---|---|---|---:|---:|---:|---:|---:|",
+        ]
+        for row in top:
+            lines.append(
+                f"| {row['target_mode']} | {row['family']} | {row['holdout']} | "
+                f"{row['decision']} | {row['centered_delta_vs_shuffle']:+.3f} | "
+                f"{row['centered_delta_vs_total']:+.3f} | "
+                f"{row['target0_improved_vs_shuffle']:.3f} | "
+                f"{row['target1_improved_vs_shuffle']:.3f} | "
+                f"{row['n_bidirectional_recordings']}/{row['n_recordings']} |"
+            )
+        lines.append("")
+    if prospect_lead_candidate_validation is not None:
+        summary = prospect_lead_candidate_validation["summary"]
+        lines += [
+            "## Prospect-Lead Candidate Validation",
+            "",
+            "`docs/prospect_lead_candidate_validation.md` compares prospect-lead",
+            "candidates against the full-manifest derived target gate.",
+            "",
+            f"- prospect candidates: `{summary['n_prospect_candidates']}`",
+            f"- validated candidates: `{summary['n_validated_candidates']}`",
+            f"- single-recording candidates: `{summary['n_single_recording_candidates']}`",
+            f"- subset-only candidates: `{summary['n_subset_only_candidates']}`",
+            f"- decision: `{summary['decision']}`",
+            "",
+            (
+                "Decision: prospect-lead rows remain design leads only. They do not "
+                "justify GPU training until they validate outside the selected subset."
+            ),
+            "",
+        ]
     if model_free_recording_directionality_audit is not None:
         summary = model_free_recording_directionality_audit["summary"]
         overall = summary["overall"]
@@ -2226,6 +2317,15 @@ def main() -> int:
     )
     model_free_gate_blocker_audit = read_mechanism_audit(REPO_ROOT / MODEL_FREE_GATE_BLOCKER_AUDIT_FILE)
     model_free_recording_support_audit = read_mechanism_audit(REPO_ROOT / MODEL_FREE_RECORDING_SUPPORT_AUDIT_FILE)
+    recording_bidirectionality_prospectus = read_mechanism_audit(
+        REPO_ROOT / RECORDING_BIDIRECTIONALITY_PROSPECTUS_FILE
+    )
+    derived_target_family_prospect_leads = read_mechanism_audit(
+        REPO_ROOT / DERIVED_TARGET_FAMILY_PROSPECT_LEADS_FILE
+    )
+    prospect_lead_candidate_validation = read_mechanism_audit(
+        REPO_ROOT / PROSPECT_LEAD_CANDIDATE_VALIDATION_FILE
+    )
     model_free_recording_directionality_audit = read_mechanism_audit(
         REPO_ROOT / MODEL_FREE_RECORDING_DIRECTIONALITY_AUDIT_FILE
     )
@@ -2305,6 +2405,9 @@ def main() -> int:
         model_free_source_target_pair_families_recording_centered,
         model_free_gate_blocker_audit,
         model_free_recording_support_audit,
+        recording_bidirectionality_prospectus,
+        derived_target_family_prospect_leads,
+        prospect_lead_candidate_validation,
         model_free_recording_directionality_audit,
         symmetric_recording_support_audit,
         symmetric_threshold_sensitivity_audit,
@@ -2401,6 +2504,9 @@ def main() -> int:
         ),
         "model_free_gate_blocker_audit": model_free_gate_blocker_audit,
         "model_free_recording_support_audit": model_free_recording_support_audit,
+        "recording_bidirectionality_prospectus": recording_bidirectionality_prospectus,
+        "derived_target_family_prospect_leads": derived_target_family_prospect_leads,
+        "prospect_lead_candidate_validation": prospect_lead_candidate_validation,
         "model_free_recording_directionality_audit": model_free_recording_directionality_audit,
         "symmetric_recording_support_audit": symmetric_recording_support_audit,
         "symmetric_threshold_sensitivity_audit": symmetric_threshold_sensitivity_audit,

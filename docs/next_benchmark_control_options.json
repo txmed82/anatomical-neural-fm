@@ -4,6 +4,7 @@
     "cell_type_prior_target_control": "docs/cell_type_prior_target_control_gate.json",
     "contextual_target_family": "docs/contextual_target_family_gate.json",
     "derived_target_family": "docs/derived_target_family_gate.json",
+    "derived_target_family_prospect_leads": "docs/derived_target_family_gate_prospect_leads.json",
     "external_manifest_acquisition_gap": "docs/external_manifest_acquisition_gap.json",
     "family_alt_feedback": "docs/model_free_family_bidirectional_gate_feedback_recording_centered.json",
     "family_alt_prior": "docs/model_free_family_bidirectional_gate_prior_side_recording_centered.json",
@@ -15,10 +16,13 @@
     "projected_support80_all_families_recording_centered": "docs/shared_family_target_control_gate_projected_support80_all_families.json",
     "projected_support80_all_families_unit_residuals": "docs/shared_family_target_control_gate_projected_support80_all_families_unit_residuals.json",
     "projected_support80_shared_family": "docs/shared_family_target_control_gate_projected_support80.json",
+    "prospect_lead_candidate_validation": "docs/prospect_lead_candidate_validation.json",
     "reaction_dynamics_target_family_counts": "docs/reaction_dynamics_target_family_gate_counts.json",
     "reaction_dynamics_target_family_fractions": "docs/reaction_dynamics_target_family_gate_fractions.json",
     "reaction_dynamics_target_family_recording_centered": "docs/reaction_dynamics_target_family_gate.json",
     "reaction_dynamics_target_family_unit_residuals": "docs/reaction_dynamics_target_family_gate_unit_residuals.json",
+    "recording_bidirectionality_prospect_manifest": "manifests/ibl_bwm_recording_bidirectionality_prospect_leads.json",
+    "recording_bidirectionality_prospectus": "docs/recording_bidirectionality_prospectus.json",
     "recording_replication": "docs/model_free_recording_replication_audit.json",
     "shared_broad_repair": "docs/shared_broad_anatomy_repair_sweep.json",
     "shared_family": "docs/shared_family_target_control_gate.json",
@@ -38,6 +42,9 @@
         "projected support80 shared-family gate has 0 candidates across 128 rows and max bidir 0.500",
         "projected support80 all-family feature-mode sweep has 0 candidates across 1280 rows, 4 feature modes, and max bidir 0.500",
         "local gate meta-failure audit has 0 candidates across 1924 rows; recording bidirectionality fails in 1919 rows",
+        "recording bidirectionality prospectus found 18 prospect recordings from 262 bidirectional observations",
+        "prospect-lead manifest has 18 recordings across 7 subjects with 0 missing local recordings",
+        "prospect-lead validation has 0 validated candidates; 3 candidates are single-recording and 3 are subset-only",
         "recording-subset replication selected zero stable validation rows"
       ],
       "gpu_trigger": "At least one local row on the proposed manifest must clear delta_vs_shuffle>=0, delta_vs_total>=0, target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75 before training.",
@@ -98,6 +105,29 @@
       "gpu_trigger": "none",
       "name": "local gate meta-failure synthesis",
       "next_action": "Use the meta-audit redesign rule: require prospectively defined same-recording target0+target1 evidence before any GPU run.",
+      "priority": 90,
+      "status": "closed"
+    },
+    {
+      "evidence": [
+        "prospectus aggregates 8544 per-recording observations with 262 bidirectional observations across 32 recordings",
+        "candidate recordings are only design leads, not a GPU trigger",
+        "prospect-lead manifest materializes 18 recordings across 7 subjects"
+      ],
+      "gpu_trigger": "none",
+      "name": "recording bidirectionality prospectus",
+      "next_action": "Run the unchanged local gate on manifests/ibl_bwm_recording_bidirectionality_prospect_leads.json; treat any pass as a local redesign candidate, not a training trigger.",
+      "priority": 90,
+      "status": "closed"
+    },
+    {
+      "evidence": [
+        "prospect-lead derived gate found 3 candidates across 84 rows",
+        "validation found 0 validated candidates; 3 prospect candidates were single-recording and 3 were subset-only"
+      ],
+      "gpu_trigger": "none",
+      "name": "prospect-lead derived target validation",
+      "next_action": "Treat prospect-lead rows as design leads only; require full-manifest or held-out validation before GPU training.",
       "priority": 90,
       "status": "closed"
     },
@@ -202,7 +232,7 @@
     }
   ],
   "summary": {
-    "closed_branches": 14,
+    "closed_branches": 16,
     "decision": "no_local_training_trigger",
     "gpu_training_trigger": "At least one local row on the proposed manifest must clear delta_vs_shuffle>=0, delta_vs_total>=0, target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75 before training.",
     "recommended_next": "new manifest with prospective bidirectional support"

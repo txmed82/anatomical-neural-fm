@@ -83,6 +83,8 @@ def test_render_markdown_lists_closed_branches() -> None:
     assert "cell-type prior target/control gate" in markdown
     assert "waveform target/control gate" in markdown
     assert "local gate meta-failure synthesis" in markdown
+    assert "recording bidirectionality prospectus" in markdown
+    assert "prospect-lead derived target validation" in markdown
     assert "wheel in" in markdown
     assert "contextual cached trial-state targets" in markdown
     assert "narrow existing manifest further" in markdown

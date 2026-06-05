@@ -25,6 +25,12 @@ ARTIFACTS = {
     "cell_type_prior_target_control": "docs/cell_type_prior_target_control_gate.json",
     "waveform_target_control": "docs/waveform_target_control_gate.json",
     "local_gate_meta_failures": "docs/local_gate_meta_failure_audit.json",
+    "recording_bidirectionality_prospectus": "docs/recording_bidirectionality_prospectus.json",
+    "recording_bidirectionality_prospect_manifest": (
+        "manifests/ibl_bwm_recording_bidirectionality_prospect_leads.json"
+    ),
+    "derived_target_family_prospect_leads": "docs/derived_target_family_gate_prospect_leads.json",
+    "prospect_lead_candidate_validation": "docs/prospect_lead_candidate_validation.json",
     "local_cached_manifest_candidates": "docs/local_cached_manifest_candidates.json",
     "projected_support80_shared_family": "docs/shared_family_target_control_gate_projected_support80.json",
     "projected_support80_all_families_recording_centered": (
@@ -143,6 +149,13 @@ def build_report() -> dict:
     waveform_done = waveform is not None
     meta_failures = artifacts["local_gate_meta_failures"]
     meta_summary = meta_failures.get("summary", {}) if meta_failures is not None else {}
+    prospectus = artifacts["recording_bidirectionality_prospectus"]
+    prospectus_summary = prospectus.get("summary", {}) if prospectus is not None else {}
+    prospect_manifest = artifacts["recording_bidirectionality_prospect_manifest"]
+    prospect_derived_gate = artifacts["derived_target_family_prospect_leads"]
+    prospect_derived_summary = prospect_derived_gate.get("summary", {}) if prospect_derived_gate is not None else {}
+    prospect_validation = artifacts["prospect_lead_candidate_validation"]
+    prospect_validation_summary = prospect_validation.get("summary", {}) if prospect_validation is not None else {}
     local_manifest_summary = local_manifest_candidates.get("summary", {}) if local_manifest_candidates is not None else {}
     local_manifest_decision = local_manifest_summary.get("decision")
     local_projected_panel_ready = local_manifest_decision == "local_expanded_candidate_ready_for_model_free_gate"
@@ -309,6 +322,36 @@ def build_report() -> dict:
                         f"{meta_summary.get('n_candidates', 'n/a')} candidates across "
                         f"{meta_summary.get('n_rows', 'n/a')} rows; recording bidirectionality fails in "
                         f"{meta_summary.get('failure_counts', {}).get('recording_bidirectionality', 'n/a')} rows"
+                    )
+                ),
+                (
+                    "recording bidirectionality prospectus has not been run yet"
+                    if prospectus is None
+                    else (
+                        "recording bidirectionality prospectus found "
+                        f"{prospectus_summary.get('n_prospect_recordings', 'n/a')} prospect recordings from "
+                        f"{prospectus_summary.get('n_bidirectional_observations', 'n/a')} bidirectional observations"
+                    )
+                ),
+                (
+                    "prospect-lead manifest has not been built yet"
+                    if prospect_manifest is None
+                    else (
+                        "prospect-lead manifest has "
+                        f"{prospect_manifest.get('n_recordings', 'n/a')} recordings across "
+                        f"{prospect_manifest.get('n_subjects', 'n/a')} subjects with "
+                        f"{len(prospect_manifest.get('missing_recording_ids', []))} missing local recordings"
+                    )
+                ),
+                (
+                    "prospect-lead candidate validation has not been run yet"
+                    if prospect_validation is None
+                    else (
+                        "prospect-lead validation has "
+                        f"{prospect_validation_summary.get('n_validated_candidates', 'n/a')} validated candidates; "
+                        f"{prospect_validation_summary.get('n_single_recording_candidates', 'n/a')} candidates are "
+                        "single-recording and "
+                        f"{prospect_validation_summary.get('n_subset_only_candidates', 'n/a')} are subset-only"
                     )
                 ),
                 "recording-subset replication selected zero stable validation rows",
@@ -496,6 +539,79 @@ def build_report() -> dict:
                 "Use the meta-audit redesign rule: require prospectively defined same-recording target0+target1 evidence before any GPU run."
                 if meta_failures is not None
                 else "Run scripts/audit_local_gate_meta_failures.py and update the redesign rule."
+            ),
+            gpu_trigger="none",
+        ),
+        branch(
+            name="recording bidirectionality prospectus",
+            status="closed" if prospectus is not None else "recommended_next",
+            priority=90 if prospectus is not None else 1,
+            evidence=[
+                (
+                    "recording bidirectionality prospectus has not been run yet"
+                    if prospectus is None
+                    else (
+                        "prospectus aggregates "
+                        f"{prospectus_summary.get('n_observations', 'n/a')} per-recording observations "
+                        f"with {prospectus_summary.get('n_bidirectional_observations', 'n/a')} bidirectional "
+                        f"observations across {prospectus_summary.get('recordings_with_bidirectional_support', 'n/a')} "
+                        "recordings"
+                    )
+                ),
+                (
+                    "candidate recordings are only design leads, not a GPU trigger"
+                    if prospectus is not None
+                    else "aggregate current local-gate recording rows to see whether bidirectionality is concentrated"
+                ),
+                (
+                    "prospect-lead manifest has not been built yet"
+                    if prospect_manifest is None
+                    else (
+                        "prospect-lead manifest materializes "
+                        f"{prospect_manifest.get('n_recordings', 'n/a')} recordings across "
+                        f"{prospect_manifest.get('n_subjects', 'n/a')} subjects"
+                    )
+                ),
+            ],
+            next_action=(
+                "Run the unchanged local gate on manifests/ibl_bwm_recording_bidirectionality_prospect_leads.json; treat any pass as a local redesign candidate, not a training trigger."
+                if prospect_manifest is not None
+                else prospectus_summary.get("next_action", "Use the prospectus to define the next prospective manifest rule.")
+                if prospectus is not None
+                else "Run scripts/audit_recording_bidirectionality_prospectus.py before more manifest or GPU work."
+            ),
+            gpu_trigger="none",
+        ),
+        branch(
+            name="prospect-lead derived target validation",
+            status="closed" if prospect_validation is not None else "recommended_next",
+            priority=90 if prospect_validation is not None else 1,
+            evidence=[
+                (
+                    "prospect-lead derived gate has not been run yet"
+                    if prospect_derived_gate is None
+                    else (
+                        "prospect-lead derived gate found "
+                        f"{prospect_derived_summary.get('n_candidates', 'n/a')} candidates across "
+                        f"{prospect_derived_summary.get('n_rows', 'n/a')} rows"
+                    )
+                ),
+                (
+                    "prospect-lead validation has not been run yet"
+                    if prospect_validation is None
+                    else (
+                        "validation found "
+                        f"{prospect_validation_summary.get('n_validated_candidates', 'n/a')} validated candidates; "
+                        f"{prospect_validation_summary.get('n_single_recording_candidates', 'n/a')} prospect candidates "
+                        "were single-recording and "
+                        f"{prospect_validation_summary.get('n_subset_only_candidates', 'n/a')} were subset-only"
+                    )
+                ),
+            ],
+            next_action=(
+                prospect_validation_summary.get("next_action", "Keep validation no-spend.")
+                if prospect_validation is not None
+                else "Run scripts/audit_prospect_lead_candidate_validation.py before any training decision."
             ),
             gpu_trigger="none",
         ),

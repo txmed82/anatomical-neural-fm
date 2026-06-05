@@ -3,7 +3,7 @@
 Ranks remaining no-spend branches after the current local audits. This is the planning gate before any new RunPod training.
 
 - recommended next: `new manifest with prospective bidirectional support`
-- closed branches: `14`
+- closed branches: `16`
 - decision: `no_local_training_trigger`
 - GPU trigger: At least one local row on the proposed manifest must clear delta_vs_shuffle>=0, delta_vs_total>=0, target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75 before training.
 
@@ -15,6 +15,8 @@ Ranks remaining no-spend branches after the current local audits. This is the pl
 | 88 | cell-type prior target/control gate | `closed` | Do not spend on broad ABC cell-class prior channels; they do not pass the local bidirectional gate. |
 | 89 | waveform target/control gate | `closed` | Do not spend on simple waveform-channel controls; they do not pass the local bidirectional gate. |
 | 90 | local gate meta-failure synthesis | `closed` | Use the meta-audit redesign rule: require prospectively defined same-recording target0+target1 evidence before any GPU run. |
+| 90 | recording bidirectionality prospectus | `closed` | Run the unchanged local gate on manifests/ibl_bwm_recording_bidirectionality_prospect_leads.json; treat any pass as a local redesign candidate, not a training trigger. |
+| 90 | prospect-lead derived target validation | `closed` | Treat prospect-lead rows as design leads only; require full-manifest or held-out validation before GPU training. |
 | 91 | behavior-inclusive cache rebuild | `closed` | Cache rebuild is complete; all matched recordings now expose wheel. Use the wheel-derived local target gate before any training. |
 | 92 | direct cached-field derived targets | `closed` | Do not launch GPU training from contrast_strength, response_latency, or prior_engaged. |
 | 93 | contextual cached trial-state targets | `closed` | Do not spend on contextual trial-sequence targets from the compact cache. |
@@ -35,6 +37,9 @@ Ranks remaining no-spend branches after the current local audits. This is the pl
 - projected support80 shared-family gate has 0 candidates across 128 rows and max bidir 0.500
 - projected support80 all-family feature-mode sweep has 0 candidates across 1280 rows, 4 feature modes, and max bidir 0.500
 - local gate meta-failure audit has 0 candidates across 1924 rows; recording bidirectionality fails in 1919 rows
+- recording bidirectionality prospectus found 18 prospect recordings from 262 bidirectional observations
+- prospect-lead manifest has 18 recordings across 7 subjects with 0 missing local recordings
+- prospect-lead validation has 0 validated candidates; 3 candidates are single-recording and 3 are subset-only
 - recording-subset replication selected zero stable validation rows
 - GPU trigger: At least one local row on the proposed manifest must clear delta_vs_shuffle>=0, delta_vs_total>=0, target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75 before training.
 
@@ -61,6 +66,17 @@ Ranks remaining no-spend branches after the current local audits. This is the pl
 ### local gate meta-failure synthesis
 - meta-audit aggregates 1924 rows from 11 artifacts with 0 candidates and 11 one-failure rows
 - recording bidirectionality is the dominant blocker; it appears in 1919 rows
+- GPU trigger: none
+
+### recording bidirectionality prospectus
+- prospectus aggregates 8544 per-recording observations with 262 bidirectional observations across 32 recordings
+- candidate recordings are only design leads, not a GPU trigger
+- prospect-lead manifest materializes 18 recordings across 7 subjects
+- GPU trigger: none
+
+### prospect-lead derived target validation
+- prospect-lead derived gate found 3 candidates across 84 rows
+- validation found 0 validated candidates; 3 prospect candidates were single-recording and 3 were subset-only
 - GPU trigger: none
 
 ### behavior-inclusive cache rebuild

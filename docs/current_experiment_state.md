@@ -403,7 +403,7 @@ Decision: stricter manifest support alone does not rescue the signal. The clean 
 branches after the current local negative audits.
 
 - recommended next: `new manifest with prospective bidirectional support`
-- closed branches: `14`
+- closed branches: `16`
 - decision: `no_local_training_trigger`
 - GPU trigger: At least one local row on the proposed manifest must clear delta_vs_shuffle>=0, delta_vs_total>=0, target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75 before training.
 
@@ -707,6 +707,60 @@ source-target gate artifacts.
 | edd22318-216c-44ff-bc24-49ce8be78374_probe00 | CSH_ZAD_019 | 24 | 4 | 0.462 | 0.585 |
 
 Decision: rare same-recording bidirectional observations are not concentrated enough to define a stable demo subset from the current cache. The next benchmark redesign should prospectively create target0+target1 evidence inside recordings, then rerun the same model-free local gate before GPU training.
+
+## Recording Bidirectionality Prospectus
+
+`docs/recording_bidirectionality_prospectus.md` aggregates per-recording
+target0/target1 support across the current local-gate artifacts, including
+the newer wheel, reaction-dynamics, cell-prior, waveform, and projected
+support80 sweeps.
+
+- observations: `8544`
+- recordings: `35`
+- bidirectional observations: `262`
+- recordings with bidirectional support: `32`
+- prospect recordings: `18`
+- decision: `prospective_recording_leads_present_not_training_ready`
+
+| recording | holdouts | observations | bidir obs | bidir sources | bidir targets | mean sym |
+|---|---|---:|---:|---:|---:|---:|
+| 6899a67d-2e53-4215-a52a-c7021b5da5d4_probe00 | MFD_06 | 288 | 33 | 9 | 11 | 0.228 |
+| b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe01 | NR_0019 | 288 | 23 | 9 | 9 | 0.222 |
+| e1931de1-cf7b-49af-af33-2ade15e8abe7_probe00 | KS014 | 288 | 19 | 9 | 9 | 0.239 |
+| b9c205c3-feac-485b-a89d-afc96d9cb280_probe00 | KS014 | 288 | 19 | 6 | 11 | 0.215 |
+
+Decision: this prospectus can only inform the next prospective target/control rule. It is not a GPU trigger; the unchanged local gate must pass before training.
+
+## Prospect-Lead Derived Target Gate
+
+`docs/derived_target_family_gate_prospect_leads.md` reruns the derived
+cached-target local gate on the 18-recording prospect-lead manifest.
+
+- rows: `84`
+- candidates: `3`
+- max bidirectional recordings: `3`
+- max bidirectional recording fraction: `1.000`
+- decision: `derived_target_family_candidate`
+
+| target | family | holdout | decision | delta shuffle | delta total | target0 | target1 | bidir recs |
+|---|---|---|---|---:|---:|---:|---:|---:|
+| response_latency | thalamic | MFD_06 | candidate | +0.050 | +0.012 | 0.687 | 0.716 | 1/1 |
+| prior_engaged | broad_named_anatomy | NR_0019 | candidate | +0.033 | +0.004 | 0.844 | 0.603 | 1/1 |
+| response_latency | broad_named_anatomy | NR_0019 | candidate | +0.021 | +0.009 | 0.615 | 0.686 | 1/1 |
+| response_latency | broad_named_anatomy | KS014 | reject: shuffle | -0.004 | -0.005 | 0.698 | 0.704 | 3/4 |
+
+## Prospect-Lead Candidate Validation
+
+`docs/prospect_lead_candidate_validation.md` compares prospect-lead
+candidates against the full-manifest derived target gate.
+
+- prospect candidates: `3`
+- validated candidates: `0`
+- single-recording candidates: `3`
+- subset-only candidates: `3`
+- decision: `no_validated_prospect_lead_candidate`
+
+Decision: prospect-lead rows remain design leads only. They do not justify GPU training until they validate outside the selected subset.
 
 ## Model-Free Recording Directionality Audit
 
