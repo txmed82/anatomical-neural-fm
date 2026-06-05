@@ -12,3 +12,20 @@ Do not run more same-setup GPU sweeps. Redesign the anatomy-specific objective o
 A holdout is not considered demo-ready unless the executable gate passes,
 the paired true-vs-shuffle improvement is specific against shuffle-vs-shared,
 and the recording-level AUC support is not localized to a single recording.
+
+## Anatomy-Specific Permutation Gate
+
+`scripts/analyze_anatomy_specific_permutation.py` tests the seed-ensemble
+region-only vs region-shuffle contrast with recording-level sign flips. This is
+deliberately stricter than trial-level pairing because the current holdouts have
+only four recordings each.
+
+| holdout | pass | centered_delta_vs_shuffle | specificity_gap | recording_support | sign_flip_p |
+|---|---|---:|---:|---:|---:|
+| CSH_ZAD_019 | False | +0.006 | -0.016 | 4/4 | 0.0625 |
+| NR_0019 | False | +0.012 | +0.000 | 1/4 | 0.5000 |
+
+CSH has broad recording support but the effect is too small, not specific
+against shuffle-vs-shared, and misses the recording-level sign-flip threshold.
+NR_0019 has a larger ensemble AUC delta but it is localized to one recording and
+has no paired specificity. Neither result is demo-ready.

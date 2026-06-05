@@ -906,6 +906,16 @@ transfer signal. The next milestone should be an offline gate/objective redesign
 that produces an anatomy-specific statistic on these saved predictions before
 any additional GPU spend.
 
+Anatomy-specific permutation gate: `scripts/analyze_anatomy_specific_permutation.py`
+now tests the seed-ensemble `region_only` vs `region_shuffle` contrast with
+recording-level sign flips. CSH still fails: centered delta is only `+0.006`,
+paired specificity gap is `-0.016`, and the one-sided sign-flip p-value is
+`0.0625` despite `4/4` positive recordings. NR_0019 also fails: centered delta
+is `+0.012`, but only `1/4` recordings are positive, specificity gap is `0.000`,
+and sign-flip p-value is `0.5000`. This confirms the current architecture/gate
+is not demo-ready. The next implementation step should change what is trained
+or selected, not spend on more held-out animals.
+
 After cleanup, run:
 
 ```bash

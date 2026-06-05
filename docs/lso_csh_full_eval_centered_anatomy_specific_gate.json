@@ -1,0 +1,65 @@
+{
+  "arms": [
+    "shared_baseline",
+    "region_only",
+    "region_shuffle"
+  ],
+  "checks": {
+    "positive_centered_delta": false,
+    "positive_specificity_gap": false,
+    "recording_permutation": false,
+    "recording_support": true
+  },
+  "holdout": "CSH_ZAD_019",
+  "metrics": {
+    "centered_auc_delta_vs_shuffle": 0.005902427133753441,
+    "centered_auc_region_only": 0.5188988665250548,
+    "centered_auc_region_shuffle": 0.5129964393913014,
+    "full_auc_delta_vs_shuffle": 0.005486732597416166,
+    "full_auc_region_only": 0.5168753482257896,
+    "full_auc_region_shuffle": 0.5113886156283735,
+    "n_recordings": 4,
+    "paired_shuffle_vs_shared": 0.5517241379310345,
+    "paired_specificity_gap": -0.01614086573734408,
+    "paired_true_vs_shuffle": 0.5355832721936904,
+    "recording_deltas": {
+      "49e0ab27-827a-4c91-bcaa-97eea27a1b8d_probe01": 0.009655181591940454,
+      "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe00": 3.5534918980451025e-05,
+      "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe01": 0.0002487444328627131,
+      "edd22318-216c-44ff-bc24-49ce8be78374_probe00": 0.01741862953581924
+    },
+    "recording_sign_flip": {
+      "n_recordings": 4,
+      "null_distribution": [
+        -0.006839522619900715,
+        -0.006821755160410489,
+        -0.006715150403469358,
+        -0.006697382943979133,
+        -0.002011931823930488,
+        -0.0019941643644402623,
+        -0.0018875596074991313,
+        -0.0018697921480089058,
+        0.0018697921480089058,
+        0.0018875596074991313,
+        0.0019941643644402623,
+        0.002011931823930488,
+        0.006697382943979133,
+        0.006715150403469358,
+        0.006821755160410489,
+        0.006839522619900715
+      ],
+      "observed_mean_delta": 0.006839522619900715,
+      "one_sided_p": 0.0625
+    },
+    "recording_support_fraction": 1.0,
+    "recordings_positive": 4
+  },
+  "pass": false,
+  "root": "runs/lso_csh_full_eval_centered_shared_parent_shuffle",
+  "thresholds": {
+    "alpha": 0.05,
+    "min_centered_delta": 0.01,
+    "min_recording_support_fraction": 0.75,
+    "min_specificity_gap": 0.0
+  }
+}
