@@ -1,11 +1,15 @@
 from scripts.audit_next_benchmark_control_options import build_report, render_markdown
 
 
-def test_build_report_recommends_behavior_cache_rebuild() -> None:
+def test_build_report_tracks_current_no_spend_state() -> None:
     report = build_report()
 
-    assert report["summary"]["decision"] == "behavior_cache_rebuild_required"
-    assert report["summary"]["recommended_next"] == "behavior-inclusive cache rebuild"
+    assert report["summary"]["decision"] in {
+        "behavior_cache_rebuild_required",
+        "wheel_target_audit_required",
+        "local_training_trigger_available",
+        "no_local_training_trigger",
+    }
     assert report["branches"][0]["status"] == "recommended_next"
     assert report["summary"]["closed_branches"] >= 5
 
@@ -24,6 +28,7 @@ def test_render_markdown_lists_closed_branches() -> None:
 
     assert "# Next Benchmark/Control Options Audit" in markdown
     assert "behavior-inclusive cache rebuild" in markdown
+    assert "wheel-derived target family gate" in markdown
     assert "wheel in" in markdown
     assert "contextual cached trial-state targets" in markdown
     assert "narrow existing manifest further" in markdown

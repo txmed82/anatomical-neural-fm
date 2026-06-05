@@ -111,6 +111,7 @@ SHARED_FAMILY_ITERATIVE_MANIFEST_GATE_FILE = "docs/shared_family_iterative_manif
 NEXT_BENCHMARK_CONTROL_OPTIONS_FILE = "docs/next_benchmark_control_options.json"
 DERIVED_TARGET_FAMILY_GATE_FILE = "docs/derived_target_family_gate.json"
 CONTEXTUAL_TARGET_FAMILY_GATE_FILE = "docs/contextual_target_family_gate.json"
+WHEEL_TARGET_FAMILY_GATE_FILE = "docs/wheel_target_family_gate.json"
 BEHAVIOR_CACHE_PREFLIGHT_FILE = "docs/behavior_cache_preflight.json"
 MODEL_FREE_MATCHED_SUPPORT80_PANEL_FILE = "docs/model_free_matched_support80_hdf5_panel.json"
 MODEL_FREE_POSITIVE_HOLDOUTS_MECHANISM_FILE = "docs/model_free_positive_holdouts_mechanism.json"
@@ -448,6 +449,7 @@ def render_markdown(
     next_benchmark_control_options: dict | None = None,
     derived_target_family_gate: dict | None = None,
     contextual_target_family_gate: dict | None = None,
+    wheel_target_family_gate: dict | None = None,
     behavior_cache_preflight: dict | None = None,
     model_free_matched_panel: dict | None = None,
     model_free_positive_holdouts: dict | None = None,
@@ -1171,23 +1173,43 @@ def render_markdown(
             lines.append(
                 f"| {row['priority']} | {row['name']} | `{row['status']}` | {row['next_action']} |"
             )
-        lines += [
-            "",
-            (
-                "Decision: direct cached target redesign is now closed as a GPU "
-                "trigger. The next aligned work is a behavior-inclusive cache "
-                "rebuild, followed by the same local model-free gate before any "
-                "paid training."
-            ),
-            "",
-        ]
+        lines += [""]
+        if summary["decision"] == "behavior_cache_rebuild_required":
+            lines += [
+                (
+                    "Decision: direct cached target redesign is closed as a GPU "
+                    "trigger. The next aligned work is a behavior-inclusive cache "
+                    "rebuild, followed by the same local model-free gate before any "
+                    "paid training."
+                ),
+                "",
+            ]
+        elif summary["decision"] == "wheel_target_audit_required":
+            lines += [
+                (
+                    "Decision: the behavior cache is ready, but wheel-derived targets "
+                    "still need the same local model-free gate before any paid training."
+                ),
+                "",
+            ]
+        else:
+            lines += [
+                (
+                    "Decision: the current cached target, contextual target, and "
+                    "wheel-derived target branches are closed as GPU triggers. The "
+                    "next aligned work is a prospectively supported benchmark/control "
+                    "redesign, still gated locally before any paid training."
+                ),
+                "",
+            ]
     if behavior_cache_preflight is not None:
         summary = behavior_cache_preflight["summary"]
         stream_counts = ", ".join(
             f"{stream}={count}/{summary['n_manifest_recordings']}"
             for stream, count in summary["stream_counts"].items()
         )
-        commands = behavior_cache_preflight.get("build_commands", [])[:2]
+        cache_ready = summary["decision"] == "behavior_cache_ready"
+        commands = [] if cache_ready else behavior_cache_preflight.get("build_commands", [])[:2]
         lines += [
             "## Behavior Cache Preflight",
             "",
@@ -1211,15 +1233,26 @@ def render_markdown(
                 "```",
                 "",
             ]
-        lines += [
-            (
-                "Decision: only a small minority of the matched cache currently has "
-                "`wheel`, so the next no-spend step is a behavior-inclusive cache "
-                "rebuild. GPU training remains blocked until a wheel or external "
-                "behavior target passes the same local gate."
-            ),
-            "",
-        ]
+        if cache_ready:
+            lines += [
+                (
+                    "Decision: the matched cache now has the required wheel stream, "
+                    "so the next no-spend step is the wheel-derived target family "
+                    "gate. GPU training remains blocked unless that local gate passes."
+                ),
+                "",
+            ]
+        else:
+            lines += [
+                (
+                    "Decision: the matched cache is still missing `wheel` in at "
+                    "least one recording, so the next no-spend step is a "
+                    "behavior-inclusive cache rebuild. GPU training remains "
+                    "blocked until a wheel or external behavior target passes "
+                    "the same local gate."
+                ),
+                "",
+            ]
     if derived_target_family_gate is not None:
         summary = derived_target_family_gate["summary"]
         balances = summary["target_balances"]
@@ -1312,6 +1345,52 @@ def render_markdown(
                 "The best contextual rows still fail the shuffle control, one global "
                 "target direction, or the total-spike baseline, and max same-recording "
                 "bidirectional support is only `2/4`."
+            ),
+            "",
+        ]
+    if wheel_target_family_gate is not None:
+        summary = wheel_target_family_gate["summary"]
+        balances = summary["target_balances"]
+        top = summary["top_rows"][:6]
+        lines += [
+            "## Wheel Target Family Gate",
+            "",
+            "`docs/wheel_target_family_gate.md` tests target definitions derived",
+            "from cached wheel position: `wheel_active`, `wheel_displacement`,",
+            "and `choice_aligned_wheel`.",
+            "",
+            f"- rows: `{summary['n_rows']}`",
+            f"- candidates: `{summary['n_candidates']}`",
+            f"- positive centered-delta rows: `{summary['n_positive_centered_delta']}`",
+            f"- max bidirectional recordings: `{summary['max_bidirectional_recordings']}`",
+            f"- max bidirectional recording fraction: `{summary['max_bidirectional_recording_fraction']:.3f}`",
+            f"- decision: `{summary['decision']}`",
+            "",
+            "| target | trials | eligible recordings | recordings |",
+            "|---|---:|---:|---:|",
+        ]
+        for target, row in balances.items():
+            lines.append(
+                f"| {target} | {row['n_trials']} | {row['eligible_recordings']} | {row['n_recordings']} |"
+            )
+        lines += [
+            "",
+            "| target | family | holdout | decision | delta shuffle | delta total | targets | bidir recs |",
+            "|---|---|---|---|---:|---:|---|---:|",
+        ]
+        for row in top:
+            lines.append(
+                f"| {row['target_mode']} | {row['family']} | {row['holdout']} | {row['decision']} | "
+                f"{row['centered_delta_vs_shuffle']:+.3f} | {row['centered_delta_vs_total']:+.3f} | "
+                f"{row['target0_improved_vs_shuffle']:.3f}/{row['target1_improved_vs_shuffle']:.3f} | "
+                f"{row['n_bidirectional_recordings']}/{row['n_recordings']} |"
+            )
+        lines += [
+            "",
+            (
+                "Decision: wheel-derived targets only justify paid training if they "
+                "clear the same true-vs-shuffle, total-baseline, global target, and "
+                "same-recording bidirectional gate used by the prior audits."
             ),
             "",
         ]
@@ -2034,6 +2113,7 @@ def main() -> int:
     next_benchmark_control_options = read_mechanism_audit(REPO_ROOT / NEXT_BENCHMARK_CONTROL_OPTIONS_FILE)
     derived_target_family_gate = read_mechanism_audit(REPO_ROOT / DERIVED_TARGET_FAMILY_GATE_FILE)
     contextual_target_family_gate = read_mechanism_audit(REPO_ROOT / CONTEXTUAL_TARGET_FAMILY_GATE_FILE)
+    wheel_target_family_gate = read_mechanism_audit(REPO_ROOT / WHEEL_TARGET_FAMILY_GATE_FILE)
     behavior_cache_preflight = read_mechanism_audit(REPO_ROOT / BEHAVIOR_CACHE_PREFLIGHT_FILE)
     model_free_matched_panel = read_mechanism_audit(REPO_ROOT / MODEL_FREE_MATCHED_SUPPORT80_PANEL_FILE)
     model_free_positive_holdouts = read_mechanism_audit(REPO_ROOT / MODEL_FREE_POSITIVE_HOLDOUTS_MECHANISM_FILE)
@@ -2128,6 +2208,7 @@ def main() -> int:
         next_benchmark_control_options,
         derived_target_family_gate,
         contextual_target_family_gate,
+        wheel_target_family_gate,
         behavior_cache_preflight,
         model_free_matched_panel,
         model_free_positive_holdouts,
@@ -2215,6 +2296,7 @@ def main() -> int:
         "next_benchmark_control_options": next_benchmark_control_options,
         "derived_target_family_gate": derived_target_family_gate,
         "contextual_target_family_gate": contextual_target_family_gate,
+        "wheel_target_family_gate": wheel_target_family_gate,
         "behavior_cache_preflight": behavior_cache_preflight,
         "model_free_matched_support80_panel": model_free_matched_panel,
         "model_free_positive_holdouts_mechanism": model_free_positive_holdouts,

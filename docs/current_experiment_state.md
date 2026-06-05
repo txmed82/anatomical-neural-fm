@@ -353,19 +353,19 @@ Decision: stricter manifest support alone does not rescue the signal. The clean 
 `docs/next_benchmark_control_options.md` ranks the remaining no-spend
 branches after the current local negative audits.
 
-- recommended next: `behavior-inclusive cache rebuild`
-- closed branches: `8`
-- decision: `behavior_cache_rebuild_required`
-- GPU trigger: At least one local row must clear delta_vs_shuffle>=0, delta_vs_total>=0, target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75.
+- recommended next: `new manifest with prospective bidirectional support`
+- closed branches: `10`
+- decision: `no_local_training_trigger`
+- GPU trigger: At least one local row on the proposed manifest must clear delta_vs_shuffle>=0, delta_vs_total>=0, target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75 before training.
 
 | priority | branch | status | next action |
 |---:|---|---|---|
-| 1 | behavior-inclusive cache rebuild | `recommended_next` | Rebuild the matched cache without --no-wheel, then define a wheel-based prospectively balanced target/control and run the same model-free true-vs-shuffle, total-baseline, global target, and same-recording bidirectional gate before training. |
-| 2 | new manifest with prospective bidirectional support | `secondary_after_new_target` | Only build or fetch more recordings after a target/control proposal defines which recordings should prospectively contain target0+target1 evidence. |
+| 1 | new manifest with prospective bidirectional support | `recommended_next` | Only build or fetch more recordings after a target/control proposal defines which recordings should prospectively contain target0+target1 evidence. |
+| 86 | wheel-derived target family gate | `closed` | Do not spend on the tested wheel targets; move to a prospectively supported manifest. |
+| 87 | behavior-inclusive cache rebuild | `closed` | Cache rebuild is complete; all matched recordings now expose wheel. Use the wheel-derived local target gate before any training. |
 | 88 | direct cached-field derived targets | `closed` | Do not launch GPU training from contrast_strength, response_latency, or prior_engaged. |
-| 89 | contextual cached trial-state targets | `closed` | Do not spend on contextual trial-sequence targets from the compact cache. |
 
-Decision: direct cached target redesign is now closed as a GPU trigger. The next aligned work is a behavior-inclusive cache rebuild, followed by the same local model-free gate before any paid training.
+Decision: the current cached target, contextual target, and wheel-derived target branches are closed as GPU triggers. The next aligned work is a prospectively supported benchmark/control redesign, still gated locally before any paid training.
 
 ## Behavior Cache Preflight
 
@@ -379,14 +379,7 @@ target/control branch.
 - recordings needing behavior rebuild: `0`
 - decision: `behavior_cache_ready`
 
-First rebuild commands:
-
-```bash
-uv run python scripts/build_ibl_brainset_batch.py --manifest manifests/ibl_bwm_region_matched_candidates_s3_present_support80_hdf5_scored.json --num-shards 4 --shard-index 0 --report docs/behavior_cache_build_shard00.md --trial-window-only --window-len 1.0 --rebuild-missing-stream wheel # writes data/brainsets/ibl_bwm
-uv run python scripts/build_ibl_brainset_batch.py --manifest manifests/ibl_bwm_region_matched_candidates_s3_present_support80_hdf5_scored.json --num-shards 4 --shard-index 1 --report docs/behavior_cache_build_shard01.md --trial-window-only --window-len 1.0 --rebuild-missing-stream wheel # writes data/brainsets/ibl_bwm
-```
-
-Decision: only a small minority of the matched cache currently has `wheel`, so the next no-spend step is a behavior-inclusive cache rebuild. GPU training remains blocked until a wheel or external behavior target passes the same local gate.
+Decision: the matched cache now has the required wheel stream, so the next no-spend step is the wheel-derived target family gate. GPU training remains blocked unless that local gate passes.
 
 ## Derived Target Family Gate
 
@@ -447,6 +440,36 @@ definitions that are not direct task labels: `post_error`,
 | post_error | broad_named_anatomy | SWC_038 | reject: total baseline | +0.002 | -0.069 | 0.502/0.536 | 1/4 |
 
 Decision: trial-sequence context does not create a training trigger. The best contextual rows still fail the shuffle control, one global target direction, or the total-spike baseline, and max same-recording bidirectional support is only `2/4`.
+
+## Wheel Target Family Gate
+
+`docs/wheel_target_family_gate.md` tests target definitions derived
+from cached wheel position: `wheel_active`, `wheel_displacement`,
+and `choice_aligned_wheel`.
+
+- rows: `84`
+- candidates: `0`
+- positive centered-delta rows: `39`
+- max bidirectional recordings: `3`
+- max bidirectional recording fraction: `0.750`
+- decision: `no_wheel_target_family_candidate`
+
+| target | trials | eligible recordings | recordings |
+|---|---:|---:|---:|
+| choice_aligned_wheel | 16549 | 23 | 28 |
+| wheel_active | 16982 | 28 | 28 |
+| wheel_displacement | 16967 | 28 | 28 |
+
+| target | family | holdout | decision | delta shuffle | delta total | targets | bidir recs |
+|---|---|---|---|---:|---:|---|---:|
+| wheel_active | broad_named_anatomy | KS014 | reject: shuffle | -0.002 | -0.002 | 0.587/0.598 | 3/4 |
+| wheel_displacement | broad_named_anatomy | KS014 | reject: shuffle | -0.008 | -0.009 | 0.556/0.593 | 3/4 |
+| choice_aligned_wheel | broad_named_anatomy | SWC_043 | reject: recording bidirectionality | +0.008 | +0.007 | 0.558/0.584 | 2/4 |
+| wheel_displacement | hippocampal_formation | KS014 | reject: shuffle | -0.019 | -0.009 | 0.788/0.370 | 2/4 |
+| wheel_displacement | thalamic | MFD_06 | reject: target0 | +0.216 | +0.198 | 0.097/0.958 | 1/4 |
+| wheel_displacement | thalamic | SWC_038 | reject: target0 | +0.211 | +0.039 | 0.111/0.955 | 1/4 |
+
+Decision: wheel-derived targets only justify paid training if they clear the same true-vs-shuffle, total-baseline, global target, and same-recording bidirectional gate used by the prior audits.
 
 ## Matched-Region Model-Free Panel
 

@@ -17,6 +17,7 @@ ARTIFACTS = {
     "recording_replication": "docs/model_free_recording_replication_audit.json",
     "derived_target_family": "docs/derived_target_family_gate.json",
     "contextual_target_family": "docs/contextual_target_family_gate.json",
+    "wheel_target_family": "docs/wheel_target_family_gate.json",
     "behavior_cache_preflight": "docs/behavior_cache_preflight.json",
     "family_alt_prior": "docs/model_free_family_bidirectional_gate_prior_side_recording_centered.json",
     "family_alt_feedback": "docs/model_free_family_bidirectional_gate_feedback_recording_centered.json",
@@ -65,11 +66,15 @@ def build_report() -> dict:
     replication = artifacts["recording_replication"]
     derived = artifacts["derived_target_family"]
     contextual = artifacts["contextual_target_family"]
+    wheel = artifacts["wheel_target_family"]
     behavior_cache = artifacts["behavior_cache_preflight"]
     behavior_summary = behavior_cache.get("summary", {}) if behavior_cache is not None else {}
     stream_counts = behavior_summary.get("stream_counts", {})
     wheel_count = stream_counts.get("wheel", "n/a")
     n_behavior_recordings = behavior_summary.get("n_manifest_recordings", "n/a")
+    behavior_ready = behavior_summary.get("decision") == "behavior_cache_ready"
+    wheel_candidates = summary_value(wheel, "n_candidates", None)
+    wheel_done = wheel is not None
     default_candidate_setting = summary_value(threshold, "strongest_default_target_candidate_setting", {}) or {}
     default_candidate_bidir = default_candidate_setting.get("min_bidirectional_recording_fraction")
     default_candidate_count = default_candidate_setting.get("n_candidates")
@@ -77,8 +82,8 @@ def build_report() -> dict:
     branches = [
         branch(
             name="behavior-inclusive cache rebuild",
-            status="recommended_next",
-            priority=1,
+            status="closed" if behavior_ready else "recommended_next",
+            priority=87 if behavior_ready else 1,
             evidence=[
                 "current cached trial targets and shared-family controls all fail strict same-recording bidirectionality",
                 (
@@ -108,10 +113,15 @@ def build_report() -> dict:
                 ),
             ],
             next_action=(
-                "Rebuild the matched cache without --no-wheel, then define a wheel-based "
-                "prospectively balanced target/control and run the same model-free "
-                "true-vs-shuffle, total-baseline, global target, and same-recording "
-                "bidirectional gate before training."
+                "Cache rebuild is complete; all matched recordings now expose wheel. "
+                "Use the wheel-derived local target gate before any training."
+                if behavior_ready
+                else (
+                    "Rebuild the matched cache without --no-wheel, then define a wheel-based "
+                    "prospectively balanced target/control and run the same model-free "
+                    "true-vs-shuffle, total-baseline, global target, and same-recording "
+                    "bidirectional gate before training."
+                )
             ),
             gpu_trigger=(
                 "At least one local row must clear delta_vs_shuffle>=0, delta_vs_total>=0, "
@@ -119,9 +129,51 @@ def build_report() -> dict:
             ),
         ),
         branch(
+            name="wheel-derived target family gate",
+            status=(
+                "secondary_after_cache"
+                if not behavior_ready
+                else "recommended_next"
+                if not wheel_done or (wheel_candidates or 0) > 0
+                else "closed"
+            ),
+            priority=2 if not behavior_ready else (1 if not wheel_done or (wheel_candidates or 0) > 0 else 86),
+            evidence=[
+                (
+                    f"behavior-cache preflight has wheel in {wheel_count}/{n_behavior_recordings} "
+                    "matched recordings"
+                ),
+                (
+                    "wheel target family gate has not been run yet"
+                    if not wheel_done
+                    else (
+                        "wheel target family gate has "
+                        f"{summary_value(wheel, 'n_candidates', 'n/a')} candidates across "
+                        f"{summary_value(wheel, 'n_rows', 'n/a')} rows and max bidir "
+                        f"{summary_value(wheel, 'max_bidirectional_recording_fraction', 0.0):.3f}"
+                    )
+                ),
+            ],
+            next_action=(
+                "Run scripts/audit_wheel_target_family_gate.py locally against wheel_active, "
+                "wheel_displacement, and choice_aligned_wheel."
+                if not wheel_done
+                else (
+                    "If candidates are present, launch only the bounded pilot training tied to "
+                    "the passing target/family row."
+                    if (wheel_candidates or 0) > 0
+                    else "Do not spend on the tested wheel targets; move to a prospectively supported manifest."
+                )
+            ),
+            gpu_trigger=(
+                "At least one local wheel row must clear delta_vs_shuffle>=0, delta_vs_total>=0, "
+                "target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75."
+            ),
+        ),
+        branch(
             name="new manifest with prospective bidirectional support",
-            status="secondary_after_new_target",
-            priority=2,
+            status="recommended_next" if behavior_ready and wheel_done and not (wheel_candidates or 0) else "secondary_after_new_target",
+            priority=1 if behavior_ready and wheel_done and not (wheel_candidates or 0) else 2,
             evidence=[
                 "current 28-recording manifest is feasible but not clean enough to pass the local gate",
                 (
@@ -135,7 +187,12 @@ def build_report() -> dict:
                 "Only build or fetch more recordings after a target/control proposal defines "
                 "which recordings should prospectively contain target0+target1 evidence."
             ),
-            gpu_trigger="Same local gate as above, measured on the proposed manifest before training.",
+            gpu_trigger=(
+                "At least one local row on the proposed manifest must clear "
+                "delta_vs_shuffle>=0, delta_vs_total>=0, target0>=0.55, "
+                "target1>=0.55, and bidirectional_recording_fraction>=0.75 "
+                "before training."
+            ),
         ),
         branch(
             name="direct cached-field derived targets",
@@ -257,12 +314,21 @@ def build_report() -> dict:
         ),
     ]
     branches = sorted(branches, key=lambda row: row["priority"])
+    decision = (
+        "behavior_cache_rebuild_required"
+        if not behavior_ready
+        else "wheel_target_audit_required"
+        if not wheel_done
+        else "local_training_trigger_available"
+        if (wheel_candidates or 0) > 0
+        else "no_local_training_trigger"
+    )
     return {
         "summary": {
             "recommended_next": branches[0]["name"],
             "closed_branches": sum(1 for row in branches if row["status"] == "closed"),
             "gpu_training_trigger": branches[0]["gpu_trigger"],
-            "decision": "behavior_cache_rebuild_required",
+            "decision": decision,
         },
         "artifacts": ARTIFACTS,
         "branches": branches,

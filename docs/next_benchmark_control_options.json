@@ -11,9 +11,33 @@
     "shared_family": "docs/shared_family_target_control_gate.json",
     "source_target_families": "docs/model_free_source_target_pair_gate_families_recording_centered.json",
     "symmetric_strict": "docs/symmetric_strict_failure_modes.json",
-    "symmetric_threshold": "docs/symmetric_threshold_sensitivity_audit.json"
+    "symmetric_threshold": "docs/symmetric_threshold_sensitivity_audit.json",
+    "wheel_target_family": "docs/wheel_target_family_gate.json"
   },
   "branches": [
+    {
+      "evidence": [
+        "current 28-recording manifest is feasible but not clean enough to pass the local gate",
+        "strict iterative 8-recording manifest has 0 candidates and max bidir 0.250",
+        "recording-subset replication selected zero stable validation rows"
+      ],
+      "gpu_trigger": "At least one local row on the proposed manifest must clear delta_vs_shuffle>=0, delta_vs_total>=0, target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75 before training.",
+      "name": "new manifest with prospective bidirectional support",
+      "next_action": "Only build or fetch more recordings after a target/control proposal defines which recordings should prospectively contain target0+target1 evidence.",
+      "priority": 1,
+      "status": "recommended_next"
+    },
+    {
+      "evidence": [
+        "behavior-cache preflight has wheel in 28/28 matched recordings",
+        "wheel target family gate has 0 candidates across 84 rows and max bidir 0.750"
+      ],
+      "gpu_trigger": "At least one local wheel row must clear delta_vs_shuffle>=0, delta_vs_total>=0, target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75.",
+      "name": "wheel-derived target family gate",
+      "next_action": "Do not spend on the tested wheel targets; move to a prospectively supported manifest.",
+      "priority": 86,
+      "status": "closed"
+    },
     {
       "evidence": [
         "current cached trial targets and shared-family controls all fail strict same-recording bidirectionality",
@@ -25,21 +49,9 @@
       ],
       "gpu_trigger": "At least one local row must clear delta_vs_shuffle>=0, delta_vs_total>=0, target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75.",
       "name": "behavior-inclusive cache rebuild",
-      "next_action": "Rebuild the matched cache without --no-wheel, then define a wheel-based prospectively balanced target/control and run the same model-free true-vs-shuffle, total-baseline, global target, and same-recording bidirectional gate before training.",
-      "priority": 1,
-      "status": "recommended_next"
-    },
-    {
-      "evidence": [
-        "current 28-recording manifest is feasible but not clean enough to pass the local gate",
-        "strict iterative 8-recording manifest has 0 candidates and max bidir 0.250",
-        "recording-subset replication selected zero stable validation rows"
-      ],
-      "gpu_trigger": "Same local gate as above, measured on the proposed manifest before training.",
-      "name": "new manifest with prospective bidirectional support",
-      "next_action": "Only build or fetch more recordings after a target/control proposal defines which recordings should prospectively contain target0+target1 evidence.",
-      "priority": 2,
-      "status": "secondary_after_new_target"
+      "next_action": "Cache rebuild is complete; all matched recordings now expose wheel. Use the wheel-derived local target gate before any training.",
+      "priority": 87,
+      "status": "closed"
     },
     {
       "evidence": [
@@ -127,9 +139,9 @@
     }
   ],
   "summary": {
-    "closed_branches": 8,
-    "decision": "behavior_cache_rebuild_required",
-    "gpu_training_trigger": "At least one local row must clear delta_vs_shuffle>=0, delta_vs_total>=0, target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75.",
-    "recommended_next": "behavior-inclusive cache rebuild"
+    "closed_branches": 10,
+    "decision": "no_local_training_trigger",
+    "gpu_training_trigger": "At least one local row on the proposed manifest must clear delta_vs_shuffle>=0, delta_vs_total>=0, target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75 before training.",
+    "recommended_next": "new manifest with prospective bidirectional support"
   }
 }

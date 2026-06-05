@@ -485,10 +485,12 @@ Next benchmark/control options audit:
 simple feature/L2 sweeps, further manifest narrowing, recording-subset
 selection, the current shared-family grid, cached alternative targets,
 source-target narrowing, direct cached-field derived targets, and contextual
-trial-state targets as closed GPU triggers. The recommended next branch is a
-behavior-inclusive cache rebuild, still with the same local promotion gate:
-delta vs shuffle and total baseline nonnegative, target0 and target1 >=`0.55`,
-and same-recording bidirectional fraction >=`0.75`.
+trial-state targets as closed GPU triggers. After the wheel-cache rebuild and
+wheel-derived target audit, the recommended next branch is a new manifest with
+prospective bidirectional support. The same local promotion gate remains in
+force before any training: delta vs shuffle and total baseline nonnegative,
+target0 and target1 >=`0.55`, and same-recording bidirectional fraction
+>=`0.75`.
 
 Behavior-cache preflight:
 `docs/behavior_cache_preflight.md` inspects the active matched cache for richer
@@ -500,9 +502,17 @@ and shards 0-3 of the behavior rebuild completed cleanly
 `docs/behavior_cache_build_shard03.md`: 7/7 available, 7 rebuilt, 0 failed).
 Current coverage is `wheel=28/28`; no matched recordings need a
 behavior-inclusive rebuild. Decision: keep GPU spend at zero until local
-derived wheel targets pass the promotion gate. Define wheel
-movement/quiescence, high/low absolute velocity, or signed action velocity
-targets and rerun the same local gate.
+derived wheel targets pass the promotion gate.
+
+Wheel target family gate:
+`docs/wheel_target_family_gate.md` tests three cached-wheel targets:
+`wheel_active`, `wheel_displacement`, and `choice_aligned_wheel`. The labels
+are well covered (`wheel_active`: 16,982 trials, 28/28 eligible recordings;
+`wheel_displacement`: 16,967 trials, 28/28; `choice_aligned_wheel`: 16,549
+trials, 23/28). The audit still finds zero candidates across 84 rows. The
+nearest broad-anatomy rows for `KS014` reach `3/4` bidirectional recordings,
+but `wheel_active` and `wheel_displacement` both lose to shuffle/total controls.
+Decision: do not launch an A100 run from these wheel targets.
 
 Derived target family gate:
 `docs/derived_target_family_gate.md` tests the first concrete version of that

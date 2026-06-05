@@ -1556,12 +1556,13 @@ define a new benchmark/control target, not further subset this cache.
 Next benchmark/control options audit:
 `scripts/audit_next_benchmark_control_options.py` converts the negative local
 audits into a ranked plan. After the direct derived-target and contextual
-trial-state screens, it now recommends `behavior-inclusive cache rebuild` as
-the next branch and closes more feature/L2 sweeps, further manifest narrowing,
-recording-subset selection, the current
-shared-family grid, cached alternative targets, direct cached-field derived
-targets, contextual cached trial-state targets, and source-target narrowing as
-GPU triggers. The only training trigger remains a local row with
+trial-state screens, the behavior-cache rebuild, and the wheel-derived target
+screen, it now recommends a new manifest with prospective bidirectional support
+as the next branch. It closes more feature/L2 sweeps, further narrowing of the
+current manifest, recording-subset selection, the current shared-family grid,
+cached alternative targets, direct cached-field derived targets, contextual
+cached trial-state targets, wheel-derived targets, and source-target narrowing
+as GPU triggers. The only training trigger remains a local row with
 delta_vs_shuffle>=`0`, delta_vs_total>=`0`, target0>=`0.55`,
 target1>=`0.55`, and bidirectional_recording_fraction>=`0.75`.
 
@@ -1584,6 +1585,17 @@ velocity consistent with action direction. Each must pass the same local
 model-free
 true-vs-shuffle, total-baseline, global target, and same-recording
 bidirectionality gate before any paid training.
+
+Wheel target family gate:
+`scripts/audit_wheel_target_family_gate.py` implements that no-spend branch
+using `wheel_active`, `wheel_displacement`, and `choice_aligned_wheel` targets
+derived from cached wheel position. The audit has good trial coverage
+(`wheel_active`: 16,982 trials, 28/28 eligible recordings;
+`wheel_displacement`: 16,967 trials, 28/28; `choice_aligned_wheel`: 16,549
+trials, 23/28), but still finds zero candidates across 84 rows. The closest
+rows are broad-anatomy `KS014` wheel-active/displacement screens with `3/4`
+bidirectional recordings, but they fail shuffle/total controls. This means the
+cache rebuild did its job, but the tested wheel targets are not an A100 trigger.
 
 Derived target family gate:
 `scripts/audit_derived_target_family_gate.py` implements the first concrete
@@ -1613,11 +1625,11 @@ from early trials after probability-left changes versus stable block tails, and
 and uses the same shared-family gate. The result is again negative: zero
 candidates across 84 rows, 40 positive centered-delta rows, and max
 same-recording bidirectional support only `2/4`. The compact local HDF5 cache
-contains only spikes, units, and trial arrays, so richer external behavioral
-state such as wheel is not available in this matched cache. The next branch
-should be a behavior-cache rebuild/fetch preflight for a genuinely external
-target source, followed by the same local model-free gate; do not spend on A100
-training from the contextual trial-state branch.
+now includes wheel after the rebuild, and that wheel-derived branch was tested
+separately with zero candidates. The next branch should use a genuinely new
+benchmark/control source or prospective manifest design, followed by the same
+local model-free gate; do not spend on A100 training from the contextual
+trial-state branch.
 
 Recording-centered feature check:
 The gate also supports `--feature-mode recording_centered`, which subtracts
@@ -1677,7 +1689,9 @@ recording-centered family gate on `prior_side` and `feedback`. Both screens
 also have zero candidates. `prior_side` produces more positive centered deltas
 (`6/7`) but still fails bidirectional target evidence; `feedback` has `4/7`
 positive centered deltas and the same mean bidirectional recording fraction
-(`0.107`). This closes phases 3-5 under the current feature/target choices:
-there is no local model-free gate result that justifies an A100 training run.
-The next roadmap item should be benchmark/control redesign or a new local
-mechanism test that first passes the same recording-bidirectional criterion.
+(`0.107`). The later wheel-derived target family gate also finds zero
+candidates after the cache rebuild. This closes phases 3-5 under the current
+feature/target choices: there is no local model-free gate result that justifies
+an A100 training run. The next roadmap item should be benchmark/control
+redesign or a prospective manifest that first passes the same
+recording-bidirectional criterion.
