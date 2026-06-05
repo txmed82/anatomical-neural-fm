@@ -343,6 +343,16 @@ target-direction artifacts: `CSH_ZAD_019` has target0 `0.120` and target1
 Decision: residualized region deviations are not enough to trigger GPU
 training.
 
+Source-target pair redesign check:
+`docs/model_free_source_target_pair_gate_recording_centered.md` tests whether
+the leave-subject-out panel is hiding a compatible single-source animal by
+training the model-free recording-centered anatomy classifier on one source
+subject and evaluating one target subject at a time. It finds zero candidates
+across 42 source-target pairs. Twenty pairs have positive centered deltas, but
+all fail global target0/target1 or same-recording bidirectionality; the mean
+bidirectional recording fraction is only `0.065`. Decision: source-target
+pairing does not provide a local promotion path to GPU training.
+
 Recording-centered feature check:
 `docs/model_free_recording_bidirectional_gate_recording_centered.md` subtracts
 each recording's own mean parent-region feature vector before ridge fitting.

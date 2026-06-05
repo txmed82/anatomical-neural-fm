@@ -118,6 +118,9 @@ MODEL_FREE_RECORDING_BIDIRECTIONAL_UNIT_RESIDUALS_FILE = (
 )
 MODEL_FREE_RECORDING_BIDIRECTIONAL_PRIOR_FILE = "docs/model_free_recording_bidirectional_gate_prior_side.json"
 MODEL_FREE_RECORDING_BIDIRECTIONAL_FEEDBACK_FILE = "docs/model_free_recording_bidirectional_gate_feedback.json"
+MODEL_FREE_SOURCE_TARGET_PAIR_RECORDING_CENTERED_FILE = (
+    "docs/model_free_source_target_pair_gate_recording_centered.json"
+)
 MODEL_FREE_FAMILY_BIDIRECTIONAL_RECORDING_CENTERED_FILE = (
     "docs/model_free_family_bidirectional_gate_recording_centered.json"
 )
@@ -421,6 +424,7 @@ def render_markdown(
     model_free_recording_bidirectional_unit_residuals: dict | None = None,
     model_free_recording_bidirectional_prior: dict | None = None,
     model_free_recording_bidirectional_feedback: dict | None = None,
+    model_free_source_target_pair_recording_centered: dict | None = None,
     model_free_family_bidirectional_recording_centered: dict | None = None,
     model_free_family_bidirectional_prior_recording_centered: dict | None = None,
     model_free_family_bidirectional_feedback_recording_centered: dict | None = None,
@@ -1130,6 +1134,35 @@ def render_markdown(
             ),
             "",
         ]
+    if model_free_source_target_pair_recording_centered is not None:
+        summary = model_free_source_target_pair_recording_centered["summary"]
+        counts = ", ".join(
+            f"{decision}: {count}"
+            for decision, count in summary["decision_counts"].items()
+        )
+        lines += [
+            "## Source-Target Pair Gate",
+            "",
+            "`docs/model_free_source_target_pair_gate_recording_centered.md` trains",
+            "the same closed-form recording-centered anatomy classifier on one source",
+            "subject at a time and evaluates each target subject against the",
+            "within-recording shuffled-label control.",
+            "",
+            f"- source-target pairs: `{summary['n_pairs']}`",
+            f"- candidates: `{summary['n_candidates']}`",
+            f"- positive centered-delta pairs: `{summary['n_positive_delta_pairs']}`",
+            f"- mean bidirectional recording fraction: `{summary['mean_bidirectional_recording_fraction']:.3f}`",
+            f"- decision counts: `{counts}`",
+            f"- decision: `{summary['decision']}`",
+            "",
+            (
+                "Decision: single-source training does not reveal a hidden compatible "
+                "animal pair. The best positive centered-delta pairs still fail global "
+                "target0 or target1 and have at most `1/4` bidirectional target "
+                "recordings."
+            ),
+            "",
+        ]
     if model_free_family_bidirectional_recording_centered is not None:
         summary = model_free_family_bidirectional_recording_centered["summary"]
         lines += [
@@ -1321,6 +1354,9 @@ def main() -> int:
     model_free_recording_bidirectional_feedback = read_mechanism_audit(
         REPO_ROOT / MODEL_FREE_RECORDING_BIDIRECTIONAL_FEEDBACK_FILE
     )
+    model_free_source_target_pair_recording_centered = read_mechanism_audit(
+        REPO_ROOT / MODEL_FREE_SOURCE_TARGET_PAIR_RECORDING_CENTERED_FILE
+    )
     model_free_family_bidirectional_recording_centered = read_mechanism_audit(
         REPO_ROOT / MODEL_FREE_FAMILY_BIDIRECTIONAL_RECORDING_CENTERED_FILE
     )
@@ -1367,6 +1403,7 @@ def main() -> int:
         model_free_recording_bidirectional_unit_residuals,
         model_free_recording_bidirectional_prior,
         model_free_recording_bidirectional_feedback,
+        model_free_source_target_pair_recording_centered,
         model_free_family_bidirectional_recording_centered,
         model_free_family_bidirectional_prior_recording_centered,
         model_free_family_bidirectional_feedback_recording_centered,
@@ -1438,6 +1475,7 @@ def main() -> int:
         "model_free_recording_bidirectional_unit_residuals": model_free_recording_bidirectional_unit_residuals,
         "model_free_recording_bidirectional_prior_side": model_free_recording_bidirectional_prior,
         "model_free_recording_bidirectional_feedback": model_free_recording_bidirectional_feedback,
+        "model_free_source_target_pair_recording_centered": model_free_source_target_pair_recording_centered,
         "model_free_family_bidirectional_recording_centered": (
             model_free_family_bidirectional_recording_centered
         ),

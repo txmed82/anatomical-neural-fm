@@ -1411,6 +1411,18 @@ signal, but not one that supports the cross-animal anatomical transfer claim
 under the current target/control gates. Do not launch GPU training from this
 result.
 
+Source-target pair redesign check:
+`scripts/audit_model_free_source_target_pairs.py` changes the benchmark split
+instead of the feature transform: it trains the closed-form anatomy classifier
+on one source animal and evaluates one target animal against the
+within-recording shuffled-label control. This tests whether the all-other-
+subjects LSO setup was diluting compatible animal pairs. The local screen still
+has zero candidates across 42 source-target pairs. Twenty pairs have positive
+centered deltas, but the failures remain global target0/target1 imbalance or
+same-recording bidirectionality; the mean bidirectional recording fraction is
+`0.065`. This closes single-source animal pairing as an immediate no-spend
+rescue path.
+
 Recording-centered feature check:
 The gate also supports `--feature-mode recording_centered`, which subtracts
 each recording's mean parent-region feature vector before fitting. This reduces

@@ -361,6 +361,22 @@ times that recording's static unit-region distribution.
 
 Decision: residualizing static anatomical coverage increases the number of positive centered deltas, but does not create a valid transfer signal. Every positive holdout remains one target direction with `0/4` bidirectional recordings.
 
+## Source-Target Pair Gate
+
+`docs/model_free_source_target_pair_gate_recording_centered.md` trains
+the same closed-form recording-centered anatomy classifier on one source
+subject at a time and evaluates each target subject against the
+within-recording shuffled-label control.
+
+- source-target pairs: `42`
+- candidates: `0`
+- positive centered-delta pairs: `20`
+- mean bidirectional recording fraction: `0.065`
+- decision counts: `reject: centered delta: 22, reject: global target0: 12, reject: global target1: 8`
+- decision: `no_source_target_model_free_signal`
+
+Decision: single-source training does not reveal a hidden compatible animal pair. The best positive centered-delta pairs still fail global target0 or target1 and have at most `1/4` bidirectional target recordings.
+
 ## Family-Aggregate Recording-Centered Gate
 
 `docs/model_free_family_bidirectional_gate_recording_centered.md` combines
