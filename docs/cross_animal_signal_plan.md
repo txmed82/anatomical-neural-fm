@@ -927,6 +927,16 @@ CSH_ZAD_019 pilot with `BATCH_SAMPLING=target_balanced`,
 `SAVE_DIAGNOSTICS=1`; only broaden to NR_0019 if the strict anatomy-specific
 permutation gate improves.
 
+Target-balanced RunPod pilot attempt: preflight passed on branch
+`runpod-pilot-phases-3-5` with `active_pods: 0`, `git_ready: True`, L4
+`costPerHr=$0.39`, and an estimated guarded cost of `$0.78` under an `$8`
+launch cap. Pod `4zqrrhmb02mm6j` was rented but never exposed runtime details
+or visible startup progress; it was manually terminated after roughly seven
+minutes to avoid idle spend. Follow-up preflight again reported
+`active_pods: 0`. The next attempt should use the same target-balanced command
+shape but with a shorter provisioning cap or a more reliable datacenter/GPU
+availability target.
+
 After cleanup, run:
 
 ```bash
