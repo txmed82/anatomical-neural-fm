@@ -2,10 +2,11 @@ from __future__ import annotations
 
 import json
 
+import h5py
 import numpy as np
 
 from scripts.build_ibl_brainset import trial_window_spike_mask
-from scripts.build_ibl_brainset_batch import _manifest_insertions, select_shard, write_report
+from scripts.build_ibl_brainset_batch import _manifest_insertions, missing_streams, select_shard, write_report
 from scripts.select_ibl_manifest import compact_insertion, select_balanced
 
 
@@ -132,3 +133,17 @@ def test_batch_report_records_compact_build_options(tmp_path) -> None:
     assert "Include wheel: `False`" in text
     assert "Trial-window-only spikes: `True`" in text
     assert "Window length: `1.25`" in text
+
+
+def test_missing_streams_detects_existing_compact_behavior_gap(tmp_path) -> None:
+    path = tmp_path / "rec.h5"
+    with h5py.File(path, "w") as h5:
+        h5.create_group("spikes")
+
+    assert missing_streams(path, ["wheel"]) == ["wheel"]
+
+    with h5py.File(path, "a") as h5:
+        h5.create_group("wheel")
+
+    assert missing_streams(path, ["wheel"]) == []
+    assert missing_streams(tmp_path / "missing.h5", ["wheel"]) == ["wheel"]

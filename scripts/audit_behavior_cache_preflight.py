@@ -102,6 +102,7 @@ def build_commands(manifest: Path, *, num_shards: int, out_dir: Path) -> list[st
             f"--shard-index {shard} "
             f"--report docs/behavior_cache_build_shard{shard:02d}.md "
             "--trial-window-only --window-len 1.0 "
+            "--rebuild-missing-stream wheel "
             f"# writes {out_dir_text}"
         )
     return commands

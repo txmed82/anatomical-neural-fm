@@ -1571,7 +1571,9 @@ It inspects the active matched HDF5 cache and confirms all 28 manifest files
 are present, but only `3/28` contain the `wheel` stream. The remaining `25/28`
 need a behavior-inclusive rebuild. The generated shard commands rerun
 `scripts/build_ibl_brainset_batch.py` without `--no-wheel`, while keeping
-`--trial-window-only --window-len 1.0`. After rebuild, the first local target
+`--trial-window-only --window-len 1.0`, and add
+`--rebuild-missing-stream wheel` so existing compact HDF5s are rebuilt only
+when the behavior stream is absent. After rebuild, the first local target
 screens should be wheel movement onset versus quiescence, high versus low
 absolute wheel velocity after stimulus onset, and signed wheel velocity
 consistent with action direction. Each must pass the same local model-free

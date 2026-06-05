@@ -50,6 +50,7 @@ def test_build_commands_keep_wheel_and_shard_manifest(tmp_path) -> None:
     assert "--shard-index 0" in commands[0]
     assert "--shard-index 1" in commands[1]
     assert "--trial-window-only --window-len 1.0" in commands[0]
+    assert "--rebuild-missing-stream wheel" in commands[0]
     assert "--no-wheel" not in commands[0]
 
 

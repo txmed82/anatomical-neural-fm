@@ -496,9 +496,11 @@ behavior streams. The HDF5 files are present for all 28 manifest recordings,
 but only `3/28` currently contain `wheel`; `25/28` need a behavior-inclusive
 rebuild. The build plan is to rerun `scripts/build_ibl_brainset_batch.py` on
 the matched manifest without `--no-wheel`, preserving `--trial-window-only
---window-len 1.0`. Decision: this is the next no-spend step before any A100
-training. After rebuild, define wheel movement/quiescence, high/low absolute
-velocity, or signed action velocity targets and rerun the same local gate.
+--window-len 1.0`, and with `--rebuild-missing-stream wheel` so existing
+compact HDF5s are actually replaced only when the behavior stream is missing.
+Decision: this is the next no-spend step before any A100 training. After
+rebuild, define wheel movement/quiescence, high/low absolute velocity, or
+signed action velocity targets and rerun the same local gate.
 
 Derived target family gate:
 `docs/derived_target_family_gate.md` tests the first concrete version of that

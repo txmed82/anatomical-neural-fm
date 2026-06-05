@@ -16,6 +16,8 @@ import traceback
 from pathlib import Path
 from typing import Sequence
 
+import h5py
+
 # import the single-session builder
 SCRIPT_DIR = Path(__file__).resolve().parent
 sys.path.insert(0, str(SCRIPT_DIR))
@@ -50,6 +52,8 @@ def parse_args() -> argparse.Namespace:
                    help="Keep only spikes inside trial-aligned windows used by scripts/train.py.")
     p.add_argument("--window-len", type=float, default=1.0,
                    help="Trial-window spike retention length for --trial-window-only.")
+    p.add_argument("--rebuild-missing-stream", nargs="*", default=[],
+                   help="For existing HDF5s, rebuild when any named top-level stream is missing.")
     return p.parse_args()
 
 
@@ -75,6 +79,16 @@ def select_shard(insertions: Sequence[dict], *, num_shards: int, shard_index: in
     start = (n * shard_index) // num_shards
     end = (n * (shard_index + 1)) // num_shards
     return list(insertions[start:end])
+
+
+def missing_streams(path: Path, required_streams: Sequence[str]) -> list[str]:
+    if not path.exists():
+        return list(required_streams)
+    if not required_streams:
+        return []
+    with h5py.File(path, "r") as h5:
+        present = set(h5.keys())
+    return [stream for stream in required_streams if stream not in present]
 
 
 def write_report(
@@ -176,13 +190,19 @@ def main() -> int:
         probe = ins["name"]
         out_path = OUT_DIR / f"{eid}_{probe}.h5"
 
-        if out_path.exists():
+        missing_required = missing_streams(out_path, args.rebuild_missing_stream)
+        if out_path.exists() and not missing_required:
             print(f"  [{built + 1}/{target}] skip (exists): {eid} {probe}")
             built += 1
             row = {"session": eid, "name": probe, "path": str(out_path)}
             built_rows.append(row)
             skipped_existing.append(row)
             continue
+        if out_path.exists() and missing_required:
+            print(
+                f"  rebuilding existing {eid} {probe}; missing streams: "
+                f"{', '.join(missing_required)}"
+            )
 
         attempted += 1
         print(f"\n=== [{attempted}] Building {eid} probe={probe} ===")
