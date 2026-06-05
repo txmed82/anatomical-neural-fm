@@ -1,4 +1,4 @@
-from scripts.audit_next_benchmark_control_options import build_report, render_markdown
+from scripts.audit_next_benchmark_control_options import build_report, projected_feature_mode_summary, render_markdown
 
 
 def test_build_report_tracks_current_no_spend_state() -> None:
@@ -32,6 +32,23 @@ def test_projected_panel_ready_recommends_model_free_gate() -> None:
 
     assert "projected support80" in next_action
     assert "model-free" in next_action or "Do not launch GPU training" in next_action
+
+
+def test_projected_feature_mode_summary_aggregates_artifacts() -> None:
+    payload = {"summary": {"n_rows": 10, "n_candidates": 1, "max_bidirectional_recording_fraction": 0.25}}
+    summary = projected_feature_mode_summary({
+        "projected_support80_all_families_recording_centered": payload,
+        "projected_support80_all_families_fractions": None,
+        "projected_support80_all_families_counts": {
+            "summary": {"n_rows": 5, "n_candidates": 0, "max_bidirectional_recording_fraction": 0.5}
+        },
+        "projected_support80_all_families_unit_residuals": None,
+    })
+
+    assert summary["n_modes"] == 2
+    assert summary["n_rows"] == 15
+    assert summary["n_candidates"] == 1
+    assert summary["max_bidirectional_recording_fraction"] == 0.5
 
 
 def test_render_markdown_lists_closed_branches() -> None:

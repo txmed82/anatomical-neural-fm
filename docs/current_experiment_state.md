@@ -409,7 +409,7 @@ branches after the current local negative audits.
 
 | priority | branch | status | next action |
 |---:|---|---|---|
-| 1 | new manifest with prospective bidirectional support | `recommended_next` | Do not launch GPU training from the projected support80 panel; its model-free gate has no candidates. Redesign the target/control locally. |
+| 1 | new manifest with prospective bidirectional support | `recommended_next` | Do not launch GPU training from the projected support80 panel; its model-free family and feature-mode gates have no candidates. Redesign the target/control locally. |
 | 86 | wheel-derived target family gate | `closed` | Do not spend on the tested wheel targets; move to a prospectively supported manifest. |
 | 87 | behavior-inclusive cache rebuild | `closed` | Cache rebuild is complete; all matched recordings now expose wheel. Use the wheel-derived local target gate before any training. |
 | 88 | direct cached-field derived targets | `closed` | Do not launch GPU training from contrast_strength, response_latency, or prior_engaged. |

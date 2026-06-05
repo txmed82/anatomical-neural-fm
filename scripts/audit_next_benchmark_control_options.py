@@ -20,6 +20,18 @@ ARTIFACTS = {
     "wheel_target_family": "docs/wheel_target_family_gate.json",
     "local_cached_manifest_candidates": "docs/local_cached_manifest_candidates.json",
     "projected_support80_shared_family": "docs/shared_family_target_control_gate_projected_support80.json",
+    "projected_support80_all_families_recording_centered": (
+        "docs/shared_family_target_control_gate_projected_support80_all_families.json"
+    ),
+    "projected_support80_all_families_fractions": (
+        "docs/shared_family_target_control_gate_projected_support80_all_families_fractions.json"
+    ),
+    "projected_support80_all_families_counts": (
+        "docs/shared_family_target_control_gate_projected_support80_all_families_counts.json"
+    ),
+    "projected_support80_all_families_unit_residuals": (
+        "docs/shared_family_target_control_gate_projected_support80_all_families_unit_residuals.json"
+    ),
     "external_manifest_acquisition_gap": "docs/external_manifest_acquisition_gap.json",
     "behavior_cache_preflight": "docs/behavior_cache_preflight.json",
     "family_alt_prior": "docs/model_free_family_bidirectional_gate_prior_side_recording_centered.json",
@@ -38,6 +50,25 @@ def summary_value(payload: dict | None, key: str, default=None):
     if payload is None:
         return default
     return payload.get("summary", {}).get(key, default)
+
+
+def projected_feature_mode_summary(artifacts: dict[str, dict | None]) -> dict:
+    keys = [
+        "projected_support80_all_families_recording_centered",
+        "projected_support80_all_families_fractions",
+        "projected_support80_all_families_counts",
+        "projected_support80_all_families_unit_residuals",
+    ]
+    payloads = [(key, artifacts[key]) for key in keys if artifacts.get(key) is not None]
+    return {
+        "n_modes": len(payloads),
+        "n_rows": sum(int(summary_value(payload, "n_rows", 0) or 0) for _key, payload in payloads),
+        "n_candidates": sum(int(summary_value(payload, "n_candidates", 0) or 0) for _key, payload in payloads),
+        "max_bidirectional_recording_fraction": max(
+            (float(summary_value(payload, "max_bidirectional_recording_fraction", 0.0) or 0.0) for _key, payload in payloads),
+            default=0.0,
+        ),
+    }
 
 
 def branch(
@@ -86,6 +117,7 @@ def build_report() -> dict:
     projected_support80_gate = artifacts["projected_support80_shared_family"]
     projected_support80_candidates = summary_value(projected_support80_gate, "n_candidates", None)
     projected_support80_done = projected_support80_gate is not None
+    projected_feature_modes = projected_feature_mode_summary(artifacts)
     external_summary = external_acquisition.get("summary", {}) if external_acquisition is not None else {}
     default_candidate_setting = summary_value(threshold, "strongest_default_target_candidate_setting", {}) or {}
     default_candidate_bidir = default_candidate_setting.get("min_bidirectional_recording_fraction")
@@ -226,6 +258,17 @@ def build_report() -> dict:
                         f"{summary_value(projected_support80_gate, 'max_bidirectional_recording_fraction', 0.0):.3f}"
                     )
                 ),
+                (
+                    "projected support80 all-family feature-mode sweep has not been run yet"
+                    if projected_feature_modes["n_modes"] == 0
+                    else (
+                        "projected support80 all-family feature-mode sweep has "
+                        f"{projected_feature_modes['n_candidates']} candidates across "
+                        f"{projected_feature_modes['n_rows']} rows, "
+                        f"{projected_feature_modes['n_modes']} feature modes, and max bidir "
+                        f"{projected_feature_modes['max_bidirectional_recording_fraction']:.3f}"
+                    )
+                ),
                 "recording-subset replication selected zero stable validation rows",
             ],
             next_action=(
@@ -233,7 +276,8 @@ def build_report() -> dict:
                 "to the passing target/family row."
                 if projected_support80_done and (projected_support80_candidates or 0) > 0
                 else "Do not launch GPU training from the projected support80 panel; its "
-                "model-free gate has no candidates. Redesign the target/control locally."
+                "model-free family and feature-mode gates have no candidates. Redesign the "
+                "target/control locally."
                 if projected_support80_done
                 else
                 "Run the model-free true-vs-shuffle, total-baseline, target0/target1, "

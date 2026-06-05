@@ -9,7 +9,7 @@ Ranks remaining no-spend branches after the current local audits. This is the pl
 
 | priority | branch | status | next action |
 |---:|---|---|---|
-| 1 | new manifest with prospective bidirectional support | `recommended_next` | Do not launch GPU training from the projected support80 panel; its model-free gate has no candidates. Redesign the target/control locally. |
+| 1 | new manifest with prospective bidirectional support | `recommended_next` | Do not launch GPU training from the projected support80 panel; its model-free family and feature-mode gates have no candidates. Redesign the target/control locally. |
 | 86 | wheel-derived target family gate | `closed` | Do not spend on the tested wheel targets; move to a prospectively supported manifest. |
 | 87 | behavior-inclusive cache rebuild | `closed` | Cache rebuild is complete; all matched recordings now expose wheel. Use the wheel-derived local target gate before any training. |
 | 88 | direct cached-field derived targets | `closed` | Do not launch GPU training from contrast_strength, response_latency, or prior_engaged. |
@@ -29,6 +29,7 @@ Ranks remaining no-spend branches after the current local audits. This is the pl
 - external acquisition gap audit identifies 7 missing HDF5 recordings for 2 support-qualified subjects, projecting 31 recordings across 8 subjects
 - strict iterative 8-recording manifest has 0 candidates and max bidir 0.250
 - projected support80 shared-family gate has 0 candidates across 128 rows and max bidir 0.500
+- projected support80 all-family feature-mode sweep has 0 candidates across 1280 rows, 4 feature modes, and max bidir 0.500
 - recording-subset replication selected zero stable validation rows
 - GPU trigger: At least one local row on the proposed manifest must clear delta_vs_shuffle>=0, delta_vs_total>=0, target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75 before training.
 
