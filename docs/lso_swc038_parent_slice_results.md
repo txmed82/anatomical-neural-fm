@@ -1,6 +1,6 @@
 # Cloud Phase 3-5 Results
 
-Date: 2026-06-05T00:28:23Z
+Date: 2026-06-05T00:34:27Z
 
 RunPod target: A100 pilot.
 
@@ -126,12 +126,12 @@ root: `runs/lso_swc038_parent_slice`
 
 | holdout | arm | n_seeds | mean_AUC | mean_delta_vs_shared | seed_deltas |
 |---|---|---|---|---|---|
-| SWC_038 | region_only | 1 | 0.456 | -0.006 | -0.006 |
-| SWC_038 | region_shuffle | 1 | 0.485 | +0.024 | +0.024 |
+| SWC_038 | region_only | 2 | 0.484 | -0.004 | -0.006,-0.002 |
+| SWC_038 | region_shuffle | 2 | 0.507 | +0.019 | +0.024,+0.015 |
 
 ## Aggregate Delta vs Shared Null
 
 | arm | n_pairs | mean_delta | positive_pairs |
 |---|---|---|---|
-| region_only | 1 | -0.006 | 0/1 |
-| region_shuffle | 1 | +0.024 | 1/1 |
+| region_only | 2 | -0.004 | 0/2 |
+| region_shuffle | 2 | +0.019 | 2/2 |
