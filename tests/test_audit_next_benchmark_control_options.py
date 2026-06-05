@@ -79,6 +79,7 @@ def test_render_markdown_lists_closed_branches() -> None:
     markdown = render_markdown(build_report())
 
     assert "# Next Benchmark/Control Options Audit" in markdown
+    assert "bounded response-extreme A100 pilot" in markdown
     assert "behavior-inclusive cache rebuild" in markdown
     assert "wheel-derived target family gate" in markdown
     assert "lateralized family anatomy target" in markdown

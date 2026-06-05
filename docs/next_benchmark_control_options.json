@@ -3,6 +3,9 @@
     "behavior_cache_preflight": "docs/behavior_cache_preflight.json",
     "cell_type_prior_target_control": "docs/cell_type_prior_target_control_gate.json",
     "composite_behavior_recording_failure": "docs/composite_behavior_recording_failure_decomposition.json",
+    "composite_behavior_response_extreme": "docs/composite_behavior_response_extreme_family_gate.json",
+    "composite_behavior_response_extreme_projected": "docs/composite_behavior_response_extreme_family_gate_projected_hdf5.json",
+    "composite_behavior_response_extreme_seed_sensitivity": "docs/composite_behavior_response_extreme_seed_sensitivity.json",
     "composite_behavior_target": "docs/composite_behavior_target_family_gate.json",
     "composite_behavior_target_l2_seed_sensitivity": "docs/composite_behavior_target_l2_seed_sensitivity.json",
     "composite_behavior_target_projected": "docs/composite_behavior_target_family_gate_projected_hdf5.json",
@@ -66,6 +69,18 @@
     "wheel_target_family": "docs/wheel_target_family_gate.json"
   },
   "branches": [
+    {
+      "evidence": [
+        "current-panel response-extreme gate found 2 candidates across 56 rows and max bidir 0.750",
+        "projected-panel response-extreme gate found 4 candidates across 64 rows and max bidir 0.750",
+        "response-extreme seed sensitivity found 2 robust candidates; max candidate seed fraction=1.000"
+      ],
+      "gpu_trigger": "Only rows that already cleared delta_vs_shuffle>=0, delta_vs_total>=0, target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75 across all shuffle seeds may launch: post_error_response_extreme_25_75_le_1/broad_named_anatomy/CSHL045 and post_error_response_extreme_33_67_le_1/broad_named_anatomy/NR_0019; keep total spend under the existing $100 cap.",
+      "name": "bounded response-extreme A100 pilot",
+      "next_action": "Run a bounded A100 pilot for the two robust response-extreme broad-anatomy candidates.",
+      "priority": 0,
+      "status": "recommended_next"
+    },
     {
       "evidence": [
         "current 28-recording manifest is feasible but not clean enough to pass the local gate",
@@ -390,8 +405,8 @@
   ],
   "summary": {
     "closed_branches": 26,
-    "decision": "no_local_training_trigger",
-    "gpu_training_trigger": "At least one local row on the proposed manifest must clear delta_vs_shuffle>=0, delta_vs_total>=0, target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75 before training.",
-    "recommended_next": "new manifest with prospective bidirectional support"
+    "decision": "local_training_trigger_available",
+    "gpu_training_trigger": "Only rows that already cleared delta_vs_shuffle>=0, delta_vs_total>=0, target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75 across all shuffle seeds may launch: post_error_response_extreme_25_75_le_1/broad_named_anatomy/CSHL045 and post_error_response_extreme_33_67_le_1/broad_named_anatomy/NR_0019; keep total spend under the existing $100 cap.",
+    "recommended_next": "bounded response-extreme A100 pilot"
   }
 }

@@ -50,6 +50,24 @@ def test_post_error_low_contrast_choice_labels_previous_errors_only() -> None:
     assert np.isnan(labels[3])
 
 
+def test_post_error_response_extreme_drops_middle_latencies() -> None:
+    rec = fake_recording(
+        stim_on_times=np.asarray([0.0, 1.0, 2.0, 3.0, 4.0]),
+        response_times=np.asarray([0.1, 1.2, 2.5, 3.8, 5.4]),
+        feedback_type=np.asarray([-1.0, -1.0, -1.0, -1.0, -1.0]),
+        contrast_left=np.zeros(5, dtype=np.float64),
+        contrast_right=np.zeros(5, dtype=np.float64),
+    )
+
+    labels = per_recording_composite_labels(rec, "post_error_response_extreme_25_75_le_1")
+
+    assert np.isnan(labels[0])
+    assert labels[1] == 1.0
+    assert np.isnan(labels[2])
+    assert np.isnan(labels[3])
+    assert labels[4] == 0.0
+
+
 def test_prior_switch_choice_uses_first_trials_after_new_long_block() -> None:
     probability_left = np.asarray([0.5] * 45 + [0.2] * 45, dtype=np.float64)
     choice = np.asarray([-1.0, 1.0] * 45, dtype=np.float64)

@@ -57,6 +57,13 @@ ARTIFACTS = {
     "composite_behavior_target_seed_sensitivity": "docs/composite_behavior_target_seed_sensitivity.json",
     "composite_behavior_target_l2_seed_sensitivity": "docs/composite_behavior_target_l2_seed_sensitivity.json",
     "composite_behavior_recording_failure": "docs/composite_behavior_recording_failure_decomposition.json",
+    "composite_behavior_response_extreme": "docs/composite_behavior_response_extreme_family_gate.json",
+    "composite_behavior_response_extreme_projected": (
+        "docs/composite_behavior_response_extreme_family_gate_projected_hdf5.json"
+    ),
+    "composite_behavior_response_extreme_seed_sensitivity": (
+        "docs/composite_behavior_response_extreme_seed_sensitivity.json"
+    ),
     "cell_type_prior_target_control": "docs/cell_type_prior_target_control_gate.json",
     "waveform_target_control": "docs/waveform_target_control_gate.json",
     "local_gate_meta_failures": "docs/local_gate_meta_failure_audit.json",
@@ -218,6 +225,19 @@ def build_report() -> dict:
         if composite_behavior_recording_failure is not None
         else {}
     )
+    response_extreme = artifacts["composite_behavior_response_extreme"]
+    response_extreme_summary = response_extreme.get("summary", {}) if response_extreme is not None else {}
+    response_extreme_projected = artifacts["composite_behavior_response_extreme_projected"]
+    response_extreme_projected_summary = (
+        response_extreme_projected.get("summary", {}) if response_extreme_projected is not None else {}
+    )
+    response_extreme_seed = artifacts["composite_behavior_response_extreme_seed_sensitivity"]
+    response_extreme_seed_summary = (
+        response_extreme_seed.get("summary", {}) if response_extreme_seed is not None else {}
+    )
+    response_extreme_seed_robust = int(
+        response_extreme_seed_summary.get("n_robust_response_extreme_seed_candidates", 0) or 0
+    )
     composite_behavior_seed_robust = int(
         composite_behavior_seed_summary.get("n_robust_composite_behavior_seed_candidates", 0) or 0
     )
@@ -337,6 +357,55 @@ def build_report() -> dict:
     default_candidate_count = default_candidate_setting.get("n_candidates")
 
     branches = [
+        branch(
+            name="bounded response-extreme A100 pilot",
+            status="recommended_next" if response_extreme_seed_robust > 0 else "secondary_after_new_target",
+            priority=0 if response_extreme_seed_robust > 0 else 79,
+            evidence=[
+                (
+                    "current-panel response-extreme gate has not been run yet"
+                    if response_extreme is None
+                    else (
+                        "current-panel response-extreme gate found "
+                        f"{response_extreme_summary.get('n_candidates', 'n/a')} candidates across "
+                        f"{response_extreme_summary.get('n_rows', 'n/a')} rows and max bidir "
+                        f"{response_extreme_summary.get('max_bidirectional_recording_fraction', 0.0):.3f}"
+                    )
+                ),
+                (
+                    "projected-panel response-extreme gate has not been run yet"
+                    if response_extreme_projected is None
+                    else (
+                        "projected-panel response-extreme gate found "
+                        f"{response_extreme_projected_summary.get('n_candidates', 'n/a')} candidates across "
+                        f"{response_extreme_projected_summary.get('n_rows', 'n/a')} rows and max bidir "
+                        f"{response_extreme_projected_summary.get('max_bidirectional_recording_fraction', 0.0):.3f}"
+                    )
+                ),
+                (
+                    "response-extreme seed sensitivity has not been run yet"
+                    if response_extreme_seed is None
+                    else (
+                        "response-extreme seed sensitivity found "
+                        f"{response_extreme_seed_robust} robust candidates; max candidate seed fraction="
+                        f"{response_extreme_seed_summary.get('max_candidate_seed_fraction', 0.0):.3f}"
+                    )
+                ),
+            ],
+            next_action=(
+                "Run a bounded A100 pilot for the two robust response-extreme broad-anatomy candidates."
+                if response_extreme_seed_robust > 0
+                else "Run response-extreme projected seed sensitivity before any GPU training."
+            ),
+            gpu_trigger=(
+                "Only rows that already cleared delta_vs_shuffle>=0, delta_vs_total>=0, "
+                "target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75 "
+                "across all shuffle seeds may launch: "
+                "post_error_response_extreme_25_75_le_1/broad_named_anatomy/CSHL045 and "
+                "post_error_response_extreme_33_67_le_1/broad_named_anatomy/NR_0019; "
+                "keep total spend under the existing $100 cap."
+            ),
+        ),
         branch(
             name="behavior-inclusive cache rebuild",
             status="closed" if behavior_ready else "recommended_next",
@@ -1448,6 +1517,7 @@ def build_report() -> dict:
             or (projected_support80_candidates or 0) > 0
             or extreme_seed_robust > 0
             or low_contrast_seed_robust > 0
+            or response_extreme_seed_robust > 0
         )
         else "no_local_training_trigger"
     )

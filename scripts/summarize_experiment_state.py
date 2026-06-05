@@ -123,6 +123,13 @@ COMPOSITE_BEHAVIOR_TARGET_L2_SEED_SENSITIVITY_FILE = (
     "docs/composite_behavior_target_l2_seed_sensitivity.json"
 )
 COMPOSITE_BEHAVIOR_RECORDING_FAILURE_FILE = "docs/composite_behavior_recording_failure_decomposition.json"
+COMPOSITE_BEHAVIOR_RESPONSE_EXTREME_GATE_FILE = "docs/composite_behavior_response_extreme_family_gate.json"
+COMPOSITE_BEHAVIOR_RESPONSE_EXTREME_PROJECTED_GATE_FILE = (
+    "docs/composite_behavior_response_extreme_family_gate_projected_hdf5.json"
+)
+COMPOSITE_BEHAVIOR_RESPONSE_EXTREME_SEED_SENSITIVITY_FILE = (
+    "docs/composite_behavior_response_extreme_seed_sensitivity.json"
+)
 LOW_CONTRAST_CHOICE_FAMILY_GATE_FILE = "docs/low_contrast_choice_family_gate.json"
 LOW_CONTRAST_CHOICE_PROJECTED_GATE_FILE = "docs/low_contrast_choice_family_gate_projected_hdf5.json"
 LOW_CONTRAST_CHOICE_SEED_SENSITIVITY_FILE = "docs/low_contrast_choice_seed_sensitivity.json"
@@ -615,6 +622,9 @@ def render_markdown(
     composite_behavior_target_seed_sensitivity: dict | None = None,
     composite_behavior_target_l2_seed_sensitivity: dict | None = None,
     composite_behavior_recording_failure: dict | None = None,
+    composite_behavior_response_extreme_gate: dict | None = None,
+    composite_behavior_response_extreme_projected_gate: dict | None = None,
+    composite_behavior_response_extreme_seed_sensitivity: dict | None = None,
     low_contrast_choice_family_gate: dict | None = None,
     low_contrast_choice_projected_gate: dict | None = None,
     low_contrast_choice_seed_sensitivity: dict | None = None,
@@ -1819,6 +1829,103 @@ def render_markdown(
             (
                 "Decision: the projected panel also has zero lateralized-family candidates. "
                 "This closes simple hemisphere-split family counts as the rescue path."
+            ),
+            "",
+        ]
+    if composite_behavior_response_extreme_projected_gate is not None:
+        summary = composite_behavior_response_extreme_projected_gate["summary"]
+        balances = summary["target_balances"]
+        top = summary["top_rows"][:8]
+        lines += [
+            "## Composite Behavior Response-Extreme Projected Gate",
+            "",
+            "`docs/composite_behavior_response_extreme_family_gate_projected_hdf5.md`",
+            "drops middle post-error response-latency trials and reruns the unchanged",
+            "shared-family local gate on the projected manifest.",
+            "",
+            f"- rows: `{summary['n_rows']}`",
+            f"- candidates: `{summary['n_candidates']}`",
+            f"- positive centered-delta rows: `{summary['n_positive_centered_delta']}`",
+            f"- max bidirectional recording fraction: `{summary['max_bidirectional_recording_fraction']:.3f}`",
+            f"- decision: `{summary['decision']}`",
+            "",
+            "| target | trials | eligible recordings | recordings |",
+            "|---|---:|---:|---:|",
+        ]
+        for target, row in balances.items():
+            lines.append(
+                f"| {target} | {row['n_trials']} | {row['eligible_recordings']} | {row['n_recordings']} |"
+            )
+        lines += [
+            "",
+            "| target | family | holdout | decision | delta shuffle | delta total | targets | bidir recs |",
+            "|---|---|---|---|---:|---:|---|---:|",
+        ]
+        for row in top:
+            lines.append(
+                f"| {row['target_mode']} | {row['family']} | {row['holdout']} | {row['decision']} | "
+                f"{row['centered_delta_vs_shuffle']:+.3f} | {row['centered_delta_vs_total']:+.3f} | "
+                f"{row['target0_improved_vs_shuffle']:.3f}/{row['target1_improved_vs_shuffle']:.3f} | "
+                f"{row['n_bidirectional_recordings']}/{row['n_recordings']} |"
+            )
+        lines += [
+            "",
+            (
+                "Decision before seed validation: response-extreme labels improve the "
+                "post-error fast-response branch and create projected candidates, but "
+                "the rows require shuffle-seed validation before training."
+            ),
+            "",
+        ]
+    if composite_behavior_response_extreme_seed_sensitivity is not None:
+        summary = composite_behavior_response_extreme_seed_sensitivity["summary"]
+        top = composite_behavior_response_extreme_seed_sensitivity["rows"][:6]
+        robust = composite_behavior_response_extreme_seed_sensitivity.get(
+            "robust_response_extreme_seed_candidates",
+            [],
+        )
+        lines += [
+            "## Composite Behavior Response-Extreme Seed Sensitivity",
+            "",
+            "`docs/composite_behavior_response_extreme_seed_sensitivity.md` reruns",
+            "the projected response-extreme broad-anatomy candidates across",
+            "within-recording shuffle seeds.",
+            "",
+            f"- cases: `{summary['n_cases']}`",
+            (
+                "- robust response-extreme seed candidates: "
+                f"`{summary['n_robust_response_extreme_seed_candidates']}`"
+            ),
+            f"- max positive shuffle-delta fraction: `{summary['max_positive_shuffle_delta_fraction']:.3f}`",
+            f"- max candidate seed fraction: `{summary['max_candidate_seed_fraction']:.3f}`",
+            f"- decision: `{summary['decision']}`",
+            f"- gpu training ready: `{summary['gpu_training_ready']}`",
+            "",
+            "| target | family | holdout | positive seeds | candidate seeds | mean delta shuffle | mean delta total | mean targets | bidir range |",
+            "|---|---|---|---:|---:|---:|---:|---:|---:|",
+        ]
+        for row in top:
+            lines.append(
+                f"| {row['target_mode']} | {row['family']} | {row['holdout']} | "
+                f"{row['n_positive_shuffle_delta_seeds']}/{row['n_seeds']} | "
+                f"{row['n_candidate_seeds']}/{row['n_seeds']} | "
+                f"{row['mean_centered_delta_vs_shuffle']:+.4f} | "
+                f"{row['mean_centered_delta_vs_total']:+.4f} | "
+                f"{row['mean_target0']:.3f}/{row['mean_target1']:.3f} | "
+                f"{row['min_bidirectional_recordings']}-{row['max_bidirectional_recordings']} |"
+            )
+        lines += [
+            "",
+            "| robust target | family | holdout |",
+            "|---|---|---|",
+        ]
+        for row in robust:
+            lines.append(f"| {row['target_mode']} | {row['family']} | {row['holdout']} |")
+        lines += [
+            "",
+            (
+                "Decision: this is the first local training trigger. Keep the GPU run "
+                "bounded to the two robust response-extreme rows and the existing cost cap."
             ),
             "",
         ]
@@ -3753,6 +3860,15 @@ def main() -> int:
     composite_behavior_recording_failure = read_mechanism_audit(
         REPO_ROOT / COMPOSITE_BEHAVIOR_RECORDING_FAILURE_FILE
     )
+    composite_behavior_response_extreme_gate = read_mechanism_audit(
+        REPO_ROOT / COMPOSITE_BEHAVIOR_RESPONSE_EXTREME_GATE_FILE
+    )
+    composite_behavior_response_extreme_projected_gate = read_mechanism_audit(
+        REPO_ROOT / COMPOSITE_BEHAVIOR_RESPONSE_EXTREME_PROJECTED_GATE_FILE
+    )
+    composite_behavior_response_extreme_seed_sensitivity = read_mechanism_audit(
+        REPO_ROOT / COMPOSITE_BEHAVIOR_RESPONSE_EXTREME_SEED_SENSITIVITY_FILE
+    )
     low_contrast_choice_family_gate = read_mechanism_audit(REPO_ROOT / LOW_CONTRAST_CHOICE_FAMILY_GATE_FILE)
     low_contrast_choice_projected_gate = read_mechanism_audit(REPO_ROOT / LOW_CONTRAST_CHOICE_PROJECTED_GATE_FILE)
     low_contrast_choice_seed_sensitivity = read_mechanism_audit(
@@ -3926,6 +4042,9 @@ def main() -> int:
         composite_behavior_target_seed_sensitivity,
         composite_behavior_target_l2_seed_sensitivity,
         composite_behavior_recording_failure,
+        composite_behavior_response_extreme_gate,
+        composite_behavior_response_extreme_projected_gate,
+        composite_behavior_response_extreme_seed_sensitivity,
         low_contrast_choice_family_gate,
         low_contrast_choice_projected_gate,
         low_contrast_choice_seed_sensitivity,
@@ -4061,6 +4180,16 @@ def main() -> int:
         ),
         "composite_behavior_recording_failure": compact_recording_failure_payload(
             composite_behavior_recording_failure
+        ),
+        "composite_behavior_response_extreme_gate": compact_family_gate_payload(
+            composite_behavior_response_extreme_gate
+        ),
+        "composite_behavior_response_extreme_projected_gate": compact_family_gate_payload(
+            composite_behavior_response_extreme_projected_gate
+        ),
+        "composite_behavior_response_extreme_seed_sensitivity": compact_seed_sensitivity_payload(
+            composite_behavior_response_extreme_seed_sensitivity,
+            "robust_response_extreme_seed_candidates",
         ),
         "low_contrast_choice_family_gate": low_contrast_choice_family_gate,
         "low_contrast_choice_projected_gate": low_contrast_choice_projected_gate,

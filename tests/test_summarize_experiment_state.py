@@ -251,6 +251,80 @@ def test_render_markdown_includes_composite_behavior_seed_veto() -> None:
     assert "same-recording target0+target1 stability" in markdown
 
 
+def test_render_markdown_includes_response_extreme_training_trigger() -> None:
+    markdown = render_markdown(
+        [],
+        [],
+        composite_behavior_response_extreme_projected_gate={
+            "summary": {
+                "n_rows": 8,
+                "n_candidates": 2,
+                "n_positive_centered_delta": 4,
+                "max_bidirectional_recording_fraction": 0.75,
+                "decision": "composite_behavior_target_family_candidate",
+                "target_balances": {
+                    "post_error_response_extreme_25_75_le_1": {
+                        "n_trials": 100,
+                        "eligible_recordings": 4,
+                        "n_recordings": 4,
+                    }
+                },
+                "top_rows": [
+                    {
+                        "target_mode": "post_error_response_extreme_25_75_le_1",
+                        "family": "broad_named_anatomy",
+                        "holdout": "CSHL045",
+                        "decision": "candidate",
+                        "centered_delta_vs_shuffle": 0.05,
+                        "centered_delta_vs_total": 0.04,
+                        "target0_improved_vs_shuffle": 0.70,
+                        "target1_improved_vs_shuffle": 0.80,
+                        "n_bidirectional_recordings": 3,
+                        "n_recordings": 4,
+                    }
+                ],
+            }
+        },
+        composite_behavior_response_extreme_seed_sensitivity={
+            "summary": {
+                "n_cases": 1,
+                "n_robust_response_extreme_seed_candidates": 1,
+                "max_positive_shuffle_delta_fraction": 1.0,
+                "max_candidate_seed_fraction": 1.0,
+                "decision": "response_extreme_seed_candidate",
+                "gpu_training_ready": True,
+            },
+            "rows": [
+                {
+                    "target_mode": "post_error_response_extreme_25_75_le_1",
+                    "family": "broad_named_anatomy",
+                    "holdout": "CSHL045",
+                    "n_positive_shuffle_delta_seeds": 5,
+                    "n_candidate_seeds": 5,
+                    "n_seeds": 5,
+                    "mean_centered_delta_vs_shuffle": 0.05,
+                    "mean_centered_delta_vs_total": 0.04,
+                    "mean_target0": 0.70,
+                    "mean_target1": 0.80,
+                    "min_bidirectional_recordings": 3,
+                    "max_bidirectional_recordings": 3,
+                }
+            ],
+            "robust_response_extreme_seed_candidates": [
+                {
+                    "target_mode": "post_error_response_extreme_25_75_le_1",
+                    "family": "broad_named_anatomy",
+                    "holdout": "CSHL045",
+                }
+            ],
+        },
+    )
+
+    assert "Composite Behavior Response-Extreme Seed Sensitivity" in markdown
+    assert "gpu training ready: `True`" in markdown
+    assert "first local training trigger" in markdown
+
+
 def test_render_markdown_includes_extreme_quantile_seed_veto() -> None:
     markdown = render_markdown(
         [],

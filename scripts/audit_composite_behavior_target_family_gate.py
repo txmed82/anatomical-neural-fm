@@ -43,6 +43,7 @@ class CompositeTarget:
     previous_feedback: str = "any"
     feedback: str = "any"
     block_position: str = "any"
+    latency_quantiles: tuple[float, float] | None = None
 
 
 COMPOSITE_TARGETS: tuple[CompositeTarget, ...] = (
@@ -86,6 +87,20 @@ COMPOSITE_TARGETS: tuple[CompositeTarget, ...] = (
         label="fast_response",
         max_contrast=1.0,
         previous_feedback="error",
+    ),
+    CompositeTarget(
+        "post_error_response_extreme_33_67_le_1",
+        label="fast_response",
+        max_contrast=1.0,
+        previous_feedback="error",
+        latency_quantiles=(33.0, 67.0),
+    ),
+    CompositeTarget(
+        "post_error_response_extreme_25_75_le_1",
+        label="fast_response",
+        max_contrast=1.0,
+        previous_feedback="error",
+        latency_quantiles=(25.0, 75.0),
     ),
     CompositeTarget(
         "correct_low_contrast_fast_response_le_0.25",
@@ -172,6 +187,24 @@ def _median_split_fast_latency(stim_on: np.ndarray, response: np.ndarray, valid:
     return labels
 
 
+def _extreme_split_fast_latency(
+    stim_on: np.ndarray,
+    response: np.ndarray,
+    valid: np.ndarray,
+    quantiles: tuple[float, float],
+) -> np.ndarray:
+    labels = np.full(len(stim_on), np.nan, dtype=np.float64)
+    latency = response - stim_on
+    valid = valid & np.isfinite(latency) & (latency > 0.0)
+    values = latency[valid]
+    if len(values) == 0:
+        return labels
+    lo, hi = np.percentile(values, quantiles)
+    labels[valid & (latency <= lo)] = 1.0
+    labels[valid & (latency >= hi)] = 0.0
+    return labels
+
+
 def per_recording_composite_labels(rec, target_name: str) -> np.ndarray:
     if target_name not in TARGET_BY_NAME:
         raise ValueError(f"unknown composite target {target_name!r}")
@@ -198,6 +231,8 @@ def per_recording_composite_labels(rec, target_name: str) -> np.ndarray:
         return labels
     if target.label == "fast_response":
         response = _optional_trial_array(rec, "response_times", n)
+        if target.latency_quantiles is not None:
+            return _extreme_split_fast_latency(stim_on, response, valid, target.latency_quantiles)
         return _median_split_fast_latency(stim_on, response, valid)
     raise ValueError(f"unknown composite label {target.label!r}")
 

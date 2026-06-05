@@ -2,13 +2,14 @@
 
 Ranks remaining no-spend branches after the current local audits. This is the planning gate before any new RunPod training.
 
-- recommended next: `new manifest with prospective bidirectional support`
+- recommended next: `bounded response-extreme A100 pilot`
 - closed branches: `26`
-- decision: `no_local_training_trigger`
-- GPU trigger: At least one local row on the proposed manifest must clear delta_vs_shuffle>=0, delta_vs_total>=0, target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75 before training.
+- decision: `local_training_trigger_available`
+- GPU trigger: Only rows that already cleared delta_vs_shuffle>=0, delta_vs_total>=0, target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75 across all shuffle seeds may launch: post_error_response_extreme_25_75_le_1/broad_named_anatomy/CSHL045 and post_error_response_extreme_33_67_le_1/broad_named_anatomy/NR_0019; keep total spend under the existing $100 cap.
 
 | priority | branch | status | next action |
 |---:|---|---|---|
+| 0 | bounded response-extreme A100 pilot | `recommended_next` | Run a bounded A100 pilot for the two robust response-extreme broad-anatomy candidates. |
 | 1 | new manifest with prospective bidirectional support | `recommended_next` | Do not launch GPU training from the projected support80 panel; its model-free family and feature-mode gates have no candidates. Redesign the target/control locally. |
 | 80 | composite behavior target search | `closed` | Do not train: post-error fast-response broad-anatomy candidates fail recording-level seed stability. |
 | 81 | lateralized family anatomy target | `closed` | Do not train: left/right family anatomy does not pass current or projected local gates. |
@@ -38,6 +39,12 @@ Ranks remaining no-spend branches after the current local audits. This is the pl
 | 99 | source-target pair narrowing | `closed` | Do not run a paid source-target pair sweep without a new local gate pass. |
 
 ## Evidence
+
+### bounded response-extreme A100 pilot
+- current-panel response-extreme gate found 2 candidates across 56 rows and max bidir 0.750
+- projected-panel response-extreme gate found 4 candidates across 64 rows and max bidir 0.750
+- response-extreme seed sensitivity found 2 robust candidates; max candidate seed fraction=1.000
+- GPU trigger: Only rows that already cleared delta_vs_shuffle>=0, delta_vs_total>=0, target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75 across all shuffle seeds may launch: post_error_response_extreme_25_75_le_1/broad_named_anatomy/CSHL045 and post_error_response_extreme_33_67_le_1/broad_named_anatomy/NR_0019; keep total spend under the existing $100 cap.
 
 ### new manifest with prospective bidirectional support
 - current 28-recording manifest is feasible but not clean enough to pass the local gate

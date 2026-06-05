@@ -402,17 +402,17 @@ Decision: stricter manifest support alone does not rescue the signal. The clean 
 `docs/next_benchmark_control_options.md` ranks the remaining no-spend
 branches after the current local negative audits.
 
-- recommended next: `new manifest with prospective bidirectional support`
+- recommended next: `bounded response-extreme A100 pilot`
 - closed branches: `26`
-- decision: `no_local_training_trigger`
-- GPU trigger: At least one local row on the proposed manifest must clear delta_vs_shuffle>=0, delta_vs_total>=0, target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75 before training.
+- decision: `local_training_trigger_available`
+- GPU trigger: Only rows that already cleared delta_vs_shuffle>=0, delta_vs_total>=0, target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75 across all shuffle seeds may launch: post_error_response_extreme_25_75_le_1/broad_named_anatomy/CSHL045 and post_error_response_extreme_33_67_le_1/broad_named_anatomy/NR_0019; keep total spend under the existing $100 cap.
 
 | priority | branch | status | next action |
 |---:|---|---|---|
+| 0 | bounded response-extreme A100 pilot | `recommended_next` | Run a bounded A100 pilot for the two robust response-extreme broad-anatomy candidates. |
 | 1 | new manifest with prospective bidirectional support | `recommended_next` | Do not launch GPU training from the projected support80 panel; its model-free family and feature-mode gates have no candidates. Redesign the target/control locally. |
 | 80 | composite behavior target search | `closed` | Do not train: post-error fast-response broad-anatomy candidates fail recording-level seed stability. |
 | 81 | lateralized family anatomy target | `closed` | Do not train: left/right family anatomy does not pass current or projected local gates. |
-| 82 | signed wheel-direction motor target | `closed` | Do not train: signed wheel-direction does not pass current or projected local gates. |
 
 Decision: the current cached target, contextual target, wheel-derived target, reaction-dynamics target, cell-type prior target/control, waveform target/control, and meta-failure synthesis branches are closed as GPU triggers. The next aligned work is a prospectively supported benchmark/control redesign, still gated locally before any paid training.
 
@@ -619,6 +619,63 @@ the left/right family target gate on the projected local manifest.
 | stimulus_side | cortical_visual | MFD_06 | reject: target1 | +0.259 | +0.187 | 0.819/0.221 | 1/4 | 0.491/0.949 |
 
 Decision: the projected panel also has zero lateralized-family candidates. This closes simple hemisphere-split family counts as the rescue path.
+
+## Composite Behavior Response-Extreme Projected Gate
+
+`docs/composite_behavior_response_extreme_family_gate_projected_hdf5.md`
+drops middle post-error response-latency trials and reruns the unchanged
+shared-family local gate on the projected manifest.
+
+- rows: `64`
+- candidates: `4`
+- positive centered-delta rows: `26`
+- max bidirectional recording fraction: `0.750`
+- decision: `composite_behavior_target_family_candidate`
+
+| target | trials | eligible recordings | recordings |
+|---|---:|---:|---:|
+| post_error_response_extreme_25_75_le_1 | 1942 | 7 | 31 |
+| post_error_response_extreme_33_67_le_1 | 2538 | 14 | 31 |
+
+| target | family | holdout | decision | delta shuffle | delta total | targets | bidir recs |
+|---|---|---|---|---:|---:|---|---:|
+| post_error_response_extreme_25_75_le_1 | broad_named_anatomy | CSHL045 | candidate | +0.066 | +0.037 | 0.710/0.899 | 3/4 |
+| post_error_response_extreme_33_67_le_1 | broad_named_anatomy | CSHL045 | candidate | +0.061 | +0.025 | 0.696/0.873 | 3/4 |
+| post_error_response_extreme_33_67_le_1 | broad_named_anatomy | NR_0019 | candidate | +0.006 | +0.004 | 0.632/0.658 | 3/4 |
+| post_error_response_extreme_25_75_le_1 | broad_named_anatomy | NR_0019 | candidate | +0.005 | +0.004 | 0.693/0.670 | 3/4 |
+| post_error_response_extreme_33_67_le_1 | broad_named_anatomy | KS014 | reject: shuffle | -0.001 | -0.003 | 0.738/0.795 | 3/4 |
+| post_error_response_extreme_25_75_le_1 | broad_named_anatomy | KS014 | reject: shuffle | -0.002 | -0.002 | 0.713/0.787 | 3/4 |
+| post_error_response_extreme_33_67_le_1 | hippocampal_formation | ZFM-01577 | reject: total baseline | +0.057 | -0.013 | 0.512/0.752 | 2/3 |
+| post_error_response_extreme_25_75_le_1 | thalamic | CSHL045 | reject: total baseline | +0.112 | -0.008 | 0.471/0.957 | 2/4 |
+
+Decision before seed validation: response-extreme labels improve the post-error fast-response branch and create projected candidates, but the rows require shuffle-seed validation before training.
+
+## Composite Behavior Response-Extreme Seed Sensitivity
+
+`docs/composite_behavior_response_extreme_seed_sensitivity.md` reruns
+the projected response-extreme broad-anatomy candidates across
+within-recording shuffle seeds.
+
+- cases: `4`
+- robust response-extreme seed candidates: `2`
+- max positive shuffle-delta fraction: `1.000`
+- max candidate seed fraction: `1.000`
+- decision: `response_extreme_seed_candidate`
+- gpu training ready: `True`
+
+| target | family | holdout | positive seeds | candidate seeds | mean delta shuffle | mean delta total | mean targets | bidir range |
+|---|---|---|---:|---:|---:|---:|---:|---:|
+| post_error_response_extreme_25_75_le_1 | broad_named_anatomy | CSHL045 | 5/5 | 5/5 | +0.0507 | +0.0366 | 0.700/0.800 | 3-3 |
+| post_error_response_extreme_33_67_le_1 | broad_named_anatomy | CSHL045 | 5/5 | 4/5 | +0.0450 | +0.0253 | 0.677/0.786 | 2-3 |
+| post_error_response_extreme_33_67_le_1 | broad_named_anatomy | NR_0019 | 5/5 | 5/5 | +0.0051 | +0.0042 | 0.656/0.684 | 3-4 |
+| post_error_response_extreme_25_75_le_1 | broad_named_anatomy | NR_0019 | 5/5 | 4/5 | +0.0042 | +0.0043 | 0.714/0.725 | 2-4 |
+
+| robust target | family | holdout |
+|---|---|---|
+| post_error_response_extreme_25_75_le_1 | broad_named_anatomy | CSHL045 |
+| post_error_response_extreme_33_67_le_1 | broad_named_anatomy | NR_0019 |
+
+Decision: this is the first local training trigger. Keep the GPU run bounded to the two robust response-extreme rows and the existing cost cap.
 
 ## Composite Behavior Target Gate
 
