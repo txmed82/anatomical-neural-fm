@@ -19,6 +19,7 @@ ARTIFACTS = {
     "contextual_target_family": "docs/contextual_target_family_gate.json",
     "wheel_target_family": "docs/wheel_target_family_gate.json",
     "local_cached_manifest_candidates": "docs/local_cached_manifest_candidates.json",
+    "projected_support80_shared_family": "docs/shared_family_target_control_gate_projected_support80.json",
     "external_manifest_acquisition_gap": "docs/external_manifest_acquisition_gap.json",
     "behavior_cache_preflight": "docs/behavior_cache_preflight.json",
     "family_alt_prior": "docs/model_free_family_bidirectional_gate_prior_side_recording_centered.json",
@@ -81,6 +82,10 @@ def build_report() -> dict:
     wheel_done = wheel is not None
     local_manifest_summary = local_manifest_candidates.get("summary", {}) if local_manifest_candidates is not None else {}
     local_manifest_decision = local_manifest_summary.get("decision")
+    local_projected_panel_ready = local_manifest_decision == "local_expanded_candidate_ready_for_model_free_gate"
+    projected_support80_gate = artifacts["projected_support80_shared_family"]
+    projected_support80_candidates = summary_value(projected_support80_gate, "n_candidates", None)
+    projected_support80_done = projected_support80_gate is not None
     external_summary = external_acquisition.get("summary", {}) if external_acquisition is not None else {}
     default_candidate_setting = summary_value(threshold, "strongest_default_target_candidate_setting", {}) or {}
     default_candidate_bidir = default_candidate_setting.get("min_bidirectional_recording_fraction")
@@ -211,10 +216,31 @@ def build_report() -> dict:
                     f"{summary_value(iterative, 'n_candidates', 'n/a')} candidates and max bidir "
                     f"{summary_value(iterative, 'max_bidirectional_recording_fraction', 0.0):.3f}"
                 ),
+                (
+                    "projected support80 shared-family gate has not been run yet"
+                    if not projected_support80_done
+                    else (
+                        "projected support80 shared-family gate has "
+                        f"{projected_support80_candidates} candidates across "
+                        f"{summary_value(projected_support80_gate, 'n_rows', 'n/a')} rows and max bidir "
+                        f"{summary_value(projected_support80_gate, 'max_bidirectional_recording_fraction', 0.0):.3f}"
+                    )
+                ),
                 "recording-subset replication selected zero stable validation rows",
             ],
             next_action=(
-                "The local cache expansion does not create a supported panel; build or fetch "
+                "A local projected-manifest gate passed; launch only the bounded pilot tied "
+                "to the passing target/family row."
+                if projected_support80_done and (projected_support80_candidates or 0) > 0
+                else "Do not launch GPU training from the projected support80 panel; its "
+                "model-free gate has no candidates. Redesign the target/control locally."
+                if projected_support80_done
+                else
+                "Run the model-free true-vs-shuffle, total-baseline, target0/target1, "
+                "and same-recording bidirectional gate on the projected support80 local "
+                "manifest before any GPU training."
+                if local_projected_panel_ready
+                else "The local cache expansion does not create a supported panel; build or fetch "
                 "the external support80 missing-HDF5 set, then rerun the local manifest "
                 "candidate audit and the same model-free gate before training."
                 if external_summary.get("decision") == "external_support80_acquisition_candidate"
@@ -360,7 +386,7 @@ def build_report() -> dict:
         else "wheel_target_audit_required"
         if not wheel_done
         else "local_training_trigger_available"
-        if (wheel_candidates or 0) > 0
+        if (wheel_candidates or 0) > 0 or (projected_support80_candidates or 0) > 0
         else "no_local_training_trigger"
     )
     return {

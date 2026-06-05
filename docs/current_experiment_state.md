@@ -267,18 +267,19 @@ Decision: the current full matched manifest is feasible enough for another local
 locally cached recordings create a better prospective manifest before
 any new data fetch or GPU launch.
 
-- local recordings: `31`
-- local subjects: `9`
-- candidate panels: `1`
-- new candidate panels: `0`
-- best panel: `current_support80_hdf5`
-- decision: `local_expansion_support_gap`
+- local recordings: `38`
+- local subjects: `11`
+- candidate panels: `2`
+- new candidate panels: `1`
+- best panel: `external_support80_projected_hdf5`
+- decision: `local_expanded_candidate_ready_for_model_free_gate`
 
 | panel | recordings | subjects | passing target/family rows | decision |
 |---|---:|---:|---:|---|
+| external_support80_projected_hdf5 | 31 | 8 | 4 | `candidate_panel_has_prospective_support` |
 | current_support80_hdf5 | 28 | 7 | 4 | `candidate_panel_has_prospective_support` |
-| all_local_cached | 31 | 9 | 0 | `candidate_panel_support_gap` |
-| local_cached_min2_recordings_per_subject | 30 | 8 | 0 | `candidate_panel_support_gap` |
+| all_local_cached | 38 | 11 | 0 | `candidate_panel_support_gap` |
+| local_cached_min2_recordings_per_subject | 37 | 10 | 0 | `candidate_panel_support_gap` |
 
 Decision: the extra local recordings add MFD_08/MFD_09 coverage, but the expanded panels fail the prospective per-subject target/family support floor. The next manifest branch needs a broader external selection rule or a different target/control definition, not a GPU run on the local expansion.
 
@@ -408,7 +409,7 @@ branches after the current local negative audits.
 
 | priority | branch | status | next action |
 |---:|---|---|---|
-| 1 | new manifest with prospective bidirectional support | `recommended_next` | The local cache expansion does not create a supported panel; build or fetch the external support80 missing-HDF5 set, then rerun the local manifest candidate audit and the same model-free gate before training. |
+| 1 | new manifest with prospective bidirectional support | `recommended_next` | Do not launch GPU training from the projected support80 panel; its model-free gate has no candidates. Redesign the target/control locally. |
 | 86 | wheel-derived target family gate | `closed` | Do not spend on the tested wheel targets; move to a prospectively supported manifest. |
 | 87 | behavior-inclusive cache rebuild | `closed` | Cache rebuild is complete; all matched recordings now expose wheel. Use the wheel-derived local target gate before any training. |
 | 88 | direct cached-field derived targets | `closed` | Do not launch GPU training from contrast_strength, response_latency, or prior_engaged. |

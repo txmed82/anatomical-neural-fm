@@ -5,6 +5,8 @@ import numpy as np
 
 from scripts.audit_local_cached_manifest_candidates import (
     candidate_panels,
+    load_extra_manifest_panels,
+    manifest_panel_label,
     manifest_output_path,
     recording_manifest_row,
     score_panel,
@@ -53,6 +55,18 @@ def test_candidate_panels_adds_min_subject_recording_panel() -> None:
     assert panels["local_cached_min2_recordings_per_subject"] == ["a_probe00", "b_probe00"]
 
 
+def test_candidate_panels_includes_extra_manifest_panels() -> None:
+    panels = dict(candidate_panels(
+        ["a_probe00", "b_probe00"],
+        {"a_probe00": "S1", "b_probe00": "S2"},
+        baseline_recording_ids=["a_probe00"],
+        extra_manifest_panels=[("projected", ["a_probe00", "b_probe00"])],
+        min_subject_recordings=2,
+    ))
+
+    assert panels["projected"] == ["a_probe00", "b_probe00"]
+
+
 def test_manifest_output_path_uses_readable_suffixes() -> None:
     assert str(manifest_output_path(
         prefix=Path("manifests/ibl_bwm_local_cached"),
@@ -62,6 +76,29 @@ def test_manifest_output_path_uses_readable_suffixes() -> None:
         prefix=Path("manifests/ibl_bwm_local_cached"),
         label="local_cached_min2_recordings_per_subject",
     )) == "manifests/ibl_bwm_local_cached_min2_subjects.json"
+
+
+def test_manifest_panel_label_removes_dataset_prefix() -> None:
+    assert manifest_panel_label(Path("manifests/ibl_bwm_external_support80_projected_hdf5.json")) == (
+        "external_support80_projected_hdf5"
+    )
+
+
+def test_load_extra_manifest_panels_keeps_only_cached_recordings(tmp_path: Path) -> None:
+    manifest = tmp_path / "ibl_bwm_projected.json"
+    manifest.write_text(
+        """{
+  "recordings": [
+    {"session_id": "a", "probe_name": "probe00"},
+    {"session_id": "missing", "probe_name": "probe01"}
+  ]
+}
+"""
+    )
+
+    panels = load_extra_manifest_panels([manifest], ["a_probe00"])
+
+    assert panels == [("projected", ["a_probe00"])]
 
 
 def test_score_panel_requires_target_balance_and_family_units_per_subject() -> None:

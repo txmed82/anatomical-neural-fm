@@ -66,9 +66,11 @@ def candidate_panels(
     subject_by_rid: dict[str, str],
     *,
     baseline_recording_ids: list[str],
+    extra_manifest_panels: list[tuple[str, list[str]]] | None = None,
     min_subject_recordings: int,
 ) -> list[tuple[str, list[str]]]:
     panels = [("current_support80_hdf5", sorted(baseline_recording_ids))]
+    panels.extend(extra_manifest_panels or [])
     panels.append(("all_local_cached", sorted(all_recording_ids)))
     eligible_subjects = {
         subject
@@ -275,6 +277,13 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--min-class-trials", type=int, default=40)
     parser.add_argument("--min-family-units", type=int, default=25)
     parser.add_argument("--min-subject-recordings", type=int, default=2)
+    parser.add_argument(
+        "--candidate-manifest",
+        type=Path,
+        action="append",
+        default=[],
+        help="Optional manifest to score as a named local panel when its recordings are cached.",
+    )
     parser.add_argument("--out-json", type=Path, default=REPO_ROOT / "docs/local_cached_manifest_candidates.json")
     parser.add_argument("--out-md", type=Path, default=REPO_ROOT / "docs/local_cached_manifest_candidates.md")
     parser.add_argument(
@@ -296,8 +305,28 @@ def manifest_output_path(prefix: Path, label: str) -> Path:
     return prefix.with_name(f"{prefix.name}_{suffix}.json")
 
 
+def manifest_panel_label(path: Path) -> str:
+    return path.stem.removeprefix("ibl_bwm_")
+
+
+def load_extra_manifest_panels(paths: list[Path], all_recording_ids: list[str]) -> list[tuple[str, list[str]]]:
+    cached = set(all_recording_ids)
+    panels = []
+    for path in paths:
+        if not path.exists():
+            continue
+        rids = sorted(rid for rid in manifest_recording_ids(path) if rid in cached)
+        if rids:
+            panels.append((manifest_panel_label(path), rids))
+    return panels
+
+
 def main() -> int:
     args = parse_args()
+    default_candidate_manifest = REPO_ROOT / "manifests/ibl_bwm_external_support80_projected_hdf5.json"
+    candidate_manifests = list(args.candidate_manifest)
+    if not candidate_manifests and default_candidate_manifest.exists():
+        candidate_manifests.append(default_candidate_manifest)
     ds = Dataset(dataset_dir=args.data_dir, keep_files_open=True)
     all_recording_ids = sorted(ds.recording_ids)
     vocab = build_vocab(ds, "parent", all_recording_ids)
@@ -307,6 +336,7 @@ def main() -> int:
         rid for rid in manifest_recording_ids(args.baseline_manifest)
         if rid in set(all_recording_ids)
     ]
+    extra_manifest_panels = load_extra_manifest_panels(candidate_manifests, all_recording_ids)
     target_counts = target_counts_for_recordings(recs, all_recording_ids, window_len=args.window_len)
     family_counts = {rid: family_counts_for_recording(recs[rid]) for rid in all_recording_ids}
     panels = []
@@ -315,6 +345,7 @@ def main() -> int:
         all_recording_ids,
         subject_by_rid,
         baseline_recording_ids=baseline_recording_ids,
+        extra_manifest_panels=extra_manifest_panels,
         min_subject_recordings=args.min_subject_recordings,
     ):
         panel = score_panel(
@@ -348,6 +379,7 @@ def main() -> int:
             "min_subject_recordings": args.min_subject_recordings,
         },
         "baseline_manifest": str(args.baseline_manifest),
+        "candidate_manifests": [str(path) for path in candidate_manifests if path.exists()],
         "n_local_recordings": len(all_recording_ids),
         "n_local_subjects": len(set(subject_by_rid.values())),
         "panels": panels,

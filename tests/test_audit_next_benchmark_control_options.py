@@ -23,6 +23,17 @@ def test_gpu_trigger_remains_strict_local_gate() -> None:
     assert "bidirectional_recording_fraction>=0.75" in trigger
 
 
+def test_projected_panel_ready_recommends_model_free_gate() -> None:
+    report = build_report()
+    if report["branches"][0]["name"] != "new manifest with prospective bidirectional support":
+        return
+
+    next_action = report["branches"][0]["next_action"]
+
+    assert "projected support80" in next_action
+    assert "model-free" in next_action or "Do not launch GPU training" in next_action
+
+
 def test_render_markdown_lists_closed_branches() -> None:
     markdown = render_markdown(build_report())
 

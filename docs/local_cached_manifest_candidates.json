@@ -1,8 +1,1223 @@
 {
   "baseline_manifest": "/Users/colin/Desktop/Projects/anatomical-neural-fm/manifests/ibl_bwm_region_matched_candidates_s3_present_support80_hdf5_scored.json",
-  "n_local_recordings": 31,
-  "n_local_subjects": 9,
+  "candidate_manifests": [
+    "/Users/colin/Desktop/Projects/anatomical-neural-fm/manifests/ibl_bwm_external_support80_projected_hdf5.json"
+  ],
+  "n_local_recordings": 38,
+  "n_local_subjects": 11,
   "panels": [
+    {
+      "decision": "candidate_panel_has_prospective_support",
+      "label": "external_support80_projected_hdf5",
+      "n_passing_target_family_rows": 4,
+      "n_recordings": 31,
+      "n_subjects": 8,
+      "recording_ids": [
+        "03063955-2523-47bd-ae57-f7489dd40f15_probe01",
+        "032ffcdf-7692-40b3-b9ff-8def1fc18b2e_probe00",
+        "034e726f-b35f-41e0-8d6c-a22cc32391fb_probe01",
+        "09b2c4d1-058d-4c84-9fd4-97530f85baf6_probe00",
+        "16693458-0801-4d35-a3f1-9115c7e5acfd_probe00",
+        "16693458-0801-4d35-a3f1-9115c7e5acfd_probe01",
+        "1e45d992-c356-40e1-9be1-a506d944896f_probe01",
+        "35eeb752-8f4f-4040-9714-ba0f5b7ccdfe_probe00",
+        "3f71aa98-08c6-4e79-b4c8-00eae4f03eff_probe00",
+        "41872d7f-75cb-4445-bb1a-132b354c44f0_probe01",
+        "49e0ab27-827a-4c91-bcaa-97eea27a1b8d_probe01",
+        "4d8c7767-981c-4347-8e5e-5d5fffe38534_probe01",
+        "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe00",
+        "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe01",
+        "5d6aa933-4b00-4e99-ae2d-5003657592e9_probe01",
+        "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe00",
+        "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe01",
+        "63f3dbc1-1a5f-44e5-98dd-ce25cd2b7871_probe00",
+        "6899a67d-2e53-4215-a52a-c7021b5da5d4_probe00",
+        "7939711b-8b4d-4251-b698-b97c1eaa846e_probe01",
+        "a1782f4f-86b0-480c-a7f2-3d8f1ab482ab_probe00",
+        "a8a8af78-16de-4841-ab07-fde4b5281a03_probe00",
+        "a8a8af78-16de-4841-ab07-fde4b5281a03_probe01",
+        "b182b754-3c3e-4942-8144-6ee790926b58_probe01",
+        "b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe00",
+        "b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe01",
+        "b9c205c3-feac-485b-a89d-afc96d9cb280_probe00",
+        "dfd8e7df-dc51-4589-b6ca-7baccfeb94b4_probe01",
+        "e1931de1-cf7b-49af-af33-2ade15e8abe7_probe00",
+        "edd22318-216c-44ff-bc24-49ce8be78374_probe00",
+        "fa704052-147e-46f6-b190-a65b837e605e_probe00"
+      ],
+      "subject_counts": {
+        "CSHL045": 4,
+        "CSH_ZAD_019": 4,
+        "KS014": 4,
+        "MFD_06": 4,
+        "NR_0019": 4,
+        "NYU-12": 4,
+        "SWC_038": 4,
+        "ZFM-01577": 3
+      },
+      "top_target_family_rows": [
+        {
+          "all_subjects_pass": true,
+          "family": "broad_named_anatomy",
+          "min_eligible_recordings_per_subject": 3,
+          "n_subjects": 8,
+          "passing_subjects": 8,
+          "subject_rows": [
+            {
+              "eligible_recordings": 3,
+              "passes": true,
+              "recordings": 4,
+              "subject": "CSHL045"
+            },
+            {
+              "eligible_recordings": 4,
+              "passes": true,
+              "recordings": 4,
+              "subject": "CSH_ZAD_019"
+            },
+            {
+              "eligible_recordings": 4,
+              "passes": true,
+              "recordings": 4,
+              "subject": "KS014"
+            },
+            {
+              "eligible_recordings": 4,
+              "passes": true,
+              "recordings": 4,
+              "subject": "MFD_06"
+            },
+            {
+              "eligible_recordings": 4,
+              "passes": true,
+              "recordings": 4,
+              "subject": "NR_0019"
+            },
+            {
+              "eligible_recordings": 4,
+              "passes": true,
+              "recordings": 4,
+              "subject": "NYU-12"
+            },
+            {
+              "eligible_recordings": 4,
+              "passes": true,
+              "recordings": 4,
+              "subject": "SWC_038"
+            },
+            {
+              "eligible_recordings": 3,
+              "passes": true,
+              "recordings": 3,
+              "subject": "ZFM-01577"
+            }
+          ],
+          "target_mode": "stimulus_side"
+        },
+        {
+          "all_subjects_pass": true,
+          "family": "broad_named_anatomy",
+          "min_eligible_recordings_per_subject": 3,
+          "n_subjects": 8,
+          "passing_subjects": 8,
+          "subject_rows": [
+            {
+              "eligible_recordings": 3,
+              "passes": true,
+              "recordings": 4,
+              "subject": "CSHL045"
+            },
+            {
+              "eligible_recordings": 4,
+              "passes": true,
+              "recordings": 4,
+              "subject": "CSH_ZAD_019"
+            },
+            {
+              "eligible_recordings": 4,
+              "passes": true,
+              "recordings": 4,
+              "subject": "KS014"
+            },
+            {
+              "eligible_recordings": 4,
+              "passes": true,
+              "recordings": 4,
+              "subject": "MFD_06"
+            },
+            {
+              "eligible_recordings": 4,
+              "passes": true,
+              "recordings": 4,
+              "subject": "NR_0019"
+            },
+            {
+              "eligible_recordings": 4,
+              "passes": true,
+              "recordings": 4,
+              "subject": "NYU-12"
+            },
+            {
+              "eligible_recordings": 4,
+              "passes": true,
+              "recordings": 4,
+              "subject": "SWC_038"
+            },
+            {
+              "eligible_recordings": 3,
+              "passes": true,
+              "recordings": 3,
+              "subject": "ZFM-01577"
+            }
+          ],
+          "target_mode": "prior_side"
+        },
+        {
+          "all_subjects_pass": true,
+          "family": "broad_named_anatomy",
+          "min_eligible_recordings_per_subject": 3,
+          "n_subjects": 8,
+          "passing_subjects": 8,
+          "subject_rows": [
+            {
+              "eligible_recordings": 3,
+              "passes": true,
+              "recordings": 4,
+              "subject": "CSHL045"
+            },
+            {
+              "eligible_recordings": 4,
+              "passes": true,
+              "recordings": 4,
+              "subject": "CSH_ZAD_019"
+            },
+            {
+              "eligible_recordings": 4,
+              "passes": true,
+              "recordings": 4,
+              "subject": "KS014"
+            },
+            {
+              "eligible_recordings": 4,
+              "passes": true,
+              "recordings": 4,
+              "subject": "MFD_06"
+            },
+            {
+              "eligible_recordings": 4,
+              "passes": true,
+              "recordings": 4,
+              "subject": "NR_0019"
+            },
+            {
+              "eligible_recordings": 4,
+              "passes": true,
+              "recordings": 4,
+              "subject": "NYU-12"
+            },
+            {
+              "eligible_recordings": 4,
+              "passes": true,
+              "recordings": 4,
+              "subject": "SWC_038"
+            },
+            {
+              "eligible_recordings": 3,
+              "passes": true,
+              "recordings": 3,
+              "subject": "ZFM-01577"
+            }
+          ],
+          "target_mode": "feedback"
+        },
+        {
+          "all_subjects_pass": true,
+          "family": "broad_named_anatomy",
+          "min_eligible_recordings_per_subject": 3,
+          "n_subjects": 8,
+          "passing_subjects": 8,
+          "subject_rows": [
+            {
+              "eligible_recordings": 3,
+              "passes": true,
+              "recordings": 4,
+              "subject": "CSHL045"
+            },
+            {
+              "eligible_recordings": 4,
+              "passes": true,
+              "recordings": 4,
+              "subject": "CSH_ZAD_019"
+            },
+            {
+              "eligible_recordings": 4,
+              "passes": true,
+              "recordings": 4,
+              "subject": "KS014"
+            },
+            {
+              "eligible_recordings": 4,
+              "passes": true,
+              "recordings": 4,
+              "subject": "MFD_06"
+            },
+            {
+              "eligible_recordings": 4,
+              "passes": true,
+              "recordings": 4,
+              "subject": "NR_0019"
+            },
+            {
+              "eligible_recordings": 4,
+              "passes": true,
+              "recordings": 4,
+              "subject": "NYU-12"
+            },
+            {
+              "eligible_recordings": 4,
+              "passes": true,
+              "recordings": 4,
+              "subject": "SWC_038"
+            },
+            {
+              "eligible_recordings": 3,
+              "passes": true,
+              "recordings": 3,
+              "subject": "ZFM-01577"
+            }
+          ],
+          "target_mode": "choice"
+        },
+        {
+          "all_subjects_pass": false,
+          "family": "hippocampal_formation",
+          "min_eligible_recordings_per_subject": 0,
+          "n_subjects": 8,
+          "passing_subjects": 5,
+          "subject_rows": [
+            {
+              "eligible_recordings": 0,
+              "passes": false,
+              "recordings": 4,
+              "subject": "CSHL045"
+            },
+            {
+              "eligible_recordings": 3,
+              "passes": true,
+              "recordings": 4,
+              "subject": "CSH_ZAD_019"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 4,
+              "subject": "KS014"
+            },
+            {
+              "eligible_recordings": 3,
+              "passes": true,
+              "recordings": 4,
+              "subject": "MFD_06"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "NR_0019"
+            },
+            {
+              "eligible_recordings": 3,
+              "passes": true,
+              "recordings": 4,
+              "subject": "NYU-12"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "SWC_038"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 3,
+              "subject": "ZFM-01577"
+            }
+          ],
+          "target_mode": "stimulus_side"
+        },
+        {
+          "all_subjects_pass": false,
+          "family": "hippocampal_formation",
+          "min_eligible_recordings_per_subject": 0,
+          "n_subjects": 8,
+          "passing_subjects": 5,
+          "subject_rows": [
+            {
+              "eligible_recordings": 0,
+              "passes": false,
+              "recordings": 4,
+              "subject": "CSHL045"
+            },
+            {
+              "eligible_recordings": 3,
+              "passes": true,
+              "recordings": 4,
+              "subject": "CSH_ZAD_019"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 4,
+              "subject": "KS014"
+            },
+            {
+              "eligible_recordings": 3,
+              "passes": true,
+              "recordings": 4,
+              "subject": "MFD_06"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "NR_0019"
+            },
+            {
+              "eligible_recordings": 3,
+              "passes": true,
+              "recordings": 4,
+              "subject": "NYU-12"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "SWC_038"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 3,
+              "subject": "ZFM-01577"
+            }
+          ],
+          "target_mode": "prior_side"
+        },
+        {
+          "all_subjects_pass": false,
+          "family": "hippocampal_formation",
+          "min_eligible_recordings_per_subject": 0,
+          "n_subjects": 8,
+          "passing_subjects": 5,
+          "subject_rows": [
+            {
+              "eligible_recordings": 0,
+              "passes": false,
+              "recordings": 4,
+              "subject": "CSHL045"
+            },
+            {
+              "eligible_recordings": 3,
+              "passes": true,
+              "recordings": 4,
+              "subject": "CSH_ZAD_019"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 4,
+              "subject": "KS014"
+            },
+            {
+              "eligible_recordings": 3,
+              "passes": true,
+              "recordings": 4,
+              "subject": "MFD_06"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "NR_0019"
+            },
+            {
+              "eligible_recordings": 3,
+              "passes": true,
+              "recordings": 4,
+              "subject": "NYU-12"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "SWC_038"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 3,
+              "subject": "ZFM-01577"
+            }
+          ],
+          "target_mode": "feedback"
+        },
+        {
+          "all_subjects_pass": false,
+          "family": "hippocampal_formation",
+          "min_eligible_recordings_per_subject": 0,
+          "n_subjects": 8,
+          "passing_subjects": 5,
+          "subject_rows": [
+            {
+              "eligible_recordings": 0,
+              "passes": false,
+              "recordings": 4,
+              "subject": "CSHL045"
+            },
+            {
+              "eligible_recordings": 3,
+              "passes": true,
+              "recordings": 4,
+              "subject": "CSH_ZAD_019"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 4,
+              "subject": "KS014"
+            },
+            {
+              "eligible_recordings": 3,
+              "passes": true,
+              "recordings": 4,
+              "subject": "MFD_06"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "NR_0019"
+            },
+            {
+              "eligible_recordings": 3,
+              "passes": true,
+              "recordings": 4,
+              "subject": "NYU-12"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "SWC_038"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 3,
+              "subject": "ZFM-01577"
+            }
+          ],
+          "target_mode": "choice"
+        },
+        {
+          "all_subjects_pass": false,
+          "family": "fiber_tracts",
+          "min_eligible_recordings_per_subject": 1,
+          "n_subjects": 8,
+          "passing_subjects": 4,
+          "subject_rows": [
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "CSHL045"
+            },
+            {
+              "eligible_recordings": 4,
+              "passes": true,
+              "recordings": 4,
+              "subject": "CSH_ZAD_019"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "KS014"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "MFD_06"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "NR_0019"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 4,
+              "subject": "NYU-12"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 4,
+              "subject": "SWC_038"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 3,
+              "subject": "ZFM-01577"
+            }
+          ],
+          "target_mode": "stimulus_side"
+        },
+        {
+          "all_subjects_pass": false,
+          "family": "fiber_tracts",
+          "min_eligible_recordings_per_subject": 1,
+          "n_subjects": 8,
+          "passing_subjects": 4,
+          "subject_rows": [
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "CSHL045"
+            },
+            {
+              "eligible_recordings": 4,
+              "passes": true,
+              "recordings": 4,
+              "subject": "CSH_ZAD_019"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "KS014"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "MFD_06"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "NR_0019"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 4,
+              "subject": "NYU-12"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 4,
+              "subject": "SWC_038"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 3,
+              "subject": "ZFM-01577"
+            }
+          ],
+          "target_mode": "prior_side"
+        },
+        {
+          "all_subjects_pass": false,
+          "family": "fiber_tracts",
+          "min_eligible_recordings_per_subject": 1,
+          "n_subjects": 8,
+          "passing_subjects": 4,
+          "subject_rows": [
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "CSHL045"
+            },
+            {
+              "eligible_recordings": 4,
+              "passes": true,
+              "recordings": 4,
+              "subject": "CSH_ZAD_019"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "KS014"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "MFD_06"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "NR_0019"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 4,
+              "subject": "NYU-12"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 4,
+              "subject": "SWC_038"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 3,
+              "subject": "ZFM-01577"
+            }
+          ],
+          "target_mode": "feedback"
+        },
+        {
+          "all_subjects_pass": false,
+          "family": "fiber_tracts",
+          "min_eligible_recordings_per_subject": 1,
+          "n_subjects": 8,
+          "passing_subjects": 4,
+          "subject_rows": [
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "CSHL045"
+            },
+            {
+              "eligible_recordings": 4,
+              "passes": true,
+              "recordings": 4,
+              "subject": "CSH_ZAD_019"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "KS014"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "MFD_06"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "NR_0019"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 4,
+              "subject": "NYU-12"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 4,
+              "subject": "SWC_038"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 3,
+              "subject": "ZFM-01577"
+            }
+          ],
+          "target_mode": "choice"
+        },
+        {
+          "all_subjects_pass": false,
+          "family": "midbrain",
+          "min_eligible_recordings_per_subject": 0,
+          "n_subjects": 8,
+          "passing_subjects": 4,
+          "subject_rows": [
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "CSHL045"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "CSH_ZAD_019"
+            },
+            {
+              "eligible_recordings": 4,
+              "passes": true,
+              "recordings": 4,
+              "subject": "KS014"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 4,
+              "subject": "MFD_06"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 4,
+              "subject": "NR_0019"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 4,
+              "subject": "NYU-12"
+            },
+            {
+              "eligible_recordings": 0,
+              "passes": false,
+              "recordings": 4,
+              "subject": "SWC_038"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 3,
+              "subject": "ZFM-01577"
+            }
+          ],
+          "target_mode": "stimulus_side"
+        },
+        {
+          "all_subjects_pass": false,
+          "family": "brainstem_interbrain",
+          "min_eligible_recordings_per_subject": 0,
+          "n_subjects": 8,
+          "passing_subjects": 4,
+          "subject_rows": [
+            {
+              "eligible_recordings": 0,
+              "passes": false,
+              "recordings": 4,
+              "subject": "CSHL045"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 4,
+              "subject": "CSH_ZAD_019"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "KS014"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 4,
+              "subject": "MFD_06"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 4,
+              "subject": "NR_0019"
+            },
+            {
+              "eligible_recordings": 3,
+              "passes": true,
+              "recordings": 4,
+              "subject": "NYU-12"
+            },
+            {
+              "eligible_recordings": 0,
+              "passes": false,
+              "recordings": 4,
+              "subject": "SWC_038"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 3,
+              "subject": "ZFM-01577"
+            }
+          ],
+          "target_mode": "stimulus_side"
+        },
+        {
+          "all_subjects_pass": false,
+          "family": "midbrain",
+          "min_eligible_recordings_per_subject": 0,
+          "n_subjects": 8,
+          "passing_subjects": 4,
+          "subject_rows": [
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "CSHL045"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "CSH_ZAD_019"
+            },
+            {
+              "eligible_recordings": 4,
+              "passes": true,
+              "recordings": 4,
+              "subject": "KS014"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 4,
+              "subject": "MFD_06"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 4,
+              "subject": "NR_0019"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 4,
+              "subject": "NYU-12"
+            },
+            {
+              "eligible_recordings": 0,
+              "passes": false,
+              "recordings": 4,
+              "subject": "SWC_038"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 3,
+              "subject": "ZFM-01577"
+            }
+          ],
+          "target_mode": "prior_side"
+        },
+        {
+          "all_subjects_pass": false,
+          "family": "brainstem_interbrain",
+          "min_eligible_recordings_per_subject": 0,
+          "n_subjects": 8,
+          "passing_subjects": 4,
+          "subject_rows": [
+            {
+              "eligible_recordings": 0,
+              "passes": false,
+              "recordings": 4,
+              "subject": "CSHL045"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 4,
+              "subject": "CSH_ZAD_019"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "KS014"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 4,
+              "subject": "MFD_06"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 4,
+              "subject": "NR_0019"
+            },
+            {
+              "eligible_recordings": 3,
+              "passes": true,
+              "recordings": 4,
+              "subject": "NYU-12"
+            },
+            {
+              "eligible_recordings": 0,
+              "passes": false,
+              "recordings": 4,
+              "subject": "SWC_038"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 3,
+              "subject": "ZFM-01577"
+            }
+          ],
+          "target_mode": "prior_side"
+        },
+        {
+          "all_subjects_pass": false,
+          "family": "midbrain",
+          "min_eligible_recordings_per_subject": 0,
+          "n_subjects": 8,
+          "passing_subjects": 4,
+          "subject_rows": [
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "CSHL045"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "CSH_ZAD_019"
+            },
+            {
+              "eligible_recordings": 4,
+              "passes": true,
+              "recordings": 4,
+              "subject": "KS014"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 4,
+              "subject": "MFD_06"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 4,
+              "subject": "NR_0019"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 4,
+              "subject": "NYU-12"
+            },
+            {
+              "eligible_recordings": 0,
+              "passes": false,
+              "recordings": 4,
+              "subject": "SWC_038"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 3,
+              "subject": "ZFM-01577"
+            }
+          ],
+          "target_mode": "feedback"
+        },
+        {
+          "all_subjects_pass": false,
+          "family": "brainstem_interbrain",
+          "min_eligible_recordings_per_subject": 0,
+          "n_subjects": 8,
+          "passing_subjects": 4,
+          "subject_rows": [
+            {
+              "eligible_recordings": 0,
+              "passes": false,
+              "recordings": 4,
+              "subject": "CSHL045"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 4,
+              "subject": "CSH_ZAD_019"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "KS014"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 4,
+              "subject": "MFD_06"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 4,
+              "subject": "NR_0019"
+            },
+            {
+              "eligible_recordings": 3,
+              "passes": true,
+              "recordings": 4,
+              "subject": "NYU-12"
+            },
+            {
+              "eligible_recordings": 0,
+              "passes": false,
+              "recordings": 4,
+              "subject": "SWC_038"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 3,
+              "subject": "ZFM-01577"
+            }
+          ],
+          "target_mode": "feedback"
+        },
+        {
+          "all_subjects_pass": false,
+          "family": "midbrain",
+          "min_eligible_recordings_per_subject": 0,
+          "n_subjects": 8,
+          "passing_subjects": 4,
+          "subject_rows": [
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "CSHL045"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "CSH_ZAD_019"
+            },
+            {
+              "eligible_recordings": 4,
+              "passes": true,
+              "recordings": 4,
+              "subject": "KS014"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 4,
+              "subject": "MFD_06"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 4,
+              "subject": "NR_0019"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 4,
+              "subject": "NYU-12"
+            },
+            {
+              "eligible_recordings": 0,
+              "passes": false,
+              "recordings": 4,
+              "subject": "SWC_038"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 3,
+              "subject": "ZFM-01577"
+            }
+          ],
+          "target_mode": "choice"
+        },
+        {
+          "all_subjects_pass": false,
+          "family": "brainstem_interbrain",
+          "min_eligible_recordings_per_subject": 0,
+          "n_subjects": 8,
+          "passing_subjects": 4,
+          "subject_rows": [
+            {
+              "eligible_recordings": 0,
+              "passes": false,
+              "recordings": 4,
+              "subject": "CSHL045"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 4,
+              "subject": "CSH_ZAD_019"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "KS014"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 4,
+              "subject": "MFD_06"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 4,
+              "subject": "NR_0019"
+            },
+            {
+              "eligible_recordings": 3,
+              "passes": true,
+              "recordings": 4,
+              "subject": "NYU-12"
+            },
+            {
+              "eligible_recordings": 0,
+              "passes": false,
+              "recordings": 4,
+              "subject": "SWC_038"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 3,
+              "subject": "ZFM-01577"
+            }
+          ],
+          "target_mode": "choice"
+        }
+      ]
+    },
     {
       "decision": "candidate_panel_has_prospective_support",
       "label": "current_support80_hdf5",
@@ -1095,11 +2310,13 @@
       "decision": "candidate_panel_support_gap",
       "label": "all_local_cached",
       "n_passing_target_family_rows": 0,
-      "n_recordings": 31,
-      "n_subjects": 9,
+      "n_recordings": 38,
+      "n_subjects": 11,
       "recording_ids": [
         "03063955-2523-47bd-ae57-f7489dd40f15_probe01",
         "032ffcdf-7692-40b3-b9ff-8def1fc18b2e_probe00",
+        "034e726f-b35f-41e0-8d6c-a22cc32391fb_probe01",
+        "09b2c4d1-058d-4c84-9fd4-97530f85baf6_probe00",
         "16693458-0801-4d35-a3f1-9115c7e5acfd_probe00",
         "16693458-0801-4d35-a3f1-9115c7e5acfd_probe01",
         "1e45d992-c356-40e1-9be1-a506d944896f_probe01",
@@ -1112,11 +2329,14 @@
         "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe00",
         "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe01",
         "5ae68c54-2897-4d3a-8120-426150704385_probe00",
+        "5d6aa933-4b00-4e99-ae2d-5003657592e9_probe01",
         "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe00",
         "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe01",
+        "63f3dbc1-1a5f-44e5-98dd-ce25cd2b7871_probe00",
         "6899a67d-2e53-4215-a52a-c7021b5da5d4_probe00",
         "6f09ba7e-e3ce-44b0-932b-c003fb44fb89_probe01",
         "6fb1e12c-883b-46d1-a745-473cde3232c8_probe00",
+        "7939711b-8b4d-4251-b698-b97c1eaa846e_probe01",
         "88d24c31-52e4-49cc-9f32-6adbeb9eba87_probe00",
         "a1782f4f-86b0-480c-a7f2-3d8f1ab482ab_probe00",
         "a7eba2cf-427f-4df9-879b-e53e962eae18_probe00",
@@ -1126,11 +2346,14 @@
         "b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe00",
         "b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe01",
         "b9c205c3-feac-485b-a89d-afc96d9cb280_probe00",
+        "dfd8e7df-dc51-4589-b6ca-7baccfeb94b4_probe01",
         "e1931de1-cf7b-49af-af33-2ade15e8abe7_probe00",
         "ebce500b-c530-47de-8cb1-963c552703ea_probe00",
-        "edd22318-216c-44ff-bc24-49ce8be78374_probe00"
+        "edd22318-216c-44ff-bc24-49ce8be78374_probe00",
+        "fa704052-147e-46f6-b190-a65b837e605e_probe00"
       ],
       "subject_counts": {
+        "CSHL045": 4,
         "CSH_ZAD_019": 4,
         "KS014": 4,
         "MFD_06": 4,
@@ -1139,16 +2362,23 @@
         "NR_0019": 4,
         "NYU-12": 4,
         "SWC_038": 4,
-        "SWC_043": 4
+        "SWC_043": 4,
+        "ZFM-01577": 3
       },
       "top_target_family_rows": [
         {
           "all_subjects_pass": false,
           "family": "broad_named_anatomy",
           "min_eligible_recordings_per_subject": 1,
-          "n_subjects": 9,
-          "passing_subjects": 7,
+          "n_subjects": 11,
+          "passing_subjects": 9,
           "subject_rows": [
+            {
+              "eligible_recordings": 3,
+              "passes": true,
+              "recordings": 4,
+              "subject": "CSHL045"
+            },
             {
               "eligible_recordings": 4,
               "passes": true,
@@ -1202,6 +2432,12 @@
               "passes": true,
               "recordings": 4,
               "subject": "SWC_043"
+            },
+            {
+              "eligible_recordings": 3,
+              "passes": true,
+              "recordings": 3,
+              "subject": "ZFM-01577"
             }
           ],
           "target_mode": "stimulus_side"
@@ -1210,9 +2446,15 @@
           "all_subjects_pass": false,
           "family": "broad_named_anatomy",
           "min_eligible_recordings_per_subject": 1,
-          "n_subjects": 9,
-          "passing_subjects": 7,
+          "n_subjects": 11,
+          "passing_subjects": 9,
           "subject_rows": [
+            {
+              "eligible_recordings": 3,
+              "passes": true,
+              "recordings": 4,
+              "subject": "CSHL045"
+            },
             {
               "eligible_recordings": 4,
               "passes": true,
@@ -1266,6 +2508,12 @@
               "passes": true,
               "recordings": 4,
               "subject": "SWC_043"
+            },
+            {
+              "eligible_recordings": 3,
+              "passes": true,
+              "recordings": 3,
+              "subject": "ZFM-01577"
             }
           ],
           "target_mode": "prior_side"
@@ -1274,9 +2522,15 @@
           "all_subjects_pass": false,
           "family": "broad_named_anatomy",
           "min_eligible_recordings_per_subject": 1,
-          "n_subjects": 9,
-          "passing_subjects": 7,
+          "n_subjects": 11,
+          "passing_subjects": 9,
           "subject_rows": [
+            {
+              "eligible_recordings": 3,
+              "passes": true,
+              "recordings": 4,
+              "subject": "CSHL045"
+            },
             {
               "eligible_recordings": 4,
               "passes": true,
@@ -1330,6 +2584,12 @@
               "passes": true,
               "recordings": 4,
               "subject": "SWC_043"
+            },
+            {
+              "eligible_recordings": 3,
+              "passes": true,
+              "recordings": 3,
+              "subject": "ZFM-01577"
             }
           ],
           "target_mode": "feedback"
@@ -1338,9 +2598,15 @@
           "all_subjects_pass": false,
           "family": "broad_named_anatomy",
           "min_eligible_recordings_per_subject": 1,
-          "n_subjects": 9,
-          "passing_subjects": 7,
+          "n_subjects": 11,
+          "passing_subjects": 9,
           "subject_rows": [
+            {
+              "eligible_recordings": 3,
+              "passes": true,
+              "recordings": 4,
+              "subject": "CSHL045"
+            },
             {
               "eligible_recordings": 4,
               "passes": true,
@@ -1394,710 +2660,12 @@
               "passes": true,
               "recordings": 4,
               "subject": "SWC_043"
-            }
-          ],
-          "target_mode": "choice"
-        },
-        {
-          "all_subjects_pass": false,
-          "family": "midbrain",
-          "min_eligible_recordings_per_subject": 0,
-          "n_subjects": 9,
-          "passing_subjects": 5,
-          "subject_rows": [
-            {
-              "eligible_recordings": 1,
-              "passes": false,
-              "recordings": 4,
-              "subject": "CSH_ZAD_019"
-            },
-            {
-              "eligible_recordings": 4,
-              "passes": true,
-              "recordings": 4,
-              "subject": "KS014"
-            },
-            {
-              "eligible_recordings": 2,
-              "passes": true,
-              "recordings": 4,
-              "subject": "MFD_06"
-            },
-            {
-              "eligible_recordings": 2,
-              "passes": true,
-              "recordings": 2,
-              "subject": "MFD_08"
-            },
-            {
-              "eligible_recordings": 0,
-              "passes": false,
-              "recordings": 1,
-              "subject": "MFD_09"
-            },
-            {
-              "eligible_recordings": 2,
-              "passes": true,
-              "recordings": 4,
-              "subject": "NR_0019"
-            },
-            {
-              "eligible_recordings": 2,
-              "passes": true,
-              "recordings": 4,
-              "subject": "NYU-12"
-            },
-            {
-              "eligible_recordings": 0,
-              "passes": false,
-              "recordings": 4,
-              "subject": "SWC_038"
-            },
-            {
-              "eligible_recordings": 0,
-              "passes": false,
-              "recordings": 4,
-              "subject": "SWC_043"
-            }
-          ],
-          "target_mode": "stimulus_side"
-        },
-        {
-          "all_subjects_pass": false,
-          "family": "midbrain",
-          "min_eligible_recordings_per_subject": 0,
-          "n_subjects": 9,
-          "passing_subjects": 5,
-          "subject_rows": [
-            {
-              "eligible_recordings": 1,
-              "passes": false,
-              "recordings": 4,
-              "subject": "CSH_ZAD_019"
-            },
-            {
-              "eligible_recordings": 4,
-              "passes": true,
-              "recordings": 4,
-              "subject": "KS014"
-            },
-            {
-              "eligible_recordings": 2,
-              "passes": true,
-              "recordings": 4,
-              "subject": "MFD_06"
-            },
-            {
-              "eligible_recordings": 2,
-              "passes": true,
-              "recordings": 2,
-              "subject": "MFD_08"
-            },
-            {
-              "eligible_recordings": 0,
-              "passes": false,
-              "recordings": 1,
-              "subject": "MFD_09"
-            },
-            {
-              "eligible_recordings": 2,
-              "passes": true,
-              "recordings": 4,
-              "subject": "NR_0019"
-            },
-            {
-              "eligible_recordings": 2,
-              "passes": true,
-              "recordings": 4,
-              "subject": "NYU-12"
-            },
-            {
-              "eligible_recordings": 0,
-              "passes": false,
-              "recordings": 4,
-              "subject": "SWC_038"
-            },
-            {
-              "eligible_recordings": 0,
-              "passes": false,
-              "recordings": 4,
-              "subject": "SWC_043"
-            }
-          ],
-          "target_mode": "prior_side"
-        },
-        {
-          "all_subjects_pass": false,
-          "family": "midbrain",
-          "min_eligible_recordings_per_subject": 0,
-          "n_subjects": 9,
-          "passing_subjects": 5,
-          "subject_rows": [
-            {
-              "eligible_recordings": 1,
-              "passes": false,
-              "recordings": 4,
-              "subject": "CSH_ZAD_019"
-            },
-            {
-              "eligible_recordings": 4,
-              "passes": true,
-              "recordings": 4,
-              "subject": "KS014"
-            },
-            {
-              "eligible_recordings": 2,
-              "passes": true,
-              "recordings": 4,
-              "subject": "MFD_06"
-            },
-            {
-              "eligible_recordings": 2,
-              "passes": true,
-              "recordings": 2,
-              "subject": "MFD_08"
-            },
-            {
-              "eligible_recordings": 0,
-              "passes": false,
-              "recordings": 1,
-              "subject": "MFD_09"
-            },
-            {
-              "eligible_recordings": 2,
-              "passes": true,
-              "recordings": 4,
-              "subject": "NR_0019"
-            },
-            {
-              "eligible_recordings": 2,
-              "passes": true,
-              "recordings": 4,
-              "subject": "NYU-12"
-            },
-            {
-              "eligible_recordings": 0,
-              "passes": false,
-              "recordings": 4,
-              "subject": "SWC_038"
-            },
-            {
-              "eligible_recordings": 0,
-              "passes": false,
-              "recordings": 4,
-              "subject": "SWC_043"
-            }
-          ],
-          "target_mode": "feedback"
-        },
-        {
-          "all_subjects_pass": false,
-          "family": "midbrain",
-          "min_eligible_recordings_per_subject": 0,
-          "n_subjects": 9,
-          "passing_subjects": 5,
-          "subject_rows": [
-            {
-              "eligible_recordings": 1,
-              "passes": false,
-              "recordings": 4,
-              "subject": "CSH_ZAD_019"
-            },
-            {
-              "eligible_recordings": 4,
-              "passes": true,
-              "recordings": 4,
-              "subject": "KS014"
-            },
-            {
-              "eligible_recordings": 2,
-              "passes": true,
-              "recordings": 4,
-              "subject": "MFD_06"
-            },
-            {
-              "eligible_recordings": 2,
-              "passes": true,
-              "recordings": 2,
-              "subject": "MFD_08"
-            },
-            {
-              "eligible_recordings": 0,
-              "passes": false,
-              "recordings": 1,
-              "subject": "MFD_09"
-            },
-            {
-              "eligible_recordings": 2,
-              "passes": true,
-              "recordings": 4,
-              "subject": "NR_0019"
-            },
-            {
-              "eligible_recordings": 2,
-              "passes": true,
-              "recordings": 4,
-              "subject": "NYU-12"
-            },
-            {
-              "eligible_recordings": 0,
-              "passes": false,
-              "recordings": 4,
-              "subject": "SWC_038"
-            },
-            {
-              "eligible_recordings": 0,
-              "passes": false,
-              "recordings": 4,
-              "subject": "SWC_043"
-            }
-          ],
-          "target_mode": "choice"
-        },
-        {
-          "all_subjects_pass": false,
-          "family": "hippocampal_formation",
-          "min_eligible_recordings_per_subject": 1,
-          "n_subjects": 9,
-          "passing_subjects": 4,
-          "subject_rows": [
-            {
-              "eligible_recordings": 3,
-              "passes": true,
-              "recordings": 4,
-              "subject": "CSH_ZAD_019"
-            },
-            {
-              "eligible_recordings": 2,
-              "passes": true,
-              "recordings": 4,
-              "subject": "KS014"
             },
             {
               "eligible_recordings": 3,
               "passes": true,
-              "recordings": 4,
-              "subject": "MFD_06"
-            },
-            {
-              "eligible_recordings": 1,
-              "passes": false,
-              "recordings": 2,
-              "subject": "MFD_08"
-            },
-            {
-              "eligible_recordings": 1,
-              "passes": false,
-              "recordings": 1,
-              "subject": "MFD_09"
-            },
-            {
-              "eligible_recordings": 1,
-              "passes": false,
-              "recordings": 4,
-              "subject": "NR_0019"
-            },
-            {
-              "eligible_recordings": 3,
-              "passes": true,
-              "recordings": 4,
-              "subject": "NYU-12"
-            },
-            {
-              "eligible_recordings": 1,
-              "passes": false,
-              "recordings": 4,
-              "subject": "SWC_038"
-            },
-            {
-              "eligible_recordings": 1,
-              "passes": false,
-              "recordings": 4,
-              "subject": "SWC_043"
-            }
-          ],
-          "target_mode": "stimulus_side"
-        },
-        {
-          "all_subjects_pass": false,
-          "family": "fiber_tracts",
-          "min_eligible_recordings_per_subject": 1,
-          "n_subjects": 9,
-          "passing_subjects": 4,
-          "subject_rows": [
-            {
-              "eligible_recordings": 4,
-              "passes": true,
-              "recordings": 4,
-              "subject": "CSH_ZAD_019"
-            },
-            {
-              "eligible_recordings": 1,
-              "passes": false,
-              "recordings": 4,
-              "subject": "KS014"
-            },
-            {
-              "eligible_recordings": 1,
-              "passes": false,
-              "recordings": 4,
-              "subject": "MFD_06"
-            },
-            {
-              "eligible_recordings": 1,
-              "passes": false,
-              "recordings": 2,
-              "subject": "MFD_08"
-            },
-            {
-              "eligible_recordings": 1,
-              "passes": false,
-              "recordings": 1,
-              "subject": "MFD_09"
-            },
-            {
-              "eligible_recordings": 1,
-              "passes": false,
-              "recordings": 4,
-              "subject": "NR_0019"
-            },
-            {
-              "eligible_recordings": 2,
-              "passes": true,
-              "recordings": 4,
-              "subject": "NYU-12"
-            },
-            {
-              "eligible_recordings": 2,
-              "passes": true,
-              "recordings": 4,
-              "subject": "SWC_038"
-            },
-            {
-              "eligible_recordings": 3,
-              "passes": true,
-              "recordings": 4,
-              "subject": "SWC_043"
-            }
-          ],
-          "target_mode": "stimulus_side"
-        },
-        {
-          "all_subjects_pass": false,
-          "family": "hippocampal_formation",
-          "min_eligible_recordings_per_subject": 1,
-          "n_subjects": 9,
-          "passing_subjects": 4,
-          "subject_rows": [
-            {
-              "eligible_recordings": 3,
-              "passes": true,
-              "recordings": 4,
-              "subject": "CSH_ZAD_019"
-            },
-            {
-              "eligible_recordings": 2,
-              "passes": true,
-              "recordings": 4,
-              "subject": "KS014"
-            },
-            {
-              "eligible_recordings": 3,
-              "passes": true,
-              "recordings": 4,
-              "subject": "MFD_06"
-            },
-            {
-              "eligible_recordings": 1,
-              "passes": false,
-              "recordings": 2,
-              "subject": "MFD_08"
-            },
-            {
-              "eligible_recordings": 1,
-              "passes": false,
-              "recordings": 1,
-              "subject": "MFD_09"
-            },
-            {
-              "eligible_recordings": 1,
-              "passes": false,
-              "recordings": 4,
-              "subject": "NR_0019"
-            },
-            {
-              "eligible_recordings": 3,
-              "passes": true,
-              "recordings": 4,
-              "subject": "NYU-12"
-            },
-            {
-              "eligible_recordings": 1,
-              "passes": false,
-              "recordings": 4,
-              "subject": "SWC_038"
-            },
-            {
-              "eligible_recordings": 1,
-              "passes": false,
-              "recordings": 4,
-              "subject": "SWC_043"
-            }
-          ],
-          "target_mode": "prior_side"
-        },
-        {
-          "all_subjects_pass": false,
-          "family": "fiber_tracts",
-          "min_eligible_recordings_per_subject": 1,
-          "n_subjects": 9,
-          "passing_subjects": 4,
-          "subject_rows": [
-            {
-              "eligible_recordings": 4,
-              "passes": true,
-              "recordings": 4,
-              "subject": "CSH_ZAD_019"
-            },
-            {
-              "eligible_recordings": 1,
-              "passes": false,
-              "recordings": 4,
-              "subject": "KS014"
-            },
-            {
-              "eligible_recordings": 1,
-              "passes": false,
-              "recordings": 4,
-              "subject": "MFD_06"
-            },
-            {
-              "eligible_recordings": 1,
-              "passes": false,
-              "recordings": 2,
-              "subject": "MFD_08"
-            },
-            {
-              "eligible_recordings": 1,
-              "passes": false,
-              "recordings": 1,
-              "subject": "MFD_09"
-            },
-            {
-              "eligible_recordings": 1,
-              "passes": false,
-              "recordings": 4,
-              "subject": "NR_0019"
-            },
-            {
-              "eligible_recordings": 2,
-              "passes": true,
-              "recordings": 4,
-              "subject": "NYU-12"
-            },
-            {
-              "eligible_recordings": 2,
-              "passes": true,
-              "recordings": 4,
-              "subject": "SWC_038"
-            },
-            {
-              "eligible_recordings": 3,
-              "passes": true,
-              "recordings": 4,
-              "subject": "SWC_043"
-            }
-          ],
-          "target_mode": "prior_side"
-        },
-        {
-          "all_subjects_pass": false,
-          "family": "hippocampal_formation",
-          "min_eligible_recordings_per_subject": 1,
-          "n_subjects": 9,
-          "passing_subjects": 4,
-          "subject_rows": [
-            {
-              "eligible_recordings": 3,
-              "passes": true,
-              "recordings": 4,
-              "subject": "CSH_ZAD_019"
-            },
-            {
-              "eligible_recordings": 2,
-              "passes": true,
-              "recordings": 4,
-              "subject": "KS014"
-            },
-            {
-              "eligible_recordings": 3,
-              "passes": true,
-              "recordings": 4,
-              "subject": "MFD_06"
-            },
-            {
-              "eligible_recordings": 1,
-              "passes": false,
-              "recordings": 2,
-              "subject": "MFD_08"
-            },
-            {
-              "eligible_recordings": 1,
-              "passes": false,
-              "recordings": 1,
-              "subject": "MFD_09"
-            },
-            {
-              "eligible_recordings": 1,
-              "passes": false,
-              "recordings": 4,
-              "subject": "NR_0019"
-            },
-            {
-              "eligible_recordings": 3,
-              "passes": true,
-              "recordings": 4,
-              "subject": "NYU-12"
-            },
-            {
-              "eligible_recordings": 1,
-              "passes": false,
-              "recordings": 4,
-              "subject": "SWC_038"
-            },
-            {
-              "eligible_recordings": 1,
-              "passes": false,
-              "recordings": 4,
-              "subject": "SWC_043"
-            }
-          ],
-          "target_mode": "feedback"
-        },
-        {
-          "all_subjects_pass": false,
-          "family": "fiber_tracts",
-          "min_eligible_recordings_per_subject": 1,
-          "n_subjects": 9,
-          "passing_subjects": 4,
-          "subject_rows": [
-            {
-              "eligible_recordings": 4,
-              "passes": true,
-              "recordings": 4,
-              "subject": "CSH_ZAD_019"
-            },
-            {
-              "eligible_recordings": 1,
-              "passes": false,
-              "recordings": 4,
-              "subject": "KS014"
-            },
-            {
-              "eligible_recordings": 1,
-              "passes": false,
-              "recordings": 4,
-              "subject": "MFD_06"
-            },
-            {
-              "eligible_recordings": 1,
-              "passes": false,
-              "recordings": 2,
-              "subject": "MFD_08"
-            },
-            {
-              "eligible_recordings": 1,
-              "passes": false,
-              "recordings": 1,
-              "subject": "MFD_09"
-            },
-            {
-              "eligible_recordings": 1,
-              "passes": false,
-              "recordings": 4,
-              "subject": "NR_0019"
-            },
-            {
-              "eligible_recordings": 2,
-              "passes": true,
-              "recordings": 4,
-              "subject": "NYU-12"
-            },
-            {
-              "eligible_recordings": 2,
-              "passes": true,
-              "recordings": 4,
-              "subject": "SWC_038"
-            },
-            {
-              "eligible_recordings": 3,
-              "passes": true,
-              "recordings": 4,
-              "subject": "SWC_043"
-            }
-          ],
-          "target_mode": "feedback"
-        },
-        {
-          "all_subjects_pass": false,
-          "family": "hippocampal_formation",
-          "min_eligible_recordings_per_subject": 1,
-          "n_subjects": 9,
-          "passing_subjects": 4,
-          "subject_rows": [
-            {
-              "eligible_recordings": 3,
-              "passes": true,
-              "recordings": 4,
-              "subject": "CSH_ZAD_019"
-            },
-            {
-              "eligible_recordings": 2,
-              "passes": true,
-              "recordings": 4,
-              "subject": "KS014"
-            },
-            {
-              "eligible_recordings": 3,
-              "passes": true,
-              "recordings": 4,
-              "subject": "MFD_06"
-            },
-            {
-              "eligible_recordings": 1,
-              "passes": false,
-              "recordings": 2,
-              "subject": "MFD_08"
-            },
-            {
-              "eligible_recordings": 1,
-              "passes": false,
-              "recordings": 1,
-              "subject": "MFD_09"
-            },
-            {
-              "eligible_recordings": 1,
-              "passes": false,
-              "recordings": 4,
-              "subject": "NR_0019"
-            },
-            {
-              "eligible_recordings": 3,
-              "passes": true,
-              "recordings": 4,
-              "subject": "NYU-12"
-            },
-            {
-              "eligible_recordings": 1,
-              "passes": false,
-              "recordings": 4,
-              "subject": "SWC_038"
-            },
-            {
-              "eligible_recordings": 1,
-              "passes": false,
-              "recordings": 4,
-              "subject": "SWC_043"
+              "recordings": 3,
+              "subject": "ZFM-01577"
             }
           ],
           "target_mode": "choice"
@@ -2106,9 +2674,15 @@
           "all_subjects_pass": false,
           "family": "fiber_tracts",
           "min_eligible_recordings_per_subject": 1,
-          "n_subjects": 9,
-          "passing_subjects": 4,
+          "n_subjects": 11,
+          "passing_subjects": 5,
           "subject_rows": [
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "CSHL045"
+            },
             {
               "eligible_recordings": 4,
               "passes": true,
@@ -2162,6 +2736,848 @@
               "passes": true,
               "recordings": 4,
               "subject": "SWC_043"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 3,
+              "subject": "ZFM-01577"
+            }
+          ],
+          "target_mode": "stimulus_side"
+        },
+        {
+          "all_subjects_pass": false,
+          "family": "fiber_tracts",
+          "min_eligible_recordings_per_subject": 1,
+          "n_subjects": 11,
+          "passing_subjects": 5,
+          "subject_rows": [
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "CSHL045"
+            },
+            {
+              "eligible_recordings": 4,
+              "passes": true,
+              "recordings": 4,
+              "subject": "CSH_ZAD_019"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "KS014"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "MFD_06"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 2,
+              "subject": "MFD_08"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 1,
+              "subject": "MFD_09"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "NR_0019"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 4,
+              "subject": "NYU-12"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 4,
+              "subject": "SWC_038"
+            },
+            {
+              "eligible_recordings": 3,
+              "passes": true,
+              "recordings": 4,
+              "subject": "SWC_043"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 3,
+              "subject": "ZFM-01577"
+            }
+          ],
+          "target_mode": "prior_side"
+        },
+        {
+          "all_subjects_pass": false,
+          "family": "fiber_tracts",
+          "min_eligible_recordings_per_subject": 1,
+          "n_subjects": 11,
+          "passing_subjects": 5,
+          "subject_rows": [
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "CSHL045"
+            },
+            {
+              "eligible_recordings": 4,
+              "passes": true,
+              "recordings": 4,
+              "subject": "CSH_ZAD_019"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "KS014"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "MFD_06"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 2,
+              "subject": "MFD_08"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 1,
+              "subject": "MFD_09"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "NR_0019"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 4,
+              "subject": "NYU-12"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 4,
+              "subject": "SWC_038"
+            },
+            {
+              "eligible_recordings": 3,
+              "passes": true,
+              "recordings": 4,
+              "subject": "SWC_043"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 3,
+              "subject": "ZFM-01577"
+            }
+          ],
+          "target_mode": "feedback"
+        },
+        {
+          "all_subjects_pass": false,
+          "family": "fiber_tracts",
+          "min_eligible_recordings_per_subject": 1,
+          "n_subjects": 11,
+          "passing_subjects": 5,
+          "subject_rows": [
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "CSHL045"
+            },
+            {
+              "eligible_recordings": 4,
+              "passes": true,
+              "recordings": 4,
+              "subject": "CSH_ZAD_019"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "KS014"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "MFD_06"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 2,
+              "subject": "MFD_08"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 1,
+              "subject": "MFD_09"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "NR_0019"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 4,
+              "subject": "NYU-12"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 4,
+              "subject": "SWC_038"
+            },
+            {
+              "eligible_recordings": 3,
+              "passes": true,
+              "recordings": 4,
+              "subject": "SWC_043"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 3,
+              "subject": "ZFM-01577"
+            }
+          ],
+          "target_mode": "choice"
+        },
+        {
+          "all_subjects_pass": false,
+          "family": "midbrain",
+          "min_eligible_recordings_per_subject": 0,
+          "n_subjects": 11,
+          "passing_subjects": 5,
+          "subject_rows": [
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "CSHL045"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "CSH_ZAD_019"
+            },
+            {
+              "eligible_recordings": 4,
+              "passes": true,
+              "recordings": 4,
+              "subject": "KS014"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 4,
+              "subject": "MFD_06"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 2,
+              "subject": "MFD_08"
+            },
+            {
+              "eligible_recordings": 0,
+              "passes": false,
+              "recordings": 1,
+              "subject": "MFD_09"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 4,
+              "subject": "NR_0019"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 4,
+              "subject": "NYU-12"
+            },
+            {
+              "eligible_recordings": 0,
+              "passes": false,
+              "recordings": 4,
+              "subject": "SWC_038"
+            },
+            {
+              "eligible_recordings": 0,
+              "passes": false,
+              "recordings": 4,
+              "subject": "SWC_043"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 3,
+              "subject": "ZFM-01577"
+            }
+          ],
+          "target_mode": "stimulus_side"
+        },
+        {
+          "all_subjects_pass": false,
+          "family": "hippocampal_formation",
+          "min_eligible_recordings_per_subject": 0,
+          "n_subjects": 11,
+          "passing_subjects": 5,
+          "subject_rows": [
+            {
+              "eligible_recordings": 0,
+              "passes": false,
+              "recordings": 4,
+              "subject": "CSHL045"
+            },
+            {
+              "eligible_recordings": 3,
+              "passes": true,
+              "recordings": 4,
+              "subject": "CSH_ZAD_019"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 4,
+              "subject": "KS014"
+            },
+            {
+              "eligible_recordings": 3,
+              "passes": true,
+              "recordings": 4,
+              "subject": "MFD_06"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 2,
+              "subject": "MFD_08"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 1,
+              "subject": "MFD_09"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "NR_0019"
+            },
+            {
+              "eligible_recordings": 3,
+              "passes": true,
+              "recordings": 4,
+              "subject": "NYU-12"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "SWC_038"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "SWC_043"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 3,
+              "subject": "ZFM-01577"
+            }
+          ],
+          "target_mode": "stimulus_side"
+        },
+        {
+          "all_subjects_pass": false,
+          "family": "midbrain",
+          "min_eligible_recordings_per_subject": 0,
+          "n_subjects": 11,
+          "passing_subjects": 5,
+          "subject_rows": [
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "CSHL045"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "CSH_ZAD_019"
+            },
+            {
+              "eligible_recordings": 4,
+              "passes": true,
+              "recordings": 4,
+              "subject": "KS014"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 4,
+              "subject": "MFD_06"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 2,
+              "subject": "MFD_08"
+            },
+            {
+              "eligible_recordings": 0,
+              "passes": false,
+              "recordings": 1,
+              "subject": "MFD_09"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 4,
+              "subject": "NR_0019"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 4,
+              "subject": "NYU-12"
+            },
+            {
+              "eligible_recordings": 0,
+              "passes": false,
+              "recordings": 4,
+              "subject": "SWC_038"
+            },
+            {
+              "eligible_recordings": 0,
+              "passes": false,
+              "recordings": 4,
+              "subject": "SWC_043"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 3,
+              "subject": "ZFM-01577"
+            }
+          ],
+          "target_mode": "prior_side"
+        },
+        {
+          "all_subjects_pass": false,
+          "family": "hippocampal_formation",
+          "min_eligible_recordings_per_subject": 0,
+          "n_subjects": 11,
+          "passing_subjects": 5,
+          "subject_rows": [
+            {
+              "eligible_recordings": 0,
+              "passes": false,
+              "recordings": 4,
+              "subject": "CSHL045"
+            },
+            {
+              "eligible_recordings": 3,
+              "passes": true,
+              "recordings": 4,
+              "subject": "CSH_ZAD_019"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 4,
+              "subject": "KS014"
+            },
+            {
+              "eligible_recordings": 3,
+              "passes": true,
+              "recordings": 4,
+              "subject": "MFD_06"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 2,
+              "subject": "MFD_08"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 1,
+              "subject": "MFD_09"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "NR_0019"
+            },
+            {
+              "eligible_recordings": 3,
+              "passes": true,
+              "recordings": 4,
+              "subject": "NYU-12"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "SWC_038"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "SWC_043"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 3,
+              "subject": "ZFM-01577"
+            }
+          ],
+          "target_mode": "prior_side"
+        },
+        {
+          "all_subjects_pass": false,
+          "family": "midbrain",
+          "min_eligible_recordings_per_subject": 0,
+          "n_subjects": 11,
+          "passing_subjects": 5,
+          "subject_rows": [
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "CSHL045"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "CSH_ZAD_019"
+            },
+            {
+              "eligible_recordings": 4,
+              "passes": true,
+              "recordings": 4,
+              "subject": "KS014"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 4,
+              "subject": "MFD_06"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 2,
+              "subject": "MFD_08"
+            },
+            {
+              "eligible_recordings": 0,
+              "passes": false,
+              "recordings": 1,
+              "subject": "MFD_09"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 4,
+              "subject": "NR_0019"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 4,
+              "subject": "NYU-12"
+            },
+            {
+              "eligible_recordings": 0,
+              "passes": false,
+              "recordings": 4,
+              "subject": "SWC_038"
+            },
+            {
+              "eligible_recordings": 0,
+              "passes": false,
+              "recordings": 4,
+              "subject": "SWC_043"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 3,
+              "subject": "ZFM-01577"
+            }
+          ],
+          "target_mode": "feedback"
+        },
+        {
+          "all_subjects_pass": false,
+          "family": "hippocampal_formation",
+          "min_eligible_recordings_per_subject": 0,
+          "n_subjects": 11,
+          "passing_subjects": 5,
+          "subject_rows": [
+            {
+              "eligible_recordings": 0,
+              "passes": false,
+              "recordings": 4,
+              "subject": "CSHL045"
+            },
+            {
+              "eligible_recordings": 3,
+              "passes": true,
+              "recordings": 4,
+              "subject": "CSH_ZAD_019"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 4,
+              "subject": "KS014"
+            },
+            {
+              "eligible_recordings": 3,
+              "passes": true,
+              "recordings": 4,
+              "subject": "MFD_06"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 2,
+              "subject": "MFD_08"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 1,
+              "subject": "MFD_09"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "NR_0019"
+            },
+            {
+              "eligible_recordings": 3,
+              "passes": true,
+              "recordings": 4,
+              "subject": "NYU-12"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "SWC_038"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "SWC_043"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 3,
+              "subject": "ZFM-01577"
+            }
+          ],
+          "target_mode": "feedback"
+        },
+        {
+          "all_subjects_pass": false,
+          "family": "midbrain",
+          "min_eligible_recordings_per_subject": 0,
+          "n_subjects": 11,
+          "passing_subjects": 5,
+          "subject_rows": [
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "CSHL045"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "CSH_ZAD_019"
+            },
+            {
+              "eligible_recordings": 4,
+              "passes": true,
+              "recordings": 4,
+              "subject": "KS014"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 4,
+              "subject": "MFD_06"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 2,
+              "subject": "MFD_08"
+            },
+            {
+              "eligible_recordings": 0,
+              "passes": false,
+              "recordings": 1,
+              "subject": "MFD_09"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 4,
+              "subject": "NR_0019"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 4,
+              "subject": "NYU-12"
+            },
+            {
+              "eligible_recordings": 0,
+              "passes": false,
+              "recordings": 4,
+              "subject": "SWC_038"
+            },
+            {
+              "eligible_recordings": 0,
+              "passes": false,
+              "recordings": 4,
+              "subject": "SWC_043"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 3,
+              "subject": "ZFM-01577"
+            }
+          ],
+          "target_mode": "choice"
+        },
+        {
+          "all_subjects_pass": false,
+          "family": "hippocampal_formation",
+          "min_eligible_recordings_per_subject": 0,
+          "n_subjects": 11,
+          "passing_subjects": 5,
+          "subject_rows": [
+            {
+              "eligible_recordings": 0,
+              "passes": false,
+              "recordings": 4,
+              "subject": "CSHL045"
+            },
+            {
+              "eligible_recordings": 3,
+              "passes": true,
+              "recordings": 4,
+              "subject": "CSH_ZAD_019"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 4,
+              "subject": "KS014"
+            },
+            {
+              "eligible_recordings": 3,
+              "passes": true,
+              "recordings": 4,
+              "subject": "MFD_06"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 2,
+              "subject": "MFD_08"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 1,
+              "subject": "MFD_09"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "NR_0019"
+            },
+            {
+              "eligible_recordings": 3,
+              "passes": true,
+              "recordings": 4,
+              "subject": "NYU-12"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "SWC_038"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "SWC_043"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 3,
+              "subject": "ZFM-01577"
             }
           ],
           "target_mode": "choice"
@@ -2170,9 +3586,15 @@
           "all_subjects_pass": false,
           "family": "brainstem_interbrain",
           "min_eligible_recordings_per_subject": 0,
-          "n_subjects": 9,
+          "n_subjects": 11,
           "passing_subjects": 4,
           "subject_rows": [
+            {
+              "eligible_recordings": 0,
+              "passes": false,
+              "recordings": 4,
+              "subject": "CSHL045"
+            },
             {
               "eligible_recordings": 2,
               "passes": true,
@@ -2226,6 +3648,12 @@
               "passes": false,
               "recordings": 4,
               "subject": "SWC_043"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 3,
+              "subject": "ZFM-01577"
             }
           ],
           "target_mode": "stimulus_side"
@@ -2234,9 +3662,15 @@
           "all_subjects_pass": false,
           "family": "brainstem_interbrain",
           "min_eligible_recordings_per_subject": 0,
-          "n_subjects": 9,
+          "n_subjects": 11,
           "passing_subjects": 4,
           "subject_rows": [
+            {
+              "eligible_recordings": 0,
+              "passes": false,
+              "recordings": 4,
+              "subject": "CSHL045"
+            },
             {
               "eligible_recordings": 2,
               "passes": true,
@@ -2290,6 +3724,12 @@
               "passes": false,
               "recordings": 4,
               "subject": "SWC_043"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 3,
+              "subject": "ZFM-01577"
             }
           ],
           "target_mode": "prior_side"
@@ -2298,9 +3738,15 @@
           "all_subjects_pass": false,
           "family": "brainstem_interbrain",
           "min_eligible_recordings_per_subject": 0,
-          "n_subjects": 9,
+          "n_subjects": 11,
           "passing_subjects": 4,
           "subject_rows": [
+            {
+              "eligible_recordings": 0,
+              "passes": false,
+              "recordings": 4,
+              "subject": "CSHL045"
+            },
             {
               "eligible_recordings": 2,
               "passes": true,
@@ -2354,6 +3800,12 @@
               "passes": false,
               "recordings": 4,
               "subject": "SWC_043"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 3,
+              "subject": "ZFM-01577"
             }
           ],
           "target_mode": "feedback"
@@ -2362,9 +3814,15 @@
           "all_subjects_pass": false,
           "family": "brainstem_interbrain",
           "min_eligible_recordings_per_subject": 0,
-          "n_subjects": 9,
+          "n_subjects": 11,
           "passing_subjects": 4,
           "subject_rows": [
+            {
+              "eligible_recordings": 0,
+              "passes": false,
+              "recordings": 4,
+              "subject": "CSHL045"
+            },
             {
               "eligible_recordings": 2,
               "passes": true,
@@ -2418,6 +3876,12 @@
               "passes": false,
               "recordings": 4,
               "subject": "SWC_043"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 3,
+              "subject": "ZFM-01577"
             }
           ],
           "target_mode": "choice"
@@ -2428,11 +3892,13 @@
       "decision": "candidate_panel_support_gap",
       "label": "local_cached_min2_recordings_per_subject",
       "n_passing_target_family_rows": 0,
-      "n_recordings": 30,
-      "n_subjects": 8,
+      "n_recordings": 37,
+      "n_subjects": 10,
       "recording_ids": [
         "03063955-2523-47bd-ae57-f7489dd40f15_probe01",
         "032ffcdf-7692-40b3-b9ff-8def1fc18b2e_probe00",
+        "034e726f-b35f-41e0-8d6c-a22cc32391fb_probe01",
+        "09b2c4d1-058d-4c84-9fd4-97530f85baf6_probe00",
         "16693458-0801-4d35-a3f1-9115c7e5acfd_probe00",
         "16693458-0801-4d35-a3f1-9115c7e5acfd_probe01",
         "1e45d992-c356-40e1-9be1-a506d944896f_probe01",
@@ -2445,11 +3911,14 @@
         "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe00",
         "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe01",
         "5ae68c54-2897-4d3a-8120-426150704385_probe00",
+        "5d6aa933-4b00-4e99-ae2d-5003657592e9_probe01",
         "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe00",
         "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe01",
+        "63f3dbc1-1a5f-44e5-98dd-ce25cd2b7871_probe00",
         "6899a67d-2e53-4215-a52a-c7021b5da5d4_probe00",
         "6f09ba7e-e3ce-44b0-932b-c003fb44fb89_probe01",
         "6fb1e12c-883b-46d1-a745-473cde3232c8_probe00",
+        "7939711b-8b4d-4251-b698-b97c1eaa846e_probe01",
         "88d24c31-52e4-49cc-9f32-6adbeb9eba87_probe00",
         "a1782f4f-86b0-480c-a7f2-3d8f1ab482ab_probe00",
         "a7eba2cf-427f-4df9-879b-e53e962eae18_probe00",
@@ -2459,10 +3928,13 @@
         "b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe00",
         "b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe01",
         "b9c205c3-feac-485b-a89d-afc96d9cb280_probe00",
+        "dfd8e7df-dc51-4589-b6ca-7baccfeb94b4_probe01",
         "e1931de1-cf7b-49af-af33-2ade15e8abe7_probe00",
-        "edd22318-216c-44ff-bc24-49ce8be78374_probe00"
+        "edd22318-216c-44ff-bc24-49ce8be78374_probe00",
+        "fa704052-147e-46f6-b190-a65b837e605e_probe00"
       ],
       "subject_counts": {
+        "CSHL045": 4,
         "CSH_ZAD_019": 4,
         "KS014": 4,
         "MFD_06": 4,
@@ -2470,16 +3942,23 @@
         "NR_0019": 4,
         "NYU-12": 4,
         "SWC_038": 4,
-        "SWC_043": 4
+        "SWC_043": 4,
+        "ZFM-01577": 3
       },
       "top_target_family_rows": [
         {
           "all_subjects_pass": false,
           "family": "broad_named_anatomy",
           "min_eligible_recordings_per_subject": 1,
-          "n_subjects": 8,
-          "passing_subjects": 7,
+          "n_subjects": 10,
+          "passing_subjects": 9,
           "subject_rows": [
+            {
+              "eligible_recordings": 3,
+              "passes": true,
+              "recordings": 4,
+              "subject": "CSHL045"
+            },
             {
               "eligible_recordings": 4,
               "passes": true,
@@ -2527,6 +4006,12 @@
               "passes": true,
               "recordings": 4,
               "subject": "SWC_043"
+            },
+            {
+              "eligible_recordings": 3,
+              "passes": true,
+              "recordings": 3,
+              "subject": "ZFM-01577"
             }
           ],
           "target_mode": "stimulus_side"
@@ -2535,9 +4020,15 @@
           "all_subjects_pass": false,
           "family": "broad_named_anatomy",
           "min_eligible_recordings_per_subject": 1,
-          "n_subjects": 8,
-          "passing_subjects": 7,
+          "n_subjects": 10,
+          "passing_subjects": 9,
           "subject_rows": [
+            {
+              "eligible_recordings": 3,
+              "passes": true,
+              "recordings": 4,
+              "subject": "CSHL045"
+            },
             {
               "eligible_recordings": 4,
               "passes": true,
@@ -2585,6 +4076,12 @@
               "passes": true,
               "recordings": 4,
               "subject": "SWC_043"
+            },
+            {
+              "eligible_recordings": 3,
+              "passes": true,
+              "recordings": 3,
+              "subject": "ZFM-01577"
             }
           ],
           "target_mode": "prior_side"
@@ -2593,9 +4090,15 @@
           "all_subjects_pass": false,
           "family": "broad_named_anatomy",
           "min_eligible_recordings_per_subject": 1,
-          "n_subjects": 8,
-          "passing_subjects": 7,
+          "n_subjects": 10,
+          "passing_subjects": 9,
           "subject_rows": [
+            {
+              "eligible_recordings": 3,
+              "passes": true,
+              "recordings": 4,
+              "subject": "CSHL045"
+            },
             {
               "eligible_recordings": 4,
               "passes": true,
@@ -2643,6 +4146,12 @@
               "passes": true,
               "recordings": 4,
               "subject": "SWC_043"
+            },
+            {
+              "eligible_recordings": 3,
+              "passes": true,
+              "recordings": 3,
+              "subject": "ZFM-01577"
             }
           ],
           "target_mode": "feedback"
@@ -2651,9 +4160,15 @@
           "all_subjects_pass": false,
           "family": "broad_named_anatomy",
           "min_eligible_recordings_per_subject": 1,
-          "n_subjects": 8,
-          "passing_subjects": 7,
+          "n_subjects": 10,
+          "passing_subjects": 9,
           "subject_rows": [
+            {
+              "eligible_recordings": 3,
+              "passes": true,
+              "recordings": 4,
+              "subject": "CSHL045"
+            },
             {
               "eligible_recordings": 4,
               "passes": true,
@@ -2701,644 +4216,12 @@
               "passes": true,
               "recordings": 4,
               "subject": "SWC_043"
-            }
-          ],
-          "target_mode": "choice"
-        },
-        {
-          "all_subjects_pass": false,
-          "family": "midbrain",
-          "min_eligible_recordings_per_subject": 0,
-          "n_subjects": 8,
-          "passing_subjects": 5,
-          "subject_rows": [
-            {
-              "eligible_recordings": 1,
-              "passes": false,
-              "recordings": 4,
-              "subject": "CSH_ZAD_019"
-            },
-            {
-              "eligible_recordings": 4,
-              "passes": true,
-              "recordings": 4,
-              "subject": "KS014"
-            },
-            {
-              "eligible_recordings": 2,
-              "passes": true,
-              "recordings": 4,
-              "subject": "MFD_06"
-            },
-            {
-              "eligible_recordings": 2,
-              "passes": true,
-              "recordings": 2,
-              "subject": "MFD_08"
-            },
-            {
-              "eligible_recordings": 2,
-              "passes": true,
-              "recordings": 4,
-              "subject": "NR_0019"
-            },
-            {
-              "eligible_recordings": 2,
-              "passes": true,
-              "recordings": 4,
-              "subject": "NYU-12"
-            },
-            {
-              "eligible_recordings": 0,
-              "passes": false,
-              "recordings": 4,
-              "subject": "SWC_038"
-            },
-            {
-              "eligible_recordings": 0,
-              "passes": false,
-              "recordings": 4,
-              "subject": "SWC_043"
-            }
-          ],
-          "target_mode": "stimulus_side"
-        },
-        {
-          "all_subjects_pass": false,
-          "family": "midbrain",
-          "min_eligible_recordings_per_subject": 0,
-          "n_subjects": 8,
-          "passing_subjects": 5,
-          "subject_rows": [
-            {
-              "eligible_recordings": 1,
-              "passes": false,
-              "recordings": 4,
-              "subject": "CSH_ZAD_019"
-            },
-            {
-              "eligible_recordings": 4,
-              "passes": true,
-              "recordings": 4,
-              "subject": "KS014"
-            },
-            {
-              "eligible_recordings": 2,
-              "passes": true,
-              "recordings": 4,
-              "subject": "MFD_06"
-            },
-            {
-              "eligible_recordings": 2,
-              "passes": true,
-              "recordings": 2,
-              "subject": "MFD_08"
-            },
-            {
-              "eligible_recordings": 2,
-              "passes": true,
-              "recordings": 4,
-              "subject": "NR_0019"
-            },
-            {
-              "eligible_recordings": 2,
-              "passes": true,
-              "recordings": 4,
-              "subject": "NYU-12"
-            },
-            {
-              "eligible_recordings": 0,
-              "passes": false,
-              "recordings": 4,
-              "subject": "SWC_038"
-            },
-            {
-              "eligible_recordings": 0,
-              "passes": false,
-              "recordings": 4,
-              "subject": "SWC_043"
-            }
-          ],
-          "target_mode": "prior_side"
-        },
-        {
-          "all_subjects_pass": false,
-          "family": "midbrain",
-          "min_eligible_recordings_per_subject": 0,
-          "n_subjects": 8,
-          "passing_subjects": 5,
-          "subject_rows": [
-            {
-              "eligible_recordings": 1,
-              "passes": false,
-              "recordings": 4,
-              "subject": "CSH_ZAD_019"
-            },
-            {
-              "eligible_recordings": 4,
-              "passes": true,
-              "recordings": 4,
-              "subject": "KS014"
-            },
-            {
-              "eligible_recordings": 2,
-              "passes": true,
-              "recordings": 4,
-              "subject": "MFD_06"
-            },
-            {
-              "eligible_recordings": 2,
-              "passes": true,
-              "recordings": 2,
-              "subject": "MFD_08"
-            },
-            {
-              "eligible_recordings": 2,
-              "passes": true,
-              "recordings": 4,
-              "subject": "NR_0019"
-            },
-            {
-              "eligible_recordings": 2,
-              "passes": true,
-              "recordings": 4,
-              "subject": "NYU-12"
-            },
-            {
-              "eligible_recordings": 0,
-              "passes": false,
-              "recordings": 4,
-              "subject": "SWC_038"
-            },
-            {
-              "eligible_recordings": 0,
-              "passes": false,
-              "recordings": 4,
-              "subject": "SWC_043"
-            }
-          ],
-          "target_mode": "feedback"
-        },
-        {
-          "all_subjects_pass": false,
-          "family": "midbrain",
-          "min_eligible_recordings_per_subject": 0,
-          "n_subjects": 8,
-          "passing_subjects": 5,
-          "subject_rows": [
-            {
-              "eligible_recordings": 1,
-              "passes": false,
-              "recordings": 4,
-              "subject": "CSH_ZAD_019"
-            },
-            {
-              "eligible_recordings": 4,
-              "passes": true,
-              "recordings": 4,
-              "subject": "KS014"
-            },
-            {
-              "eligible_recordings": 2,
-              "passes": true,
-              "recordings": 4,
-              "subject": "MFD_06"
-            },
-            {
-              "eligible_recordings": 2,
-              "passes": true,
-              "recordings": 2,
-              "subject": "MFD_08"
-            },
-            {
-              "eligible_recordings": 2,
-              "passes": true,
-              "recordings": 4,
-              "subject": "NR_0019"
-            },
-            {
-              "eligible_recordings": 2,
-              "passes": true,
-              "recordings": 4,
-              "subject": "NYU-12"
-            },
-            {
-              "eligible_recordings": 0,
-              "passes": false,
-              "recordings": 4,
-              "subject": "SWC_038"
-            },
-            {
-              "eligible_recordings": 0,
-              "passes": false,
-              "recordings": 4,
-              "subject": "SWC_043"
-            }
-          ],
-          "target_mode": "choice"
-        },
-        {
-          "all_subjects_pass": false,
-          "family": "hippocampal_formation",
-          "min_eligible_recordings_per_subject": 1,
-          "n_subjects": 8,
-          "passing_subjects": 4,
-          "subject_rows": [
-            {
-              "eligible_recordings": 3,
-              "passes": true,
-              "recordings": 4,
-              "subject": "CSH_ZAD_019"
-            },
-            {
-              "eligible_recordings": 2,
-              "passes": true,
-              "recordings": 4,
-              "subject": "KS014"
             },
             {
               "eligible_recordings": 3,
               "passes": true,
-              "recordings": 4,
-              "subject": "MFD_06"
-            },
-            {
-              "eligible_recordings": 1,
-              "passes": false,
-              "recordings": 2,
-              "subject": "MFD_08"
-            },
-            {
-              "eligible_recordings": 1,
-              "passes": false,
-              "recordings": 4,
-              "subject": "NR_0019"
-            },
-            {
-              "eligible_recordings": 3,
-              "passes": true,
-              "recordings": 4,
-              "subject": "NYU-12"
-            },
-            {
-              "eligible_recordings": 1,
-              "passes": false,
-              "recordings": 4,
-              "subject": "SWC_038"
-            },
-            {
-              "eligible_recordings": 1,
-              "passes": false,
-              "recordings": 4,
-              "subject": "SWC_043"
-            }
-          ],
-          "target_mode": "stimulus_side"
-        },
-        {
-          "all_subjects_pass": false,
-          "family": "fiber_tracts",
-          "min_eligible_recordings_per_subject": 1,
-          "n_subjects": 8,
-          "passing_subjects": 4,
-          "subject_rows": [
-            {
-              "eligible_recordings": 4,
-              "passes": true,
-              "recordings": 4,
-              "subject": "CSH_ZAD_019"
-            },
-            {
-              "eligible_recordings": 1,
-              "passes": false,
-              "recordings": 4,
-              "subject": "KS014"
-            },
-            {
-              "eligible_recordings": 1,
-              "passes": false,
-              "recordings": 4,
-              "subject": "MFD_06"
-            },
-            {
-              "eligible_recordings": 1,
-              "passes": false,
-              "recordings": 2,
-              "subject": "MFD_08"
-            },
-            {
-              "eligible_recordings": 1,
-              "passes": false,
-              "recordings": 4,
-              "subject": "NR_0019"
-            },
-            {
-              "eligible_recordings": 2,
-              "passes": true,
-              "recordings": 4,
-              "subject": "NYU-12"
-            },
-            {
-              "eligible_recordings": 2,
-              "passes": true,
-              "recordings": 4,
-              "subject": "SWC_038"
-            },
-            {
-              "eligible_recordings": 3,
-              "passes": true,
-              "recordings": 4,
-              "subject": "SWC_043"
-            }
-          ],
-          "target_mode": "stimulus_side"
-        },
-        {
-          "all_subjects_pass": false,
-          "family": "hippocampal_formation",
-          "min_eligible_recordings_per_subject": 1,
-          "n_subjects": 8,
-          "passing_subjects": 4,
-          "subject_rows": [
-            {
-              "eligible_recordings": 3,
-              "passes": true,
-              "recordings": 4,
-              "subject": "CSH_ZAD_019"
-            },
-            {
-              "eligible_recordings": 2,
-              "passes": true,
-              "recordings": 4,
-              "subject": "KS014"
-            },
-            {
-              "eligible_recordings": 3,
-              "passes": true,
-              "recordings": 4,
-              "subject": "MFD_06"
-            },
-            {
-              "eligible_recordings": 1,
-              "passes": false,
-              "recordings": 2,
-              "subject": "MFD_08"
-            },
-            {
-              "eligible_recordings": 1,
-              "passes": false,
-              "recordings": 4,
-              "subject": "NR_0019"
-            },
-            {
-              "eligible_recordings": 3,
-              "passes": true,
-              "recordings": 4,
-              "subject": "NYU-12"
-            },
-            {
-              "eligible_recordings": 1,
-              "passes": false,
-              "recordings": 4,
-              "subject": "SWC_038"
-            },
-            {
-              "eligible_recordings": 1,
-              "passes": false,
-              "recordings": 4,
-              "subject": "SWC_043"
-            }
-          ],
-          "target_mode": "prior_side"
-        },
-        {
-          "all_subjects_pass": false,
-          "family": "fiber_tracts",
-          "min_eligible_recordings_per_subject": 1,
-          "n_subjects": 8,
-          "passing_subjects": 4,
-          "subject_rows": [
-            {
-              "eligible_recordings": 4,
-              "passes": true,
-              "recordings": 4,
-              "subject": "CSH_ZAD_019"
-            },
-            {
-              "eligible_recordings": 1,
-              "passes": false,
-              "recordings": 4,
-              "subject": "KS014"
-            },
-            {
-              "eligible_recordings": 1,
-              "passes": false,
-              "recordings": 4,
-              "subject": "MFD_06"
-            },
-            {
-              "eligible_recordings": 1,
-              "passes": false,
-              "recordings": 2,
-              "subject": "MFD_08"
-            },
-            {
-              "eligible_recordings": 1,
-              "passes": false,
-              "recordings": 4,
-              "subject": "NR_0019"
-            },
-            {
-              "eligible_recordings": 2,
-              "passes": true,
-              "recordings": 4,
-              "subject": "NYU-12"
-            },
-            {
-              "eligible_recordings": 2,
-              "passes": true,
-              "recordings": 4,
-              "subject": "SWC_038"
-            },
-            {
-              "eligible_recordings": 3,
-              "passes": true,
-              "recordings": 4,
-              "subject": "SWC_043"
-            }
-          ],
-          "target_mode": "prior_side"
-        },
-        {
-          "all_subjects_pass": false,
-          "family": "hippocampal_formation",
-          "min_eligible_recordings_per_subject": 1,
-          "n_subjects": 8,
-          "passing_subjects": 4,
-          "subject_rows": [
-            {
-              "eligible_recordings": 3,
-              "passes": true,
-              "recordings": 4,
-              "subject": "CSH_ZAD_019"
-            },
-            {
-              "eligible_recordings": 2,
-              "passes": true,
-              "recordings": 4,
-              "subject": "KS014"
-            },
-            {
-              "eligible_recordings": 3,
-              "passes": true,
-              "recordings": 4,
-              "subject": "MFD_06"
-            },
-            {
-              "eligible_recordings": 1,
-              "passes": false,
-              "recordings": 2,
-              "subject": "MFD_08"
-            },
-            {
-              "eligible_recordings": 1,
-              "passes": false,
-              "recordings": 4,
-              "subject": "NR_0019"
-            },
-            {
-              "eligible_recordings": 3,
-              "passes": true,
-              "recordings": 4,
-              "subject": "NYU-12"
-            },
-            {
-              "eligible_recordings": 1,
-              "passes": false,
-              "recordings": 4,
-              "subject": "SWC_038"
-            },
-            {
-              "eligible_recordings": 1,
-              "passes": false,
-              "recordings": 4,
-              "subject": "SWC_043"
-            }
-          ],
-          "target_mode": "feedback"
-        },
-        {
-          "all_subjects_pass": false,
-          "family": "fiber_tracts",
-          "min_eligible_recordings_per_subject": 1,
-          "n_subjects": 8,
-          "passing_subjects": 4,
-          "subject_rows": [
-            {
-              "eligible_recordings": 4,
-              "passes": true,
-              "recordings": 4,
-              "subject": "CSH_ZAD_019"
-            },
-            {
-              "eligible_recordings": 1,
-              "passes": false,
-              "recordings": 4,
-              "subject": "KS014"
-            },
-            {
-              "eligible_recordings": 1,
-              "passes": false,
-              "recordings": 4,
-              "subject": "MFD_06"
-            },
-            {
-              "eligible_recordings": 1,
-              "passes": false,
-              "recordings": 2,
-              "subject": "MFD_08"
-            },
-            {
-              "eligible_recordings": 1,
-              "passes": false,
-              "recordings": 4,
-              "subject": "NR_0019"
-            },
-            {
-              "eligible_recordings": 2,
-              "passes": true,
-              "recordings": 4,
-              "subject": "NYU-12"
-            },
-            {
-              "eligible_recordings": 2,
-              "passes": true,
-              "recordings": 4,
-              "subject": "SWC_038"
-            },
-            {
-              "eligible_recordings": 3,
-              "passes": true,
-              "recordings": 4,
-              "subject": "SWC_043"
-            }
-          ],
-          "target_mode": "feedback"
-        },
-        {
-          "all_subjects_pass": false,
-          "family": "hippocampal_formation",
-          "min_eligible_recordings_per_subject": 1,
-          "n_subjects": 8,
-          "passing_subjects": 4,
-          "subject_rows": [
-            {
-              "eligible_recordings": 3,
-              "passes": true,
-              "recordings": 4,
-              "subject": "CSH_ZAD_019"
-            },
-            {
-              "eligible_recordings": 2,
-              "passes": true,
-              "recordings": 4,
-              "subject": "KS014"
-            },
-            {
-              "eligible_recordings": 3,
-              "passes": true,
-              "recordings": 4,
-              "subject": "MFD_06"
-            },
-            {
-              "eligible_recordings": 1,
-              "passes": false,
-              "recordings": 2,
-              "subject": "MFD_08"
-            },
-            {
-              "eligible_recordings": 1,
-              "passes": false,
-              "recordings": 4,
-              "subject": "NR_0019"
-            },
-            {
-              "eligible_recordings": 3,
-              "passes": true,
-              "recordings": 4,
-              "subject": "NYU-12"
-            },
-            {
-              "eligible_recordings": 1,
-              "passes": false,
-              "recordings": 4,
-              "subject": "SWC_038"
-            },
-            {
-              "eligible_recordings": 1,
-              "passes": false,
-              "recordings": 4,
-              "subject": "SWC_043"
+              "recordings": 3,
+              "subject": "ZFM-01577"
             }
           ],
           "target_mode": "choice"
@@ -3347,9 +4230,15 @@
           "all_subjects_pass": false,
           "family": "fiber_tracts",
           "min_eligible_recordings_per_subject": 1,
-          "n_subjects": 8,
-          "passing_subjects": 4,
+          "n_subjects": 10,
+          "passing_subjects": 5,
           "subject_rows": [
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "CSHL045"
+            },
             {
               "eligible_recordings": 4,
               "passes": true,
@@ -3397,6 +4286,782 @@
               "passes": true,
               "recordings": 4,
               "subject": "SWC_043"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 3,
+              "subject": "ZFM-01577"
+            }
+          ],
+          "target_mode": "stimulus_side"
+        },
+        {
+          "all_subjects_pass": false,
+          "family": "fiber_tracts",
+          "min_eligible_recordings_per_subject": 1,
+          "n_subjects": 10,
+          "passing_subjects": 5,
+          "subject_rows": [
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "CSHL045"
+            },
+            {
+              "eligible_recordings": 4,
+              "passes": true,
+              "recordings": 4,
+              "subject": "CSH_ZAD_019"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "KS014"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "MFD_06"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 2,
+              "subject": "MFD_08"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "NR_0019"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 4,
+              "subject": "NYU-12"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 4,
+              "subject": "SWC_038"
+            },
+            {
+              "eligible_recordings": 3,
+              "passes": true,
+              "recordings": 4,
+              "subject": "SWC_043"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 3,
+              "subject": "ZFM-01577"
+            }
+          ],
+          "target_mode": "prior_side"
+        },
+        {
+          "all_subjects_pass": false,
+          "family": "fiber_tracts",
+          "min_eligible_recordings_per_subject": 1,
+          "n_subjects": 10,
+          "passing_subjects": 5,
+          "subject_rows": [
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "CSHL045"
+            },
+            {
+              "eligible_recordings": 4,
+              "passes": true,
+              "recordings": 4,
+              "subject": "CSH_ZAD_019"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "KS014"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "MFD_06"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 2,
+              "subject": "MFD_08"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "NR_0019"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 4,
+              "subject": "NYU-12"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 4,
+              "subject": "SWC_038"
+            },
+            {
+              "eligible_recordings": 3,
+              "passes": true,
+              "recordings": 4,
+              "subject": "SWC_043"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 3,
+              "subject": "ZFM-01577"
+            }
+          ],
+          "target_mode": "feedback"
+        },
+        {
+          "all_subjects_pass": false,
+          "family": "fiber_tracts",
+          "min_eligible_recordings_per_subject": 1,
+          "n_subjects": 10,
+          "passing_subjects": 5,
+          "subject_rows": [
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "CSHL045"
+            },
+            {
+              "eligible_recordings": 4,
+              "passes": true,
+              "recordings": 4,
+              "subject": "CSH_ZAD_019"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "KS014"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "MFD_06"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 2,
+              "subject": "MFD_08"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "NR_0019"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 4,
+              "subject": "NYU-12"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 4,
+              "subject": "SWC_038"
+            },
+            {
+              "eligible_recordings": 3,
+              "passes": true,
+              "recordings": 4,
+              "subject": "SWC_043"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 3,
+              "subject": "ZFM-01577"
+            }
+          ],
+          "target_mode": "choice"
+        },
+        {
+          "all_subjects_pass": false,
+          "family": "midbrain",
+          "min_eligible_recordings_per_subject": 0,
+          "n_subjects": 10,
+          "passing_subjects": 5,
+          "subject_rows": [
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "CSHL045"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "CSH_ZAD_019"
+            },
+            {
+              "eligible_recordings": 4,
+              "passes": true,
+              "recordings": 4,
+              "subject": "KS014"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 4,
+              "subject": "MFD_06"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 2,
+              "subject": "MFD_08"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 4,
+              "subject": "NR_0019"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 4,
+              "subject": "NYU-12"
+            },
+            {
+              "eligible_recordings": 0,
+              "passes": false,
+              "recordings": 4,
+              "subject": "SWC_038"
+            },
+            {
+              "eligible_recordings": 0,
+              "passes": false,
+              "recordings": 4,
+              "subject": "SWC_043"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 3,
+              "subject": "ZFM-01577"
+            }
+          ],
+          "target_mode": "stimulus_side"
+        },
+        {
+          "all_subjects_pass": false,
+          "family": "hippocampal_formation",
+          "min_eligible_recordings_per_subject": 0,
+          "n_subjects": 10,
+          "passing_subjects": 5,
+          "subject_rows": [
+            {
+              "eligible_recordings": 0,
+              "passes": false,
+              "recordings": 4,
+              "subject": "CSHL045"
+            },
+            {
+              "eligible_recordings": 3,
+              "passes": true,
+              "recordings": 4,
+              "subject": "CSH_ZAD_019"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 4,
+              "subject": "KS014"
+            },
+            {
+              "eligible_recordings": 3,
+              "passes": true,
+              "recordings": 4,
+              "subject": "MFD_06"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 2,
+              "subject": "MFD_08"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "NR_0019"
+            },
+            {
+              "eligible_recordings": 3,
+              "passes": true,
+              "recordings": 4,
+              "subject": "NYU-12"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "SWC_038"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "SWC_043"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 3,
+              "subject": "ZFM-01577"
+            }
+          ],
+          "target_mode": "stimulus_side"
+        },
+        {
+          "all_subjects_pass": false,
+          "family": "midbrain",
+          "min_eligible_recordings_per_subject": 0,
+          "n_subjects": 10,
+          "passing_subjects": 5,
+          "subject_rows": [
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "CSHL045"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "CSH_ZAD_019"
+            },
+            {
+              "eligible_recordings": 4,
+              "passes": true,
+              "recordings": 4,
+              "subject": "KS014"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 4,
+              "subject": "MFD_06"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 2,
+              "subject": "MFD_08"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 4,
+              "subject": "NR_0019"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 4,
+              "subject": "NYU-12"
+            },
+            {
+              "eligible_recordings": 0,
+              "passes": false,
+              "recordings": 4,
+              "subject": "SWC_038"
+            },
+            {
+              "eligible_recordings": 0,
+              "passes": false,
+              "recordings": 4,
+              "subject": "SWC_043"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 3,
+              "subject": "ZFM-01577"
+            }
+          ],
+          "target_mode": "prior_side"
+        },
+        {
+          "all_subjects_pass": false,
+          "family": "hippocampal_formation",
+          "min_eligible_recordings_per_subject": 0,
+          "n_subjects": 10,
+          "passing_subjects": 5,
+          "subject_rows": [
+            {
+              "eligible_recordings": 0,
+              "passes": false,
+              "recordings": 4,
+              "subject": "CSHL045"
+            },
+            {
+              "eligible_recordings": 3,
+              "passes": true,
+              "recordings": 4,
+              "subject": "CSH_ZAD_019"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 4,
+              "subject": "KS014"
+            },
+            {
+              "eligible_recordings": 3,
+              "passes": true,
+              "recordings": 4,
+              "subject": "MFD_06"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 2,
+              "subject": "MFD_08"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "NR_0019"
+            },
+            {
+              "eligible_recordings": 3,
+              "passes": true,
+              "recordings": 4,
+              "subject": "NYU-12"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "SWC_038"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "SWC_043"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 3,
+              "subject": "ZFM-01577"
+            }
+          ],
+          "target_mode": "prior_side"
+        },
+        {
+          "all_subjects_pass": false,
+          "family": "midbrain",
+          "min_eligible_recordings_per_subject": 0,
+          "n_subjects": 10,
+          "passing_subjects": 5,
+          "subject_rows": [
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "CSHL045"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "CSH_ZAD_019"
+            },
+            {
+              "eligible_recordings": 4,
+              "passes": true,
+              "recordings": 4,
+              "subject": "KS014"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 4,
+              "subject": "MFD_06"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 2,
+              "subject": "MFD_08"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 4,
+              "subject": "NR_0019"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 4,
+              "subject": "NYU-12"
+            },
+            {
+              "eligible_recordings": 0,
+              "passes": false,
+              "recordings": 4,
+              "subject": "SWC_038"
+            },
+            {
+              "eligible_recordings": 0,
+              "passes": false,
+              "recordings": 4,
+              "subject": "SWC_043"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 3,
+              "subject": "ZFM-01577"
+            }
+          ],
+          "target_mode": "feedback"
+        },
+        {
+          "all_subjects_pass": false,
+          "family": "hippocampal_formation",
+          "min_eligible_recordings_per_subject": 0,
+          "n_subjects": 10,
+          "passing_subjects": 5,
+          "subject_rows": [
+            {
+              "eligible_recordings": 0,
+              "passes": false,
+              "recordings": 4,
+              "subject": "CSHL045"
+            },
+            {
+              "eligible_recordings": 3,
+              "passes": true,
+              "recordings": 4,
+              "subject": "CSH_ZAD_019"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 4,
+              "subject": "KS014"
+            },
+            {
+              "eligible_recordings": 3,
+              "passes": true,
+              "recordings": 4,
+              "subject": "MFD_06"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 2,
+              "subject": "MFD_08"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "NR_0019"
+            },
+            {
+              "eligible_recordings": 3,
+              "passes": true,
+              "recordings": 4,
+              "subject": "NYU-12"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "SWC_038"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "SWC_043"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 3,
+              "subject": "ZFM-01577"
+            }
+          ],
+          "target_mode": "feedback"
+        },
+        {
+          "all_subjects_pass": false,
+          "family": "midbrain",
+          "min_eligible_recordings_per_subject": 0,
+          "n_subjects": 10,
+          "passing_subjects": 5,
+          "subject_rows": [
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "CSHL045"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "CSH_ZAD_019"
+            },
+            {
+              "eligible_recordings": 4,
+              "passes": true,
+              "recordings": 4,
+              "subject": "KS014"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 4,
+              "subject": "MFD_06"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 2,
+              "subject": "MFD_08"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 4,
+              "subject": "NR_0019"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 4,
+              "subject": "NYU-12"
+            },
+            {
+              "eligible_recordings": 0,
+              "passes": false,
+              "recordings": 4,
+              "subject": "SWC_038"
+            },
+            {
+              "eligible_recordings": 0,
+              "passes": false,
+              "recordings": 4,
+              "subject": "SWC_043"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 3,
+              "subject": "ZFM-01577"
+            }
+          ],
+          "target_mode": "choice"
+        },
+        {
+          "all_subjects_pass": false,
+          "family": "hippocampal_formation",
+          "min_eligible_recordings_per_subject": 0,
+          "n_subjects": 10,
+          "passing_subjects": 5,
+          "subject_rows": [
+            {
+              "eligible_recordings": 0,
+              "passes": false,
+              "recordings": 4,
+              "subject": "CSHL045"
+            },
+            {
+              "eligible_recordings": 3,
+              "passes": true,
+              "recordings": 4,
+              "subject": "CSH_ZAD_019"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 4,
+              "subject": "KS014"
+            },
+            {
+              "eligible_recordings": 3,
+              "passes": true,
+              "recordings": 4,
+              "subject": "MFD_06"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 2,
+              "subject": "MFD_08"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "NR_0019"
+            },
+            {
+              "eligible_recordings": 3,
+              "passes": true,
+              "recordings": 4,
+              "subject": "NYU-12"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "SWC_038"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 4,
+              "subject": "SWC_043"
+            },
+            {
+              "eligible_recordings": 2,
+              "passes": true,
+              "recordings": 3,
+              "subject": "ZFM-01577"
             }
           ],
           "target_mode": "choice"
@@ -3405,9 +5070,15 @@
           "all_subjects_pass": false,
           "family": "brainstem_interbrain",
           "min_eligible_recordings_per_subject": 0,
-          "n_subjects": 8,
+          "n_subjects": 10,
           "passing_subjects": 4,
           "subject_rows": [
+            {
+              "eligible_recordings": 0,
+              "passes": false,
+              "recordings": 4,
+              "subject": "CSHL045"
+            },
             {
               "eligible_recordings": 2,
               "passes": true,
@@ -3455,6 +5126,12 @@
               "passes": false,
               "recordings": 4,
               "subject": "SWC_043"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 3,
+              "subject": "ZFM-01577"
             }
           ],
           "target_mode": "stimulus_side"
@@ -3463,9 +5140,15 @@
           "all_subjects_pass": false,
           "family": "brainstem_interbrain",
           "min_eligible_recordings_per_subject": 0,
-          "n_subjects": 8,
+          "n_subjects": 10,
           "passing_subjects": 4,
           "subject_rows": [
+            {
+              "eligible_recordings": 0,
+              "passes": false,
+              "recordings": 4,
+              "subject": "CSHL045"
+            },
             {
               "eligible_recordings": 2,
               "passes": true,
@@ -3513,6 +5196,12 @@
               "passes": false,
               "recordings": 4,
               "subject": "SWC_043"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 3,
+              "subject": "ZFM-01577"
             }
           ],
           "target_mode": "prior_side"
@@ -3521,9 +5210,15 @@
           "all_subjects_pass": false,
           "family": "brainstem_interbrain",
           "min_eligible_recordings_per_subject": 0,
-          "n_subjects": 8,
+          "n_subjects": 10,
           "passing_subjects": 4,
           "subject_rows": [
+            {
+              "eligible_recordings": 0,
+              "passes": false,
+              "recordings": 4,
+              "subject": "CSHL045"
+            },
             {
               "eligible_recordings": 2,
               "passes": true,
@@ -3571,6 +5266,12 @@
               "passes": false,
               "recordings": 4,
               "subject": "SWC_043"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 3,
+              "subject": "ZFM-01577"
             }
           ],
           "target_mode": "feedback"
@@ -3579,9 +5280,15 @@
           "all_subjects_pass": false,
           "family": "brainstem_interbrain",
           "min_eligible_recordings_per_subject": 0,
-          "n_subjects": 8,
+          "n_subjects": 10,
           "passing_subjects": 4,
           "subject_rows": [
+            {
+              "eligible_recordings": 0,
+              "passes": false,
+              "recordings": 4,
+              "subject": "CSHL045"
+            },
             {
               "eligible_recordings": 2,
               "passes": true,
@@ -3629,6 +5336,12 @@
               "passes": false,
               "recordings": 4,
               "subject": "SWC_043"
+            },
+            {
+              "eligible_recordings": 1,
+              "passes": false,
+              "recordings": 3,
+              "subject": "ZFM-01577"
             }
           ],
           "target_mode": "choice"
@@ -3637,14 +5350,14 @@
     }
   ],
   "summary": {
-    "best_panel": "current_support80_hdf5",
+    "best_panel": "external_support80_projected_hdf5",
     "best_panel_passing_rows": 4,
-    "decision": "local_expansion_support_gap",
-    "n_candidate_panels": 1,
-    "n_local_recordings": 31,
-    "n_local_subjects": 9,
-    "n_new_candidate_panels": 0,
-    "n_panels": 3
+    "decision": "local_expanded_candidate_ready_for_model_free_gate",
+    "n_candidate_panels": 2,
+    "n_local_recordings": 38,
+    "n_local_subjects": 11,
+    "n_new_candidate_panels": 1,
+    "n_panels": 4
   },
   "thresholds": {
     "min_class_trials": 40,
@@ -3654,6 +5367,7 @@
   },
   "written_manifests": {
     "all_local_cached": "manifests/ibl_bwm_local_cached_all.json",
+    "external_support80_projected_hdf5": "manifests/ibl_bwm_local_cached_external_support80_projected_hdf5.json",
     "local_cached_min2_recordings_per_subject": "manifests/ibl_bwm_local_cached_min2_subjects.json"
   }
 }
