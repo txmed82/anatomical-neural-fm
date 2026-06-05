@@ -432,6 +432,16 @@ observations make up `0.547` of all observations. Decision: every future local
 promotion gate must report target-direction classes before global centered
 deltas are treated as evidence.
 
+Symmetric recording support audit:
+`docs/symmetric_recording_support_audit.md` converts that lesson into a ranking
+criterion: each recording contributes `min(target0_improved, target1_improved)`
+so one-sided wins cannot dominate. It ranks 280 current rows and finds zero
+symmetric recording candidates. The best rows still top out at `2/4`
+bidirectional recordings; the high-delta `choice` + `fiber_tracts` CSH row has
+mean symmetric support `0.543` but only `1/4` bidirectional recordings and
+three one-sided recordings. Decision: this symmetric ranking should be the
+first local promotion screen before any future GPU trigger.
+
 Recording-centered feature check:
 `docs/model_free_recording_bidirectional_gate_recording_centered.md` subtracts
 each recording's own mean parent-region feature vector before ridge fitting.

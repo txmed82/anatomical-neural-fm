@@ -130,6 +130,7 @@ MODEL_FREE_SOURCE_TARGET_PAIR_FAMILIES_RECORDING_CENTERED_FILE = (
 MODEL_FREE_GATE_BLOCKER_AUDIT_FILE = "docs/model_free_gate_blocker_audit.json"
 MODEL_FREE_RECORDING_SUPPORT_AUDIT_FILE = "docs/model_free_recording_support_audit.json"
 MODEL_FREE_RECORDING_DIRECTIONALITY_AUDIT_FILE = "docs/model_free_recording_directionality_audit.json"
+SYMMETRIC_RECORDING_SUPPORT_AUDIT_FILE = "docs/symmetric_recording_support_audit.json"
 MODEL_FREE_RECORDING_REPLICATION_AUDIT_FILE = "docs/model_free_recording_replication_audit.json"
 MODEL_FREE_FAMILY_BIDIRECTIONAL_RECORDING_CENTERED_FILE = (
     "docs/model_free_family_bidirectional_gate_recording_centered.json"
@@ -448,6 +449,7 @@ def render_markdown(
     model_free_gate_blocker_audit: dict | None = None,
     model_free_recording_support_audit: dict | None = None,
     model_free_recording_directionality_audit: dict | None = None,
+    symmetric_recording_support_audit: dict | None = None,
     model_free_recording_replication_audit: dict | None = None,
     model_free_family_bidirectional_recording_centered: dict | None = None,
     model_free_family_bidirectional_recording_centered_l2_1: dict | None = None,
@@ -1415,6 +1417,43 @@ def render_markdown(
             ),
             "",
         ]
+    if symmetric_recording_support_audit is not None:
+        summary = symmetric_recording_support_audit["summary"]
+        top = summary["top_rows"][:4]
+        lines += [
+            "## Symmetric Recording Support Audit",
+            "",
+            "`docs/symmetric_recording_support_audit.md` ranks candidate rows by",
+            "recording-local `min(target0_improved, target1_improved)` so one-sided",
+            "effects cannot dominate the promotion order.",
+            "",
+            f"- rows: `{summary['n_rows']}`",
+            f"- candidates: `{summary['n_candidates']}`",
+            f"- max bidirectional recordings: `{summary['max_bidirectional_recordings']}`",
+            f"- max bidirectional recording fraction: `{summary['max_bidirectional_fraction']:.3f}`",
+            f"- max mean symmetric support: `{summary['max_mean_symmetric_support']:.3f}`",
+            f"- decision: `{summary['decision']}`",
+            "",
+            "| report | context | bidir recs | mean sym | min sym | one-sided |",
+            "|---|---|---:|---:|---:|---:|",
+        ]
+        for row in top:
+            lines.append(
+                f"| {row['report']} | {row['context']} | "
+                f"{row['n_bidirectional_recordings']}/{row['n_recordings']} | "
+                f"{row['mean_symmetric_support']:.3f} | "
+                f"{row['min_symmetric_support']:.3f} | "
+                f"{row['n_target0_only'] + row['n_target1_only']} |"
+            )
+        lines += [
+            "",
+            (
+                "Decision: use this symmetric ranking before any future GPU trigger. "
+                "It currently finds no candidate; even the best rows top out at `2/4` "
+                "bidirectional recordings."
+            ),
+            "",
+        ]
     if model_free_recording_replication_audit is not None:
         summary = model_free_recording_replication_audit["summary"]
         top = model_free_recording_replication_audit["rows"][:4]
@@ -1694,6 +1733,7 @@ def main() -> int:
     model_free_recording_directionality_audit = read_mechanism_audit(
         REPO_ROOT / MODEL_FREE_RECORDING_DIRECTIONALITY_AUDIT_FILE
     )
+    symmetric_recording_support_audit = read_mechanism_audit(REPO_ROOT / SYMMETRIC_RECORDING_SUPPORT_AUDIT_FILE)
     model_free_recording_replication_audit = read_mechanism_audit(
         REPO_ROOT / MODEL_FREE_RECORDING_REPLICATION_AUDIT_FILE
     )
@@ -1757,6 +1797,7 @@ def main() -> int:
         model_free_gate_blocker_audit,
         model_free_recording_support_audit,
         model_free_recording_directionality_audit,
+        symmetric_recording_support_audit,
         model_free_recording_replication_audit,
         model_free_family_bidirectional_recording_centered,
         model_free_family_bidirectional_recording_centered_l2_1,
@@ -1841,6 +1882,7 @@ def main() -> int:
         "model_free_gate_blocker_audit": model_free_gate_blocker_audit,
         "model_free_recording_support_audit": model_free_recording_support_audit,
         "model_free_recording_directionality_audit": model_free_recording_directionality_audit,
+        "symmetric_recording_support_audit": symmetric_recording_support_audit,
         "model_free_recording_replication_audit": model_free_recording_replication_audit,
         "model_free_family_bidirectional_recording_centered": (
             model_free_family_bidirectional_recording_centered

@@ -504,6 +504,28 @@ target1-only, or neither across current model-free artifacts.
 
 Decision: one-sided recording effects are common enough that future candidate screens must report target-direction classes before any global delta can be considered a training trigger.
 
+## Symmetric Recording Support Audit
+
+`docs/symmetric_recording_support_audit.md` ranks candidate rows by
+recording-local `min(target0_improved, target1_improved)` so one-sided
+effects cannot dominate the promotion order.
+
+- rows: `280`
+- candidates: `0`
+- max bidirectional recordings: `2`
+- max bidirectional recording fraction: `0.500`
+- max mean symmetric support: `0.543`
+- decision: `no_symmetric_recording_candidate`
+
+| report | context | bidir recs | mean sym | min sym | one-sided |
+|---|---|---:|---:|---:|---:|
+| shared family target/control | choice / broad_named_anatomy / SWC_043 | 2/4 | 0.531 | 0.446 | 2 |
+| shared family target/control | feedback / broad_named_anatomy / NYU-12 | 2/4 | 0.487 | 0.347 | 1 |
+| family centered l2=100 | stimulus_side / KS014 | 2/4 | 0.485 | 0.358 | 1 |
+| family centered l2=1 | stimulus_side / KS014 | 2/4 | 0.485 | 0.362 | 1 |
+
+Decision: use this symmetric ranking before any future GPU trigger. It currently finds no candidate; even the best rows top out at `2/4` bidirectional recordings.
+
 ## Model-Free Recording Replication Audit
 
 `docs/model_free_recording_replication_audit.md` tests whether a

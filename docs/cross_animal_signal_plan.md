@@ -1503,6 +1503,15 @@ different one-sided recording effects. Next local screens should optimize or
 select on symmetric recording-level target support first, then inspect global
 AUC only as a secondary metric.
 
+Symmetric recording support audit:
+`scripts/audit_symmetric_recording_support.py` is the concrete replacement for
+global-delta ranking. It scores each row by the recording-level minimum of
+target0 and target1 support. This screen finds no current candidate across 280
+rows; max bidirectional support remains `2/4`. Use this audit as the first
+promotion table for future local experiments. A row with strong global delta
+but weak symmetric recording support should remain a diagnostic, not a training
+trigger.
+
 Recording-centered feature check:
 The gate also supports `--feature-mode recording_centered`, which subtracts
 each recording's mean parent-region feature vector before fitting. This reduces
