@@ -23,6 +23,7 @@ REGION_GRANULARITY="${REGION_GRANULARITY:-parent}"
 OUT_ROOT="${OUT_ROOT:-runs/lso_csh_zad_019_shared_parent_shuffle}"
 MANIFEST="${MANIFEST:-}"
 SAVE_DIAGNOSTICS="${SAVE_DIAGNOSTICS:-0}"
+FULL_EVAL_ON_BEST="${FULL_EVAL_ON_BEST:-0}"
 EVAL_PREDICTION_MAX_TRIALS="${EVAL_PREDICTION_MAX_TRIALS:-0}"
 
 COMMON_ARGS=(
@@ -48,6 +49,9 @@ if [ "$SAVE_DIAGNOSTICS" = "1" ]; then
     COMMON_ARGS+=(--eval-prediction-max-trials "$EVAL_PREDICTION_MAX_TRIALS")
   fi
 fi
+if [ "$FULL_EVAL_ON_BEST" = "1" ]; then
+  COMMON_ARGS+=(--full-eval-on-best)
+fi
 
 mkdir -p "$OUT_ROOT/holdout_CSH_ZAD_019"
 echo "subjects: CSH_ZAD_019"
@@ -57,6 +61,7 @@ echo "region_filter: $REGION_FILTER"
 echo "region_granularity: $REGION_GRANULARITY"
 echo "manifest: ${MANIFEST:-<all local recordings>}"
 echo "save_diagnostics: $SAVE_DIAGNOSTICS"
+echo "full_eval_on_best: $FULL_EVAL_ON_BEST"
 
 for seed in $SEEDS; do
   for arm in shared_baseline region_only region_shuffle; do

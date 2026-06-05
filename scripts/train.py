@@ -116,6 +116,9 @@ def parse_args():
     p.add_argument("--save-eval-predictions", action="store_true",
                    help="When a new best checkpoint is found, write deterministic held-out "
                         "trial predictions to eval_predictions.jsonl for model diagnostics.")
+    p.add_argument("--full-eval-on-best", action="store_true",
+                   help="When a new best checkpoint is found, score every held-out trial "
+                        "and log full_eval metrics for official deterministic summaries.")
     p.add_argument("--eval-prediction-max-trials", type=int, default=0,
                    help="Maximum eval trials to export when --save-eval-predictions is set. "
                         "0 exports all valid eval trials.")
@@ -640,24 +643,32 @@ def eval_prediction_rows(
     return rows
 
 
-def write_eval_predictions(
-    model,
-    ds,
-    eval_trial_list,
-    args,
-    allowed_region_acronyms: set[str] | None,
-    subject_by_rid: dict[str, str],
-    path: Path,
-) -> int:
-    rows = eval_prediction_rows(
-        model,
-        ds,
-        eval_trial_list,
-        args,
-        allowed_region_acronyms,
-        subject_by_rid,
-        max_trials=args.eval_prediction_max_trials,
-    )
+def metrics_from_prediction_rows(rows: list[dict], prefix: str = "full_eval") -> dict:
+    if not rows:
+        return {
+            f"{prefix}_loss": float("nan"),
+            f"{prefix}_acc": float("nan"),
+            f"{prefix}_auc": float("nan"),
+            f"{prefix}_n": 0,
+            f"{prefix}_n_pos": 0,
+            f"{prefix}_n_neg": 0,
+        }
+    probs = np.asarray([float(row["prob"]) for row in rows], dtype=np.float64)
+    tgts = np.asarray([int(row["target"]) for row in rows], dtype=np.int64)
+    bce = -float(np.mean(tgts * np.log(np.clip(probs, 1e-7, 1.0)) +
+                         (1 - tgts) * np.log(np.clip(1 - probs, 1e-7, 1.0))))
+    acc = float(np.mean((probs > 0.5) == tgts.astype(bool)))
+    return {
+        f"{prefix}_loss": bce,
+        f"{prefix}_acc": acc,
+        f"{prefix}_auc": _auc(probs, tgts),
+        f"{prefix}_n": int(len(tgts)),
+        f"{prefix}_n_pos": int((tgts == 1).sum()),
+        f"{prefix}_n_neg": int((tgts == 0).sum()),
+    }
+
+
+def write_eval_prediction_rows(rows: list[dict], path: Path) -> int:
     with path.open("w") as fh:
         for row in rows:
             fh.write(json.dumps(row) + "\n")
@@ -825,16 +836,26 @@ def main():
                 torch.save(ckpt, args.out_dir / "best.ckpt")
                 log({"event": "ckpt_best", "step": step, "eval_loss": best_eval,
                      "eval_acc": eval_metrics["eval_acc"], "eval_auc": eval_metrics["eval_auc"]})
-                if args.save_eval_predictions:
-                    n_pred_rows = write_eval_predictions(
+                prediction_rows = None
+                if args.save_eval_predictions or args.full_eval_on_best:
+                    prediction_rows = eval_prediction_rows(
                         model,
                         ds,
                         eval_trials,
                         args,
                         allowed_region_acronyms,
                         vocab["subject_by_rid"],
-                        args.out_dir / "eval_predictions.jsonl",
+                        max_trials=0 if args.full_eval_on_best else args.eval_prediction_max_trials,
                     )
+                if args.full_eval_on_best:
+                    assert prediction_rows is not None
+                    log({"event": "full_eval", "step": step, **metrics_from_prediction_rows(prediction_rows)})
+                if args.save_eval_predictions:
+                    assert prediction_rows is not None
+                    rows_to_write = prediction_rows
+                    if args.eval_prediction_max_trials > 0:
+                        rows_to_write = rows_to_write[:args.eval_prediction_max_trials]
+                    n_pred_rows = write_eval_prediction_rows(rows_to_write, args.out_dir / "eval_predictions.jsonl")
                     log({"event": "eval_predictions_saved", "step": step, "rows": n_pred_rows,
                          "path": str(args.out_dir / "eval_predictions.jsonl")})
                 if args.save_region_embeddings:

@@ -23,6 +23,7 @@ REGION_INCLUDE="${REGION_INCLUDE:-}"
 OUT_ROOT="${OUT_ROOT:-runs/lso_two_holdout_shared_parent_shuffle}"
 MANIFEST="${MANIFEST:-}"
 SAVE_DIAGNOSTICS="${SAVE_DIAGNOSTICS:-0}"
+FULL_EVAL_ON_BEST="${FULL_EVAL_ON_BEST:-0}"
 EVAL_PREDICTION_MAX_TRIALS="${EVAL_PREDICTION_MAX_TRIALS:-0}"
 
 COMMON_ARGS=(
@@ -50,6 +51,9 @@ if [ "$SAVE_DIAGNOSTICS" = "1" ]; then
     COMMON_ARGS+=(--eval-prediction-max-trials "$EVAL_PREDICTION_MAX_TRIALS")
   fi
 fi
+if [ "$FULL_EVAL_ON_BEST" = "1" ]; then
+  COMMON_ARGS+=(--full-eval-on-best)
+fi
 
 mkdir -p "$OUT_ROOT"
 write_incremental_summary() {
@@ -71,6 +75,7 @@ echo "region_granularity: $REGION_GRANULARITY"
 echo "region_include: ${REGION_INCLUDE:-<none>}"
 echo "manifest: ${MANIFEST:-<all local recordings>}"
 echo "save_diagnostics: $SAVE_DIAGNOSTICS"
+echo "full_eval_on_best: $FULL_EVAL_ON_BEST"
 
 for holdout in $SUBJECTS; do
   safe_holdout="$(printf '%s' "$holdout" | tr -c '[:alnum:]_.-' '_')"

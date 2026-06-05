@@ -8,6 +8,7 @@ from scripts.train import (
     build_inputs_for_window,
     build_trial_samples,
     manifest_recording_ids,
+    metrics_from_prediction_rows,
     parse_region_include,
     region_acronym_at_granularity,
     region_index_lookup,
@@ -200,3 +201,20 @@ def test_write_region_embeddings_exports_labeled_vectors(tmp_path) -> None:
     assert '"embedding": [1.0, 0.0]' in lines[0]
     assert '"region": "DG"' in lines[1]
     assert '"norm": 5.0' in lines[1]
+
+
+def test_metrics_from_prediction_rows_computes_full_eval_fields() -> None:
+    rows = [
+        {"target": 0, "prob": 0.1},
+        {"target": 0, "prob": 0.2},
+        {"target": 1, "prob": 0.8},
+        {"target": 1, "prob": 0.9},
+    ]
+
+    metrics = metrics_from_prediction_rows(rows)
+
+    assert metrics["full_eval_n"] == 4
+    assert metrics["full_eval_n_pos"] == 2
+    assert metrics["full_eval_n_neg"] == 2
+    assert metrics["full_eval_acc"] == 1.0
+    assert metrics["full_eval_auc"] == 1.0

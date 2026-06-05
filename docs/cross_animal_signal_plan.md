@@ -701,19 +701,25 @@ the actual CSH success: inspect per-recording model outputs, region-embedding
 behavior, and whether the apparent anatomical lift is tied to CSH-specific
 session/probe structure rather than a transferable anatomical code.
 
-Instrumentation gate completed: `scripts/train.py` can now export diagnostic
-artifacts when a new best checkpoint is selected:
+Instrumentation gates completed: `scripts/train.py` can now export diagnostic
+artifacts and official deterministic full held-out-trial metrics when a new
+best checkpoint is selected:
 
 - `--save-eval-predictions` writes held-out trial predictions to
   `eval_predictions.jsonl` with recording id, subject, target, logit, and
   probability.
 - `--save-region-embeddings` writes learned region embedding vectors to
   `region_embeddings.jsonl` with mapped region acronym and embedding norm.
+- `--full-eval-on-best` scores every valid held-out trial and logs a
+  `full_eval` event with loss, accuracy, AUC, trial count, and class counts.
 - `scripts/run_lso_csh_zad_019_shared_parent_shuffle_a100.sh` and
   `scripts/run_lso_two_holdout_shared_parent_shuffle_a100.sh` can enable these
-  via `SAVE_DIAGNOSTICS=1`.
+  via `SAVE_DIAGNOSTICS=1` and `FULL_EVAL_ON_BEST=1`.
 - `scripts/runpod_clone_a100.py` now force-adds only those diagnostic JSONL
   files from ignored `runs/` trees, not checkpoints.
+- `scripts/analyze_leave_subject_out.py` now reports a separate full
+  held-out-trial AUC table and aggregate delta table whenever either
+  `full_eval` log events or `eval_predictions.jsonl` artifacts are available.
 
 Local smoke check: `runs/instrumentation_smoke` verified the new exports on a
 one-step CPU run with five prediction rows and 79 region-embedding rows.
@@ -754,3 +760,16 @@ The next engineering step should be to promote deterministic full held-out-trial
 evaluation into the official sweep summary, then rerun only the canonical CSH
 control under that metric. Do not spend on any additional held-out animal until
 the canonical CSH result survives full-trial evaluation.
+
+Official full-trial summary gate completed locally: the analyzer can now recover
+full held-out-trial AUCs from the preserved diagnostic artifacts. For the partial
+CSH diagnostic output, it reports seed-0 full-trial deltas of +0.008 for
+`region_only` and +0.009 for `region_shuffle`, matching the artifact audit and
+showing no true-vs-shuffled separation.
+
+Next paid run, if any, should be only the canonical `CSH_ZAD_019` shared-parent
+control with `FULL_EVAL_ON_BEST=1`, three seeds, and no new held-out subjects.
+Use `SAVE_DIAGNOSTICS=0` unless embeddings or exported predictions are needed
+again, because `full_eval` log events are enough for the official summary and
+are cheaper to preserve. Stop immediately if the full-trial true-label arm does
+not beat both the shared null and the shuffled-label arm across seeds.

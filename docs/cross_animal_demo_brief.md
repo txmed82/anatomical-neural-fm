@@ -38,6 +38,8 @@ Parent-region slice plan: `docs/parent_region_slice_plan.md`.
 Fixed-slice run: `docs/lso_nyu12_parent_slice_results.md`.
 Success-mode audit: `docs/transfer_success_mode_audit.md`.
 CSH diagnostic output audit: `docs/csh_diagnostic_output_audit.md`.
+Recovered full-trial summary source:
+`docs/lso_csh_diagnostic_outputs_results.md`.
 
 ## Why This Is Real Enough To Demo
 
@@ -70,11 +72,12 @@ CSH diagnostic output audit: `docs/csh_diagnostic_output_audit.md`.
 - The stricter `SWC_038` fixed-slice run also failed: true labels were below
   the shared null in both completed seeds, while shuffled labels were positive
   in both.
-- A partial CSH diagnostic rerun exported full held-out predictions for seed 0.
-  On those full-trial artifacts, `region_only` and `region_shuffle` were nearly
-  indistinguishable relative to the exported baseline (+0.008 vs +0.009 AUC).
-  This weakens confidence that sampled eval summaries alone are sufficient for
-  a demo-grade claim.
+- A partial CSH diagnostic rerun exported full held-out predictions for seed 0,
+  and the analyzer now reports those full-trial metrics directly. On those
+  artifacts, `region_only` and `region_shuffle` were nearly indistinguishable
+  relative to the exported baseline (+0.008 vs +0.009 AUC). This weakens
+  confidence that sampled eval summaries alone are sufficient for a demo-grade
+  claim.
 - The failure-mode audit rules out several simple gates on their own:
   parent-region support, CSH-like composition, trial count, class balance, and
   raw parent-level stimulus contrast.
@@ -90,8 +93,9 @@ actual CSH model outputs or a redesign of the anatomical objective, not another
 matched-cache A100 sweep.
 
 Instrumentation is now available for that diagnostic: `scripts/train.py` can
-export held-out trial predictions and learned region embeddings, and the RunPod
-launcher will preserve those JSONL artifacts. The next work should move the
-claim onto deterministic full held-out-trial metrics, then rerun the canonical
-`CSH_ZAD_019` control only if the result doc reports those full-trial metrics
-directly.
+export held-out trial predictions, learned region embeddings, and official
+`full_eval` log metrics over every valid held-out trial. The analyzer now
+reports those deterministic full held-out-trial metrics directly. If spending
+again, rerun only the canonical `CSH_ZAD_019` control with
+`FULL_EVAL_ON_BEST=1`; do not broaden to more held-out animals unless CSH
+survives that full-trial true-vs-shuffled gate across seeds.

@@ -122,3 +122,33 @@ No `runs/lso_csh_diagnostic_outputs/summary.md`, `within_summary.md`, or
 `cross_summary.md` file was present when cleanup pushed artifacts. Treat this
 cloud result as incomplete/non-evidence even if the pod exit status is 0.
 
+
+## Recovered Full Held-Out-Trial Summary
+
+# Leave-subject-out analysis
+
+root: `runs/lso_csh_diagnostic_outputs`
+
+## Per-Holdout AUC and Delta vs Shared Null
+
+| holdout | arm | n_seeds | mean_AUC | mean_delta_vs_shared | seed_deltas |
+|---|---|---|---|---|---|
+
+## Aggregate Delta vs Shared Null
+
+| arm | n_pairs | mean_delta | positive_pairs |
+|---|---|---|---|
+
+## Full Held-Out-Trial AUC and Delta vs Shared Null
+
+| holdout | arm | n_seeds | mean_full_AUC | mean_full_delta_vs_shared | seed_full_deltas |
+|---|---|---|---|---|---|
+| CSH_ZAD_019 | region_only | 1 | 0.508 | +0.008 | +0.008 |
+| CSH_ZAD_019 | region_shuffle | 1 | 0.509 | +0.009 | +0.009 |
+
+## Full Held-Out-Trial Aggregate Delta vs Shared Null
+
+| arm | n_pairs | mean_full_delta | positive_pairs |
+|---|---|---|---|
+| region_only | 1 | +0.008 | 1/1 |
+| region_shuffle | 1 | +0.009 | 1/1 |
