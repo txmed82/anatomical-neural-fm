@@ -56,3 +56,27 @@ def test_build_launch_command_can_run_dependency_diagnostic() -> None:
     assert "--output-root runs/runpod_dependency_diagnostic" in joined
     assert "--result-doc docs/runpod_dependency_diagnostic.md" in joined
     assert "--name-prefix anfm-depdiag" in joined
+
+
+def test_build_launch_command_accepts_bounded_pilot_overrides() -> None:
+    command = build_launch_command(
+        PreflightConfig(
+            gpu_type="NVIDIA L4",
+            seeds="0",
+            max_steps=123,
+            eval_batches=7,
+            target_mode="choice",
+            container_disk_gb=40,
+            sweep_env=("SUBJECTS=CSH_ZAD_019", "SEEDS=0"),
+        )
+    )
+    joined = shell_join(command)
+
+    assert "--gpu-type 'NVIDIA L4'" in joined
+    assert "--container-disk-gb 40" in joined
+    assert "--max-steps 123" in joined
+    assert "--eval-batches 7" in joined
+    assert "--target-mode choice" in joined
+    assert "--seeds 0" in joined
+    assert "--sweep-env SUBJECTS=CSH_ZAD_019" in joined
+    assert "--sweep-env SEEDS=0" in joined

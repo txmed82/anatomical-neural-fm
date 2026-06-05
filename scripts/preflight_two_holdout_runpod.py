@@ -29,6 +29,11 @@ class PreflightConfig:
     sweep_script: str = "scripts/run_lso_two_holdout_shared_parent_shuffle_a100.sh"
     output_root: str = "runs/lso_nr0019_shared_parent_shuffle"
     result_doc: str = "docs/lso_nr0019_shared_parent_shuffle_results.md"
+    seeds: str = "0 1 2"
+    max_steps: int = 300
+    eval_batches: int = 20
+    target_mode: str = "stimulus_side"
+    container_disk_gb: int = 80
     dependency_diagnostic: bool = False
     sweep_env: tuple[str, ...] = ("SUBJECTS=NR_0019",)
 
@@ -55,17 +60,17 @@ def build_launch_command(config: PreflightConfig) -> list[str]:
         "--poll",
         "--datacenter", config.datacenter,
         "--gpu-type", config.gpu_type,
-        "--container-disk-gb", "80",
+        "--container-disk-gb", str(config.container_disk_gb),
         "--max-runtime-seconds", str(config.max_runtime_seconds),
         "--max-provision-seconds", str(config.max_provision_seconds),
         "--skip-verification",
         "--skip-cell-type-priors",
         "--build-recordings", "0",
-        "--max-steps", "300",
-        "--eval-batches", "20",
-        "--target-mode", "stimulus_side",
+        "--max-steps", str(config.max_steps),
+        "--eval-batches", str(config.eval_batches),
+        "--target-mode", config.target_mode,
         "--manifest-path", config.manifest_path,
-        "--seeds", "0 1 2",
+        "--seeds", config.seeds,
         "--sweep-script", config.sweep_script,
         "--output-root", output_root,
         "--result-doc", result_doc,
@@ -117,6 +122,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--name-prefix", default="anfm-nr0019-parent-compact")
     parser.add_argument("--output-root", default="runs/lso_nr0019_shared_parent_shuffle")
     parser.add_argument("--result-doc", default="docs/lso_nr0019_shared_parent_shuffle_results.md")
+    parser.add_argument("--seeds", default="0 1 2")
+    parser.add_argument("--max-steps", type=int, default=300)
+    parser.add_argument("--eval-batches", type=int, default=20)
+    parser.add_argument("--target-mode", default="stimulus_side")
+    parser.add_argument("--container-disk-gb", type=int, default=80)
     parser.add_argument("--sweep-env", action="append", default=None)
     parser.add_argument("--dependency-diagnostic", action="store_true")
     return parser.parse_args()
@@ -136,6 +146,11 @@ def main() -> int:
         name_prefix=args.name_prefix,
         output_root=args.output_root,
         result_doc=args.result_doc,
+        seeds=args.seeds,
+        max_steps=args.max_steps,
+        eval_batches=args.eval_batches,
+        target_mode=args.target_mode,
+        container_disk_gb=args.container_disk_gb,
         dependency_diagnostic=args.dependency_diagnostic,
         sweep_env=tuple(args.sweep_env or ["SUBJECTS=NR_0019"]),
     )
@@ -166,6 +181,10 @@ def main() -> int:
     print(f"sweep_script: {config.sweep_script}")
     print(f"output_root: {config.output_root}")
     print(f"result_doc: {config.result_doc}")
+    print(f"seeds: {config.seeds}")
+    print(f"max_steps: {config.max_steps}")
+    print(f"eval_batches: {config.eval_batches}")
+    print(f"target_mode: {config.target_mode}")
     print(f"sweep_env: {', '.join(config.sweep_env) or '<none>'}")
     print(f"dependency_diagnostic: {config.dependency_diagnostic}")
     print("")

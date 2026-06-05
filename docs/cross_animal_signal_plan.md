@@ -314,6 +314,15 @@ bounded test should use:
 - one CSH seed first, then broaden only if the centered true-vs-shuffle effect
   clears the existing anatomy-specific gate
 
+Executable preflight: run
+`uv run python scripts/preflight_recording_centered_pilot_runpod.py` before any
+paid launch. The preset is intentionally one seed on an L4, with
+`REGION_SHUFFLE_CONTROL=within_recording_shuffle`,
+`BEST_METRIC=full_eval_centered_auc`, `FULL_EVAL_ON_BEST=1`, and
+`SAVE_DIAGNOSTICS=1`. It prints the exact launch command plus the required
+post-run anatomy-specific gate and prediction failure-mode audit. Do not launch
+if it reports dirty git state, active pods, or estimated cost above `$8`.
+
 Conclusion: building all 48 public IBL recordings inside a throwaway A100
 container is the wrong next spend. The next attempt should either split the
 candidate manifest into smaller persisted build shards, use a persistent
