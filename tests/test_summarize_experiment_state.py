@@ -97,6 +97,102 @@ def test_render_markdown_includes_subject_stable_mechanism_section() -> None:
     assert "does not justify GPU training" in markdown
 
 
+def test_render_markdown_includes_composite_behavior_seed_veto() -> None:
+    markdown = render_markdown(
+        [],
+        [],
+        composite_behavior_target_gate={
+            "summary": {
+                "n_rows": 8,
+                "n_candidates": 1,
+                "n_positive_centered_delta": 4,
+                "max_bidirectional_recording_fraction": 0.75,
+                "decision": "composite_behavior_target_family_candidate",
+                "target_balances": {
+                    "post_error_fast_response_le_1": {
+                        "n_trials": 100,
+                        "eligible_recordings": 4,
+                        "n_recordings": 4,
+                    }
+                },
+                "top_rows": [
+                    {
+                        "target_mode": "post_error_fast_response_le_1",
+                        "family": "broad_named_anatomy",
+                        "holdout": "NR_0019",
+                        "decision": "candidate",
+                        "centered_delta_vs_shuffle": 0.004,
+                        "centered_delta_vs_total": 0.002,
+                        "target0_improved_vs_shuffle": 0.57,
+                        "target1_improved_vs_shuffle": 0.64,
+                        "n_bidirectional_recordings": 3,
+                        "n_recordings": 4,
+                    }
+                ],
+            }
+        },
+        composite_behavior_target_projected_gate={
+            "summary": {
+                "n_rows": 8,
+                "n_candidates": 2,
+                "n_positive_centered_delta": 5,
+                "max_bidirectional_recording_fraction": 0.75,
+                "decision": "composite_behavior_target_family_candidate",
+                "target_balances": {
+                    "post_error_fast_response_le_1": {
+                        "n_trials": 120,
+                        "eligible_recordings": 4,
+                        "n_recordings": 4,
+                    }
+                },
+                "top_rows": [
+                    {
+                        "target_mode": "post_error_fast_response_le_1",
+                        "family": "broad_named_anatomy",
+                        "holdout": "CSHL045",
+                        "decision": "candidate",
+                        "centered_delta_vs_shuffle": 0.068,
+                        "centered_delta_vs_total": 0.039,
+                        "target0_improved_vs_shuffle": 0.62,
+                        "target1_improved_vs_shuffle": 0.84,
+                        "n_bidirectional_recordings": 3,
+                        "n_recordings": 4,
+                    }
+                ],
+            }
+        },
+        composite_behavior_target_seed_sensitivity={
+            "summary": {
+                "n_cases": 2,
+                "n_robust_composite_behavior_seed_candidates": 0,
+                "max_positive_shuffle_delta_fraction": 1.0,
+                "max_candidate_seed_fraction": 0.8,
+                "decision": "no_composite_behavior_seed_candidate",
+            },
+            "rows": [
+                {
+                    "target_mode": "post_error_fast_response_le_1",
+                    "family": "broad_named_anatomy",
+                    "holdout": "CSHL045",
+                    "n_positive_shuffle_delta_seeds": 5,
+                    "n_candidate_seeds": 3,
+                    "n_seeds": 5,
+                    "mean_centered_delta_vs_shuffle": 0.062,
+                    "mean_centered_delta_vs_total": 0.039,
+                    "mean_target0": 0.63,
+                    "mean_target1": 0.76,
+                    "min_bidirectional_recordings": 2,
+                    "max_bidirectional_recordings": 3,
+                }
+            ],
+        },
+    )
+
+    assert "Composite Behavior Seed Sensitivity" in markdown
+    assert "do not train" in markdown.lower()
+    assert "strongest current near miss" in markdown
+
+
 def test_render_markdown_includes_extreme_quantile_seed_veto() -> None:
     markdown = render_markdown(
         [],

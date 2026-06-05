@@ -116,6 +116,9 @@ SIGNED_WHEEL_DIRECTION_FAMILY_GATE_FILE = "docs/signed_wheel_direction_family_ga
 SIGNED_WHEEL_DIRECTION_PROJECTED_GATE_FILE = "docs/signed_wheel_direction_family_gate_projected_hdf5.json"
 LATERALIZED_FAMILY_TARGET_GATE_FILE = "docs/lateralized_family_target_gate.json"
 LATERALIZED_FAMILY_TARGET_PROJECTED_GATE_FILE = "docs/lateralized_family_target_gate_projected_hdf5.json"
+COMPOSITE_BEHAVIOR_TARGET_GATE_FILE = "docs/composite_behavior_target_family_gate.json"
+COMPOSITE_BEHAVIOR_TARGET_PROJECTED_GATE_FILE = "docs/composite_behavior_target_family_gate_projected_hdf5.json"
+COMPOSITE_BEHAVIOR_TARGET_SEED_SENSITIVITY_FILE = "docs/composite_behavior_target_seed_sensitivity.json"
 LOW_CONTRAST_CHOICE_FAMILY_GATE_FILE = "docs/low_contrast_choice_family_gate.json"
 LOW_CONTRAST_CHOICE_PROJECTED_GATE_FILE = "docs/low_contrast_choice_family_gate_projected_hdf5.json"
 LOW_CONTRAST_CHOICE_SEED_SENSITIVITY_FILE = "docs/low_contrast_choice_seed_sensitivity.json"
@@ -303,6 +306,45 @@ def compact_pair_seed_payload(payload: dict | None) -> dict | None:
         "summary": payload.get("summary"),
         "rows": rows,
         "robust_region_pair_seed_candidates": payload.get("robust_region_pair_seed_candidates", []),
+    }
+
+
+def compact_family_gate_payload(payload: dict | None) -> dict | None:
+    if payload is None:
+        return None
+    summary = dict(payload.get("summary", {}))
+    if "top_rows" in summary:
+        summary["top_rows"] = [
+            {key: value for key, value in row.items() if key != "recording_target_rows"}
+            for row in summary["top_rows"]
+        ]
+    return {
+        "manifest": payload.get("manifest"),
+        "targets": payload.get("targets"),
+        "families": payload.get("families"),
+        "feature_mode": payload.get("feature_mode"),
+        "region_granularity": payload.get("region_granularity"),
+        "thresholds": payload.get("thresholds"),
+        "summary": summary,
+    }
+
+
+def compact_seed_sensitivity_payload(payload: dict | None, robust_key: str) -> dict | None:
+    if payload is None:
+        return None
+    rows = []
+    for row in payload.get("rows", []):
+        rows.append({
+            key: value
+            for key, value in row.items()
+            if key != "seed_rows"
+        })
+    return {
+        "cases": payload.get("cases"),
+        "thresholds": payload.get("thresholds"),
+        "summary": payload.get("summary"),
+        "rows": rows,
+        robust_key: payload.get(robust_key, []),
     }
 
 
@@ -534,6 +576,9 @@ def render_markdown(
     signed_wheel_direction_projected_gate: dict | None = None,
     lateralized_family_target_gate: dict | None = None,
     lateralized_family_target_projected_gate: dict | None = None,
+    composite_behavior_target_gate: dict | None = None,
+    composite_behavior_target_projected_gate: dict | None = None,
+    composite_behavior_target_seed_sensitivity: dict | None = None,
     low_contrast_choice_family_gate: dict | None = None,
     low_contrast_choice_projected_gate: dict | None = None,
     low_contrast_choice_seed_sensitivity: dict | None = None,
@@ -1738,6 +1783,137 @@ def render_markdown(
             (
                 "Decision: the projected panel also has zero lateralized-family candidates. "
                 "This closes simple hemisphere-split family counts as the rescue path."
+            ),
+            "",
+        ]
+    if composite_behavior_target_gate is not None:
+        summary = composite_behavior_target_gate["summary"]
+        balances = summary["target_balances"]
+        top = summary["top_rows"][:8]
+        lines += [
+            "## Composite Behavior Target Gate",
+            "",
+            "`docs/composite_behavior_target_family_gate.md` runs a bounded local",
+            "screen over prospective composite behavior rules: low contrast, prior",
+            "context, previous-trial outcome, correctness, block-switch state, and",
+            "response-speed labels.",
+            "",
+            f"- rows: `{summary['n_rows']}`",
+            f"- candidates: `{summary['n_candidates']}`",
+            f"- positive centered-delta rows: `{summary['n_positive_centered_delta']}`",
+            f"- max bidirectional recording fraction: `{summary['max_bidirectional_recording_fraction']:.3f}`",
+            f"- decision: `{summary['decision']}`",
+            "",
+            "| target | trials | eligible recordings | recordings |",
+            "|---|---:|---:|---:|",
+        ]
+        for target, row in balances.items():
+            lines.append(
+                f"| {target} | {row['n_trials']} | {row['eligible_recordings']} | {row['n_recordings']} |"
+            )
+        lines += [
+            "",
+            "| target | family | holdout | decision | delta shuffle | delta total | targets | bidir recs |",
+            "|---|---|---|---|---:|---:|---|---:|",
+        ]
+        for row in top:
+            lines.append(
+                f"| {row['target_mode']} | {row['family']} | {row['holdout']} | {row['decision']} | "
+                f"{row['centered_delta_vs_shuffle']:+.3f} | {row['centered_delta_vs_total']:+.3f} | "
+                f"{row['target0_improved_vs_shuffle']:.3f}/{row['target1_improved_vs_shuffle']:.3f} | "
+                f"{row['n_bidirectional_recordings']}/{row['n_recordings']} |"
+            )
+        lines += [
+            "",
+            (
+                "Decision before validation: the current panel has a post-error "
+                "fast-response broad-anatomy candidate, but the margin is small and "
+                "requires projected-manifest plus shuffle-seed validation before any GPU run."
+            ),
+            "",
+        ]
+    if composite_behavior_target_projected_gate is not None:
+        summary = composite_behavior_target_projected_gate["summary"]
+        balances = summary["target_balances"]
+        top = summary["top_rows"][:8]
+        lines += [
+            "## Composite Behavior Projected Manifest Gate",
+            "",
+            "`docs/composite_behavior_target_family_gate_projected_hdf5.md` reruns",
+            "the bounded composite behavior target search on the projected local manifest.",
+            "",
+            f"- rows: `{summary['n_rows']}`",
+            f"- candidates: `{summary['n_candidates']}`",
+            f"- positive centered-delta rows: `{summary['n_positive_centered_delta']}`",
+            f"- max bidirectional recording fraction: `{summary['max_bidirectional_recording_fraction']:.3f}`",
+            f"- decision: `{summary['decision']}`",
+            "",
+            "| target | trials | eligible recordings | recordings |",
+            "|---|---:|---:|---:|",
+        ]
+        for target, row in balances.items():
+            lines.append(
+                f"| {target} | {row['n_trials']} | {row['eligible_recordings']} | {row['n_recordings']} |"
+            )
+        lines += [
+            "",
+            "| target | family | holdout | decision | delta shuffle | delta total | targets | bidir recs |",
+            "|---|---|---|---|---:|---:|---|---:|",
+        ]
+        for row in top:
+            lines.append(
+                f"| {row['target_mode']} | {row['family']} | {row['holdout']} | {row['decision']} | "
+                f"{row['centered_delta_vs_shuffle']:+.3f} | {row['centered_delta_vs_total']:+.3f} | "
+                f"{row['target0_improved_vs_shuffle']:.3f}/{row['target1_improved_vs_shuffle']:.3f} | "
+                f"{row['n_bidirectional_recordings']}/{row['n_recordings']} |"
+            )
+        lines += [
+            "",
+            (
+                "Decision before seed validation: projected support keeps the "
+                "`post_error_fast_response_le_1` + `broad_named_anatomy` branch alive, "
+                "with candidates on `CSHL045` and `NR_0019`, but it is still not a GPU trigger."
+            ),
+            "",
+        ]
+    if composite_behavior_target_seed_sensitivity is not None:
+        summary = composite_behavior_target_seed_sensitivity["summary"]
+        top = composite_behavior_target_seed_sensitivity["rows"][:4]
+        lines += [
+            "## Composite Behavior Seed Sensitivity",
+            "",
+            "`docs/composite_behavior_target_seed_sensitivity.md` reruns the projected",
+            "post-error fast-response broad-anatomy candidates across within-recording",
+            "shuffle seeds.",
+            "",
+            f"- cases: `{summary['n_cases']}`",
+            (
+                "- robust composite behavior seed candidates: "
+                f"`{summary['n_robust_composite_behavior_seed_candidates']}`"
+            ),
+            f"- max positive shuffle-delta fraction: `{summary['max_positive_shuffle_delta_fraction']:.3f}`",
+            f"- max candidate seed fraction: `{summary['max_candidate_seed_fraction']:.3f}`",
+            f"- decision: `{summary['decision']}`",
+            "",
+            "| target | family | holdout | positive seeds | candidate seeds | mean delta shuffle | mean delta total | mean targets | bidir range |",
+            "|---|---|---|---:|---:|---:|---:|---:|---:|",
+        ]
+        for row in top:
+            lines.append(
+                f"| {row['target_mode']} | {row['family']} | {row['holdout']} | "
+                f"{row['n_positive_shuffle_delta_seeds']}/{row['n_seeds']} | "
+                f"{row['n_candidate_seeds']}/{row['n_seeds']} | "
+                f"{row['mean_centered_delta_vs_shuffle']:+.4f} | "
+                f"{row['mean_centered_delta_vs_total']:+.4f} | "
+                f"{row['mean_target0']:.3f}/{row['mean_target1']:.3f} | "
+                f"{row['min_bidirectional_recordings']}-{row['max_bidirectional_recordings']} |"
+            )
+        lines += [
+            "",
+            (
+                "Decision: do not train. The post-error fast-response signal is the "
+                "strongest current near miss because both rows are positive in all seeds, "
+                "but neither remains a strict candidate in all seeds."
             ),
             "",
         ]
@@ -3448,6 +3624,13 @@ def main() -> int:
     lateralized_family_target_projected_gate = read_mechanism_audit(
         REPO_ROOT / LATERALIZED_FAMILY_TARGET_PROJECTED_GATE_FILE
     )
+    composite_behavior_target_gate = read_mechanism_audit(REPO_ROOT / COMPOSITE_BEHAVIOR_TARGET_GATE_FILE)
+    composite_behavior_target_projected_gate = read_mechanism_audit(
+        REPO_ROOT / COMPOSITE_BEHAVIOR_TARGET_PROJECTED_GATE_FILE
+    )
+    composite_behavior_target_seed_sensitivity = read_mechanism_audit(
+        REPO_ROOT / COMPOSITE_BEHAVIOR_TARGET_SEED_SENSITIVITY_FILE
+    )
     low_contrast_choice_family_gate = read_mechanism_audit(REPO_ROOT / LOW_CONTRAST_CHOICE_FAMILY_GATE_FILE)
     low_contrast_choice_projected_gate = read_mechanism_audit(REPO_ROOT / LOW_CONTRAST_CHOICE_PROJECTED_GATE_FILE)
     low_contrast_choice_seed_sensitivity = read_mechanism_audit(
@@ -3616,6 +3799,9 @@ def main() -> int:
         signed_wheel_direction_projected_gate,
         lateralized_family_target_gate,
         lateralized_family_target_projected_gate,
+        composite_behavior_target_gate,
+        composite_behavior_target_projected_gate,
+        composite_behavior_target_seed_sensitivity,
         low_contrast_choice_family_gate,
         low_contrast_choice_projected_gate,
         low_contrast_choice_seed_sensitivity,
@@ -3737,6 +3923,14 @@ def main() -> int:
         "signed_wheel_direction_projected_gate": signed_wheel_direction_projected_gate,
         "lateralized_family_target_gate": lateralized_family_target_gate,
         "lateralized_family_target_projected_gate": lateralized_family_target_projected_gate,
+        "composite_behavior_target_gate": compact_family_gate_payload(composite_behavior_target_gate),
+        "composite_behavior_target_projected_gate": compact_family_gate_payload(
+            composite_behavior_target_projected_gate
+        ),
+        "composite_behavior_target_seed_sensitivity": compact_seed_sensitivity_payload(
+            composite_behavior_target_seed_sensitivity,
+            "robust_composite_behavior_seed_candidates",
+        ),
         "low_contrast_choice_family_gate": low_contrast_choice_family_gate,
         "low_contrast_choice_projected_gate": low_contrast_choice_projected_gate,
         "low_contrast_choice_seed_sensitivity": low_contrast_choice_seed_sensitivity,

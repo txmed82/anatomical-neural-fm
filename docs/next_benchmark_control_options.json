@@ -2,6 +2,9 @@
   "artifacts": {
     "behavior_cache_preflight": "docs/behavior_cache_preflight.json",
     "cell_type_prior_target_control": "docs/cell_type_prior_target_control_gate.json",
+    "composite_behavior_target": "docs/composite_behavior_target_family_gate.json",
+    "composite_behavior_target_projected": "docs/composite_behavior_target_family_gate_projected_hdf5.json",
+    "composite_behavior_target_seed_sensitivity": "docs/composite_behavior_target_seed_sensitivity.json",
     "contextual_target_family": "docs/contextual_target_family_gate.json",
     "correct_low_contrast_choice_family": "docs/correct_low_contrast_choice_family_gate.json",
     "correct_low_contrast_choice_projected": "docs/correct_low_contrast_choice_family_gate_projected_hdf5.json",
@@ -80,6 +83,18 @@
       "next_action": "Do not launch GPU training from the projected support80 panel; its model-free family and feature-mode gates have no candidates. Redesign the target/control locally.",
       "priority": 1,
       "status": "recommended_next"
+    },
+    {
+      "evidence": [
+        "current-panel composite behavior target gate found 1 candidates across 224 rows and max bidir 0.750",
+        "projected-panel composite behavior target gate found 2 candidates across 256 rows and max bidir 0.750",
+        "composite behavior seed sensitivity found 0 robust candidates; max candidate seed fraction=0.800"
+      ],
+      "gpu_trigger": "none",
+      "name": "composite behavior target search",
+      "next_action": "Do not train: post-error fast-response broad-anatomy candidates fail strict seed stability.",
+      "priority": 80,
+      "status": "closed"
     },
     {
       "evidence": [
@@ -370,7 +385,7 @@
     }
   ],
   "summary": {
-    "closed_branches": 25,
+    "closed_branches": 26,
     "decision": "no_local_training_trigger",
     "gpu_training_trigger": "At least one local row on the proposed manifest must clear delta_vs_shuffle>=0, delta_vs_total>=0, target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75 before training.",
     "recommended_next": "new manifest with prospective bidirectional support"

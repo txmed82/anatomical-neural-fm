@@ -403,16 +403,16 @@ Decision: stricter manifest support alone does not rescue the signal. The clean 
 branches after the current local negative audits.
 
 - recommended next: `new manifest with prospective bidirectional support`
-- closed branches: `25`
+- closed branches: `26`
 - decision: `no_local_training_trigger`
 - GPU trigger: At least one local row on the proposed manifest must clear delta_vs_shuffle>=0, delta_vs_total>=0, target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75 before training.
 
 | priority | branch | status | next action |
 |---:|---|---|---|
 | 1 | new manifest with prospective bidirectional support | `recommended_next` | Do not launch GPU training from the projected support80 panel; its model-free family and feature-mode gates have no candidates. Redesign the target/control locally. |
+| 80 | composite behavior target search | `closed` | Do not train: post-error fast-response broad-anatomy candidates fail strict seed stability. |
 | 81 | lateralized family anatomy target | `closed` | Do not train: left/right family anatomy does not pass current or projected local gates. |
 | 82 | signed wheel-direction motor target | `closed` | Do not train: signed wheel-direction does not pass current or projected local gates. |
-| 83 | neutral-prior low-contrast choice target redesign | `closed` | Do not train: neutral-prior low-contrast choice fails projected-panel and seed-stability gates. |
 
 Decision: the current cached target, contextual target, wheel-derived target, reaction-dynamics target, cell-type prior target/control, waveform target/control, and meta-failure synthesis branches are closed as GPU triggers. The next aligned work is a prospectively supported benchmark/control redesign, still gated locally before any paid training.
 
@@ -619,6 +619,97 @@ the left/right family target gate on the projected local manifest.
 | stimulus_side | cortical_visual | MFD_06 | reject: target1 | +0.259 | +0.187 | 0.819/0.221 | 1/4 | 0.491/0.949 |
 
 Decision: the projected panel also has zero lateralized-family candidates. This closes simple hemisphere-split family counts as the rescue path.
+
+## Composite Behavior Target Gate
+
+`docs/composite_behavior_target_family_gate.md` runs a bounded local
+screen over prospective composite behavior rules: low contrast, prior
+context, previous-trial outcome, correctness, block-switch state, and
+response-speed labels.
+
+- rows: `224`
+- candidates: `1`
+- positive centered-delta rows: `102`
+- max bidirectional recording fraction: `0.750`
+- decision: `composite_behavior_target_family_candidate`
+
+| target | trials | eligible recordings | recordings |
+|---|---:|---:|---:|
+| biased_prior_choice_le_0.25 | 11832 | 28 | 28 |
+| correct_low_contrast_fast_response_le_0.25 | 10702 | 28 | 28 |
+| low_contrast_fast_response_le_0.25 | 13872 | 28 | 28 |
+| neutral_prior_fast_response_le_1 | 2520 | 28 | 28 |
+| post_error_choice_le_1 | 3250 | 20 | 28 |
+| post_error_fast_response_le_1 | 3286 | 24 | 28 |
+| post_error_low_contrast_choice_le_0.25 | 2553 | 12 | 28 |
+| prior_switch_choice_le_1 | 1714 | 2 | 28 |
+
+| target | family | holdout | decision | delta shuffle | delta total | targets | bidir recs |
+|---|---|---|---|---:|---:|---|---:|
+| post_error_fast_response_le_1 | broad_named_anatomy | NR_0019 | candidate | +0.004 | +0.002 | 0.570/0.622 | 3/4 |
+| neutral_prior_fast_response_le_1 | broad_named_anatomy | KS014 | reject: shuffle | -0.000 | -0.002 | 0.578/0.611 | 3/4 |
+| post_error_fast_response_le_1 | broad_named_anatomy | KS014 | reject: shuffle | -0.003 | -0.005 | 0.678/0.721 | 3/4 |
+| correct_low_contrast_fast_response_le_0.25 | broad_named_anatomy | KS014 | reject: shuffle | -0.005 | -0.005 | 0.713/0.726 | 3/4 |
+| low_contrast_fast_response_le_0.25 | broad_named_anatomy | KS014 | reject: shuffle | -0.008 | -0.008 | 0.711/0.674 | 3/4 |
+| correct_low_contrast_fast_response_le_0.25 | hippocampal_formation | KS014 | reject: total baseline | +0.680 | -0.000 | 0.930/0.535 | 2/4 |
+| low_contrast_fast_response_le_0.25 | hippocampal_formation | KS014 | reject: target0 | +0.644 | +0.006 | 0.501/0.928 | 2/4 |
+| post_error_fast_response_le_1 | hippocampal_formation | KS014 | reject: total baseline | +0.580 | -0.045 | 0.410/0.967 | 2/4 |
+
+Decision before validation: the current panel has a post-error fast-response broad-anatomy candidate, but the margin is small and requires projected-manifest plus shuffle-seed validation before any GPU run.
+
+## Composite Behavior Projected Manifest Gate
+
+`docs/composite_behavior_target_family_gate_projected_hdf5.md` reruns
+the bounded composite behavior target search on the projected local manifest.
+
+- rows: `256`
+- candidates: `2`
+- positive centered-delta rows: `119`
+- max bidirectional recording fraction: `0.750`
+- decision: `composite_behavior_target_family_candidate`
+
+| target | trials | eligible recordings | recordings |
+|---|---:|---:|---:|
+| biased_prior_choice_le_0.25 | 13842 | 31 | 31 |
+| correct_low_contrast_fast_response_le_0.25 | 12432 | 31 | 31 |
+| low_contrast_fast_response_le_0.25 | 16116 | 31 | 31 |
+| neutral_prior_fast_response_le_1 | 2790 | 31 | 31 |
+| post_error_choice_le_1 | 3768 | 24 | 31 |
+| post_error_fast_response_le_1 | 3820 | 28 | 31 |
+| post_error_low_contrast_choice_le_0.25 | 2953 | 15 | 31 |
+| prior_switch_choice_le_1 | 1962 | 4 | 31 |
+
+| target | family | holdout | decision | delta shuffle | delta total | targets | bidir recs |
+|---|---|---|---|---:|---:|---|---:|
+| post_error_fast_response_le_1 | broad_named_anatomy | CSHL045 | candidate | +0.068 | +0.039 | 0.618/0.835 | 3/4 |
+| post_error_fast_response_le_1 | broad_named_anatomy | NR_0019 | candidate | +0.004 | +0.002 | 0.570/0.645 | 3/4 |
+| neutral_prior_fast_response_le_1 | broad_named_anatomy | KS014 | reject: shuffle | -0.000 | -0.002 | 0.606/0.650 | 3/4 |
+| post_error_fast_response_le_1 | broad_named_anatomy | KS014 | reject: shuffle | -0.003 | -0.005 | 0.699/0.754 | 3/4 |
+| correct_low_contrast_fast_response_le_0.25 | broad_named_anatomy | KS014 | reject: shuffle | -0.005 | -0.005 | 0.708/0.725 | 3/4 |
+| low_contrast_fast_response_le_0.25 | broad_named_anatomy | KS014 | reject: shuffle | -0.008 | -0.008 | 0.710/0.678 | 3/4 |
+| low_contrast_fast_response_le_0.25 | hippocampal_formation | ZFM-01577 | reject: total baseline | +0.252 | -0.017 | 0.448/0.739 | 2/3 |
+| correct_low_contrast_fast_response_le_0.25 | hippocampal_formation | ZFM-01577 | reject: total baseline | +0.018 | -0.001 | 0.696/0.519 | 2/3 |
+
+Decision before seed validation: projected support keeps the `post_error_fast_response_le_1` + `broad_named_anatomy` branch alive, with candidates on `CSHL045` and `NR_0019`, but it is still not a GPU trigger.
+
+## Composite Behavior Seed Sensitivity
+
+`docs/composite_behavior_target_seed_sensitivity.md` reruns the projected
+post-error fast-response broad-anatomy candidates across within-recording
+shuffle seeds.
+
+- cases: `2`
+- robust composite behavior seed candidates: `0`
+- max positive shuffle-delta fraction: `1.000`
+- max candidate seed fraction: `0.800`
+- decision: `no_composite_behavior_seed_candidate`
+
+| target | family | holdout | positive seeds | candidate seeds | mean delta shuffle | mean delta total | mean targets | bidir range |
+|---|---|---|---:|---:|---:|---:|---:|---:|
+| post_error_fast_response_le_1 | broad_named_anatomy | CSHL045 | 5/5 | 3/5 | +0.0626 | +0.0386 | 0.632/0.756 | 2-3 |
+| post_error_fast_response_le_1 | broad_named_anatomy | NR_0019 | 5/5 | 4/5 | +0.0023 | +0.0024 | 0.576/0.640 | 2-4 |
+
+Decision: do not train. The post-error fast-response signal is the strongest current near miss because both rows are positive in all seeds, but neither remains a strict candidate in all seeds.
 
 ## Low-Contrast Choice Family Gate
 

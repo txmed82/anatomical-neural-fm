@@ -52,6 +52,9 @@ ARTIFACTS = {
     "signed_wheel_direction_projected": "docs/signed_wheel_direction_family_gate_projected_hdf5.json",
     "lateralized_family_target": "docs/lateralized_family_target_gate.json",
     "lateralized_family_target_projected": "docs/lateralized_family_target_gate_projected_hdf5.json",
+    "composite_behavior_target": "docs/composite_behavior_target_family_gate.json",
+    "composite_behavior_target_projected": "docs/composite_behavior_target_family_gate_projected_hdf5.json",
+    "composite_behavior_target_seed_sensitivity": "docs/composite_behavior_target_seed_sensitivity.json",
     "cell_type_prior_target_control": "docs/cell_type_prior_target_control_gate.json",
     "waveform_target_control": "docs/waveform_target_control_gate.json",
     "local_gate_meta_failures": "docs/local_gate_meta_failure_audit.json",
@@ -192,6 +195,19 @@ def build_report() -> dict:
     lateralized_projected = artifacts["lateralized_family_target_projected"]
     lateralized_projected_summary = (
         lateralized_projected.get("summary", {}) if lateralized_projected is not None else {}
+    )
+    composite_behavior = artifacts["composite_behavior_target"]
+    composite_behavior_summary = composite_behavior.get("summary", {}) if composite_behavior is not None else {}
+    composite_behavior_projected = artifacts["composite_behavior_target_projected"]
+    composite_behavior_projected_summary = (
+        composite_behavior_projected.get("summary", {}) if composite_behavior_projected is not None else {}
+    )
+    composite_behavior_seed = artifacts["composite_behavior_target_seed_sensitivity"]
+    composite_behavior_seed_summary = (
+        composite_behavior_seed.get("summary", {}) if composite_behavior_seed is not None else {}
+    )
+    composite_behavior_seed_robust = int(
+        composite_behavior_seed_summary.get("n_robust_composite_behavior_seed_candidates", 0) or 0
     )
     low_contrast = artifacts["low_contrast_choice_family"]
     low_contrast_summary = low_contrast.get("summary", {}) if low_contrast is not None else {}
@@ -395,6 +411,52 @@ def build_report() -> dict:
                 "At least one local wheel row must clear delta_vs_shuffle>=0, delta_vs_total>=0, "
                 "target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75."
             ),
+        ),
+        branch(
+            name="composite behavior target search",
+            status=(
+                "closed"
+                if composite_behavior_projected is not None and composite_behavior_seed is not None
+                else "secondary_after_new_target"
+            ),
+            priority=80 if composite_behavior_projected is not None else 3,
+            evidence=[
+                (
+                    "current-panel composite behavior target gate has not been run yet"
+                    if composite_behavior is None
+                    else (
+                        "current-panel composite behavior target gate found "
+                        f"{composite_behavior_summary.get('n_candidates', 'n/a')} candidates across "
+                        f"{composite_behavior_summary.get('n_rows', 'n/a')} rows and max bidir "
+                        f"{composite_behavior_summary.get('max_bidirectional_recording_fraction', 0.0):.3f}"
+                    )
+                ),
+                (
+                    "projected-panel composite behavior target gate has not been run yet"
+                    if composite_behavior_projected is None
+                    else (
+                        "projected-panel composite behavior target gate found "
+                        f"{composite_behavior_projected_summary.get('n_candidates', 'n/a')} candidates across "
+                        f"{composite_behavior_projected_summary.get('n_rows', 'n/a')} rows and max bidir "
+                        f"{composite_behavior_projected_summary.get('max_bidirectional_recording_fraction', 0.0):.3f}"
+                    )
+                ),
+                (
+                    "composite behavior seed sensitivity has not been run yet"
+                    if composite_behavior_seed is None
+                    else (
+                        "composite behavior seed sensitivity found "
+                        f"{composite_behavior_seed_robust} robust candidates; max candidate seed fraction="
+                        f"{composite_behavior_seed_summary.get('max_candidate_seed_fraction', 0.0):.3f}"
+                    )
+                ),
+            ],
+            next_action=(
+                "Do not train: post-error fast-response broad-anatomy candidates fail strict seed stability."
+                if composite_behavior_projected is not None and composite_behavior_seed is not None
+                else "Run the bounded composite behavior target gate on current and projected manifests."
+            ),
+            gpu_trigger="none",
         ),
         branch(
             name="lateralized family anatomy target",

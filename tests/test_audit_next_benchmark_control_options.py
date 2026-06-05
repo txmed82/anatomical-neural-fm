@@ -82,6 +82,7 @@ def test_render_markdown_lists_closed_branches() -> None:
     assert "behavior-inclusive cache rebuild" in markdown
     assert "wheel-derived target family gate" in markdown
     assert "lateralized family anatomy target" in markdown
+    assert "composite behavior target search" in markdown
     assert "signed wheel-direction motor target" in markdown
     assert "neutral-prior low-contrast choice target redesign" in markdown
     assert "prior-aligned choice target redesign" in markdown

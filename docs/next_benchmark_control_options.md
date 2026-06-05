@@ -3,13 +3,14 @@
 Ranks remaining no-spend branches after the current local audits. This is the planning gate before any new RunPod training.
 
 - recommended next: `new manifest with prospective bidirectional support`
-- closed branches: `25`
+- closed branches: `26`
 - decision: `no_local_training_trigger`
 - GPU trigger: At least one local row on the proposed manifest must clear delta_vs_shuffle>=0, delta_vs_total>=0, target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75 before training.
 
 | priority | branch | status | next action |
 |---:|---|---|---|
 | 1 | new manifest with prospective bidirectional support | `recommended_next` | Do not launch GPU training from the projected support80 panel; its model-free family and feature-mode gates have no candidates. Redesign the target/control locally. |
+| 80 | composite behavior target search | `closed` | Do not train: post-error fast-response broad-anatomy candidates fail strict seed stability. |
 | 81 | lateralized family anatomy target | `closed` | Do not train: left/right family anatomy does not pass current or projected local gates. |
 | 82 | signed wheel-direction motor target | `closed` | Do not train: signed wheel-direction does not pass current or projected local gates. |
 | 83 | neutral-prior low-contrast choice target redesign | `closed` | Do not train: neutral-prior low-contrast choice fails projected-panel and seed-stability gates. |
@@ -51,6 +52,12 @@ Ranks remaining no-spend branches after the current local audits. This is the pl
 - subject-stable shuffle-seed sensitivity found 0 robust candidates; max positive seed fraction=0.4
 - recording-subset replication selected zero stable validation rows
 - GPU trigger: At least one local row on the proposed manifest must clear delta_vs_shuffle>=0, delta_vs_total>=0, target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75 before training.
+
+### composite behavior target search
+- current-panel composite behavior target gate found 1 candidates across 224 rows and max bidir 0.750
+- projected-panel composite behavior target gate found 2 candidates across 256 rows and max bidir 0.750
+- composite behavior seed sensitivity found 0 robust candidates; max candidate seed fraction=0.800
+- GPU trigger: none
 
 ### lateralized family anatomy target
 - current-panel lateralized family gate found 0 candidates across 210 rows and max bidir 0.500
