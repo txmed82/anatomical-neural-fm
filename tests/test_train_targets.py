@@ -69,6 +69,7 @@ def test_region_label_shuffle_preserves_distribution_but_changes_assignments() -
         "region_idx_per_unit": np.arange(20, dtype=np.int64),
         "region_acronyms": np.array([f"R{i}" for i in range(20)]),
         "cell_type_region_acronyms": np.array([f"F{i}" for i in range(20)]),
+        "unit_recording_ids": np.array(["a"] * 10 + ["b"] * 10),
         "other": object(),
     }
 
@@ -78,6 +79,29 @@ def test_region_label_shuffle_preserves_distribution_but_changes_assignments() -
     assert sorted(shuffled["region_idx_per_unit"].tolist()) == list(range(20))
     assert sorted(shuffled["region_acronyms"].tolist()) == sorted(f"R{i}" for i in range(20))
     assert sorted(shuffled["cell_type_region_acronyms"].tolist()) == sorted(f"F{i}" for i in range(20))
+    assert shuffled["region_idx_per_unit"].tolist() != vocab["region_idx_per_unit"].tolist()
+
+
+def test_within_recording_region_label_shuffle_preserves_recording_distribution() -> None:
+    vocab = {
+        "region_idx_per_unit": np.array([0, 1, 2, 3, 10, 11, 12, 13], dtype=np.int64),
+        "region_acronyms": np.array(["A0", "A1", "A2", "A3", "B0", "B1", "B2", "B3"]),
+        "cell_type_region_acronyms": np.array(["FA0", "FA1", "FA2", "FA3", "FB0", "FB1", "FB2", "FB3"]),
+        "unit_recording_ids": np.array(["a", "a", "a", "a", "b", "b", "b", "b"]),
+    }
+
+    shuffled = apply_region_label_control(vocab, "within_recording_shuffle", seed=1)
+
+    for recording_id in ("a", "b"):
+        mask = vocab["unit_recording_ids"] == recording_id
+        assert sorted(shuffled["region_idx_per_unit"][mask].tolist()) == sorted(
+            vocab["region_idx_per_unit"][mask].tolist()
+        )
+        assert sorted(shuffled["region_acronyms"][mask].tolist()) == sorted(
+            vocab["region_acronyms"][mask].tolist()
+        )
+    assert sorted(shuffled["region_idx_per_unit"][:4].tolist()) == [0, 1, 2, 3]
+    assert sorted(shuffled["region_idx_per_unit"][4:].tolist()) == [10, 11, 12, 13]
     assert shuffled["region_idx_per_unit"].tolist() != vocab["region_idx_per_unit"].tolist()
 
 

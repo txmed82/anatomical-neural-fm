@@ -89,9 +89,12 @@ def parse_args():
     p.add_argument("--region-granularity", default="fine", choices=["fine", "parent", "grandparent"],
                    help="Granularity for region embeddings and region filtering. Cell-type priors "
                         "still use original fine acronyms with their existing ancestor fallback.")
-    p.add_argument("--region-label-control", default="none", choices=["none", "shuffle"],
-                   help="'shuffle' permutes region labels across unit tokens after vocab build, "
-                        "preserving the marginal region distribution but breaking anatomy-to-unit identity.")
+    p.add_argument("--region-label-control", default="none",
+                   choices=["none", "shuffle", "within_recording_shuffle"],
+                   help="'shuffle' permutes region labels across all unit tokens after vocab build. "
+                        "'within_recording_shuffle' permutes labels only within each recording, "
+                        "preserving each recording's region distribution while breaking "
+                        "anatomy-to-unit identity.")
     # Model
     p.add_argument("--dim", type=int, default=64)
     p.add_argument("--depth", type=int, default=2)
@@ -240,12 +243,14 @@ def build_vocab(ds: Dataset, region_granularity: str = "fine", recording_ids: li
     all_region_acronyms: list[str] = []
     all_region_labels: list[str] = []
     all_fine_region_acronyms: list[str] = []
+    unit_recording_ids: list[str] = []
     waveform_rows: list[np.ndarray] = []
     subject_by_rid: dict[str, str] = {}
     for rid, rec in recs.items():
         prefix = f"{rid}/"
         unit_ids = [prefix + u for u in rec.units.id.astype(str).tolist()]
         all_unit_ids.extend(unit_ids)
+        unit_recording_ids.extend([rid] * len(unit_ids))
         fine_acronyms = rec.units.region_acronym.astype(str).tolist()
         region_labels = map_region_acronyms(fine_acronyms, region_granularity)
         all_region_acronyms.extend(region_labels)
@@ -270,6 +275,7 @@ def build_vocab(ds: Dataset, region_granularity: str = "fine", recording_ids: li
         "region_idx_per_unit": region_idx_per_unit,
         "region_acronyms": np.array(all_region_acronyms),
         "cell_type_region_acronyms": np.array(all_fine_region_acronyms),
+        "unit_recording_ids": np.array(unit_recording_ids),
         "n_regions": len(unique_region_labels),
         "region_granularity": region_granularity,
         "waveform_features": waveform_features,
@@ -280,14 +286,21 @@ def build_vocab(ds: Dataset, region_granularity: str = "fine", recording_ids: li
 def apply_region_label_control(vocab: dict, control: str, seed: int) -> dict:
     if control == "none":
         return vocab
-    if control != "shuffle":
+    if control not in {"shuffle", "within_recording_shuffle"}:
         raise ValueError(f"unknown region label control {control!r}")
     rng = np.random.default_rng(seed + 17_003)
     shuffled = dict(vocab)
     region_idx = np.asarray(vocab["region_idx_per_unit"], dtype=np.int64).copy()
     region_acronyms = np.asarray(vocab["region_acronyms"]).copy()
     cell_type_acronyms = np.asarray(vocab["cell_type_region_acronyms"]).copy()
-    perm = rng.permutation(len(region_idx))
+    if control == "shuffle":
+        perm = rng.permutation(len(region_idx))
+    else:
+        unit_recording_ids = np.asarray(vocab["unit_recording_ids"])
+        perm = np.arange(len(region_idx))
+        for recording_id in sorted(set(unit_recording_ids.tolist())):
+            indices = np.flatnonzero(unit_recording_ids == recording_id)
+            perm[indices] = rng.permutation(indices)
     shuffled["region_idx_per_unit"] = region_idx[perm]
     shuffled["region_acronyms"] = region_acronyms[perm]
     shuffled["cell_type_region_acronyms"] = cell_type_acronyms[perm]

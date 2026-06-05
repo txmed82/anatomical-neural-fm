@@ -23,6 +23,7 @@ TARGET_MODE="${TARGET_MODE:-stimulus_side}"
 REGION_FILTER="${REGION_FILTER:-shared_regions}"
 REGION_GRANULARITY="${REGION_GRANULARITY:-parent}"
 REGION_INCLUDE="${REGION_INCLUDE:-}"
+REGION_SHUFFLE_CONTROL="${REGION_SHUFFLE_CONTROL:-shuffle}"
 OUT_ROOT="${OUT_ROOT:-runs/lso_two_holdout_shared_parent_shuffle}"
 MANIFEST="${MANIFEST:-}"
 SAVE_DIAGNOSTICS="${SAVE_DIAGNOSTICS:-0}"
@@ -92,6 +93,7 @@ echo "loss_mode: $LOSS_MODE"
 echo "region_filter: $REGION_FILTER"
 echo "region_granularity: $REGION_GRANULARITY"
 echo "region_include: ${REGION_INCLUDE:-<none>}"
+echo "region_shuffle_control: $REGION_SHUFFLE_CONTROL"
 echo "manifest: ${MANIFEST:-<all local recordings>}"
 echo "save_diagnostics: $SAVE_DIAGNOSTICS"
 echo "full_eval_on_best: $FULL_EVAL_ON_BEST"
@@ -118,7 +120,7 @@ for holdout in $SUBJECTS; do
           --holdout "$holdout" \
           --seed "$seed" \
           --arm region_only \
-          --region-label-control shuffle \
+          --region-label-control "$REGION_SHUFFLE_CONTROL" \
           --out-dir "$out"
       else
         uv run python -u scripts/train.py \

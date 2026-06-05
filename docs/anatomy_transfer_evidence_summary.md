@@ -72,3 +72,9 @@ target-balanced runs have small positive true-minus-shuffle centered separation,
 so this is not just a reporting artifact. Before another GPU run, redesign the
 negative control or region vocabulary so shuffled labels cannot create an
 easier target-correlated partition than true labels.
+
+Implemented next control: `within_recording_shuffle` preserves each recording's
+region-label distribution while breaking unit-to-region identity. This is the
+next bounded comparison to try because the previous global shuffle preserved
+only overall marginal label counts. Use it first on a one-seed CSH_ZAD_019 pilot
+before any broader spend.

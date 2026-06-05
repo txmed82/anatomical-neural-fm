@@ -1042,6 +1042,24 @@ region counts, and any per-recording target/region exposure structure. A
 credible next GPU run should only happen after this control audit explains why
 the current `region_shuffle` can win.
 
+Stricter shuffle-control implementation: `scripts/train.py` now supports
+`--region-label-control within_recording_shuffle`. Unlike the previous global
+`shuffle`, this permutes region labels only among units from the same recording,
+so every recording keeps its own region-label distribution while anatomy-to-unit
+identity is broken. The CSH/two-holdout wrappers expose this as
+`REGION_SHUFFLE_CONTROL=within_recording_shuffle` for the `region_shuffle` arm.
+Local CPU smoke `runs/within_recording_shuffle_smoke` completed and was removed
+after verifying the trainer logs `region_label_control:
+within_recording_shuffle` and full centered eval.
+
+Next bounded candidate: rerun only a one-seed CSH_ZAD_019 comparison with the
+original BCE objective, `BEST_METRIC=full_eval_centered_auc`, diagnostics on,
+and `REGION_SHUFFLE_CONTROL=within_recording_shuffle`. This tests whether the
+positive true-vs-shuffle centered AUC edge survives a stricter negative control
+that cannot change per-recording region marginals. Do not broaden to more
+subjects unless true labels beat this stricter shuffle control on centered AUC
+and paired true-probability direction.
+
 After cleanup, run:
 
 ```bash
