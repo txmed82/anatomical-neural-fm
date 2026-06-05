@@ -56,6 +56,7 @@ ARTIFACTS = {
     "composite_behavior_target_projected": "docs/composite_behavior_target_family_gate_projected_hdf5.json",
     "composite_behavior_target_seed_sensitivity": "docs/composite_behavior_target_seed_sensitivity.json",
     "composite_behavior_target_l2_seed_sensitivity": "docs/composite_behavior_target_l2_seed_sensitivity.json",
+    "composite_behavior_recording_failure": "docs/composite_behavior_recording_failure_decomposition.json",
     "cell_type_prior_target_control": "docs/cell_type_prior_target_control_gate.json",
     "waveform_target_control": "docs/waveform_target_control_gate.json",
     "local_gate_meta_failures": "docs/local_gate_meta_failure_audit.json",
@@ -210,6 +211,12 @@ def build_report() -> dict:
     composite_behavior_l2_seed = artifacts["composite_behavior_target_l2_seed_sensitivity"]
     composite_behavior_l2_seed_summary = (
         composite_behavior_l2_seed.get("summary", {}) if composite_behavior_l2_seed is not None else {}
+    )
+    composite_behavior_recording_failure = artifacts["composite_behavior_recording_failure"]
+    composite_behavior_recording_failure_summary = (
+        composite_behavior_recording_failure.get("summary", {})
+        if composite_behavior_recording_failure is not None
+        else {}
     )
     composite_behavior_seed_robust = int(
         composite_behavior_seed_summary.get("n_robust_composite_behavior_seed_candidates", 0) or 0
@@ -428,6 +435,7 @@ def build_report() -> dict:
                     composite_behavior_projected is not None
                     and composite_behavior_seed is not None
                     and composite_behavior_l2_seed is not None
+                    and composite_behavior_recording_failure is not None
                 )
                 else "secondary_after_new_target"
             ),
@@ -471,13 +479,24 @@ def build_report() -> dict:
                         f"{composite_behavior_l2_seed_summary.get('max_candidate_seed_fraction', 0.0):.3f}"
                     )
                 ),
+                (
+                    "composite behavior recording failure decomposition has not been run yet"
+                    if composite_behavior_recording_failure is None
+                    else (
+                        "composite behavior recording failure decomposition found "
+                        f"{composite_behavior_recording_failure_summary.get('n_stable_bidirectional_recordings', 'n/a')}/"
+                        f"{composite_behavior_recording_failure_summary.get('n_recordings', 'n/a')} "
+                        "stable bidirectional recordings across candidate cases"
+                    )
+                ),
             ],
             next_action=(
-                "Do not train: post-error fast-response broad-anatomy candidates fail strict seed and l2 stability."
+                "Do not train: post-error fast-response broad-anatomy candidates fail recording-level seed stability."
                 if (
                     composite_behavior_projected is not None
                     and composite_behavior_seed is not None
                     and composite_behavior_l2_seed is not None
+                    and composite_behavior_recording_failure is not None
                 )
                 else "Run the bounded composite behavior target gate on current and projected manifests."
             ),

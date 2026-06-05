@@ -84,6 +84,7 @@ def test_render_markdown_lists_closed_branches() -> None:
     assert "lateralized family anatomy target" in markdown
     assert "composite behavior target search" in markdown
     assert "l2/seed sensitivity" in markdown
+    assert "recording failure decomposition" in markdown
     assert "signed wheel-direction motor target" in markdown
     assert "neutral-prior low-contrast choice target redesign" in markdown
     assert "prior-aligned choice target redesign" in markdown

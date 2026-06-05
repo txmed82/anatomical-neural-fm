@@ -213,13 +213,42 @@ def test_render_markdown_includes_composite_behavior_seed_veto() -> None:
                 }
             ],
         },
+        composite_behavior_recording_failure={
+            "summary": {
+                "n_cases": 2,
+                "n_recordings": 8,
+                "n_stable_bidirectional_recordings": 3,
+                "n_unstable_recordings": 5,
+                "min_recording_bidirectional_seed_fraction": 0.0,
+                "decision": "composite_behavior_recording_bidirectionality_failure",
+            },
+            "rows": [
+                {
+                    "holdout": "CSHL045",
+                    "n_stable_bidirectional_recordings": 2,
+                    "n_recordings": 4,
+                    "mean_bidirectional_seed_fraction": 0.65,
+                    "weakest_recordings": [
+                        {
+                            "recording": "weak_probe",
+                            "n_bidirectional_seeds": 0,
+                            "n_seeds": 5,
+                            "mean_target0_improved": 0.37,
+                            "mean_target1_improved": 0.67,
+                        }
+                    ],
+                }
+            ],
+        },
     )
 
     assert "Composite Behavior Seed Sensitivity" in markdown
     assert "Composite Behavior L2/Seed Sensitivity" in markdown
+    assert "Composite Behavior Recording Failure Decomposition" in markdown
     assert "do not train" in markdown.lower()
     assert "strongest current near miss" in markdown
     assert "not a ridge-l2 artifact" in markdown
+    assert "same-recording target0+target1 stability" in markdown
 
 
 def test_render_markdown_includes_extreme_quantile_seed_veto() -> None:

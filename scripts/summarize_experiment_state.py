@@ -122,6 +122,7 @@ COMPOSITE_BEHAVIOR_TARGET_SEED_SENSITIVITY_FILE = "docs/composite_behavior_targe
 COMPOSITE_BEHAVIOR_TARGET_L2_SEED_SENSITIVITY_FILE = (
     "docs/composite_behavior_target_l2_seed_sensitivity.json"
 )
+COMPOSITE_BEHAVIOR_RECORDING_FAILURE_FILE = "docs/composite_behavior_recording_failure_decomposition.json"
 LOW_CONTRAST_CHOICE_FAMILY_GATE_FILE = "docs/low_contrast_choice_family_gate.json"
 LOW_CONTRAST_CHOICE_PROJECTED_GATE_FILE = "docs/low_contrast_choice_family_gate_projected_hdf5.json"
 LOW_CONTRAST_CHOICE_SEED_SENSITIVITY_FILE = "docs/low_contrast_choice_seed_sensitivity.json"
@@ -348,6 +349,36 @@ def compact_seed_sensitivity_payload(payload: dict | None, robust_key: str) -> d
         "summary": payload.get("summary"),
         "rows": rows,
         robust_key: payload.get(robust_key, []),
+    }
+
+
+def compact_recording_failure_payload(payload: dict | None) -> dict | None:
+    if payload is None:
+        return None
+    rows = []
+    for row in payload.get("rows", []):
+        rows.append({
+            key: value
+            for key, value in row.items()
+            if key in {
+                "target_mode",
+                "family",
+                "holdout",
+                "n_seeds",
+                "n_recordings",
+                "n_stable_bidirectional_recordings",
+                "n_unstable_recordings",
+                "mean_bidirectional_seed_fraction",
+                "min_recording_bidirectional_seed_fraction",
+                "weakest_recordings",
+                "seed_rows",
+            }
+        })
+    return {
+        "cases": payload.get("cases"),
+        "thresholds": payload.get("thresholds"),
+        "summary": payload.get("summary"),
+        "rows": rows,
     }
 
 
@@ -583,6 +614,7 @@ def render_markdown(
     composite_behavior_target_projected_gate: dict | None = None,
     composite_behavior_target_seed_sensitivity: dict | None = None,
     composite_behavior_target_l2_seed_sensitivity: dict | None = None,
+    composite_behavior_recording_failure: dict | None = None,
     low_contrast_choice_family_gate: dict | None = None,
     low_contrast_choice_projected_gate: dict | None = None,
     low_contrast_choice_seed_sensitivity: dict | None = None,
@@ -1959,6 +1991,45 @@ def render_markdown(
             (
                 "Decision: do not train. The composite near miss is not a ridge-l2 artifact; "
                 "candidate stability is unchanged across l2=1, 10, and 100."
+            ),
+            "",
+        ]
+    if composite_behavior_recording_failure is not None:
+        summary = composite_behavior_recording_failure["summary"]
+        lines += [
+            "## Composite Behavior Recording Failure Decomposition",
+            "",
+            "`docs/composite_behavior_recording_failure_decomposition.md` decomposes",
+            "the projected composite near miss into per-recording target0/target1",
+            "support across shuffle seeds.",
+            "",
+            f"- cases: `{summary['n_cases']}`",
+            f"- recordings: `{summary['n_recordings']}`",
+            f"- stable bidirectional recordings: `{summary['n_stable_bidirectional_recordings']}`",
+            f"- unstable recordings: `{summary['n_unstable_recordings']}`",
+            f"- min recording bidirectional seed fraction: `{summary['min_recording_bidirectional_seed_fraction']:.3f}`",
+            f"- decision: `{summary['decision']}`",
+            "",
+            "| holdout | stable recordings | mean bidir seed fraction | weakest recording | weakest bidir seeds | mean targets |",
+            "|---|---:|---:|---|---:|---:|",
+        ]
+        for case in composite_behavior_recording_failure["rows"]:
+            weakest = case["weakest_recordings"][0] if case.get("weakest_recordings") else {}
+            lines.append(
+                f"| {case['holdout']} | "
+                f"{case['n_stable_bidirectional_recordings']}/{case['n_recordings']} | "
+                f"{case['mean_bidirectional_seed_fraction']:.3f} | "
+                f"{weakest.get('recording', 'n/a')} | "
+                f"{weakest.get('n_bidirectional_seeds', 0)}/{weakest.get('n_seeds', 0)} | "
+                f"{weakest.get('mean_target0_improved', 0.0):.3f}/"
+                f"{weakest.get('mean_target1_improved', 0.0):.3f} |"
+            )
+        lines += [
+            "",
+            (
+                "Decision: do not train. The next local redesign has to improve "
+                "same-recording target0+target1 stability; more ridge or target-level "
+                "averaging will not demonstrate cross-animal anatomical transfer."
             ),
             "",
         ]
@@ -3679,6 +3750,9 @@ def main() -> int:
     composite_behavior_target_l2_seed_sensitivity = read_mechanism_audit(
         REPO_ROOT / COMPOSITE_BEHAVIOR_TARGET_L2_SEED_SENSITIVITY_FILE
     )
+    composite_behavior_recording_failure = read_mechanism_audit(
+        REPO_ROOT / COMPOSITE_BEHAVIOR_RECORDING_FAILURE_FILE
+    )
     low_contrast_choice_family_gate = read_mechanism_audit(REPO_ROOT / LOW_CONTRAST_CHOICE_FAMILY_GATE_FILE)
     low_contrast_choice_projected_gate = read_mechanism_audit(REPO_ROOT / LOW_CONTRAST_CHOICE_PROJECTED_GATE_FILE)
     low_contrast_choice_seed_sensitivity = read_mechanism_audit(
@@ -3851,6 +3925,7 @@ def main() -> int:
         composite_behavior_target_projected_gate,
         composite_behavior_target_seed_sensitivity,
         composite_behavior_target_l2_seed_sensitivity,
+        composite_behavior_recording_failure,
         low_contrast_choice_family_gate,
         low_contrast_choice_projected_gate,
         low_contrast_choice_seed_sensitivity,
@@ -3983,6 +4058,9 @@ def main() -> int:
         "composite_behavior_target_l2_seed_sensitivity": compact_seed_sensitivity_payload(
             composite_behavior_target_l2_seed_sensitivity,
             "robust_composite_behavior_l2_seed_candidates",
+        ),
+        "composite_behavior_recording_failure": compact_recording_failure_payload(
+            composite_behavior_recording_failure
         ),
         "low_contrast_choice_family_gate": low_contrast_choice_family_gate,
         "low_contrast_choice_projected_gate": low_contrast_choice_projected_gate,

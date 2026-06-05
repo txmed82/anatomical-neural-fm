@@ -410,7 +410,7 @@ branches after the current local negative audits.
 | priority | branch | status | next action |
 |---:|---|---|---|
 | 1 | new manifest with prospective bidirectional support | `recommended_next` | Do not launch GPU training from the projected support80 panel; its model-free family and feature-mode gates have no candidates. Redesign the target/control locally. |
-| 80 | composite behavior target search | `closed` | Do not train: post-error fast-response broad-anatomy candidates fail strict seed and l2 stability. |
+| 80 | composite behavior target search | `closed` | Do not train: post-error fast-response broad-anatomy candidates fail recording-level seed stability. |
 | 81 | lateralized family anatomy target | `closed` | Do not train: left/right family anatomy does not pass current or projected local gates. |
 | 82 | signed wheel-direction motor target | `closed` | Do not train: signed wheel-direction does not pass current or projected local gates. |
 
@@ -734,6 +734,26 @@ values and within-recording shuffle seeds.
 | 100 | post_error_fast_response_le_1 | broad_named_anatomy | NR_0019 | 5/5 | 4/5 | +0.0023 | +0.0024 | 0.576/0.640 | 2-4 |
 
 Decision: do not train. The composite near miss is not a ridge-l2 artifact; candidate stability is unchanged across l2=1, 10, and 100.
+
+## Composite Behavior Recording Failure Decomposition
+
+`docs/composite_behavior_recording_failure_decomposition.md` decomposes
+the projected composite near miss into per-recording target0/target1
+support across shuffle seeds.
+
+- cases: `2`
+- recordings: `8`
+- stable bidirectional recordings: `3`
+- unstable recordings: `5`
+- min recording bidirectional seed fraction: `0.000`
+- decision: `composite_behavior_recording_bidirectionality_failure`
+
+| holdout | stable recordings | mean bidir seed fraction | weakest recording | weakest bidir seeds | mean targets |
+|---|---:|---:|---|---:|---:|
+| CSHL045 | 2/4 | 0.650 | 7939711b-8b4d-4251-b698-b97c1eaa846e_probe01 | 0/5 | 0.371/0.667 |
+| NR_0019 | 1/4 | 0.750 | b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe00 | 3/5 | 0.517/0.614 |
+
+Decision: do not train. The next local redesign has to improve same-recording target0+target1 stability; more ridge or target-level averaging will not demonstrate cross-animal anatomical transfer.
 
 ## Low-Contrast Choice Family Gate
 

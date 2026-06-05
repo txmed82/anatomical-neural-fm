@@ -10,7 +10,7 @@ Ranks remaining no-spend branches after the current local audits. This is the pl
 | priority | branch | status | next action |
 |---:|---|---|---|
 | 1 | new manifest with prospective bidirectional support | `recommended_next` | Do not launch GPU training from the projected support80 panel; its model-free family and feature-mode gates have no candidates. Redesign the target/control locally. |
-| 80 | composite behavior target search | `closed` | Do not train: post-error fast-response broad-anatomy candidates fail strict seed and l2 stability. |
+| 80 | composite behavior target search | `closed` | Do not train: post-error fast-response broad-anatomy candidates fail recording-level seed stability. |
 | 81 | lateralized family anatomy target | `closed` | Do not train: left/right family anatomy does not pass current or projected local gates. |
 | 82 | signed wheel-direction motor target | `closed` | Do not train: signed wheel-direction does not pass current or projected local gates. |
 | 83 | neutral-prior low-contrast choice target redesign | `closed` | Do not train: neutral-prior low-contrast choice fails projected-panel and seed-stability gates. |
@@ -58,6 +58,7 @@ Ranks remaining no-spend branches after the current local audits. This is the pl
 - projected-panel composite behavior target gate found 2 candidates across 256 rows and max bidir 0.750
 - composite behavior seed sensitivity found 0 robust candidates; max candidate seed fraction=0.800
 - composite behavior l2/seed sensitivity found 0 robust candidates; max candidate seed fraction=0.800
+- composite behavior recording failure decomposition found 3/8 stable bidirectional recordings across candidate cases
 - GPU trigger: none
 
 ### lateralized family anatomy target
