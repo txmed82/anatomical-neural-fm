@@ -964,6 +964,48 @@ anatomy-specific gate fails on centered-delta threshold (`+0.009` vs required
 target-balanced variant; the next implementation change should attack
 recording/subject-prior leakage more directly rather than complete seed 2.
 
+Recording-centered loss variant: `scripts/train.py` now supports
+`--loss-mode recording_centered_bce` and `--batch-sampling
+recording_target_balanced`. This trains on logits after subtracting each
+recording's mean logit within the accepted batch, with left/right pairs drawn
+from the same recording. The goal is to remove the recording-offset shortcut
+that repeatedly hurts the centered-AUC gate while keeping eval and prediction
+export on raw logits. CPU smoke `runs/recording_centered_loss_smoke` completed
+then was removed after verifying the trainer logs `loss_mode:
+recording_centered_bce`, `batch_sampling: recording_target_balanced`, and
+full centered eval. The next bounded paid check should be a one-seed
+CSH_ZAD_019 pilot under a low cap:
+
+```bash
+uv run python scripts/runpod_clone_a100.py --poll \
+  --datacenter ANY \
+  --gpu-type 'NVIDIA L4' \
+  --container-disk-gb 80 \
+  --max-runtime-seconds 3600 \
+  --max-provision-seconds 300 \
+  --skip-verification \
+  --skip-cell-type-priors \
+  --build-recordings 0 \
+  --max-steps 300 \
+  --eval-batches 20 \
+  --target-mode stimulus_side \
+  --manifest-path manifests/ibl_bwm_region_matched_support80_best6.json \
+  --seeds '0' \
+  --sweep-script scripts/run_lso_two_holdout_shared_parent_shuffle_a100.sh \
+  --output-root runs/lso_csh_recording_centered_loss_pilot \
+  --result-doc docs/lso_csh_recording_centered_loss_pilot_results.md \
+  --s3-bucket rppfvo6ifn \
+  --s3-prefix brainsets/ibl_bwm \
+  --s3-datacenter US-IL-1 \
+  --name-prefix anfm-csh-recording-centered \
+  --sweep-env SUBJECTS=CSH_ZAD_019 \
+  --sweep-env BATCH_SAMPLING=recording_target_balanced \
+  --sweep-env LOSS_MODE=recording_centered_bce \
+  --sweep-env BEST_METRIC=full_eval_centered_auc \
+  --sweep-env FULL_EVAL_ON_BEST=1 \
+  --sweep-env SAVE_DIAGNOSTICS=1
+```
+
 After cleanup, run:
 
 ```bash

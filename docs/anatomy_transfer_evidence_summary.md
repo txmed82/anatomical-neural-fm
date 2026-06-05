@@ -47,3 +47,11 @@ positive true-vs-shuffle centered delta (`+0.009`) and specificity gap
 (`+0.051`), but still fails the strict anatomy-specific gate because the
 centered delta is below `+0.010` and the recording sign-flip p-value is `0.125`.
 Do not spend more on the same target-balanced run.
+
+Next variant: recording-centered BCE. The trainer now has
+`--loss-mode recording_centered_bce` plus
+`--batch-sampling recording_target_balanced`, which draws left/right pairs from
+the same recording and removes each recording's mean logit inside the training
+loss. This directly targets the recording-offset failure mode that centered AUC
+penalizes. Run only a one-seed CSH pilot first; broaden only if centered-AUC and
+specificity improve.

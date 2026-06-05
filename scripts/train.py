@@ -106,10 +106,17 @@ def parse_args():
                             "waveform", "waveform_only"])
     # Optim
     p.add_argument("--batch-size", type=int, default=4)
-    p.add_argument("--batch-sampling", default="uniform", choices=["uniform", "target_balanced"],
+    p.add_argument("--batch-sampling", default="uniform",
+                   choices=["uniform", "target_balanced", "recording_target_balanced"],
                    help="'uniform' samples trial windows uniformly. 'target_balanced' alternates "
                         "left/right targets within accepted training batches to reduce target-prior "
-                        "leakage; sampled eval remains uniform.")
+                        "leakage. 'recording_target_balanced' draws left/right pairs from the same "
+                        "recording, which is intended for recording-centered training losses. "
+                        "Sampled eval remains uniform.")
+    p.add_argument("--loss-mode", default="bce", choices=["bce", "recording_centered_bce"],
+                   help="'bce' trains on raw logits. 'recording_centered_bce' subtracts each "
+                        "recording's mean logit within the accepted batch before BCE, reducing "
+                        "recording-offset shortcuts.")
     p.add_argument("--lr", type=float, default=3e-4)
     p.add_argument("--weight-decay", type=float, default=1e-4)
     p.add_argument("--max-steps", type=int, default=500)
@@ -369,23 +376,58 @@ def trial_indices_by_target(trial_list: list[tuple[str, float, float]]) -> dict[
     return dict(by_target)
 
 
+def trial_indices_by_recording_target(
+    trial_list: list[tuple[str, float, float]],
+) -> dict[str, dict[int, list[int]]]:
+    by_recording: dict[str, dict[int, list[int]]] = defaultdict(lambda: defaultdict(list))
+    for idx, (rid, _t0, target) in enumerate(trial_list):
+        by_recording[str(rid)][int(target)].append(idx)
+    return {
+        rid: {target: indices for target, indices in sorted(targets.items())}
+        for rid, targets in sorted(by_recording.items())
+    }
+
+
 def choose_trial_index(
     trial_list: list[tuple[str, float, float]],
     rng,
     batch_sampling: str,
     accepted_count: int,
     target_offset: int = 0,
+    recording_id: str | None = None,
 ) -> int:
     if batch_sampling == "uniform":
         return int(rng.integers(len(trial_list)))
-    if batch_sampling != "target_balanced":
+    if batch_sampling not in {"target_balanced", "recording_target_balanced"}:
         raise ValueError(f"unknown batch_sampling {batch_sampling!r}")
+    if batch_sampling == "recording_target_balanced" and recording_id is not None:
+        by_recording = trial_indices_by_recording_target(trial_list)
+        by_target_for_recording = by_recording.get(recording_id, {})
+        if by_target_for_recording.get(0) and by_target_for_recording.get(1):
+            desired_target = int((accepted_count + target_offset) % 2)
+            choices = by_target_for_recording[desired_target]
+            return int(choices[int(rng.integers(len(choices)))])
     by_target = trial_indices_by_target(trial_list)
     if not by_target.get(0) or not by_target.get(1):
         return int(rng.integers(len(trial_list)))
     desired_target = int((accepted_count + target_offset) % 2)
     choices = by_target[desired_target]
     return int(choices[int(rng.integers(len(choices)))])
+
+
+def choose_recording_for_balanced_pair(
+    trial_list: list[tuple[str, float, float]],
+    rng,
+) -> str | None:
+    by_recording = trial_indices_by_recording_target(trial_list)
+    eligible = [
+        rid
+        for rid, by_target in by_recording.items()
+        if by_target.get(0) and by_target.get(1)
+    ]
+    if not eligible:
+        return None
+    return str(eligible[int(rng.integers(len(eligible)))])
 
 
 def recording_region_acronyms(recs, rids: list[str], region_granularity: str = "fine") -> set[str]:
@@ -567,7 +609,7 @@ def draw_batch(
     rng,
     allowed_region_acronyms: set[str] | None = None,
     batch_sampling: str | None = None,
-) -> tuple[dict, torch.Tensor]:
+) -> tuple[dict | None, torch.Tensor | None, dict | None]:
     """Draw a batch of `batch_size` trial-aligned windows from the precomputed list.
 
     `trial_list` is the output of `build_trial_samples` — every entry is already a valid
@@ -575,17 +617,22 @@ def draw_batch(
     """
     samples = []
     targets = []
+    recording_ids = []
     attempts = 0
     sampling_mode = getattr(args, "batch_sampling", "uniform") if batch_sampling is None else batch_sampling
-    target_offset = int(rng.integers(2)) if sampling_mode == "target_balanced" else 0
+    target_offset = int(rng.integers(2)) if sampling_mode in {"target_balanced", "recording_target_balanced"} else 0
+    pair_recording_id = None
     while len(samples) < args.batch_size and attempts < 50:
         attempts += 1
+        if sampling_mode == "recording_target_balanced" and len(samples) % 2 == 0:
+            pair_recording_id = choose_recording_for_balanced_pair(trial_list, rng)
         idx = choose_trial_index(
             trial_list,
             rng,
             sampling_mode,
             accepted_count=len(samples),
             target_offset=target_offset,
+            recording_id=pair_recording_id,
         )
         rid, t0, target = trial_list[idx]
         sample = ds[DatasetIndex(recording_id=rid, start=t0, end=t0 + args.window_len)]
@@ -594,13 +641,43 @@ def draw_batch(
             continue
         samples.append(inputs_np)
         targets.append(target)
+        recording_ids.append(rid)
     if len(samples) < args.batch_size:
-        return None, None
+        return None, None, None
     batch = collate_batch(samples, device=next(model.parameters()).device)
     # (B, 1) targets to match model output shape (B, n_out=1)
     tgt = torch.as_tensor(np.array(targets, dtype=np.float32)[:, None],
                           device=batch["input_unit_index"].device)
-    return batch, tgt
+    return batch, tgt, {"recording_ids": recording_ids}
+
+
+def center_logits_by_group(logits: torch.Tensor, group_ids: list[str]) -> torch.Tensor:
+    centered = logits.clone()
+    for group_id in sorted(set(group_ids)):
+        indices = [idx for idx, value in enumerate(group_ids) if value == group_id]
+        if not indices:
+            continue
+        group_index = torch.as_tensor(indices, dtype=torch.long, device=logits.device)
+        group_logits = logits.index_select(0, group_index)
+        centered.index_copy_(0, group_index, group_logits - group_logits.mean(dim=0, keepdim=True))
+    return centered
+
+
+def training_loss(
+    logits: torch.Tensor,
+    target: torch.Tensor,
+    loss_mode: str,
+    batch_meta: dict | None,
+) -> torch.Tensor:
+    if loss_mode == "bce":
+        return F.binary_cross_entropy_with_logits(logits, target)
+    if loss_mode == "recording_centered_bce":
+        recording_ids = [] if batch_meta is None else list(batch_meta.get("recording_ids", []))
+        if len(recording_ids) != logits.shape[0]:
+            raise ValueError("recording_centered_bce requires one recording id per batch row")
+        centered_logits = center_logits_by_group(logits, recording_ids)
+        return F.binary_cross_entropy_with_logits(centered_logits, target)
+    raise ValueError(f"unknown loss_mode {loss_mode!r}")
 
 
 def _auc(scores: np.ndarray, labels: np.ndarray) -> float:
@@ -623,7 +700,7 @@ def evaluate(model, ds, eval_trial_list, args, allowed_region_acronyms: set[str]
     rng = np.random.default_rng(args.seed + 1000)  # deterministic eval order
     with torch.no_grad():
         for _ in range(args.eval_batches):
-            batch, tgt = draw_batch(
+            batch, tgt, _meta = draw_batch(
                 ds,
                 eval_trial_list,
                 args,
@@ -895,12 +972,12 @@ def main():
     t_start = time.time()
     model.train()
     for step in range(1, args.max_steps + 1):
-        batch, target = draw_batch(ds, train_trials, args, model, rng, allowed_region_acronyms)
+        batch, target, batch_meta = draw_batch(ds, train_trials, args, model, rng, allowed_region_acronyms)
         if batch is None:
             log({"event": "skip_step", "step": step, "reason": "no_valid_samples"})
             continue
         out = model(**batch).squeeze(-1)  # (B, 1)
-        loss = F.binary_cross_entropy_with_logits(out, target)
+        loss = training_loss(out, target, args.loss_mode, batch_meta)
         optimizer.zero_grad()
         loss.backward()
         gnorm = torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)

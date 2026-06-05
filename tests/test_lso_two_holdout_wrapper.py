@@ -42,6 +42,14 @@ def test_two_holdout_wrapper_can_set_batch_sampling_mode() -> None:
     assert 'batch_sampling: $BATCH_SAMPLING' in script
 
 
+def test_two_holdout_wrapper_can_set_loss_mode() -> None:
+    script = (REPO_ROOT / "scripts/run_lso_two_holdout_shared_parent_shuffle_a100.sh").read_text()
+
+    assert 'LOSS_MODE="${LOSS_MODE:-bce}"' in script
+    assert '--loss-mode "$LOSS_MODE"' in script
+    assert 'loss_mode: $LOSS_MODE' in script
+
+
 def test_two_holdout_wrapper_can_resume_prediction_only_arms() -> None:
     script = (REPO_ROOT / "scripts/run_lso_two_holdout_shared_parent_shuffle_a100.sh").read_text()
 
@@ -68,6 +76,14 @@ def test_csh_wrapper_can_set_batch_sampling_mode() -> None:
     assert 'BATCH_SAMPLING="${BATCH_SAMPLING:-uniform}"' in script
     assert '--batch-sampling "$BATCH_SAMPLING"' in script
     assert 'batch_sampling: $BATCH_SAMPLING' in script
+
+
+def test_csh_wrapper_can_set_loss_mode() -> None:
+    script = (REPO_ROOT / "scripts/run_lso_csh_zad_019_shared_parent_shuffle_a100.sh").read_text()
+
+    assert 'LOSS_MODE="${LOSS_MODE:-bce}"' in script
+    assert '--loss-mode "$LOSS_MODE"' in script
+    assert 'loss_mode: $LOSS_MODE' in script
 
 
 def test_csh_wrapper_can_resume_prediction_only_arms() -> None:

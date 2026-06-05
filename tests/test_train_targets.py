@@ -9,6 +9,8 @@ from scripts.train import (
     best_metric_requires_full_eval,
     build_inputs_for_window,
     build_trial_samples,
+    center_logits_by_group,
+    choose_recording_for_balanced_pair,
     choose_trial_index,
     is_better_metric,
     manifest_recording_ids,
@@ -19,6 +21,8 @@ from scripts.train import (
     recording_centered_auc_from_prediction_rows,
     select_recording_ids,
     shared_split_regions,
+    training_loss,
+    trial_indices_by_recording_target,
     trial_indices_by_target,
     write_region_embeddings,
 )
@@ -123,6 +127,21 @@ def test_trial_indices_by_target_groups_binary_targets() -> None:
     assert trial_indices_by_target(trials) == {0: [0, 3], 1: [1, 2]}
 
 
+def test_trial_indices_by_recording_target_groups_within_recording() -> None:
+    trials = [
+        ("a", 0.1, 0.0),
+        ("a", 0.2, 1.0),
+        ("b", 0.3, 1.0),
+        ("b", 0.4, 0.0),
+        ("b", 0.5, 1.0),
+    ]
+
+    assert trial_indices_by_recording_target(trials) == {
+        "a": {0: [0], 1: [1]},
+        "b": {0: [3], 1: [2, 4]},
+    }
+
+
 def test_target_balanced_trial_choice_alternates_requested_target() -> None:
     trials = [
         ("a", 0.1, 0.0),
@@ -139,6 +158,49 @@ def test_target_balanced_trial_choice_alternates_requested_target() -> None:
     assert trials[second][2] == 1.0
 
 
+def test_recording_target_balanced_choice_uses_requested_recording() -> None:
+    trials = [
+        ("a", 0.1, 0.0),
+        ("a", 0.2, 1.0),
+        ("b", 0.3, 1.0),
+        ("b", 0.4, 0.0),
+    ]
+    rng = np.random.default_rng(0)
+
+    first = choose_trial_index(
+        trials,
+        rng,
+        "recording_target_balanced",
+        accepted_count=0,
+        target_offset=0,
+        recording_id="b",
+    )
+    second = choose_trial_index(
+        trials,
+        rng,
+        "recording_target_balanced",
+        accepted_count=1,
+        target_offset=0,
+        recording_id="b",
+    )
+
+    assert trials[first][0] == "b"
+    assert trials[first][2] == 0.0
+    assert trials[second][0] == "b"
+    assert trials[second][2] == 1.0
+
+
+def test_choose_recording_for_balanced_pair_requires_both_targets() -> None:
+    trials = [
+        ("a", 0.1, 0.0),
+        ("a", 0.2, 1.0),
+        ("b", 0.3, 1.0),
+    ]
+    rng = np.random.default_rng(0)
+
+    assert choose_recording_for_balanced_pair(trials, rng) == "a"
+
+
 def test_target_balanced_trial_choice_falls_back_when_one_class_missing() -> None:
     trials = [("a", 0.1, 1.0), ("a", 0.2, 1.0)]
     rng = np.random.default_rng(0)
@@ -146,6 +208,26 @@ def test_target_balanced_trial_choice_falls_back_when_one_class_missing() -> Non
     idx = choose_trial_index(trials, rng, "target_balanced", accepted_count=0, target_offset=0)
 
     assert idx in {0, 1}
+
+
+def test_center_logits_by_group_removes_group_offsets() -> None:
+    logits = torch.tensor([[2.0], [4.0], [10.0], [14.0]])
+
+    centered = center_logits_by_group(logits, ["a", "a", "b", "b"])
+
+    assert torch.allclose(centered, torch.tensor([[-1.0], [1.0], [-2.0], [2.0]]))
+
+
+def test_recording_centered_training_loss_ignores_recording_offsets() -> None:
+    logits = torch.tensor([[2.0], [4.0], [10.0], [12.0]])
+    shifted_logits = torch.tensor([[102.0], [104.0], [-30.0], [-28.0]])
+    target = torch.tensor([[0.0], [1.0], [0.0], [1.0]])
+    meta = {"recording_ids": ["a", "a", "b", "b"]}
+
+    loss = training_loss(logits, target, "recording_centered_bce", meta)
+    shifted_loss = training_loss(shifted_logits, target, "recording_centered_bce", meta)
+
+    assert torch.allclose(loss, shifted_loss)
 
 
 def test_shared_split_regions_uses_train_eval_intersection() -> None:
