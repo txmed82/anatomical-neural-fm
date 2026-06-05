@@ -486,9 +486,19 @@ simple feature/L2 sweeps, further manifest narrowing, recording-subset
 selection, the current shared-family grid, cached alternative targets,
 source-target narrowing, direct cached-field derived targets, and contextual
 trial-state targets as closed GPU triggers. The recommended next branch is a
-behavior-cache rebuild or external target preflight, still with the same local
-promotion gate: delta vs shuffle and total baseline nonnegative, target0 and
-target1 >=`0.55`, and same-recording bidirectional fraction >=`0.75`.
+behavior-inclusive cache rebuild, still with the same local promotion gate:
+delta vs shuffle and total baseline nonnegative, target0 and target1 >=`0.55`,
+and same-recording bidirectional fraction >=`0.75`.
+
+Behavior-cache preflight:
+`docs/behavior_cache_preflight.md` inspects the active matched cache for richer
+behavior streams. The HDF5 files are present for all 28 manifest recordings,
+but only `3/28` currently contain `wheel`; `25/28` need a behavior-inclusive
+rebuild. The build plan is to rerun `scripts/build_ibl_brainset_batch.py` on
+the matched manifest without `--no-wheel`, preserving `--trial-window-only
+--window-len 1.0`. Decision: this is the next no-spend step before any A100
+training. After rebuild, define wheel movement/quiescence, high/low absolute
+velocity, or signed action velocity targets and rerun the same local gate.
 
 Derived target family gate:
 `docs/derived_target_family_gate.md` tests the first concrete version of that

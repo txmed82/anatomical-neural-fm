@@ -1556,14 +1556,27 @@ define a new benchmark/control target, not further subset this cache.
 Next benchmark/control options audit:
 `scripts/audit_next_benchmark_control_options.py` converts the negative local
 audits into a ranked plan. After the direct derived-target and contextual
-trial-state screens, it now recommends `behavior-cache rebuild or external
-target preflight` as the next branch and closes more feature/L2 sweeps,
-further manifest narrowing, recording-subset selection, the current
+trial-state screens, it now recommends `behavior-inclusive cache rebuild` as
+the next branch and closes more feature/L2 sweeps, further manifest narrowing,
+recording-subset selection, the current
 shared-family grid, cached alternative targets, direct cached-field derived
 targets, contextual cached trial-state targets, and source-target narrowing as
 GPU triggers. The only training trigger remains a local row with
 delta_vs_shuffle>=`0`, delta_vs_total>=`0`, target0>=`0.55`,
 target1>=`0.55`, and bidirectional_recording_fraction>=`0.75`.
+
+Behavior-cache preflight:
+`scripts/audit_behavior_cache_preflight.py` makes that next branch concrete.
+It inspects the active matched HDF5 cache and confirms all 28 manifest files
+are present, but only `3/28` contain the `wheel` stream. The remaining `25/28`
+need a behavior-inclusive rebuild. The generated shard commands rerun
+`scripts/build_ibl_brainset_batch.py` without `--no-wheel`, while keeping
+`--trial-window-only --window-len 1.0`. After rebuild, the first local target
+screens should be wheel movement onset versus quiescence, high versus low
+absolute wheel velocity after stimulus onset, and signed wheel velocity
+consistent with action direction. Each must pass the same local model-free
+true-vs-shuffle, total-baseline, global target, and same-recording
+bidirectionality gate before any paid training.
 
 Derived target family gate:
 `scripts/audit_derived_target_family_gate.py` implements the first concrete

@@ -353,19 +353,40 @@ Decision: stricter manifest support alone does not rescue the signal. The clean 
 `docs/next_benchmark_control_options.md` ranks the remaining no-spend
 branches after the current local negative audits.
 
-- recommended next: `behavior-cache rebuild or external target preflight`
+- recommended next: `behavior-inclusive cache rebuild`
 - closed branches: `8`
-- decision: `behavior_cache_or_external_target_required`
+- decision: `behavior_cache_rebuild_required`
 - GPU trigger: At least one local row must clear delta_vs_shuffle>=0, delta_vs_total>=0, target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75.
 
 | priority | branch | status | next action |
 |---:|---|---|---|
-| 1 | behavior-cache rebuild or external target preflight | `recommended_next` | Fetch or rebuild a richer behavior cache, or attach externally defined state labels, then define a prospectively balanced target/control and run the same model-free true-vs-shuffle, total-baseline, global target, and same-recording bidirectional gate before training. |
+| 1 | behavior-inclusive cache rebuild | `recommended_next` | Rebuild the matched cache without --no-wheel, then define a wheel-based prospectively balanced target/control and run the same model-free true-vs-shuffle, total-baseline, global target, and same-recording bidirectional gate before training. |
 | 2 | new manifest with prospective bidirectional support | `secondary_after_new_target` | Only build or fetch more recordings after a target/control proposal defines which recordings should prospectively contain target0+target1 evidence. |
 | 88 | direct cached-field derived targets | `closed` | Do not launch GPU training from contrast_strength, response_latency, or prior_engaged. |
 | 89 | contextual cached trial-state targets | `closed` | Do not spend on contextual trial-sequence targets from the compact cache. |
 
-Decision: direct cached target redesign is now closed as a GPU trigger. The next aligned work is a richer behavior-cache rebuild or external target preflight, followed by the same local model-free gate before any paid training.
+Decision: direct cached target redesign is now closed as a GPU trigger. The next aligned work is a behavior-inclusive cache rebuild, followed by the same local model-free gate before any paid training.
+
+## Behavior Cache Preflight
+
+`docs/behavior_cache_preflight.md` inspects whether the active matched
+HDF5 cache contains the richer behavior streams needed for the next
+target/control branch.
+
+- manifest recordings: `28`
+- present files: `28`
+- required stream coverage: `wheel=3/28`
+- recordings needing behavior rebuild: `25`
+- decision: `behavior_cache_rebuild_required`
+
+First rebuild commands:
+
+```bash
+uv run python scripts/build_ibl_brainset_batch.py --manifest manifests/ibl_bwm_region_matched_candidates_s3_present_support80_hdf5_scored.json --num-shards 4 --shard-index 0 --report docs/behavior_cache_build_shard00.md --trial-window-only --window-len 1.0 # writes data/brainsets/ibl_bwm
+uv run python scripts/build_ibl_brainset_batch.py --manifest manifests/ibl_bwm_region_matched_candidates_s3_present_support80_hdf5_scored.json --num-shards 4 --shard-index 1 --report docs/behavior_cache_build_shard01.md --trial-window-only --window-len 1.0 # writes data/brainsets/ibl_bwm
+```
+
+Decision: only a small minority of the matched cache currently has `wheel`, so the next no-spend step is a behavior-inclusive cache rebuild. GPU training remains blocked until a wheel or external behavior target passes the same local gate.
 
 ## Derived Target Family Gate
 

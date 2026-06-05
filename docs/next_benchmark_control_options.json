@@ -1,5 +1,6 @@
 {
   "artifacts": {
+    "behavior_cache_preflight": "docs/behavior_cache_preflight.json",
     "contextual_target_family": "docs/contextual_target_family_gate.json",
     "derived_target_family": "docs/derived_target_family_gate.json",
     "family_alt_feedback": "docs/model_free_family_bidirectional_gate_feedback_recording_centered.json",
@@ -18,12 +19,13 @@
         "current cached trial targets and shared-family controls all fail strict same-recording bidirectionality",
         "direct derived cached-field target gate has 0 candidates and max bidir 0.750",
         "contextual trial-state target gate has 0 candidates and max bidir 0.500",
+        "behavior-cache preflight has wheel in 3/28 matched recordings",
         "strict symmetric gate has 0 candidates and 0 one-recording-short global-clear rows",
         "threshold sensitivity only finds default-target candidates when bidirectional support is relaxed to 0.25 (3 candidates)"
       ],
       "gpu_trigger": "At least one local row must clear delta_vs_shuffle>=0, delta_vs_total>=0, target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75.",
-      "name": "behavior-cache rebuild or external target preflight",
-      "next_action": "Fetch or rebuild a richer behavior cache, or attach externally defined state labels, then define a prospectively balanced target/control and run the same model-free true-vs-shuffle, total-baseline, global target, and same-recording bidirectional gate before training.",
+      "name": "behavior-inclusive cache rebuild",
+      "next_action": "Rebuild the matched cache without --no-wheel, then define a wheel-based prospectively balanced target/control and run the same model-free true-vs-shuffle, total-baseline, global target, and same-recording bidirectional gate before training.",
       "priority": 1,
       "status": "recommended_next"
     },
@@ -126,8 +128,8 @@
   ],
   "summary": {
     "closed_branches": 8,
-    "decision": "behavior_cache_or_external_target_required",
+    "decision": "behavior_cache_rebuild_required",
     "gpu_training_trigger": "At least one local row must clear delta_vs_shuffle>=0, delta_vs_total>=0, target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75.",
-    "recommended_next": "behavior-cache rebuild or external target preflight"
+    "recommended_next": "behavior-inclusive cache rebuild"
   }
 }

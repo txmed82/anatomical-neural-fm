@@ -17,6 +17,7 @@ ARTIFACTS = {
     "recording_replication": "docs/model_free_recording_replication_audit.json",
     "derived_target_family": "docs/derived_target_family_gate.json",
     "contextual_target_family": "docs/contextual_target_family_gate.json",
+    "behavior_cache_preflight": "docs/behavior_cache_preflight.json",
     "family_alt_prior": "docs/model_free_family_bidirectional_gate_prior_side_recording_centered.json",
     "family_alt_feedback": "docs/model_free_family_bidirectional_gate_feedback_recording_centered.json",
     "source_target_families": "docs/model_free_source_target_pair_gate_families_recording_centered.json",
@@ -64,13 +65,18 @@ def build_report() -> dict:
     replication = artifacts["recording_replication"]
     derived = artifacts["derived_target_family"]
     contextual = artifacts["contextual_target_family"]
+    behavior_cache = artifacts["behavior_cache_preflight"]
+    behavior_summary = behavior_cache.get("summary", {}) if behavior_cache is not None else {}
+    stream_counts = behavior_summary.get("stream_counts", {})
+    wheel_count = stream_counts.get("wheel", "n/a")
+    n_behavior_recordings = behavior_summary.get("n_manifest_recordings", "n/a")
     default_candidate_setting = summary_value(threshold, "strongest_default_target_candidate_setting", {}) or {}
     default_candidate_bidir = default_candidate_setting.get("min_bidirectional_recording_fraction")
     default_candidate_count = default_candidate_setting.get("n_candidates")
 
     branches = [
         branch(
-            name="behavior-cache rebuild or external target preflight",
+            name="behavior-inclusive cache rebuild",
             status="recommended_next",
             priority=1,
             evidence=[
@@ -86,6 +92,10 @@ def build_report() -> dict:
                     f"{summary_value(contextual, 'max_bidirectional_recording_fraction', 0.0):.3f}"
                 ),
                 (
+                    f"behavior-cache preflight has wheel in {wheel_count}/{n_behavior_recordings} "
+                    "matched recordings"
+                ),
+                (
                     "strict symmetric gate has "
                     f"{summary_value(strict, 'strict_candidates', 'n/a')} candidates and "
                     f"{summary_value(strict, 'one_recording_short_and_global_clear_rows', 'n/a')} "
@@ -98,10 +108,10 @@ def build_report() -> dict:
                 ),
             ],
             next_action=(
-                "Fetch or rebuild a richer behavior cache, or attach externally defined "
-                "state labels, then define a prospectively balanced target/control and "
-                "run the same model-free true-vs-shuffle, total-baseline, global target, "
-                "and same-recording bidirectional gate before training."
+                "Rebuild the matched cache without --no-wheel, then define a wheel-based "
+                "prospectively balanced target/control and run the same model-free "
+                "true-vs-shuffle, total-baseline, global target, and same-recording "
+                "bidirectional gate before training."
             ),
             gpu_trigger=(
                 "At least one local row must clear delta_vs_shuffle>=0, delta_vs_total>=0, "
@@ -252,7 +262,7 @@ def build_report() -> dict:
             "recommended_next": branches[0]["name"],
             "closed_branches": sum(1 for row in branches if row["status"] == "closed"),
             "gpu_training_trigger": branches[0]["gpu_trigger"],
-            "decision": "behavior_cache_or_external_target_required",
+            "decision": "behavior_cache_rebuild_required",
         },
         "artifacts": ARTIFACTS,
         "branches": branches,

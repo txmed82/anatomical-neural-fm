@@ -111,6 +111,7 @@ SHARED_FAMILY_ITERATIVE_MANIFEST_GATE_FILE = "docs/shared_family_iterative_manif
 NEXT_BENCHMARK_CONTROL_OPTIONS_FILE = "docs/next_benchmark_control_options.json"
 DERIVED_TARGET_FAMILY_GATE_FILE = "docs/derived_target_family_gate.json"
 CONTEXTUAL_TARGET_FAMILY_GATE_FILE = "docs/contextual_target_family_gate.json"
+BEHAVIOR_CACHE_PREFLIGHT_FILE = "docs/behavior_cache_preflight.json"
 MODEL_FREE_MATCHED_SUPPORT80_PANEL_FILE = "docs/model_free_matched_support80_hdf5_panel.json"
 MODEL_FREE_POSITIVE_HOLDOUTS_MECHANISM_FILE = "docs/model_free_positive_holdouts_mechanism.json"
 MODEL_FREE_RECORDING_BIDIRECTIONAL_GATE_FILE = "docs/model_free_recording_bidirectional_gate.json"
@@ -447,6 +448,7 @@ def render_markdown(
     next_benchmark_control_options: dict | None = None,
     derived_target_family_gate: dict | None = None,
     contextual_target_family_gate: dict | None = None,
+    behavior_cache_preflight: dict | None = None,
     model_free_matched_panel: dict | None = None,
     model_free_positive_holdouts: dict | None = None,
     model_free_recording_bidirectional_gate: dict | None = None,
@@ -1173,9 +1175,48 @@ def render_markdown(
             "",
             (
                 "Decision: direct cached target redesign is now closed as a GPU "
-                "trigger. The next aligned work is a richer behavior-cache rebuild "
-                "or external target preflight, followed by the same local model-free "
-                "gate before any paid training."
+                "trigger. The next aligned work is a behavior-inclusive cache "
+                "rebuild, followed by the same local model-free gate before any "
+                "paid training."
+            ),
+            "",
+        ]
+    if behavior_cache_preflight is not None:
+        summary = behavior_cache_preflight["summary"]
+        stream_counts = ", ".join(
+            f"{stream}={count}/{summary['n_manifest_recordings']}"
+            for stream, count in summary["stream_counts"].items()
+        )
+        commands = behavior_cache_preflight.get("build_commands", [])[:2]
+        lines += [
+            "## Behavior Cache Preflight",
+            "",
+            "`docs/behavior_cache_preflight.md` inspects whether the active matched",
+            "HDF5 cache contains the richer behavior streams needed for the next",
+            "target/control branch.",
+            "",
+            f"- manifest recordings: `{summary['n_manifest_recordings']}`",
+            f"- present files: `{summary['n_present_files']}`",
+            f"- required stream coverage: `{stream_counts}`",
+            f"- recordings needing behavior rebuild: `{summary['n_recordings_needing_behavior_rebuild']}`",
+            f"- decision: `{summary['decision']}`",
+            "",
+        ]
+        if commands:
+            lines += [
+                "First rebuild commands:",
+                "",
+                "```bash",
+                *commands,
+                "```",
+                "",
+            ]
+        lines += [
+            (
+                "Decision: only a small minority of the matched cache currently has "
+                "`wheel`, so the next no-spend step is a behavior-inclusive cache "
+                "rebuild. GPU training remains blocked until a wheel or external "
+                "behavior target passes the same local gate."
             ),
             "",
         ]
@@ -1993,6 +2034,7 @@ def main() -> int:
     next_benchmark_control_options = read_mechanism_audit(REPO_ROOT / NEXT_BENCHMARK_CONTROL_OPTIONS_FILE)
     derived_target_family_gate = read_mechanism_audit(REPO_ROOT / DERIVED_TARGET_FAMILY_GATE_FILE)
     contextual_target_family_gate = read_mechanism_audit(REPO_ROOT / CONTEXTUAL_TARGET_FAMILY_GATE_FILE)
+    behavior_cache_preflight = read_mechanism_audit(REPO_ROOT / BEHAVIOR_CACHE_PREFLIGHT_FILE)
     model_free_matched_panel = read_mechanism_audit(REPO_ROOT / MODEL_FREE_MATCHED_SUPPORT80_PANEL_FILE)
     model_free_positive_holdouts = read_mechanism_audit(REPO_ROOT / MODEL_FREE_POSITIVE_HOLDOUTS_MECHANISM_FILE)
     model_free_recording_bidirectional_gate = read_mechanism_audit(
@@ -2086,6 +2128,7 @@ def main() -> int:
         next_benchmark_control_options,
         derived_target_family_gate,
         contextual_target_family_gate,
+        behavior_cache_preflight,
         model_free_matched_panel,
         model_free_positive_holdouts,
         model_free_recording_bidirectional_gate,
@@ -2172,6 +2215,7 @@ def main() -> int:
         "next_benchmark_control_options": next_benchmark_control_options,
         "derived_target_family_gate": derived_target_family_gate,
         "contextual_target_family_gate": contextual_target_family_gate,
+        "behavior_cache_preflight": behavior_cache_preflight,
         "model_free_matched_support80_panel": model_free_matched_panel,
         "model_free_positive_holdouts_mechanism": model_free_positive_holdouts,
         "model_free_recording_bidirectional_gate": model_free_recording_bidirectional_gate,
