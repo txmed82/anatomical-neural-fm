@@ -333,6 +333,20 @@ each recording's own mean parent-region feature vector before ridge fitting.
 
 Decision: feature-level recording centering is the least one-sided normalization so far, but it remains below the gate. `KS014` has only `1/4` bidirectional recordings and both positive-delta holdouts still miss global target0.
 
+## Grandparent Recording-Centered Feature Gate
+
+`docs/model_free_recording_bidirectional_gate_grandparent_recording_centered.md`
+reruns the hardened local gate at coarser Allen grandparent granularity
+with recording-centered features.
+
+- candidates: `0/7`
+- positive centered-delta holdouts: `5/7`
+- positive holdouts: `CSH_ZAD_019, KS014, MFD_06, NR_0019, NYU-12`
+- mean bidirectional recording fraction: `0.071`
+- decision: `no_recording_bidirectional_model_free_signal`
+
+Decision: coarser atlas granularity increases weak positive centered deltas, but it does not produce bidirectional evidence. The positive holdouts still fail global target0 and have at most `1/4` bidirectional recordings.
+
 ## Unit-Residual Feature Gate
 
 `docs/model_free_recording_bidirectional_gate_unit_residuals.md` subtracts

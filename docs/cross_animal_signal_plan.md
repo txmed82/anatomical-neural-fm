@@ -1422,6 +1422,16 @@ local branch should combine recording-centered features with structured
 anatomical families or predefined region groups, then require the same
 recording-bidirectional gate before any cloud run.
 
+Grandparent recording-centered feature check:
+The same hardened model-free gate was rerun with `--region-granularity
+grandparent` and `--feature-mode recording_centered` to test whether coarse
+Allen atlas groups reduce cross-animal sparsity enough to reveal a signal. It
+does not pass: zero candidates, five positive centered-delta holdouts, mean
+bidirectional recording fraction `0.071`, and no holdout with more than `1/4`
+bidirectional recordings. This closes simple atlas coarsening as a no-spend
+rescue path; a paid run should still require a local recording-bidirectional
+candidate first.
+
 Family-aggregate recording-centered check:
 `scripts/audit_model_free_family_bidirectional_gate.py` implements that next
 branch using the predefined parent-region families from the earlier CSH family

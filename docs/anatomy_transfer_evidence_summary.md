@@ -353,6 +353,16 @@ but target0 `0.520`, target1 `0.540`, and only `1/4` bidirectional recordings;
 `NR_0019` has centered delta `+0.047` but target0 `0.482`. Decision: keep this
 as a near-miss diagnostic, not a GPU trigger.
 
+Grandparent recording-centered feature check:
+`docs/model_free_recording_bidirectional_gate_grandparent_recording_centered.md`
+tests whether coarser Allen atlas granularity rescues the local gate. It
+does not. Grandparent features yield zero candidates, five positive
+centered-delta holdouts, and mean bidirectional recording fraction `0.071`.
+Every positive holdout still fails global target0, and the best recording
+support is only `1/4` bidirectional recordings. Decision: atlas coarsening
+creates more weak positive deltas but no promotable cross-animal anatomical
+transfer signal.
+
 Family-aggregate recording-centered check:
 `docs/model_free_family_bidirectional_gate_recording_centered.md` combines
 predefined parent-region family aggregates with recording-centered features.

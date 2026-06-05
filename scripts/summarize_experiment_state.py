@@ -110,6 +110,9 @@ MODEL_FREE_RECORDING_BIDIRECTIONAL_FRACTIONS_FILE = "docs/model_free_recording_b
 MODEL_FREE_RECORDING_BIDIRECTIONAL_RECORDING_CENTERED_FILE = (
     "docs/model_free_recording_bidirectional_gate_recording_centered.json"
 )
+MODEL_FREE_RECORDING_BIDIRECTIONAL_GRANDPARENT_RECORDING_CENTERED_FILE = (
+    "docs/model_free_recording_bidirectional_gate_grandparent_recording_centered.json"
+)
 MODEL_FREE_RECORDING_BIDIRECTIONAL_UNIT_RESIDUALS_FILE = (
     "docs/model_free_recording_bidirectional_gate_unit_residuals.json"
 )
@@ -414,6 +417,7 @@ def render_markdown(
     model_free_recording_bidirectional_gate: dict | None = None,
     model_free_recording_bidirectional_fractions: dict | None = None,
     model_free_recording_bidirectional_recording_centered: dict | None = None,
+    model_free_recording_bidirectional_grandparent_recording_centered: dict | None = None,
     model_free_recording_bidirectional_unit_residuals: dict | None = None,
     model_free_recording_bidirectional_prior: dict | None = None,
     model_free_recording_bidirectional_feedback: dict | None = None,
@@ -1078,6 +1082,30 @@ def render_markdown(
             ),
             "",
         ]
+    if model_free_recording_bidirectional_grandparent_recording_centered is not None:
+        summary = model_free_recording_bidirectional_grandparent_recording_centered["summary"]
+        positives = ", ".join(summary["positive_delta_holdouts"]) or "none"
+        lines += [
+            "## Grandparent Recording-Centered Feature Gate",
+            "",
+            "`docs/model_free_recording_bidirectional_gate_grandparent_recording_centered.md`",
+            "reruns the hardened local gate at coarser Allen grandparent granularity",
+            "with recording-centered features.",
+            "",
+            f"- candidates: `{summary['n_candidates']}/{summary['n_holdouts']}`",
+            f"- positive centered-delta holdouts: `{summary['n_positive_delta_holdouts']}/{summary['n_holdouts']}`",
+            f"- positive holdouts: `{positives}`",
+            f"- mean bidirectional recording fraction: `{summary['mean_bidirectional_recording_fraction']:.3f}`",
+            f"- decision: `{summary['decision']}`",
+            "",
+            (
+                "Decision: coarser atlas granularity increases weak positive centered "
+                "deltas, but it does not produce bidirectional evidence. The positive "
+                "holdouts still fail global target0 and have at most `1/4` "
+                "bidirectional recordings."
+            ),
+            "",
+        ]
     if model_free_recording_bidirectional_unit_residuals is not None:
         summary = model_free_recording_bidirectional_unit_residuals["summary"]
         positives = ", ".join(summary["positive_delta_holdouts"]) or "none"
@@ -1281,6 +1309,9 @@ def main() -> int:
     model_free_recording_bidirectional_recording_centered = read_mechanism_audit(
         REPO_ROOT / MODEL_FREE_RECORDING_BIDIRECTIONAL_RECORDING_CENTERED_FILE
     )
+    model_free_recording_bidirectional_grandparent_recording_centered = read_mechanism_audit(
+        REPO_ROOT / MODEL_FREE_RECORDING_BIDIRECTIONAL_GRANDPARENT_RECORDING_CENTERED_FILE
+    )
     model_free_recording_bidirectional_unit_residuals = read_mechanism_audit(
         REPO_ROOT / MODEL_FREE_RECORDING_BIDIRECTIONAL_UNIT_RESIDUALS_FILE
     )
@@ -1332,6 +1363,7 @@ def main() -> int:
         model_free_recording_bidirectional_gate,
         model_free_recording_bidirectional_fractions,
         model_free_recording_bidirectional_recording_centered,
+        model_free_recording_bidirectional_grandparent_recording_centered,
         model_free_recording_bidirectional_unit_residuals,
         model_free_recording_bidirectional_prior,
         model_free_recording_bidirectional_feedback,
@@ -1399,6 +1431,9 @@ def main() -> int:
         "model_free_recording_bidirectional_fractions": model_free_recording_bidirectional_fractions,
         "model_free_recording_bidirectional_recording_centered": (
             model_free_recording_bidirectional_recording_centered
+        ),
+        "model_free_recording_bidirectional_grandparent_recording_centered": (
+            model_free_recording_bidirectional_grandparent_recording_centered
         ),
         "model_free_recording_bidirectional_unit_residuals": model_free_recording_bidirectional_unit_residuals,
         "model_free_recording_bidirectional_prior_side": model_free_recording_bidirectional_prior,
