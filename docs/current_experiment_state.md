@@ -392,6 +392,28 @@ features and recording centering.
 
 Decision: combining source-target pairing with family aggregation still does not produce a local transfer candidate. It slightly increases same-recording bidirectional support, but top pairs remain below global target0/target1 and never exceed `1/4` bidirectional recordings.
 
+## Model-Free Gate Blocker Audit
+
+`docs/model_free_gate_blocker_audit.md` aggregates the current local
+holdout and source-target model-free gates to identify which promotion
+checks actually block the anatomy-transfer claim.
+
+- rows audited: `168`
+- candidates: `0`
+- positive centered-delta rows: `86`
+- max bidirectional recordings: `2`
+- max bidirectional recording fraction: `0.500`
+- blocker counts: `centered_delta=97, target0=130, target1=136, recording_bidirectionality=168`
+
+| report | label | centered delta | target0 | target1 | bidir recs | missing checks |
+|---|---|---:|---:|---:|---:|---|
+| family centered l2=1 | KS014 | +0.081 | 0.510 | 0.549 | 2/4 | target0, target1, recording_bidirectionality |
+| family centered | KS014 | +0.080 | 0.510 | 0.548 | 2/4 | target0, target1, recording_bidirectionality |
+| family centered l2=100 | KS014 | +0.078 | 0.505 | 0.555 | 2/4 | target0, recording_bidirectionality |
+| family feedback | NR_0019 | +0.011 | 0.532 | 0.500 | 2/4 | target0, target1, recording_bidirectionality |
+
+Decision: the next useful experiment should not be another small feature or regularization variant. The universal blocker is same-recording bidirectionality, so any new benchmark/control proposal must first create target0+target1 evidence inside the same recordings before GPU training.
+
 ## Family-Aggregate Recording-Centered Gate
 
 `docs/model_free_family_bidirectional_gate_recording_centered.md` combines

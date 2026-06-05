@@ -362,6 +362,16 @@ pairs still fail global target0/target1 or same-recording bidirectionality, and
 no top pair exceeds `1/4` bidirectional recordings. Decision: the best
 remaining no-spend combination still does not justify A100 training.
 
+Gate blocker audit:
+`docs/model_free_gate_blocker_audit.md` aggregates 168 rows from the current
+local model-free holdout and source-target gates. It finds zero candidates,
+86 rows with positive centered deltas, and a hard ceiling of `2/4`
+bidirectional recordings. Every audited row misses the same-recording
+bidirectionality gate, while target0 and target1 are also missing in 130 and
+136 rows respectively. Decision: the next experiment should change the
+benchmark/control definition enough to create target0+target1 evidence inside
+the same recordings before any GPU run.
+
 Recording-centered feature check:
 `docs/model_free_recording_bidirectional_gate_recording_centered.md` subtracts
 each recording's own mean parent-region feature vector before ridge fitting.

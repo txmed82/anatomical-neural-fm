@@ -13679,6 +13679,409 @@
     "target_mode": "stimulus_side",
     "top_families": 8
   },
+  "model_free_gate_blocker_audit": {
+    "sources": [
+      "docs/model_free_recording_bidirectional_gate.json",
+      "docs/model_free_recording_bidirectional_gate_fractions.json",
+      "docs/model_free_recording_bidirectional_gate_recording_centered.json",
+      "docs/model_free_recording_bidirectional_gate_grandparent_recording_centered.json",
+      "docs/model_free_recording_bidirectional_gate_unit_residuals.json",
+      "docs/model_free_recording_bidirectional_gate_prior_side.json",
+      "docs/model_free_recording_bidirectional_gate_feedback.json",
+      "docs/model_free_family_bidirectional_gate_recording_centered.json",
+      "docs/model_free_family_bidirectional_gate_recording_centered_l2_1.json",
+      "docs/model_free_family_bidirectional_gate_recording_centered_l2_100.json",
+      "docs/model_free_family_bidirectional_gate_prior_side_recording_centered.json",
+      "docs/model_free_family_bidirectional_gate_feedback_recording_centered.json",
+      "docs/model_free_source_target_pair_gate_recording_centered.json",
+      "docs/model_free_source_target_pair_gate_families_recording_centered.json"
+    ],
+    "summary": {
+      "blocker_combinations": {
+        "centered_delta, target0, recording_bidirectionality": 12,
+        "centered_delta, target0, target1, recording_bidirectionality": 69,
+        "centered_delta, target1, recording_bidirectionality": 16,
+        "recording_bidirectionality": 2,
+        "target0, recording_bidirectionality": 18,
+        "target0, target1, recording_bidirectionality": 31,
+        "target1, recording_bidirectionality": 20
+      },
+      "blocker_counts": {
+        "centered_delta": 97,
+        "recording_bidirectionality": 168,
+        "target0": 130,
+        "target1": 136
+      },
+      "closest_rows": [
+        {
+          "bidirectional_fraction": 0.5,
+          "centered_delta": 0.08038410937975232,
+          "closest_margin": -0.25,
+          "decision": "reject: global target0",
+          "label": "KS014",
+          "missing_checks": [
+            "target0",
+            "target1",
+            "recording_bidirectionality"
+          ],
+          "n_bidirectional_recordings": 2,
+          "n_recordings": 4,
+          "positive_recording_fraction": 0.75,
+          "report": "family centered",
+          "target0": 0.5103383458646616,
+          "target1": 0.548447789275635
+        },
+        {
+          "bidirectional_fraction": 0.5,
+          "centered_delta": 0.08067057342320999,
+          "closest_margin": -0.25,
+          "decision": "reject: global target0",
+          "label": "KS014",
+          "missing_checks": [
+            "target0",
+            "target1",
+            "recording_bidirectionality"
+          ],
+          "n_bidirectional_recordings": 2,
+          "n_recordings": 4,
+          "positive_recording_fraction": 0.75,
+          "report": "family centered l2=1",
+          "target0": 0.5103383458646616,
+          "target1": 0.5493885230479775
+        },
+        {
+          "bidirectional_fraction": 0.5,
+          "centered_delta": 0.07795889064146727,
+          "closest_margin": -0.25,
+          "decision": "reject: global target0",
+          "label": "KS014",
+          "missing_checks": [
+            "target0",
+            "recording_bidirectionality"
+          ],
+          "n_bidirectional_recordings": 2,
+          "n_recordings": 4,
+          "positive_recording_fraction": 0.75,
+          "report": "family centered l2=100",
+          "target0": 0.5046992481203008,
+          "target1": 0.555032925682032
+        },
+        {
+          "bidirectional_fraction": 0.5,
+          "centered_delta": 0.010958674117957368,
+          "closest_margin": -0.25,
+          "decision": "reject: global target0",
+          "label": "NR_0019",
+          "missing_checks": [
+            "target0",
+            "target1",
+            "recording_bidirectionality"
+          ],
+          "n_bidirectional_recordings": 2,
+          "n_recordings": 4,
+          "positive_recording_fraction": 0.75,
+          "report": "family feedback",
+          "target0": 0.5317919075144508,
+          "target1": 0.5004149377593361
+        },
+        {
+          "bidirectional_fraction": 0.25,
+          "centered_delta": -0.015200889652547844,
+          "closest_margin": -0.5,
+          "decision": "reject: centered delta",
+          "label": "NYU-12",
+          "missing_checks": [
+            "centered_delta",
+            "target0",
+            "recording_bidirectionality"
+          ],
+          "n_bidirectional_recordings": 1,
+          "n_recordings": 4,
+          "positive_recording_fraction": 0.5,
+          "report": "panel counts",
+          "target0": 0.41007194244604317,
+          "target1": 0.6241685144124168
+        },
+        {
+          "bidirectional_fraction": 0.25,
+          "centered_delta": 0.042036830080846466,
+          "closest_margin": -0.5,
+          "decision": "reject: global target0",
+          "label": "KS014",
+          "missing_checks": [
+            "target0",
+            "target1",
+            "recording_bidirectionality"
+          ],
+          "n_bidirectional_recordings": 1,
+          "n_recordings": 4,
+          "positive_recording_fraction": 0.5,
+          "report": "panel recording centered",
+          "target0": 0.5197368421052632,
+          "target1": 0.5399811853245532
+        },
+        {
+          "bidirectional_fraction": 0.25,
+          "centered_delta": -0.006996238450911019,
+          "closest_margin": -0.5,
+          "decision": "reject: centered delta",
+          "label": "SWC_038",
+          "missing_checks": [
+            "centered_delta",
+            "target0",
+            "target1",
+            "recording_bidirectionality"
+          ],
+          "n_bidirectional_recordings": 1,
+          "n_recordings": 4,
+          "positive_recording_fraction": 0.5,
+          "report": "panel recording centered",
+          "target0": 0.5103833865814696,
+          "target1": 0.49408783783783783
+        },
+        {
+          "bidirectional_fraction": 0.25,
+          "centered_delta": 0.049606907673699796,
+          "closest_margin": -0.5,
+          "decision": "reject: global target0",
+          "label": "KS014",
+          "missing_checks": [
+            "target0",
+            "target1",
+            "recording_bidirectionality"
+          ],
+          "n_bidirectional_recordings": 1,
+          "n_recordings": 4,
+          "positive_recording_fraction": 0.75,
+          "report": "panel grandparent centered",
+          "target0": 0.5,
+          "target1": 0.5333960489181562
+        },
+        {
+          "bidirectional_fraction": 0.25,
+          "centered_delta": 0.010655776930561967,
+          "closest_margin": -0.5,
+          "decision": "reject: global target0",
+          "label": "NYU-12",
+          "missing_checks": [
+            "target0",
+            "recording_bidirectionality"
+          ],
+          "n_bidirectional_recordings": 1,
+          "n_recordings": 4,
+          "positive_recording_fraction": 0.5,
+          "report": "panel grandparent centered",
+          "target0": 0.499486125385406,
+          "target1": 0.5687361419068736
+        },
+        {
+          "bidirectional_fraction": 0.25,
+          "centered_delta": 0.013368061601142178,
+          "closest_margin": -0.5,
+          "decision": "reject: global target0",
+          "label": "CSH_ZAD_019",
+          "missing_checks": [
+            "target0",
+            "target1",
+            "recording_bidirectionality"
+          ],
+          "n_bidirectional_recordings": 1,
+          "n_recordings": 4,
+          "positive_recording_fraction": 0.75,
+          "report": "family centered",
+          "target0": 0.4953457446808511,
+          "target1": 0.5392798690671031
+        }
+      ],
+      "max_bidirectional_fraction": 0.5,
+      "max_bidirectional_recordings": 2,
+      "n_candidates": 0,
+      "n_positive_centered_delta": 86,
+      "n_rows": 168,
+      "top_bidirectional_rows": [
+        {
+          "bidirectional_fraction": 0.5,
+          "centered_delta": 0.08067057342320999,
+          "closest_margin": -0.25,
+          "decision": "reject: global target0",
+          "label": "KS014",
+          "missing_checks": [
+            "target0",
+            "target1",
+            "recording_bidirectionality"
+          ],
+          "n_bidirectional_recordings": 2,
+          "n_recordings": 4,
+          "positive_recording_fraction": 0.75,
+          "report": "family centered l2=1",
+          "target0": 0.5103383458646616,
+          "target1": 0.5493885230479775
+        },
+        {
+          "bidirectional_fraction": 0.5,
+          "centered_delta": 0.08038410937975232,
+          "closest_margin": -0.25,
+          "decision": "reject: global target0",
+          "label": "KS014",
+          "missing_checks": [
+            "target0",
+            "target1",
+            "recording_bidirectionality"
+          ],
+          "n_bidirectional_recordings": 2,
+          "n_recordings": 4,
+          "positive_recording_fraction": 0.75,
+          "report": "family centered",
+          "target0": 0.5103383458646616,
+          "target1": 0.548447789275635
+        },
+        {
+          "bidirectional_fraction": 0.5,
+          "centered_delta": 0.07795889064146727,
+          "closest_margin": -0.25,
+          "decision": "reject: global target0",
+          "label": "KS014",
+          "missing_checks": [
+            "target0",
+            "recording_bidirectionality"
+          ],
+          "n_bidirectional_recordings": 2,
+          "n_recordings": 4,
+          "positive_recording_fraction": 0.75,
+          "report": "family centered l2=100",
+          "target0": 0.5046992481203008,
+          "target1": 0.555032925682032
+        },
+        {
+          "bidirectional_fraction": 0.5,
+          "centered_delta": 0.010958674117957368,
+          "closest_margin": -0.25,
+          "decision": "reject: global target0",
+          "label": "NR_0019",
+          "missing_checks": [
+            "target0",
+            "target1",
+            "recording_bidirectionality"
+          ],
+          "n_bidirectional_recordings": 2,
+          "n_recordings": 4,
+          "positive_recording_fraction": 0.75,
+          "report": "family feedback",
+          "target0": 0.5317919075144508,
+          "target1": 0.5004149377593361
+        },
+        {
+          "bidirectional_fraction": 0.25,
+          "centered_delta": 0.09192386775753386,
+          "closest_margin": -0.5,
+          "decision": "reject: global target1",
+          "label": "MFD_06 -> SWC_038",
+          "missing_checks": [
+            "target1",
+            "recording_bidirectionality"
+          ],
+          "n_bidirectional_recordings": 1,
+          "n_recordings": 4,
+          "positive_recording_fraction": 0.75,
+          "report": "source-target centered",
+          "target0": 0.7052715654952076,
+          "target1": 0.38175675675675674
+        },
+        {
+          "bidirectional_fraction": 0.25,
+          "centered_delta": 0.0884213636559883,
+          "closest_margin": -0.5,
+          "decision": "reject: global target1",
+          "label": "MFD_06 -> SWC_038",
+          "missing_checks": [
+            "target1",
+            "recording_bidirectionality"
+          ],
+          "n_bidirectional_recordings": 1,
+          "n_recordings": 4,
+          "positive_recording_fraction": 1.0,
+          "report": "source-target families",
+          "target0": 0.6014376996805112,
+          "target1": 0.5244932432432432
+        },
+        {
+          "bidirectional_fraction": 0.25,
+          "centered_delta": 0.08473856032808114,
+          "closest_margin": -0.5,
+          "decision": "reject: global target1",
+          "label": "KS014 -> SWC_043",
+          "missing_checks": [
+            "target1",
+            "recording_bidirectionality"
+          ],
+          "n_bidirectional_recordings": 1,
+          "n_recordings": 4,
+          "positive_recording_fraction": 0.75,
+          "report": "source-target centered",
+          "target0": 0.5508130081300813,
+          "target1": 0.5243362831858407
+        },
+        {
+          "bidirectional_fraction": 0.25,
+          "centered_delta": 0.08217999848890423,
+          "closest_margin": -0.5,
+          "decision": "reject: global target1",
+          "label": "KS014 -> SWC_038",
+          "missing_checks": [
+            "target1",
+            "recording_bidirectionality"
+          ],
+          "n_bidirectional_recordings": 1,
+          "n_recordings": 4,
+          "positive_recording_fraction": 0.75,
+          "report": "source-target families",
+          "target0": 0.59185303514377,
+          "target1": 0.4966216216216216
+        },
+        {
+          "bidirectional_fraction": 0.25,
+          "centered_delta": 0.08190219198042137,
+          "closest_margin": -0.5,
+          "decision": "reject: global target0",
+          "label": "MFD_06 -> KS014",
+          "missing_checks": [
+            "target0",
+            "target1",
+            "recording_bidirectionality"
+          ],
+          "n_bidirectional_recordings": 1,
+          "n_recordings": 4,
+          "positive_recording_fraction": 0.75,
+          "report": "source-target families",
+          "target0": 0.5375939849624061,
+          "target1": 0.5465663217309501
+        },
+        {
+          "bidirectional_fraction": 0.25,
+          "centered_delta": 0.0766534559638008,
+          "closest_margin": -0.5,
+          "decision": "reject: global target0",
+          "label": "KS014 -> MFD_06",
+          "missing_checks": [
+            "target0",
+            "target1",
+            "recording_bidirectionality"
+          ],
+          "n_bidirectional_recordings": 1,
+          "n_recordings": 4,
+          "positive_recording_fraction": 0.75,
+          "report": "source-target families",
+          "target0": 0.5364455364455365,
+          "target1": 0.5421455938697318
+        }
+      ]
+    },
+    "thresholds": {
+      "min_bidirectional_recording_fraction": 0.75,
+      "min_centered_delta": 0.01,
+      "min_target_improvement": 0.55
+    }
+  },
   "model_free_matched_support80_panel": {
     "rows": [
       {

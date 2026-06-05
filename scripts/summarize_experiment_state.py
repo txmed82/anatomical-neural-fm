@@ -124,6 +124,7 @@ MODEL_FREE_SOURCE_TARGET_PAIR_RECORDING_CENTERED_FILE = (
 MODEL_FREE_SOURCE_TARGET_PAIR_FAMILIES_RECORDING_CENTERED_FILE = (
     "docs/model_free_source_target_pair_gate_families_recording_centered.json"
 )
+MODEL_FREE_GATE_BLOCKER_AUDIT_FILE = "docs/model_free_gate_blocker_audit.json"
 MODEL_FREE_FAMILY_BIDIRECTIONAL_RECORDING_CENTERED_FILE = (
     "docs/model_free_family_bidirectional_gate_recording_centered.json"
 )
@@ -435,6 +436,7 @@ def render_markdown(
     model_free_recording_bidirectional_feedback: dict | None = None,
     model_free_source_target_pair_recording_centered: dict | None = None,
     model_free_source_target_pair_families_recording_centered: dict | None = None,
+    model_free_gate_blocker_audit: dict | None = None,
     model_free_family_bidirectional_recording_centered: dict | None = None,
     model_free_family_bidirectional_recording_centered_l2_1: dict | None = None,
     model_free_family_bidirectional_recording_centered_l2_100: dict | None = None,
@@ -1203,6 +1205,45 @@ def render_markdown(
             ),
             "",
         ]
+    if model_free_gate_blocker_audit is not None:
+        summary = model_free_gate_blocker_audit["summary"]
+        blockers = summary["blocker_counts"]
+        top = summary["top_bidirectional_rows"][:4]
+        lines += [
+            "## Model-Free Gate Blocker Audit",
+            "",
+            "`docs/model_free_gate_blocker_audit.md` aggregates the current local",
+            "holdout and source-target model-free gates to identify which promotion",
+            "checks actually block the anatomy-transfer claim.",
+            "",
+            f"- rows audited: `{summary['n_rows']}`",
+            f"- candidates: `{summary['n_candidates']}`",
+            f"- positive centered-delta rows: `{summary['n_positive_centered_delta']}`",
+            f"- max bidirectional recordings: `{summary['max_bidirectional_recordings']}`",
+            f"- max bidirectional recording fraction: `{summary['max_bidirectional_fraction']:.3f}`",
+            f"- blocker counts: `centered_delta={blockers['centered_delta']}, target0={blockers['target0']}, target1={blockers['target1']}, recording_bidirectionality={blockers['recording_bidirectionality']}`",
+            "",
+            "| report | label | centered delta | target0 | target1 | bidir recs | missing checks |",
+            "|---|---|---:|---:|---:|---:|---|",
+        ]
+        for row in top:
+            lines.append(
+                f"| {row['report']} | {row['label']} | {row['centered_delta']:+.3f} | "
+                f"{row['target0']:.3f} | {row['target1']:.3f} | "
+                f"{row['n_bidirectional_recordings']}/{row['n_recordings']} | "
+                f"{', '.join(row['missing_checks'])} |"
+            )
+        lines += [
+            "",
+            (
+                "Decision: the next useful experiment should not be another small "
+                "feature or regularization variant. The universal blocker is "
+                "same-recording bidirectionality, so any new benchmark/control proposal "
+                "must first create target0+target1 evidence inside the same recordings "
+                "before GPU training."
+            ),
+            "",
+        ]
     if model_free_family_bidirectional_recording_centered is not None:
         summary = model_free_family_bidirectional_recording_centered["summary"]
         lines += [
@@ -1434,6 +1475,7 @@ def main() -> int:
     model_free_source_target_pair_families_recording_centered = read_mechanism_audit(
         REPO_ROOT / MODEL_FREE_SOURCE_TARGET_PAIR_FAMILIES_RECORDING_CENTERED_FILE
     )
+    model_free_gate_blocker_audit = read_mechanism_audit(REPO_ROOT / MODEL_FREE_GATE_BLOCKER_AUDIT_FILE)
     model_free_family_bidirectional_recording_centered = read_mechanism_audit(
         REPO_ROOT / MODEL_FREE_FAMILY_BIDIRECTIONAL_RECORDING_CENTERED_FILE
     )
@@ -1488,6 +1530,7 @@ def main() -> int:
         model_free_recording_bidirectional_feedback,
         model_free_source_target_pair_recording_centered,
         model_free_source_target_pair_families_recording_centered,
+        model_free_gate_blocker_audit,
         model_free_family_bidirectional_recording_centered,
         model_free_family_bidirectional_recording_centered_l2_1,
         model_free_family_bidirectional_recording_centered_l2_100,
@@ -1565,6 +1608,7 @@ def main() -> int:
         "model_free_source_target_pair_families_recording_centered": (
             model_free_source_target_pair_families_recording_centered
         ),
+        "model_free_gate_blocker_audit": model_free_gate_blocker_audit,
         "model_free_family_bidirectional_recording_centered": (
             model_free_family_bidirectional_recording_centered
         ),

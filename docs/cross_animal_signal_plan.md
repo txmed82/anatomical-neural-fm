@@ -1432,6 +1432,16 @@ pairs still fail global target0/target1 and never exceed `1/4` bidirectional
 recordings. This closes the combined source-pairing plus family-aggregation
 branch under the current matched cache.
 
+Gate blocker audit:
+`scripts/audit_model_free_gate_blockers.py` aggregates the current holdout and
+source-target model-free gates so the next plan is based on failure modes, not
+another ad hoc variant. Across 168 audited rows, there are zero candidates and
+the maximum same-recording bidirectional support is only `2/4`. Every row
+misses recording bidirectionality; target0 and target1 also fail in most rows.
+This makes the next milestone concrete: a redesigned benchmark/control must
+first pass same-recording target0+target1 evidence locally. Without that, no
+A100 training run should be launched.
+
 Recording-centered feature check:
 The gate also supports `--feature-mode recording_centered`, which subtracts
 each recording's mean parent-region feature vector before fitting. This reduces
