@@ -542,6 +542,29 @@ At the default target threshold (`0.55`), candidates only appear when recording 
 
 Decision: the current failure is not a tiny threshold miss. A candidate at the default target floor requires accepting only `1/4` bidirectional recordings, which is too weak for a cross-animal demo trigger.
 
+## Symmetric Strict Failure Mode Audit
+
+`docs/symmetric_strict_failure_modes.md` ranks the nearest rows
+against the strict symmetric promotion gate and reports the exact
+missing requirements.
+
+- rows: `280`
+- strict candidates: `0`
+- global-target-clear rows: `4`
+- one-recording-short and global-clear rows: `0`
+- blocker counts: `global_target0=197, global_target1=215, recording_bidirectionality=280`
+- decision: `strict_failure_modes_identified`
+
+| report | context | blockers | targets | bidir recs | missing | mean sym |
+|---|---|---|---|---:|---:|---:|
+| shared family target/control | feedback / broad_named_anatomy / NYU-12 | recording_bidirectionality, global_target0 | 0.540/0.554 | 2/3 | 1 | 0.487 |
+| shared family target/control | choice / broad_named_anatomy / SWC_043 | recording_bidirectionality, global_target0 | 0.534/0.610 | 2/3 | 1 | 0.531 |
+| family centered l2=1 | stimulus_side / KS014 | recording_bidirectionality, global_target0, global_target1 | 0.510/0.549 | 2/3 | 1 | 0.485 |
+| family centered | stimulus_side / KS014 | recording_bidirectionality, global_target0, global_target1 | 0.510/0.548 | 2/3 | 1 | 0.484 |
+| family centered l2=100 | stimulus_side / KS014 | recording_bidirectionality, global_target0 | 0.505/0.555 | 2/3 | 1 | 0.485 |
+
+Decision: there is no clean one-recording-short row that already clears both global target floors. The nearest actionable branch is a local redesign around shared broad-anatomy rows, where target0 is marginally below threshold and recording support is one hit short.
+
 ## Model-Free Recording Replication Audit
 
 `docs/model_free_recording_replication_audit.md` tests whether a

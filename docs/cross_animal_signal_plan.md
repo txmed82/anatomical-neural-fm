@@ -1521,6 +1521,18 @@ support is relaxed to `0.25` (`1/4` recordings). Treat that as threshold
 relaxation, not evidence. The next no-spend branch should improve symmetric
 recording support locally before any cloud run.
 
+Symmetric strict failure mode audit:
+`scripts/audit_symmetric_strict_failure_modes.py` explains the strict-gate
+misses directly. Every one of the 280 current rows fails recording
+bidirectionality. Four rows clear both global target floors, but none are only
+one recording short; the one-recording-short rows still have marginal target0
+or target1 misses. The best immediate branch is therefore not a GPU run, but a
+local shared broad-anatomy repair: focus on the NYU-12 feedback and SWC_043
+choice rows, where target1 clears, target0 is only `0.010` to `0.016` below
+threshold, and bidirectional support is `2/3` required recordings. Promotion
+requires both global targets >=`0.55` and at least `3/4` same-recording
+bidirectional hits.
+
 Recording-centered feature check:
 The gate also supports `--feature-mode recording_centered`, which subtracts
 each recording's mean parent-region feature vector before fitting. This reduces

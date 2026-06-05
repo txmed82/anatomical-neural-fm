@@ -452,6 +452,16 @@ support floor is relaxed to `0.25` (`1/4` recordings). Decision: do not spend
 on training until a local row clears symmetric recording support without that
 relaxation.
 
+Symmetric strict failure mode audit:
+`docs/symmetric_strict_failure_modes.md` ranks the closest rows against the
+strict symmetric gate. Every current row fails recording bidirectionality; only
+four clear both global target floors, and none of those is just one
+bidirectional recording short. The closest actionable rows are shared
+broad-anatomy target/control rows that are one recording short but still miss
+global target0 by `0.010` to `0.016`. Decision: the next no-spend branch should
+try to repair those marginal target0 plus recording-support misses locally, not
+launch training.
+
 Recording-centered feature check:
 `docs/model_free_recording_bidirectional_gate_recording_centered.md` subtracts
 each recording's own mean parent-region feature vector before ridge fitting.

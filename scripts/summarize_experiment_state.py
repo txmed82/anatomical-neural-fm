@@ -132,6 +132,7 @@ MODEL_FREE_RECORDING_SUPPORT_AUDIT_FILE = "docs/model_free_recording_support_aud
 MODEL_FREE_RECORDING_DIRECTIONALITY_AUDIT_FILE = "docs/model_free_recording_directionality_audit.json"
 SYMMETRIC_RECORDING_SUPPORT_AUDIT_FILE = "docs/symmetric_recording_support_audit.json"
 SYMMETRIC_THRESHOLD_SENSITIVITY_AUDIT_FILE = "docs/symmetric_threshold_sensitivity_audit.json"
+SYMMETRIC_STRICT_FAILURE_MODES_FILE = "docs/symmetric_strict_failure_modes.json"
 MODEL_FREE_RECORDING_REPLICATION_AUDIT_FILE = "docs/model_free_recording_replication_audit.json"
 MODEL_FREE_FAMILY_BIDIRECTIONAL_RECORDING_CENTERED_FILE = (
     "docs/model_free_family_bidirectional_gate_recording_centered.json"
@@ -452,6 +453,7 @@ def render_markdown(
     model_free_recording_directionality_audit: dict | None = None,
     symmetric_recording_support_audit: dict | None = None,
     symmetric_threshold_sensitivity_audit: dict | None = None,
+    symmetric_strict_failure_modes: dict | None = None,
     model_free_recording_replication_audit: dict | None = None,
     model_free_family_bidirectional_recording_centered: dict | None = None,
     model_free_family_bidirectional_recording_centered_l2_1: dict | None = None,
@@ -1488,6 +1490,48 @@ def render_markdown(
             ),
             "",
         ]
+    if symmetric_strict_failure_modes is not None:
+        summary = symmetric_strict_failure_modes["summary"]
+        blockers = ", ".join(
+            f"{name}={count}" for name, count in sorted(summary["blocker_counts"].items())
+        )
+        top = summary["closest_rows"][:5]
+        lines += [
+            "## Symmetric Strict Failure Mode Audit",
+            "",
+            "`docs/symmetric_strict_failure_modes.md` ranks the nearest rows",
+            "against the strict symmetric promotion gate and reports the exact",
+            "missing requirements.",
+            "",
+            f"- rows: `{summary['n_rows']}`",
+            f"- strict candidates: `{summary['strict_candidates']}`",
+            f"- global-target-clear rows: `{summary['global_target_clear_rows']}`",
+            f"- one-recording-short and global-clear rows: `{summary['one_recording_short_and_global_clear_rows']}`",
+            f"- blocker counts: `{blockers}`",
+            f"- decision: `{summary['decision']}`",
+            "",
+            "| report | context | blockers | targets | bidir recs | missing | mean sym |",
+            "|---|---|---|---|---:|---:|---:|",
+        ]
+        for row in top:
+            target0 = "n/a" if row["global_target0"] is None else f"{row['global_target0']:.3f}"
+            target1 = "n/a" if row["global_target1"] is None else f"{row['global_target1']:.3f}"
+            lines.append(
+                f"| {row['report']} | {row['context']} | {', '.join(row['blockers']) or 'none'} | "
+                f"{target0}/{target1} | "
+                f"{row['n_bidirectional_recordings']}/{row['required_bidirectional_recordings']} | "
+                f"{row['missing_bidirectional_recordings']} | {row['mean_symmetric_support']:.3f} |"
+            )
+        lines += [
+            "",
+            (
+                "Decision: there is no clean one-recording-short row that already clears "
+                "both global target floors. The nearest actionable branch is a local "
+                "redesign around shared broad-anatomy rows, where target0 is marginally "
+                "below threshold and recording support is one hit short."
+            ),
+            "",
+        ]
     if model_free_recording_replication_audit is not None:
         summary = model_free_recording_replication_audit["summary"]
         top = model_free_recording_replication_audit["rows"][:4]
@@ -1771,6 +1815,7 @@ def main() -> int:
     symmetric_threshold_sensitivity_audit = read_mechanism_audit(
         REPO_ROOT / SYMMETRIC_THRESHOLD_SENSITIVITY_AUDIT_FILE
     )
+    symmetric_strict_failure_modes = read_mechanism_audit(REPO_ROOT / SYMMETRIC_STRICT_FAILURE_MODES_FILE)
     model_free_recording_replication_audit = read_mechanism_audit(
         REPO_ROOT / MODEL_FREE_RECORDING_REPLICATION_AUDIT_FILE
     )
@@ -1836,6 +1881,7 @@ def main() -> int:
         model_free_recording_directionality_audit,
         symmetric_recording_support_audit,
         symmetric_threshold_sensitivity_audit,
+        symmetric_strict_failure_modes,
         model_free_recording_replication_audit,
         model_free_family_bidirectional_recording_centered,
         model_free_family_bidirectional_recording_centered_l2_1,
@@ -1922,6 +1968,7 @@ def main() -> int:
         "model_free_recording_directionality_audit": model_free_recording_directionality_audit,
         "symmetric_recording_support_audit": symmetric_recording_support_audit,
         "symmetric_threshold_sensitivity_audit": symmetric_threshold_sensitivity_audit,
+        "symmetric_strict_failure_modes": symmetric_strict_failure_modes,
         "model_free_recording_replication_audit": model_free_recording_replication_audit,
         "model_free_family_bidirectional_recording_centered": (
             model_free_family_bidirectional_recording_centered
