@@ -18,6 +18,7 @@ ARTIFACTS = {
     "derived_target_family": "docs/derived_target_family_gate.json",
     "contextual_target_family": "docs/contextual_target_family_gate.json",
     "wheel_target_family": "docs/wheel_target_family_gate.json",
+    "local_cached_manifest_candidates": "docs/local_cached_manifest_candidates.json",
     "behavior_cache_preflight": "docs/behavior_cache_preflight.json",
     "family_alt_prior": "docs/model_free_family_bidirectional_gate_prior_side_recording_centered.json",
     "family_alt_feedback": "docs/model_free_family_bidirectional_gate_feedback_recording_centered.json",
@@ -67,6 +68,7 @@ def build_report() -> dict:
     derived = artifacts["derived_target_family"]
     contextual = artifacts["contextual_target_family"]
     wheel = artifacts["wheel_target_family"]
+    local_manifest_candidates = artifacts["local_cached_manifest_candidates"]
     behavior_cache = artifacts["behavior_cache_preflight"]
     behavior_summary = behavior_cache.get("summary", {}) if behavior_cache is not None else {}
     stream_counts = behavior_summary.get("stream_counts", {})
@@ -75,6 +77,8 @@ def build_report() -> dict:
     behavior_ready = behavior_summary.get("decision") == "behavior_cache_ready"
     wheel_candidates = summary_value(wheel, "n_candidates", None)
     wheel_done = wheel is not None
+    local_manifest_summary = local_manifest_candidates.get("summary", {}) if local_manifest_candidates is not None else {}
+    local_manifest_decision = local_manifest_summary.get("decision")
     default_candidate_setting = summary_value(threshold, "strongest_default_target_candidate_setting", {}) or {}
     default_candidate_bidir = default_candidate_setting.get("min_bidirectional_recording_fraction")
     default_candidate_count = default_candidate_setting.get("n_candidates")
@@ -177,6 +181,16 @@ def build_report() -> dict:
             evidence=[
                 "current 28-recording manifest is feasible but not clean enough to pass the local gate",
                 (
+                    "local cached manifest candidate audit has not been run yet"
+                    if local_manifest_candidates is None
+                    else (
+                        "local cached manifest candidate audit found "
+                        f"{local_manifest_summary.get('n_new_candidate_panels', 'n/a')} new candidate panels "
+                        f"across {local_manifest_summary.get('n_local_recordings', 'n/a')} local recordings "
+                        f"({local_manifest_decision})"
+                    )
+                ),
+                (
                     "strict iterative 8-recording manifest has "
                     f"{summary_value(iterative, 'n_candidates', 'n/a')} candidates and max bidir "
                     f"{summary_value(iterative, 'max_bidirectional_recording_fraction', 0.0):.3f}"
@@ -184,8 +198,14 @@ def build_report() -> dict:
                 "recording-subset replication selected zero stable validation rows",
             ],
             next_action=(
-                "Only build or fetch more recordings after a target/control proposal defines "
-                "which recordings should prospectively contain target0+target1 evidence."
+                "The local cache expansion does not create a supported panel; build or fetch "
+                "a broader manifest only with a prospective target/family support rule, then "
+                "run the same local model-free gate before training."
+                if local_manifest_decision == "local_expansion_support_gap"
+                else (
+                    "Only build or fetch more recordings after a target/control proposal defines "
+                    "which recordings should prospectively contain target0+target1 evidence."
+                )
             ),
             gpu_trigger=(
                 "At least one local row on the proposed manifest must clear "

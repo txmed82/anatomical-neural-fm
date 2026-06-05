@@ -404,6 +404,16 @@ current manifest is not the immediate bottleneck. The next no-spend branch
 should test specific shared-family target/control designs under the
 recording-bidirectional gate.
 
+Local cached manifest candidate audit:
+`docs/local_cached_manifest_candidates.md` checks whether the extra local HDF5
+files create a better prospectively supported panel before fetching more data.
+They do not. The cache has 31 recordings across 9 subjects, but both expanded
+panels fail the per-subject target/family support floor: `all_local_cached`
+has 0 passing target/family rows across 31 recordings, and the 30-recording
+`local_cached_min2_recordings_per_subject` panel also has 0. Decision: the
+extra MFD_08/MFD_09 local recordings are not a training trigger and do not
+replace a broader manifest/design step.
+
 Shared-family target/control gate:
 `docs/shared_family_target_control_gate.md` tests those feasible families
 directly across all four target modes and seven holdouts. It finds zero
@@ -486,11 +496,11 @@ simple feature/L2 sweeps, further manifest narrowing, recording-subset
 selection, the current shared-family grid, cached alternative targets,
 source-target narrowing, direct cached-field derived targets, and contextual
 trial-state targets as closed GPU triggers. After the wheel-cache rebuild and
-wheel-derived target audit, the recommended next branch is a new manifest with
-prospective bidirectional support. The same local promotion gate remains in
-force before any training: delta vs shuffle and total baseline nonnegative,
-target0 and target1 >=`0.55`, and same-recording bidirectional fraction
->=`0.75`.
+wheel-derived target audit, and after checking the extra local cached
+recordings, the recommended next branch is a broader manifest with prospective
+bidirectional support. The same local promotion gate remains in force before
+any training: delta vs shuffle and total baseline nonnegative, target0 and
+target1 >=`0.55`, and same-recording bidirectional fraction >=`0.75`.
 
 Behavior-cache preflight:
 `docs/behavior_cache_preflight.md` inspects the active matched cache for richer

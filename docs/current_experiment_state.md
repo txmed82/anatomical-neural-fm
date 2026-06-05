@@ -261,6 +261,27 @@ redesign.
 
 Decision: the current full matched manifest is feasible enough for another local target/control redesign. The next branch should focus on specific shared families such as thalamic, hippocampal formation, and fiber tracts under the same recording-bidirectional gate, not on GPU training or recording-subset narrowing.
 
+## Local Cached Manifest Candidate Audit
+
+`docs/local_cached_manifest_candidates.md` tests whether the extra
+locally cached recordings create a better prospective manifest before
+any new data fetch or GPU launch.
+
+- local recordings: `31`
+- local subjects: `9`
+- candidate panels: `1`
+- new candidate panels: `0`
+- best panel: `current_support80_hdf5`
+- decision: `local_expansion_support_gap`
+
+| panel | recordings | subjects | passing target/family rows | decision |
+|---|---:|---:|---:|---|
+| current_support80_hdf5 | 28 | 7 | 4 | `candidate_panel_has_prospective_support` |
+| all_local_cached | 31 | 9 | 0 | `candidate_panel_support_gap` |
+| local_cached_min2_recordings_per_subject | 30 | 8 | 0 | `candidate_panel_support_gap` |
+
+Decision: the extra local recordings add MFD_08/MFD_09 coverage, but the expanded panels fail the prospective per-subject target/family support floor. The next manifest branch needs a broader external selection rule or a different target/control definition, not a GPU run on the local expansion.
+
 ## Shared-Family Target/Control Gate
 
 `docs/shared_family_target_control_gate.md` tests the feasible shared
@@ -360,7 +381,7 @@ branches after the current local negative audits.
 
 | priority | branch | status | next action |
 |---:|---|---|---|
-| 1 | new manifest with prospective bidirectional support | `recommended_next` | Only build or fetch more recordings after a target/control proposal defines which recordings should prospectively contain target0+target1 evidence. |
+| 1 | new manifest with prospective bidirectional support | `recommended_next` | The local cache expansion does not create a supported panel; build or fetch a broader manifest only with a prospective target/family support rule, then run the same local model-free gate before training. |
 | 86 | wheel-derived target family gate | `closed` | Do not spend on the tested wheel targets; move to a prospectively supported manifest. |
 | 87 | behavior-inclusive cache rebuild | `closed` | Cache rebuild is complete; all matched recordings now expose wheel. Use the wheel-derived local target gate before any training. |
 | 88 | direct cached-field derived targets | `closed` | Do not launch GPU training from contrast_strength, response_latency, or prior_engaged. |

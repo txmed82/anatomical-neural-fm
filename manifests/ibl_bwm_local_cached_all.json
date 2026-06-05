@@ -1,0 +1,199 @@
+{
+  "dataset": "ibl_bwm",
+  "n_recordings": 31,
+  "n_subjects": 9,
+  "project": "anatomical-neural-fm",
+  "recordings": [
+    {
+      "n_units": 799,
+      "probe_name": "probe01",
+      "session_id": "03063955-2523-47bd-ae57-f7489dd40f15",
+      "subject_id": "SWC_038"
+    },
+    {
+      "n_units": 983,
+      "probe_name": "probe00",
+      "session_id": "032ffcdf-7692-40b3-b9ff-8def1fc18b2e",
+      "subject_id": "NYU-12"
+    },
+    {
+      "n_units": 917,
+      "probe_name": "probe00",
+      "session_id": "16693458-0801-4d35-a3f1-9115c7e5acfd",
+      "subject_id": "KS014"
+    },
+    {
+      "n_units": 995,
+      "probe_name": "probe01",
+      "session_id": "16693458-0801-4d35-a3f1-9115c7e5acfd",
+      "subject_id": "KS014"
+    },
+    {
+      "n_units": 1280,
+      "probe_name": "probe01",
+      "session_id": "1e45d992-c356-40e1-9be1-a506d944896f",
+      "subject_id": "SWC_038"
+    },
+    {
+      "n_units": 1363,
+      "probe_name": "probe00",
+      "session_id": "35eeb752-8f4f-4040-9714-ba0f5b7ccdfe",
+      "subject_id": "MFD_06"
+    },
+    {
+      "n_units": 1689,
+      "probe_name": "probe00",
+      "session_id": "3f71aa98-08c6-4e79-b4c8-00eae4f03eff",
+      "subject_id": "MFD_06"
+    },
+    {
+      "n_units": 308,
+      "probe_name": "probe01",
+      "session_id": "41872d7f-75cb-4445-bb1a-132b354c44f0",
+      "subject_id": "SWC_038"
+    },
+    {
+      "n_units": 944,
+      "probe_name": "probe01",
+      "session_id": "49e0ab27-827a-4c91-bcaa-97eea27a1b8d",
+      "subject_id": "CSH_ZAD_019"
+    },
+    {
+      "n_units": 1455,
+      "probe_name": "probe01",
+      "session_id": "4d8c7767-981c-4347-8e5e-5d5fffe38534",
+      "subject_id": "SWC_038"
+    },
+    {
+      "n_units": 1143,
+      "probe_name": "probe00",
+      "session_id": "4ecb5d24-f5cc-402c-be28-9d0f7cb14b3a",
+      "subject_id": "SWC_043"
+    },
+    {
+      "n_units": 1173,
+      "probe_name": "probe00",
+      "session_id": "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c",
+      "subject_id": "CSH_ZAD_019"
+    },
+    {
+      "n_units": 840,
+      "probe_name": "probe01",
+      "session_id": "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c",
+      "subject_id": "CSH_ZAD_019"
+    },
+    {
+      "n_units": 982,
+      "probe_name": "probe00",
+      "session_id": "5ae68c54-2897-4d3a-8120-426150704385",
+      "subject_id": "MFD_08"
+    },
+    {
+      "n_units": 910,
+      "probe_name": "probe00",
+      "session_id": "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9",
+      "subject_id": "NR_0019"
+    },
+    {
+      "n_units": 515,
+      "probe_name": "probe01",
+      "session_id": "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9",
+      "subject_id": "NR_0019"
+    },
+    {
+      "n_units": 651,
+      "probe_name": "probe00",
+      "session_id": "6899a67d-2e53-4215-a52a-c7021b5da5d4",
+      "subject_id": "MFD_06"
+    },
+    {
+      "n_units": 1542,
+      "probe_name": "probe01",
+      "session_id": "6f09ba7e-e3ce-44b0-932b-c003fb44fb89",
+      "subject_id": "SWC_043"
+    },
+    {
+      "n_units": 1232,
+      "probe_name": "probe00",
+      "session_id": "6fb1e12c-883b-46d1-a745-473cde3232c8",
+      "subject_id": "SWC_043"
+    },
+    {
+      "n_units": 910,
+      "probe_name": "probe00",
+      "session_id": "88d24c31-52e4-49cc-9f32-6adbeb9eba87",
+      "subject_id": "SWC_043"
+    },
+    {
+      "n_units": 1504,
+      "probe_name": "probe00",
+      "session_id": "a1782f4f-86b0-480c-a7f2-3d8f1ab482ab",
+      "subject_id": "MFD_06"
+    },
+    {
+      "n_units": 1414,
+      "probe_name": "probe00",
+      "session_id": "a7eba2cf-427f-4df9-879b-e53e962eae18",
+      "subject_id": "MFD_08"
+    },
+    {
+      "n_units": 832,
+      "probe_name": "probe00",
+      "session_id": "a8a8af78-16de-4841-ab07-fde4b5281a03",
+      "subject_id": "NYU-12"
+    },
+    {
+      "n_units": 1185,
+      "probe_name": "probe01",
+      "session_id": "a8a8af78-16de-4841-ab07-fde4b5281a03",
+      "subject_id": "NYU-12"
+    },
+    {
+      "n_units": 1255,
+      "probe_name": "probe01",
+      "session_id": "b182b754-3c3e-4942-8144-6ee790926b58",
+      "subject_id": "NYU-12"
+    },
+    {
+      "n_units": 638,
+      "probe_name": "probe00",
+      "session_id": "b887df2c-bb9c-44c9-a9c0-538da87b2cab",
+      "subject_id": "NR_0019"
+    },
+    {
+      "n_units": 486,
+      "probe_name": "probe01",
+      "session_id": "b887df2c-bb9c-44c9-a9c0-538da87b2cab",
+      "subject_id": "NR_0019"
+    },
+    {
+      "n_units": 790,
+      "probe_name": "probe00",
+      "session_id": "b9c205c3-feac-485b-a89d-afc96d9cb280",
+      "subject_id": "KS014"
+    },
+    {
+      "n_units": 419,
+      "probe_name": "probe00",
+      "session_id": "e1931de1-cf7b-49af-af33-2ade15e8abe7",
+      "subject_id": "KS014"
+    },
+    {
+      "n_units": 1557,
+      "probe_name": "probe00",
+      "session_id": "ebce500b-c530-47de-8cb1-963c552703ea",
+      "subject_id": "MFD_09"
+    },
+    {
+      "n_units": 607,
+      "probe_name": "probe00",
+      "session_id": "edd22318-216c-44ff-bc24-49ce8be78374",
+      "subject_id": "CSH_ZAD_019"
+    }
+  ],
+  "selection": {
+    "label": "all_local_cached",
+    "note": "Generated by scripts/audit_local_cached_manifest_candidates.py for no-spend local screening.",
+    "source": "local BrainSet HDF5 cache"
+  }
+}

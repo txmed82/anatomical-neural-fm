@@ -112,6 +112,7 @@ NEXT_BENCHMARK_CONTROL_OPTIONS_FILE = "docs/next_benchmark_control_options.json"
 DERIVED_TARGET_FAMILY_GATE_FILE = "docs/derived_target_family_gate.json"
 CONTEXTUAL_TARGET_FAMILY_GATE_FILE = "docs/contextual_target_family_gate.json"
 WHEEL_TARGET_FAMILY_GATE_FILE = "docs/wheel_target_family_gate.json"
+LOCAL_CACHED_MANIFEST_CANDIDATES_FILE = "docs/local_cached_manifest_candidates.json"
 BEHAVIOR_CACHE_PREFLIGHT_FILE = "docs/behavior_cache_preflight.json"
 MODEL_FREE_MATCHED_SUPPORT80_PANEL_FILE = "docs/model_free_matched_support80_hdf5_panel.json"
 MODEL_FREE_POSITIVE_HOLDOUTS_MECHANISM_FILE = "docs/model_free_positive_holdouts_mechanism.json"
@@ -450,6 +451,7 @@ def render_markdown(
     derived_target_family_gate: dict | None = None,
     contextual_target_family_gate: dict | None = None,
     wheel_target_family_gate: dict | None = None,
+    local_cached_manifest_candidates: dict | None = None,
     behavior_cache_preflight: dict | None = None,
     model_free_matched_panel: dict | None = None,
     model_free_positive_holdouts: dict | None = None,
@@ -1008,6 +1010,41 @@ def render_markdown(
                 "specific shared families such as thalamic, hippocampal formation, and "
                 "fiber tracts under the same recording-bidirectional gate, not on GPU "
                 "training or recording-subset narrowing."
+            ),
+            "",
+        ]
+    if local_cached_manifest_candidates is not None:
+        summary = local_cached_manifest_candidates["summary"]
+        lines += [
+            "## Local Cached Manifest Candidate Audit",
+            "",
+            "`docs/local_cached_manifest_candidates.md` tests whether the extra",
+            "locally cached recordings create a better prospective manifest before",
+            "any new data fetch or GPU launch.",
+            "",
+            f"- local recordings: `{summary['n_local_recordings']}`",
+            f"- local subjects: `{summary['n_local_subjects']}`",
+            f"- candidate panels: `{summary['n_candidate_panels']}`",
+            f"- new candidate panels: `{summary['n_new_candidate_panels']}`",
+            f"- best panel: `{summary['best_panel']}`",
+            f"- decision: `{summary['decision']}`",
+            "",
+            "| panel | recordings | subjects | passing target/family rows | decision |",
+            "|---|---:|---:|---:|---|",
+        ]
+        for panel in local_cached_manifest_candidates["panels"]:
+            lines.append(
+                f"| {panel['label']} | {panel['n_recordings']} | {panel['n_subjects']} | "
+                f"{panel['n_passing_target_family_rows']} | `{panel['decision']}` |"
+            )
+        lines += [
+            "",
+            (
+                "Decision: the extra local recordings add MFD_08/MFD_09 coverage, but "
+                "the expanded panels fail the prospective per-subject target/family "
+                "support floor. The next manifest branch needs a broader external "
+                "selection rule or a different target/control definition, not a GPU "
+                "run on the local expansion."
             ),
             "",
         ]
@@ -2114,6 +2151,7 @@ def main() -> int:
     derived_target_family_gate = read_mechanism_audit(REPO_ROOT / DERIVED_TARGET_FAMILY_GATE_FILE)
     contextual_target_family_gate = read_mechanism_audit(REPO_ROOT / CONTEXTUAL_TARGET_FAMILY_GATE_FILE)
     wheel_target_family_gate = read_mechanism_audit(REPO_ROOT / WHEEL_TARGET_FAMILY_GATE_FILE)
+    local_cached_manifest_candidates = read_mechanism_audit(REPO_ROOT / LOCAL_CACHED_MANIFEST_CANDIDATES_FILE)
     behavior_cache_preflight = read_mechanism_audit(REPO_ROOT / BEHAVIOR_CACHE_PREFLIGHT_FILE)
     model_free_matched_panel = read_mechanism_audit(REPO_ROOT / MODEL_FREE_MATCHED_SUPPORT80_PANEL_FILE)
     model_free_positive_holdouts = read_mechanism_audit(REPO_ROOT / MODEL_FREE_POSITIVE_HOLDOUTS_MECHANISM_FILE)
@@ -2209,6 +2247,7 @@ def main() -> int:
         derived_target_family_gate,
         contextual_target_family_gate,
         wheel_target_family_gate,
+        local_cached_manifest_candidates,
         behavior_cache_preflight,
         model_free_matched_panel,
         model_free_positive_holdouts,
@@ -2297,6 +2336,7 @@ def main() -> int:
         "derived_target_family_gate": derived_target_family_gate,
         "contextual_target_family_gate": contextual_target_family_gate,
         "wheel_target_family_gate": wheel_target_family_gate,
+        "local_cached_manifest_candidates": local_cached_manifest_candidates,
         "behavior_cache_preflight": behavior_cache_preflight,
         "model_free_matched_support80_panel": model_free_matched_panel,
         "model_free_positive_holdouts_mechanism": model_free_positive_holdouts,

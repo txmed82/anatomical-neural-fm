@@ -1473,6 +1473,18 @@ by renting a GPU or fetching a new manifest. It should define a stricter
 shared-family target/control screen using thalamic, hippocampal formation, and
 fiber-tract families, then require the same recording-bidirectional local gate.
 
+Local cached manifest candidate audit:
+`scripts/audit_local_cached_manifest_candidates.py` tests whether the extra
+local HDF5 files can provide that broader prospective manifest without another
+data fetch. They cannot. The local cache has 31 recordings across 9 subjects,
+but the expanded panels have zero passing target/family rows: `all_local_cached`
+adds MFD_08 and MFD_09 but fails the per-subject floor, and
+`local_cached_min2_recordings_per_subject` keeps MFD_08 while dropping MFD_09
+but still has zero passing rows. The only panel with basic support is the
+already-tested 28-recording support80 manifest. This keeps the next branch
+no-spend, but points it toward a broader external selection rule or different
+target/control definition rather than the local expansion.
+
 Shared-family target/control gate:
 `scripts/audit_shared_family_target_control_gate.py` runs that screen. It tests
 four feasible families across `choice`, `stimulus_side`, `feedback`, and
@@ -1557,12 +1569,13 @@ Next benchmark/control options audit:
 `scripts/audit_next_benchmark_control_options.py` converts the negative local
 audits into a ranked plan. After the direct derived-target and contextual
 trial-state screens, the behavior-cache rebuild, and the wheel-derived target
-screen, it now recommends a new manifest with prospective bidirectional support
-as the next branch. It closes more feature/L2 sweeps, further narrowing of the
-current manifest, recording-subset selection, the current shared-family grid,
-cached alternative targets, direct cached-field derived targets, contextual
-cached trial-state targets, wheel-derived targets, and source-target narrowing
-as GPU triggers. The only training trigger remains a local row with
+screen, and the local cached manifest expansion check, it now recommends a
+broader manifest with prospective bidirectional support as the next branch. It
+closes more feature/L2 sweeps, further narrowing of the current manifest,
+recording-subset selection, the current shared-family grid, cached alternative
+targets, direct cached-field derived targets, contextual cached trial-state
+targets, wheel-derived targets, source-target narrowing, and the current local
+cache expansion as GPU triggers. The only training trigger remains a local row with
 delta_vs_shuffle>=`0`, delta_vs_total>=`0`, target0>=`0.55`,
 target1>=`0.55`, and bidirectional_recording_fraction>=`0.75`.
 

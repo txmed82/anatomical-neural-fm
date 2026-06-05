@@ -6,6 +6,7 @@
     "family_alt_feedback": "docs/model_free_family_bidirectional_gate_feedback_recording_centered.json",
     "family_alt_prior": "docs/model_free_family_bidirectional_gate_prior_side_recording_centered.json",
     "iterative_manifest": "docs/shared_family_iterative_manifest_gate.json",
+    "local_cached_manifest_candidates": "docs/local_cached_manifest_candidates.json",
     "recording_replication": "docs/model_free_recording_replication_audit.json",
     "shared_broad_repair": "docs/shared_broad_anatomy_repair_sweep.json",
     "shared_family": "docs/shared_family_target_control_gate.json",
@@ -18,12 +19,13 @@
     {
       "evidence": [
         "current 28-recording manifest is feasible but not clean enough to pass the local gate",
+        "local cached manifest candidate audit found 0 new candidate panels across 31 local recordings (local_expansion_support_gap)",
         "strict iterative 8-recording manifest has 0 candidates and max bidir 0.250",
         "recording-subset replication selected zero stable validation rows"
       ],
       "gpu_trigger": "At least one local row on the proposed manifest must clear delta_vs_shuffle>=0, delta_vs_total>=0, target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75 before training.",
       "name": "new manifest with prospective bidirectional support",
-      "next_action": "Only build or fetch more recordings after a target/control proposal defines which recordings should prospectively contain target0+target1 evidence.",
+      "next_action": "The local cache expansion does not create a supported panel; build or fetch a broader manifest only with a prospective target/family support rule, then run the same local model-free gate before training.",
       "priority": 1,
       "status": "recommended_next"
     },
