@@ -493,11 +493,12 @@ and same-recording bidirectional fraction >=`0.75`.
 Behavior-cache preflight:
 `docs/behavior_cache_preflight.md` inspects the active matched cache for richer
 behavior streams. The HDF5 files are present for all 28 manifest recordings,
-and shards 0-1 of the behavior rebuild completed cleanly
+and shards 0-2 of the behavior rebuild completed cleanly
 (`docs/behavior_cache_build_shard00.md`: 7/7 available, 4 rebuilt, 0 failed;
-`docs/behavior_cache_build_shard01.md`: 7/7 available, 7 rebuilt, 0 failed).
-Current coverage is `wheel=14/28`; `14/28` still need a behavior-inclusive
-rebuild. Continue the generated shard commands for shards 2-3 without
+`docs/behavior_cache_build_shard01.md`: 7/7 available, 7 rebuilt, 0 failed;
+`docs/behavior_cache_build_shard02.md`: 7/7 available, 7 rebuilt, 0 failed).
+Current coverage is `wheel=21/28`; `7/28` still need a behavior-inclusive
+rebuild. Continue the generated shard command for shard 3 without
 `--no-wheel`, preserving `--trial-window-only --window-len 1.0`, and with
 `--rebuild-missing-stream wheel` so existing compact HDF5s are replaced only
 when the behavior stream is missing. Decision: finish the local cache rebuild

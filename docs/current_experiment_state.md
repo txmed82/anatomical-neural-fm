@@ -375,25 +375,26 @@ target/control branch.
 
 - manifest recordings: `28`
 - present files: `28`
-- required stream coverage: `wheel=14/28`
-- recordings needing behavior rebuild: `14`
+- required stream coverage: `wheel=21/28`
+- recordings needing behavior rebuild: `7`
 - decision: `behavior_cache_rebuild_required`
 
 Completed rebuild reports:
 
 - `docs/behavior_cache_build_shard00.md`: `7/7` available, `4` rebuilt missing-wheel files, `3` already-valid files skipped, `0` failures in `294s`
 - `docs/behavior_cache_build_shard01.md`: `7/7` available, `7` rebuilt missing-wheel files, `0` failures in `411s`
+- `docs/behavior_cache_build_shard02.md`: `7/7` available, `7` rebuilt missing-wheel files, `0` failures in `449s`
 
-Remaining rebuild commands:
+Remaining rebuild command:
 
 ```bash
-uv run python scripts/build_ibl_brainset_batch.py --manifest manifests/ibl_bwm_region_matched_candidates_s3_present_support80_hdf5_scored.json --num-shards 4 --shard-index 2 --report docs/behavior_cache_build_shard02.md --trial-window-only --window-len 1.0 --rebuild-missing-stream wheel # writes data/brainsets/ibl_bwm
 uv run python scripts/build_ibl_brainset_batch.py --manifest manifests/ibl_bwm_region_matched_candidates_s3_present_support80_hdf5_scored.json --num-shards 4 --shard-index 3 --report docs/behavior_cache_build_shard03.md --trial-window-only --window-len 1.0 --rebuild-missing-stream wheel # writes data/brainsets/ibl_bwm
 ```
 
 Decision: the local behavior-inclusive rebuild path is working and now covers
-half the matched cache. Finish shards 2-3, then define a wheel or external
-behavior target and require the same local gate before any GPU training.
+three quarters of the matched cache. Finish shard 3, then define a wheel or
+external behavior target and require the same local gate before any GPU
+training.
 
 ## Derived Target Family Gate
 

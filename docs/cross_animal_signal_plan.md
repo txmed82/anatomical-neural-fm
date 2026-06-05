@@ -1572,10 +1572,11 @@ are present. Shard 0 completed locally in `294s` with `7/7` available
 recordings, `4` rebuilt missing-wheel files, and `0` failures
 (`docs/behavior_cache_build_shard00.md`). Shard 1 completed locally in `411s`
 with `7/7` available recordings, `7` rebuilt missing-wheel files, and `0`
-failures (`docs/behavior_cache_build_shard01.md`). The cache now has
-`wheel=14/28`; the remaining `14/28` still need the same local rebuild.
-Continue the generated shard commands for shards 2-3 without `--no-wheel`,
-while keeping
+failures (`docs/behavior_cache_build_shard01.md`). Shard 2 completed locally in
+`449s` with `7/7` available recordings, `7` rebuilt missing-wheel files, and
+`0` failures (`docs/behavior_cache_build_shard02.md`). The cache now has
+`wheel=21/28`; the remaining `7/28` still need the same local rebuild.
+Continue the generated shard 3 command without `--no-wheel`, while keeping
 `--trial-window-only --window-len 1.0`, and add
 `--rebuild-missing-stream wheel` so existing compact HDF5s are rebuilt only
 when the behavior stream is absent. After rebuild, the first local target
