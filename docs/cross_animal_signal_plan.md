@@ -1240,3 +1240,22 @@ uv run python scripts/check_lso_demo_gate.py \
   --holdout CSH_ZAD_019 \
   --out docs/lso_csh_full_eval_centered_shared_parent_shuffle_gate.json
 ```
+
+## Current Phase 3-5 Stop Condition
+
+The stricter within-recording shuffle, pairwise-rank objective, centered-BCE
+anchor, bidirectional target-class gate, and local objective probe are now in
+place. The paid one-seed L4 pilots did not produce a demo-quality transfer
+signal, and the newest no-spend CPU matrix rejects all current local variants
+for cloud promotion:
+
+- `recording_local_auc_surrogate`
+- `recording_centered_bce`
+- `recording_pairwise_rank_centered_bce`
+- `recording_local_auc_surrogate` with target-balanced sampling
+
+All four local probes fail centered true-vs-shuffle AUC, target1 true-class
+improvement, and recording support. The next step is not another RunPod pilot.
+Redesign the sampler/objective locally until target0 and target1 both improve
+within recordings against the shuffled control, then spend only on a bounded
+confirmation run.

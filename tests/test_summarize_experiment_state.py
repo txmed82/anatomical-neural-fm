@@ -2,7 +2,9 @@ import json
 from pathlib import Path
 
 from scripts.summarize_experiment_state import (
+    local_probe_outcome,
     read_slice_result,
+    read_local_probe_result,
     read_strict_gate,
     render_markdown,
     slice_outcome,
@@ -64,3 +66,32 @@ def test_render_markdown_keeps_no_paid_broadening_decision(tmp_path: Path) -> No
     assert summary["decision"] == "no_paid_broadening_without_new_mechanism"
     assert "Current Anatomy-Transfer Experiment State" in markdown
     assert "No current strict-gate artifact supports paid broadening" in markdown
+
+
+def test_local_probe_matrix_rejects_failed_target_class(tmp_path: Path) -> None:
+    gate_path = tmp_path / "gate.json"
+    mismatch_path = tmp_path / "mismatch.json"
+    gate_path.write_text(json.dumps({
+        "pass": False,
+        "metrics": {
+            "centered_auc_delta_vs_shuffle": -0.005,
+            "paired_true_vs_shuffle": 0.494,
+            "paired_specificity_gap": 0.010,
+            "target0_true_class_improved": 0.556,
+            "target1_true_class_improved": 0.419,
+            "recordings_positive": 2,
+            "n_recordings": 4,
+        },
+    }))
+    mismatch_path.write_text(json.dumps({
+        "decision": "paired_metric_not_recording_rank_stable",
+        "summary": {"true_minus_shuffle_auc": -0.009},
+    }))
+
+    row = read_local_probe_result("probe", gate_path, mismatch_path)
+    markdown = render_markdown([], [], local_probes=[row])
+
+    assert row is not None
+    assert local_probe_outcome(row) == "reject: centered AUC, target1, recording support, mismatch"
+    assert "Local Probe Matrix" in markdown
+    assert "paired_metric_not_recording_rank_stable" in markdown

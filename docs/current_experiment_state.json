@@ -549,6 +549,68 @@
       "true_minus_shuffle_auc": -0.008582677508096215
     }
   },
+  "local_probe_matrix": [
+    {
+      "centered_delta": -0.005176594003551915,
+      "gate_source": "docs/local_csh_auc_surrogate_probe_anatomy_specific_gate.json",
+      "label": "local AUC surrogate",
+      "mismatch_decision": "paired_metric_not_recording_rank_stable",
+      "mismatch_source": "docs/local_csh_auc_surrogate_probe_mismatch.json",
+      "outcome": "reject: centered AUC, target1, recording support, mismatch",
+      "paired_true_vs_shuffle": 0.4944974321349963,
+      "pass_gate": false,
+      "positive_recordings": "2/4",
+      "specificity_gap": 0.030080704328686703,
+      "target0_true_class_improved": 0.5558510638297872,
+      "target1_true_class_improved": 0.41898527004909986,
+      "true_minus_shuffle_auc": -0.008582677508096215
+    },
+    {
+      "centered_delta": -0.005190740676254468,
+      "gate_source": "docs/local_csh_recording_centered_bce_probe_anatomy_specific_gate.json",
+      "label": "local recording-centered BCE",
+      "mismatch_decision": "paired_metric_not_recording_rank_stable",
+      "mismatch_source": "docs/local_csh_recording_centered_bce_probe_mismatch.json",
+      "outcome": "reject: centered AUC, target1, recording support, mismatch",
+      "paired_true_vs_shuffle": 0.4937637564196625,
+      "pass_gate": false,
+      "positive_recordings": "2/4",
+      "specificity_gap": 0.028980190755685975,
+      "target0_true_class_improved": 0.5571808510638298,
+      "target1_true_class_improved": 0.4157119476268412,
+      "true_minus_shuffle_auc": -0.008590839050040044
+    },
+    {
+      "centered_delta": -0.005176321952153784,
+      "gate_source": "docs/local_csh_rank_centered_bce_probe_anatomy_specific_gate.json",
+      "label": "local rank + centered BCE",
+      "mismatch_decision": "paired_metric_not_recording_rank_stable",
+      "mismatch_source": "docs/local_csh_rank_centered_bce_probe_mismatch.json",
+      "outcome": "reject: centered AUC, target1, recording support, mismatch",
+      "paired_true_vs_shuffle": 0.4944974321349963,
+      "pass_gate": false,
+      "positive_recordings": "2/4",
+      "specificity_gap": 0.030080704328686703,
+      "target0_true_class_improved": 0.5558510638297872,
+      "target1_true_class_improved": 0.41898527004909986,
+      "true_minus_shuffle_auc": -0.008582405456698083
+    },
+    {
+      "centered_delta": -0.0052582094229898235,
+      "gate_source": "docs/local_csh_auc_surrogate_target_balanced_probe_anatomy_specific_gate.json",
+      "label": "local AUC surrogate target-balanced",
+      "mismatch_decision": "paired_metric_not_recording_rank_stable",
+      "mismatch_source": "docs/local_csh_auc_surrogate_target_balanced_probe_mismatch.json",
+      "outcome": "reject: centered AUC, target1, recording support, mismatch",
+      "paired_true_vs_shuffle": 0.5022010271460015,
+      "pass_gate": false,
+      "positive_recordings": "2/4",
+      "specificity_gap": 0.03888481291269258,
+      "target0_true_class_improved": 0.5804521276595744,
+      "target1_true_class_improved": 0.40589198036006546,
+      "true_minus_shuffle_auc": -0.00934550962844305
+    }
+  ],
   "mechanism": {
     "carriers": [
       "PRT",

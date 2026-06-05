@@ -1,0 +1,74 @@
+{
+  "arms": [
+    "shared_baseline",
+    "region_only",
+    "region_shuffle"
+  ],
+  "checks": {
+    "bidirectional_target_classes": false,
+    "positive_centered_delta": false,
+    "positive_specificity_gap": true,
+    "recording_permutation": false,
+    "recording_support": false
+  },
+  "holdout": "CSH_ZAD_019",
+  "metrics": {
+    "bidirectional_recording_classifications": {
+      "downward_probability_shift": 2,
+      "mixed_or_failed_ranking": 1,
+      "upward_probability_shift": 1
+    },
+    "centered_auc_delta_vs_shuffle": -0.0052582094229898235,
+    "centered_auc_region_only": 0.49429181756450885,
+    "centered_auc_region_shuffle": 0.4995500269874987,
+    "full_auc_delta_vs_shuffle": -0.00934550962844305,
+    "full_auc_region_only": 0.47444457986558486,
+    "full_auc_region_shuffle": 0.4837900894940279,
+    "n_recordings": 4,
+    "paired_shuffle_vs_shared": 0.4633162142333089,
+    "paired_specificity_gap": 0.03888481291269258,
+    "paired_true_vs_shuffle": 0.5022010271460015,
+    "recording_deltas": {
+      "49e0ab27-827a-4c91-bcaa-97eea27a1b8d_probe01": -0.027102380857321584,
+      "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe00": -0.043032786885245866,
+      "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe01": 0.0008528380555292148,
+      "edd22318-216c-44ff-bc24-49ce8be78374_probe00": 0.014045971095368981
+    },
+    "recording_sign_flip": {
+      "n_recordings": 4,
+      "null_distribution": [
+        -0.02125849422336641,
+        -0.020832075195601804,
+        -0.014235508675681921,
+        -0.013809089647917314,
+        -0.0077073037947056194,
+        -0.007280884766941012,
+        -0.000684318247021129,
+        -0.0002578992192565216,
+        0.0002578992192565216,
+        0.000684318247021129,
+        0.007280884766941012,
+        0.0077073037947056194,
+        0.013809089647917314,
+        0.014235508675681921,
+        0.020832075195601804,
+        0.02125849422336641
+      ],
+      "observed_mean_delta": -0.013809089647917314,
+      "one_sided_p": 0.8125
+    },
+    "recording_support_fraction": 0.5,
+    "recordings_positive": 2,
+    "target0_true_class_improved": 0.5804521276595744,
+    "target1_true_class_improved": 0.40589198036006546
+  },
+  "pass": false,
+  "root": "runs/local_csh_auc_surrogate_target_balanced_probe",
+  "thresholds": {
+    "alpha": 0.05,
+    "min_centered_delta": 0.01,
+    "min_recording_support_fraction": 0.75,
+    "min_specificity_gap": 0.0,
+    "min_target_class_improvement": 0.55
+  }
+}

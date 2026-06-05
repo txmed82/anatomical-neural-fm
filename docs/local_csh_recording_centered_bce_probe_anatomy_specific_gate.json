@@ -1,0 +1,74 @@
+{
+  "arms": [
+    "shared_baseline",
+    "region_only",
+    "region_shuffle"
+  ],
+  "checks": {
+    "bidirectional_target_classes": false,
+    "positive_centered_delta": false,
+    "positive_specificity_gap": true,
+    "recording_permutation": false,
+    "recording_support": false
+  },
+  "holdout": "CSH_ZAD_019",
+  "metrics": {
+    "bidirectional_recording_classifications": {
+      "downward_probability_shift": 2,
+      "mixed_or_failed_ranking": 1,
+      "upward_probability_shift": 1
+    },
+    "centered_auc_delta_vs_shuffle": -0.005190740676254468,
+    "centered_auc_region_only": 0.49288803235017586,
+    "centered_auc_region_shuffle": 0.49807877302643033,
+    "full_auc_delta_vs_shuffle": -0.008590839050040044,
+    "full_auc_region_only": 0.4741420587108681,
+    "full_auc_region_shuffle": 0.48273289776090816,
+    "n_recordings": 4,
+    "paired_shuffle_vs_shared": 0.46478356566397655,
+    "paired_specificity_gap": 0.028980190755685975,
+    "paired_true_vs_shuffle": 0.4937637564196625,
+    "recording_deltas": {
+      "49e0ab27-827a-4c91-bcaa-97eea27a1b8d_probe01": -0.029970322460441012,
+      "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe00": -0.04459632332038277,
+      "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe01": 0.0013858618402350364,
+      "edd22318-216c-44ff-bc24-49ce8be78374_probe00": 0.014892521908735024
+    },
+    "recording_sign_flip": {
+      "n_recordings": 4,
+      "null_distribution": [
+        -0.02271125738244846,
+        -0.022018326462330942,
+        -0.015264996428080949,
+        -0.01457206550796343,
+        -0.007726096152227954,
+        -0.007033165232110436,
+        -0.0004130957222570758,
+        -0.0002798351978604424,
+        0.0002798351978604424,
+        0.0004130957222570758,
+        0.007033165232110436,
+        0.007726096152227954,
+        0.01457206550796343,
+        0.015264996428080949,
+        0.022018326462330942,
+        0.02271125738244846
+      ],
+      "observed_mean_delta": -0.01457206550796343,
+      "one_sided_p": 0.8125
+    },
+    "recording_support_fraction": 0.5,
+    "recordings_positive": 2,
+    "target0_true_class_improved": 0.5571808510638298,
+    "target1_true_class_improved": 0.4157119476268412
+  },
+  "pass": false,
+  "root": "runs/local_csh_recording_centered_bce_probe",
+  "thresholds": {
+    "alpha": 0.05,
+    "min_centered_delta": 0.01,
+    "min_recording_support_fraction": 0.75,
+    "min_specificity_gap": 0.0,
+    "min_target_class_improvement": 0.55
+  }
+}

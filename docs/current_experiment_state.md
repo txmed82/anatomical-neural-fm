@@ -104,3 +104,16 @@ The first probe used `recording_local_auc_surrogate` for two CPU steps.
 - true-minus-shuffle AUC: `-0.009`
 
 Decision: reject this objective configuration locally. It does not justify a RunPod launch because it fails target1, centered AUC, and recording support.
+
+## Local Probe Matrix
+
+These CPU-only probes are the current promotion gate for objective and sampling variants. A candidate should pass the strict gate locally before any new RunPod spend.
+
+| probe | gate | centered_delta | paired_true_vs_shuffle | specificity_gap | target0 | target1 | recordings | mismatch | outcome |
+|---|---|---:|---:|---:|---:|---:|---:|---|---|
+| local AUC surrogate | False | -0.005 | 0.494 | +0.030 | 0.556 | 0.419 | 2/4 | `paired_metric_not_recording_rank_stable` | reject: centered AUC, target1, recording support, mismatch |
+| local recording-centered BCE | False | -0.005 | 0.494 | +0.029 | 0.557 | 0.416 | 2/4 | `paired_metric_not_recording_rank_stable` | reject: centered AUC, target1, recording support, mismatch |
+| local rank + centered BCE | False | -0.005 | 0.494 | +0.030 | 0.556 | 0.419 | 2/4 | `paired_metric_not_recording_rank_stable` | reject: centered AUC, target1, recording support, mismatch |
+| local AUC surrogate target-balanced | False | -0.005 | 0.502 | +0.039 | 0.580 | 0.406 | 2/4 | `paired_metric_not_recording_rank_stable` | reject: centered AUC, target1, recording support, mismatch |
+
+Decision: all current tiny local variants are rejected for cloud promotion. They repeatedly improve target-0 more than target-1, lose centered true-vs-shuffle AUC, or fail recording support. The next no-spend step is to redesign the sampler/objective so both target classes improve within recordings before any paid run.

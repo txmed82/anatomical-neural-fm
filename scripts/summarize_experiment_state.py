@@ -45,6 +45,22 @@ class SliceRow:
     source: Path
 
 
+@dataclass(frozen=True)
+class LocalProbeRow:
+    label: str
+    pass_gate: bool
+    centered_delta: float | None
+    paired_true_vs_shuffle: float | None
+    specificity_gap: float | None
+    target0_true_class_improved: float | None
+    target1_true_class_improved: float | None
+    positive_recordings: str
+    mismatch_decision: str
+    true_minus_shuffle_auc: float | None
+    gate_source: Path
+    mismatch_source: Path
+
+
 STRICT_GATE_FILES = (
     ("CSH centered original", "docs/lso_csh_full_eval_centered_anatomy_specific_gate.json"),
     ("NR_0019 centered replication", "docs/lso_nr0019_full_eval_centered_anatomy_specific_gate.json"),
@@ -70,6 +86,28 @@ CENTERED_BCE_MISMATCH_AUDIT_FILE = "docs/lso_csh_pairwise_rank_centered_bce_pilo
 CENTERED_BCE_MECHANISM_AUDIT_FILE = "docs/lso_csh_pairwise_rank_centered_bce_pilot_mechanism.json"
 LOCAL_AUC_SURROGATE_GATE_FILE = "docs/local_csh_auc_surrogate_probe_anatomy_specific_gate.json"
 LOCAL_AUC_SURROGATE_MISMATCH_FILE = "docs/local_csh_auc_surrogate_probe_mismatch.json"
+LOCAL_PROBE_FILES = (
+    (
+        "local AUC surrogate",
+        "docs/local_csh_auc_surrogate_probe_anatomy_specific_gate.json",
+        "docs/local_csh_auc_surrogate_probe_mismatch.json",
+    ),
+    (
+        "local recording-centered BCE",
+        "docs/local_csh_recording_centered_bce_probe_anatomy_specific_gate.json",
+        "docs/local_csh_recording_centered_bce_probe_mismatch.json",
+    ),
+    (
+        "local rank + centered BCE",
+        "docs/local_csh_rank_centered_bce_probe_anatomy_specific_gate.json",
+        "docs/local_csh_rank_centered_bce_probe_mismatch.json",
+    ),
+    (
+        "local AUC surrogate target-balanced",
+        "docs/local_csh_auc_surrogate_target_balanced_probe_anatomy_specific_gate.json",
+        "docs/local_csh_auc_surrogate_target_balanced_probe_mismatch.json",
+    ),
+)
 
 
 def display_path(path: Path) -> str:
@@ -138,6 +176,35 @@ def read_slice_result(label: str, path: Path, holdout: str) -> SliceRow | None:
     )
 
 
+def read_local_probe_result(label: str, gate_path: Path, mismatch_path: Path) -> LocalProbeRow | None:
+    if not gate_path.exists() or not mismatch_path.exists():
+        return None
+    gate = json.loads(gate_path.read_text())
+    mismatch = json.loads(mismatch_path.read_text())
+    metrics = gate.get("metrics", {})
+    mismatch_summary = mismatch.get("summary", {})
+    n_recordings = metrics.get("n_recordings")
+    recordings_positive = metrics.get("recordings_positive")
+    positive_recordings = (
+        "n/a" if n_recordings is None or recordings_positive is None
+        else f"{recordings_positive}/{n_recordings}"
+    )
+    return LocalProbeRow(
+        label=label,
+        pass_gate=bool(gate.get("pass", False)),
+        centered_delta=_as_float(metrics.get("centered_auc_delta_vs_shuffle")),
+        paired_true_vs_shuffle=_as_float(metrics.get("paired_true_vs_shuffle")),
+        specificity_gap=_as_float(metrics.get("paired_specificity_gap")),
+        target0_true_class_improved=_as_float(metrics.get("target0_true_class_improved")),
+        target1_true_class_improved=_as_float(metrics.get("target1_true_class_improved")),
+        positive_recordings=positive_recordings,
+        mismatch_decision=str(mismatch.get("decision", "")),
+        true_minus_shuffle_auc=_as_float(mismatch_summary.get("true_minus_shuffle_auc")),
+        gate_source=gate_path,
+        mismatch_source=mismatch_path,
+    )
+
+
 def fmt_float(value: float | None, digits: int = 3) -> str:
     return "n/a" if value is None else f"{value:.{digits}f}"
 
@@ -175,6 +242,23 @@ def slice_outcome(row: SliceRow) -> str:
     return "weak"
 
 
+def local_probe_outcome(row: LocalProbeRow) -> str:
+    if row.pass_gate:
+        return "candidate"
+    failures = []
+    if row.centered_delta is not None and row.centered_delta < 0.01:
+        failures.append("centered AUC")
+    if row.target0_true_class_improved is not None and row.target0_true_class_improved < 0.55:
+        failures.append("target0")
+    if row.target1_true_class_improved is not None and row.target1_true_class_improved < 0.55:
+        failures.append("target1")
+    if row.positive_recordings not in {"3/4", "4/4"}:
+        failures.append("recording support")
+    if row.mismatch_decision and row.mismatch_decision != "recording_rank_stable":
+        failures.append("mismatch")
+    return "reject: " + ", ".join(failures or ["gate"])
+
+
 def summarize(strict_rows: list[StrictGateRow], slice_rows: list[SliceRow]) -> dict:
     strict_passes = [row for row in strict_rows if row.pass_gate]
     promising_slices = [row for row in slice_rows if slice_outcome(row) == "promising"]
@@ -207,6 +291,7 @@ def render_markdown(
     centered_bce_mismatch: dict | None = None,
     local_auc_gate: dict | None = None,
     local_auc_mismatch: dict | None = None,
+    local_probes: list[LocalProbeRow] | None = None,
 ) -> str:
     summary = summarize(strict_rows, slice_rows)
     lines = [
@@ -406,6 +491,40 @@ def render_markdown(
             ),
             "",
         ]
+    if local_probes:
+        lines += [
+            "## Local Probe Matrix",
+            "",
+            (
+                "These CPU-only probes are the current promotion gate for objective and "
+                "sampling variants. A candidate should pass the strict gate locally before "
+                "any new RunPod spend."
+            ),
+            "",
+            "| probe | gate | centered_delta | paired_true_vs_shuffle | specificity_gap | target0 | target1 | recordings | mismatch | outcome |",
+            "|---|---|---:|---:|---:|---:|---:|---:|---|---|",
+        ]
+        for row in local_probes:
+            lines.append(
+                "| "
+                f"{row.label} | {row.pass_gate} | {fmt_signed(row.centered_delta)} | "
+                f"{fmt_float(row.paired_true_vs_shuffle)} | {fmt_signed(row.specificity_gap)} | "
+                f"{fmt_float(row.target0_true_class_improved)} | "
+                f"{fmt_float(row.target1_true_class_improved)} | "
+                f"{row.positive_recordings} | `{row.mismatch_decision}` | "
+                f"{local_probe_outcome(row)} |"
+            )
+        lines += [
+            "",
+            (
+                "Decision: all current tiny local variants are rejected for cloud promotion. "
+                "They repeatedly improve target-0 more than target-1, lose centered true-vs-shuffle "
+                "AUC, or fail recording support. The next no-spend step is to redesign the "
+                "sampler/objective so both target classes improve within recordings before any "
+                "paid run."
+            ),
+            "",
+        ]
     return "\n".join(lines)
 
 
@@ -433,6 +552,10 @@ def main() -> int:
     centered_bce_mismatch = read_mechanism_audit(REPO_ROOT / CENTERED_BCE_MISMATCH_AUDIT_FILE)
     local_auc_gate = read_mechanism_audit(REPO_ROOT / LOCAL_AUC_SURROGATE_GATE_FILE)
     local_auc_mismatch = read_mechanism_audit(REPO_ROOT / LOCAL_AUC_SURROGATE_MISMATCH_FILE)
+    local_probes = [
+        row for label, gate_rel, mismatch_rel in LOCAL_PROBE_FILES
+        if (row := read_local_probe_result(label, REPO_ROOT / gate_rel, REPO_ROOT / mismatch_rel)) is not None
+    ]
     args.out_md.parent.mkdir(parents=True, exist_ok=True)
     args.out_md.write_text(render_markdown(
         strict_rows,
@@ -444,6 +567,7 @@ def main() -> int:
         centered_bce_mismatch,
         local_auc_gate,
         local_auc_mismatch,
+        local_probes,
     ))
     args.out_json.parent.mkdir(parents=True, exist_ok=True)
     args.out_json.write_text(json.dumps({
@@ -457,6 +581,14 @@ def main() -> int:
         "centered_bce_mismatch": centered_bce_mismatch,
         "local_auc_surrogate_gate": local_auc_gate,
         "local_auc_surrogate_mismatch": local_auc_mismatch,
+        "local_probe_matrix": [
+            row.__dict__ | {
+                "gate_source": display_path(row.gate_source),
+                "mismatch_source": display_path(row.mismatch_source),
+                "outcome": local_probe_outcome(row),
+            }
+            for row in local_probes
+        ],
     }, indent=2, sort_keys=True) + "\n")
     print(f"wrote {args.out_md}")
     print(f"wrote {args.out_json}")

@@ -188,3 +188,15 @@ mismatch audit, and failure-mode audit. The first `recording_local_auc_surrogate
 probe failed locally, so it should not be promoted to RunPod as-is:
 centered true-minus-shuffle delta `-0.005`, paired true-vs-shuffle `0.494`,
 target0 `0.556`, target1 `0.419`, and positive recordings `2/4`.
+
+Local probe matrix update: four no-spend CPU variants now fail the promotion
+gate: `recording_local_auc_surrogate`, `recording_centered_bce`,
+`recording_pairwise_rank_centered_bce`, and
+`recording_local_auc_surrogate` with target-balanced sampling. They all lose
+centered true-vs-shuffle AUC by about `-0.005`, remain around paired
+true-vs-shuffle `0.494` to `0.502`, keep only `2/4` positive recordings, and
+fail bidirectional target-class improvement because target1 remains around
+`0.406` to `0.419`. Decision: do not launch another RunPod objective variant
+from this family. The next step is no-spend sampler/objective redesign that
+demonstrably improves both target classes within recordings before any paid
+run.

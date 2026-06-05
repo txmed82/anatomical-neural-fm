@@ -139,6 +139,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--holdout", default="CSH_ZAD_019")
     parser.add_argument("--seed", type=int, default=0)
     parser.add_argument("--loss-mode", default="recording_local_auc_surrogate")
+    parser.add_argument("--batch-sampling", default="recording_target_balanced")
+    parser.add_argument("--batch-size", type=int, default=2)
     parser.add_argument("--max-steps", type=int, default=5)
     parser.add_argument("--eval-batches", type=int, default=1)
     parser.add_argument("--force", action="store_true")
@@ -153,6 +155,8 @@ def main() -> int:
         holdout=args.holdout,
         seed=args.seed,
         loss_mode=args.loss_mode,
+        batch_sampling=args.batch_sampling,
+        batch_size=args.batch_size,
         max_steps=args.max_steps,
         eval_batches=args.eval_batches,
         force=args.force,

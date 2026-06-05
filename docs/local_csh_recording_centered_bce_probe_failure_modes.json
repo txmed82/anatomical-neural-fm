@@ -1,0 +1,450 @@
+{
+  "data_dir": "/Users/colin/Desktop/Projects/anatomical-neural-fm/data/brainsets/ibl_bwm",
+  "holdout": "CSH_ZAD_019",
+  "manifest": "/Users/colin/Desktop/Projects/anatomical-neural-fm/manifests/ibl_bwm_region_matched_support80_best6.json",
+  "region_granularity": "parent",
+  "region_support": {
+    "49e0ab27-827a-4c91-bcaa-97eea27a1b8d_probe01": {
+      "missing_top_regions": [],
+      "n_regions": 12,
+      "n_units": 944,
+      "top_regions": [
+        {
+          "region": "PRT",
+          "supported": true,
+          "train_units": 393,
+          "units": 414
+        },
+        {
+          "region": "CA",
+          "supported": true,
+          "train_units": 684,
+          "units": 265
+        },
+        {
+          "region": "MBmot",
+          "supported": true,
+          "train_units": 1766,
+          "units": 80
+        },
+        {
+          "region": "DG",
+          "supported": true,
+          "train_units": 951,
+          "units": 56
+        },
+        {
+          "region": "IB",
+          "supported": true,
+          "train_units": 54,
+          "units": 34
+        },
+        {
+          "region": "LAT",
+          "supported": true,
+          "train_units": 1339,
+          "units": 30
+        },
+        {
+          "region": "RSPagl",
+          "supported": true,
+          "train_units": 188,
+          "units": 19
+        },
+        {
+          "region": "cc",
+          "supported": true,
+          "train_units": 252,
+          "units": 18
+        }
+      ],
+      "unit_support_fraction": 1.0
+    },
+    "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe00": {
+      "missing_top_regions": [
+        "MED",
+        "EPI",
+        "mfbse"
+      ],
+      "n_regions": 11,
+      "n_units": 1173,
+      "top_regions": [
+        {
+          "region": "MOp",
+          "supported": true,
+          "train_units": 421,
+          "units": 467
+        },
+        {
+          "region": "CA",
+          "supported": true,
+          "train_units": 684,
+          "units": 215
+        },
+        {
+          "region": "MED",
+          "supported": false,
+          "train_units": 0,
+          "units": 178
+        },
+        {
+          "region": "DG",
+          "supported": true,
+          "train_units": 951,
+          "units": 103
+        },
+        {
+          "region": "EPI",
+          "supported": false,
+          "train_units": 0,
+          "units": 99
+        },
+        {
+          "region": "cc",
+          "supported": true,
+          "train_units": 252,
+          "units": 59
+        },
+        {
+          "region": "mfbc",
+          "supported": true,
+          "train_units": 20,
+          "units": 20
+        },
+        {
+          "region": "mfbse",
+          "supported": false,
+          "train_units": 0,
+          "units": 14
+        }
+      ],
+      "unit_support_fraction": 0.7519181585677749
+    },
+    "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe01": {
+      "missing_top_regions": [
+        "ATN",
+        "epsc"
+      ],
+      "n_regions": 12,
+      "n_units": 840,
+      "top_regions": [
+        {
+          "region": "VP",
+          "supported": true,
+          "train_units": 619,
+          "units": 335
+        },
+        {
+          "region": "VENT",
+          "supported": true,
+          "train_units": 173,
+          "units": 224
+        },
+        {
+          "region": "ATN",
+          "supported": false,
+          "train_units": 0,
+          "units": 144
+        },
+        {
+          "region": "LZ",
+          "supported": true,
+          "train_units": 316,
+          "units": 59
+        },
+        {
+          "region": "LAT",
+          "supported": true,
+          "train_units": 1339,
+          "units": 26
+        },
+        {
+          "region": "epsc",
+          "supported": false,
+          "train_units": 0,
+          "units": 17
+        },
+        {
+          "region": "VS",
+          "supported": true,
+          "train_units": 7,
+          "units": 11
+        },
+        {
+          "region": "MOp",
+          "supported": true,
+          "train_units": 421,
+          "units": 10
+        }
+      ],
+      "unit_support_fraction": 0.8083333333333333
+    },
+    "edd22318-216c-44ff-bc24-49ce8be78374_probe00": {
+      "missing_top_regions": [
+        "HIP",
+        "CTXpl"
+      ],
+      "n_regions": 11,
+      "n_units": 607,
+      "top_regions": [
+        {
+          "region": "RSPd",
+          "supported": true,
+          "train_units": 46,
+          "units": 208
+        },
+        {
+          "region": "mfbc",
+          "supported": true,
+          "train_units": 20,
+          "units": 123
+        },
+        {
+          "region": "cc",
+          "supported": true,
+          "train_units": 252,
+          "units": 91
+        },
+        {
+          "region": "HIP",
+          "supported": false,
+          "train_units": 0,
+          "units": 56
+        },
+        {
+          "region": "hc",
+          "supported": true,
+          "train_units": 63,
+          "units": 37
+        },
+        {
+          "region": "CTXpl",
+          "supported": false,
+          "train_units": 0,
+          "units": 26
+        },
+        {
+          "region": "PRT",
+          "supported": true,
+          "train_units": 393,
+          "units": 25
+        },
+        {
+          "region": "VS",
+          "supported": true,
+          "train_units": 7,
+          "units": 17
+        }
+      ],
+      "unit_support_fraction": 0.8500823723228995
+    }
+  },
+  "root": "runs/local_csh_recording_centered_bce_probe",
+  "seed_summaries": {
+    "0": {
+      "metrics": {
+        "region_only": {
+          "full_auc": 0.4741420587108681,
+          "mean_prob": 0.4721455782440945,
+          "n": 2726,
+          "offset_auc_delta": -0.018745973639307745,
+          "prob_std": 0.011035400586166888,
+          "recording_centered_auc": 0.49288803235017586
+        },
+        "region_shuffle": {
+          "full_auc": 0.48273289776090816,
+          "mean_prob": 0.47294010678091,
+          "n": 2726,
+          "offset_auc_delta": -0.015345875265522169,
+          "prob_std": 0.010390431763088638,
+          "recording_centered_auc": 0.49807877302643033
+        },
+        "shared_baseline": {
+          "full_auc": 0.5171887514364314,
+          "mean_prob": 0.4617901961673658,
+          "n": 2726,
+          "offset_auc_delta": -0.00017356879200469688,
+          "prob_std": 0.010154352761016654,
+          "recording_centered_auc": 0.5173623202284361
+        }
+      },
+      "offset_correlations": {
+        "region_only_mean_prob_vs_target1_fraction": -0.782259264080373,
+        "region_shuffle_mean_prob_vs_target1_fraction": -0.7200162580962962,
+        "shared_baseline_mean_prob_vs_target1_fraction": -0.043243860034394226
+      },
+      "paired": {
+        "region_only_vs_shared": {
+          "improved_fraction": 0.45818048422597213,
+          "mean_true_prob_delta": -0.0018934032132827685,
+          "n": 2726,
+          "recordings": {
+            "49e0ab27-827a-4c91-bcaa-97eea27a1b8d_probe01": {
+              "improved_fraction": 0.4723294723294723,
+              "n": 777
+            },
+            "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe00": {
+              "improved_fraction": 0.4135593220338983,
+              "n": 590
+            },
+            "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe01": {
+              "improved_fraction": 0.43728813559322033,
+              "n": 590
+            },
+            "edd22318-216c-44ff-bc24-49ce8be78374_probe00": {
+              "improved_fraction": 0.494148244473342,
+              "n": 769
+            }
+          }
+        },
+        "region_only_vs_shuffle": {
+          "improved_fraction": 0.4937637564196625,
+          "mean_true_prob_delta": -7.834618383916023e-05,
+          "n": 2726,
+          "recordings": {
+            "49e0ab27-827a-4c91-bcaa-97eea27a1b8d_probe01": {
+              "improved_fraction": 0.42985842985842987,
+              "n": 777
+            },
+            "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe00": {
+              "improved_fraction": 0.41694915254237286,
+              "n": 590
+            },
+            "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe01": {
+              "improved_fraction": 0.6084745762711864,
+              "n": 590
+            },
+            "edd22318-216c-44ff-bc24-49ce8be78374_probe00": {
+              "improved_fraction": 0.52925877763329,
+              "n": 769
+            }
+          }
+        },
+        "region_shuffle_vs_shared": {
+          "improved_fraction": 0.46478356566397655,
+          "mean_true_prob_delta": -0.001815057029443608,
+          "n": 2726,
+          "recordings": {
+            "49e0ab27-827a-4c91-bcaa-97eea27a1b8d_probe01": {
+              "improved_fraction": 0.5070785070785071,
+              "n": 777
+            },
+            "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe00": {
+              "improved_fraction": 0.4135593220338983,
+              "n": 590
+            },
+            "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe01": {
+              "improved_fraction": 0.43728813559322033,
+              "n": 590
+            },
+            "edd22318-216c-44ff-bc24-49ce8be78374_probe00": {
+              "improved_fraction": 0.48244473342002603,
+              "n": 769
+            }
+          }
+        }
+      },
+      "recordings": {
+        "49e0ab27-827a-4c91-bcaa-97eea27a1b8d_probe01": {
+          "arm_auc": {
+            "region_only": 0.47955843015131555,
+            "region_shuffle": 0.5095287526117566,
+            "shared_baseline": 0.4971054417694734
+          },
+          "arm_mean_prob": {
+            "region_only": 0.4644100295246123,
+            "region_shuffle": 0.4632669857785067,
+            "shared_baseline": 0.46160461127062763
+          },
+          "arm_prob_std": {
+            "region_only": 0.007531230962209474,
+            "region_shuffle": 0.006485430501051602,
+            "shared_baseline": 0.009989339472066455
+          },
+          "n": 777,
+          "paired_region_only_vs_shuffle": 0.42985842985842987,
+          "region_only_mean_prob_delta_vs_shared": 0.0028054182539846706,
+          "region_only_minus_shuffle_auc": -0.029970322460441012,
+          "region_shuffle_mean_prob_delta_vs_shared": 0.0016623745078790941,
+          "target1_fraction": 0.4671814671814672,
+          "target_imbalance": 0.03281853281853281
+        },
+        "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe00": {
+          "arm_auc": {
+            "region_only": 0.48402113143182035,
+            "region_shuffle": 0.5286174547522031,
+            "shared_baseline": 0.537311664929404
+          },
+          "arm_mean_prob": {
+            "region_only": 0.48568473526701655,
+            "region_shuffle": 0.47902592490579277,
+            "shared_baseline": 0.4617335608011277
+          },
+          "arm_prob_std": {
+            "region_only": 0.0025643778259014515,
+            "region_shuffle": 0.0027879499056178724,
+            "shared_baseline": 0.010233683145581702
+          },
+          "n": 590,
+          "paired_region_only_vs_shuffle": 0.41694915254237286,
+          "region_only_mean_prob_delta_vs_shared": 0.023951174465888847,
+          "region_only_minus_shuffle_auc": -0.04459632332038277,
+          "region_shuffle_mean_prob_delta_vs_shared": 0.01729236410466506,
+          "target1_fraction": 0.4135593220338983,
+          "target_imbalance": 0.08644067796610172
+        },
+        "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe01": {
+          "arm_auc": {
+            "region_only": 0.47405950914431916,
+            "region_shuffle": 0.4726736473040841,
+            "shared_baseline": 0.5349663602766985
+          },
+          "arm_mean_prob": {
+            "region_only": 0.47359597089841193,
+            "region_shuffle": 0.4789736881383436,
+            "shared_baseline": 0.4619072559006818
+          },
+          "arm_prob_std": {
+            "region_only": 0.011339828222071363,
+            "region_shuffle": 0.012197313156296031,
+            "shared_baseline": 0.010400472387446257
+          },
+          "n": 590,
+          "paired_region_only_vs_shuffle": 0.6084745762711864,
+          "region_only_mean_prob_delta_vs_shared": 0.01168871499773011,
+          "region_only_minus_shuffle_auc": 0.0013858618402350364,
+          "region_shuffle_mean_prob_delta_vs_shared": 0.0170664322376618,
+          "target1_fraction": 0.4135593220338983,
+          "target_imbalance": 0.08644067796610172
+        },
+        "edd22318-216c-44ff-bc24-49ce8be78374_probe00": {
+          "arm_auc": {
+            "region_only": 0.520649067439624,
+            "region_shuffle": 0.505756545530889,
+            "shared_baseline": 0.5077205434178981
+          },
+          "arm_mean_prob": {
+            "region_only": 0.4684611660795514,
+            "region_shuffle": 0.4734154895173217,
+            "shared_baseline": 0.4619313523288609
+          },
+          "arm_prob_std": {
+            "region_only": 0.007374912114657383,
+            "region_shuffle": 0.008305791834095518,
+            "shared_baseline": 0.010063769192849587
+          },
+          "n": 769,
+          "paired_region_only_vs_shuffle": 0.52925877763329,
+          "region_only_mean_prob_delta_vs_shared": 0.006529813750690505,
+          "region_only_minus_shuffle_auc": 0.014892521908735024,
+          "region_shuffle_mean_prob_delta_vs_shared": 0.011484137188460808,
+          "target1_fraction": 0.48244473342002603,
+          "target_imbalance": 0.01755526657997397
+        }
+      }
+    }
+  },
+  "seeds": [
+    0
+  ]
+}
