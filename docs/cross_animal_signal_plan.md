@@ -414,6 +414,15 @@ Paired true-vs-shuffle fell to `0.486`. Stop paid one-off variants here. The
 next implementable step should be no-spend design/code for a direct
 recording-local AUC surrogate plus a bidirectional target-class success gate.
 
+Implemented no-spend gate hardening: the strict anatomy gate now requires true
+labels to improve target-0 and target-1 true-class probabilities separately
+against the within-recording shuffled control. The scalar paired metric is no
+longer sufficient. The training CLI also has
+`--loss-mode recording_local_auc_surrogate`, an explicit alias for the
+recording-local pairwise AUC surrogate, verified by CPU smoke. This should be
+used only for local objective debugging until a bidirectional gate result looks
+plausible.
+
 Conclusion: building all 48 public IBL recordings inside a throwaway A100
 container is the wrong next spend. The next attempt should either split the
 candidate manifest into smaller persisted build shards, use a persistent

@@ -936,7 +936,9 @@
       "pass_gate": false,
       "sign_flip_p": 0.0625,
       "source": "docs/lso_csh_full_eval_centered_anatomy_specific_gate.json",
-      "specificity_gap": -0.01614086573734408
+      "specificity_gap": -0.01614086573734408,
+      "target0_true_class_improved": null,
+      "target1_true_class_improved": null
     },
     {
       "centered_delta": 0.012214868379839594,
@@ -946,7 +948,9 @@
       "pass_gate": false,
       "sign_flip_p": 0.5,
       "source": "docs/lso_nr0019_full_eval_centered_anatomy_specific_gate.json",
-      "specificity_gap": 0.0
+      "specificity_gap": 0.0,
+      "target0_true_class_improved": null,
+      "target1_true_class_improved": null
     },
     {
       "centered_delta": 0.009012518717136209,
@@ -956,7 +960,9 @@
       "pass_gate": false,
       "sign_flip_p": 0.125,
       "source": "docs/lso_csh_target_balanced_anatomy_specific_gate.json",
-      "specificity_gap": 0.05135730007336753
+      "specificity_gap": 0.05135730007336753,
+      "target0_true_class_improved": null,
+      "target1_true_class_improved": null
     },
     {
       "centered_delta": -0.05006779520841309,
@@ -966,7 +972,9 @@
       "pass_gate": false,
       "sign_flip_p": 1.0,
       "source": "docs/lso_csh_recording_centered_loss_anatomy_specific_gate.json",
-      "specificity_gap": -0.09244314013206167
+      "specificity_gap": -0.09244314013206167,
+      "target0_true_class_improved": null,
+      "target1_true_class_improved": null
     },
     {
       "centered_delta": 0.0014005205975554658,
@@ -976,7 +984,9 @@
       "pass_gate": false,
       "sign_flip_p": 0.25,
       "source": "docs/lso_csh_within_recording_shuffle_anatomy_specific_gate.json",
-      "specificity_gap": -0.10344827586206895
+      "specificity_gap": -0.10344827586206895,
+      "target0_true_class_improved": null,
+      "target1_true_class_improved": null
     },
     {
       "centered_delta": 0.0014010647003517285,
@@ -986,7 +996,9 @@
       "pass_gate": false,
       "sign_flip_p": 0.25,
       "source": "docs/lso_csh_recording_centered_gate_pilot_anatomy_specific_gate.json",
-      "specificity_gap": -0.10344827586206895
+      "specificity_gap": -0.10344827586206895,
+      "target0_true_class_improved": null,
+      "target1_true_class_improved": null
     },
     {
       "centered_delta": -0.01394671492495736,
@@ -996,7 +1008,9 @@
       "pass_gate": false,
       "sign_flip_p": 0.5625,
       "source": "docs/lso_csh_pairwise_rank_pilot_anatomy_specific_gate.json",
-      "specificity_gap": 0.10344827586206895
+      "specificity_gap": 0.10344827586206895,
+      "target0_true_class_improved": 1.0,
+      "target1_true_class_improved": 0.0
     },
     {
       "centered_delta": -0.015613029738482387,
@@ -1006,12 +1020,14 @@
       "pass_gate": false,
       "sign_flip_p": 1.0,
       "source": "docs/lso_csh_pairwise_rank_centered_bce_pilot_anatomy_specific_gate.json",
-      "specificity_gap": 0.013206162876008787
+      "specificity_gap": 0.013206162876008787,
+      "target0_true_class_improved": 0.3537234042553192,
+      "target1_true_class_improved": 0.6497545008183306
     }
   ],
   "summary": {
     "decision": "no_paid_broadening_without_new_mechanism",
-    "next_mechanism": "The pairwise-rank objective produced a paired trial-level specificity signal, but it still did not produce a recording-stable anatomical signal. The next no-spend task is to understand why the paired probability shift does not translate into positive recording-centered AUC across recordings.",
+    "next_mechanism": "The bidirectional target-class gate and explicit recording-local AUC surrogate are now implemented. The next no-spend task is local objective debugging that can satisfy target0, target1, and recording-local AUC checks before any more paid broadening.",
     "slice_promising_count": 0,
     "strict_pass_count": 0
   }

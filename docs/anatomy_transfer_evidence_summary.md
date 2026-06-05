@@ -172,3 +172,12 @@ audit decision is `no_mechanism_found`; the mismatch audit decision is
 `paired_metric_not_recording_rank_stable`. Do not spend on another one-off
 objective variant until a direct recording-local AUC/ranking surrogate and
 bidirectional target-class gate are implemented and locally checked.
+
+Bidirectional gate implemented: `scripts/analyze_anatomy_specific_permutation.py`
+now records and requires target-0 and target-1 true-class improvement separately
+against the shuffled control. This closes the false-positive path where a
+one-direction probability shift can pass the scalar paired metric. The two
+latest pilots fail this stricter check: pairwise-rank has target0 `1.000` and
+target1 `0.000`; centered-BCE has target0 `0.354` and target1 `0.650`.
+Training also exposes `--loss-mode recording_local_auc_surrogate` as the direct
+recording-local AUC/ranking surrogate alias for local experiments.

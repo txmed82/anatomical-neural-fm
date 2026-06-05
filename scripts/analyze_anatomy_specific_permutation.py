@@ -10,12 +10,20 @@ try:
     from analyze_lso_prediction_ensemble import (
         ARMS,
         analyze,
+        complete_seeds,
+        ensemble_rows,
+        read_prediction_rows,
     )
+    from audit_pairwise_rank_mismatch import summarize_pairs
 except ModuleNotFoundError:
     from scripts.analyze_lso_prediction_ensemble import (
         ARMS,
         analyze,
+        complete_seeds,
+        ensemble_rows,
+        read_prediction_rows,
     )
+    from scripts.audit_pairwise_rank_mismatch import summarize_pairs
 
 
 def _recording_deltas(ensemble: dict) -> dict[str, float]:
@@ -57,8 +65,16 @@ def anatomy_specific_gate(
     min_recording_support_fraction: float = 0.75,
     min_centered_delta: float = 0.01,
     min_specificity_gap: float = 0.0,
+    min_target_class_improvement: float = 0.55,
 ) -> dict:
     ensemble = analyze(root, holdout)
+    seeds = complete_seeds(root, holdout)
+    true_rows_by_seed = {seed: read_prediction_rows(root, holdout, "region_only", seed) for seed in seeds}
+    shuffle_rows_by_seed = {seed: read_prediction_rows(root, holdout, "region_shuffle", seed) for seed in seeds}
+    bidirectional = summarize_pairs(
+        ensemble_rows(true_rows_by_seed),
+        ensemble_rows(shuffle_rows_by_seed),
+    )
     deltas = _recording_deltas(ensemble)
     permutation = sign_flip_p_value(deltas)
     n_positive = sum(value > 0.0 for value in deltas.values())
@@ -78,6 +94,10 @@ def anatomy_specific_gate(
         "recording_permutation": (
             permutation["one_sided_p"] is not None and permutation["one_sided_p"] <= alpha
         ),
+        "bidirectional_target_classes": (
+            bidirectional["target0_true_class_improved_fraction"] >= min_target_class_improvement
+            and bidirectional["target1_true_class_improved_fraction"] >= min_target_class_improvement
+        ),
     }
     return {
         "root": str(root),
@@ -88,6 +108,7 @@ def anatomy_specific_gate(
             "min_centered_delta": min_centered_delta,
             "min_specificity_gap": min_specificity_gap,
             "min_recording_support_fraction": min_recording_support_fraction,
+            "min_target_class_improvement": min_target_class_improvement,
         },
         "metrics": {
             "centered_auc_region_only": metrics["region_only"]["centered_auc"],
@@ -104,6 +125,9 @@ def anatomy_specific_gate(
             "n_recordings": len(deltas),
             "recording_support_fraction": support_fraction,
             "recording_sign_flip": permutation,
+            "target0_true_class_improved": bidirectional["target0_true_class_improved_fraction"],
+            "target1_true_class_improved": bidirectional["target1_true_class_improved_fraction"],
+            "bidirectional_recording_classifications": bidirectional["recording_classifications"],
         },
         "checks": checks,
         "pass": all(checks.values()),
@@ -118,6 +142,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--min-recording-support-fraction", type=float, default=0.75)
     parser.add_argument("--min-centered-delta", type=float, default=0.01)
     parser.add_argument("--min-specificity-gap", type=float, default=0.0)
+    parser.add_argument("--min-target-class-improvement", type=float, default=0.55)
     parser.add_argument("--out", type=Path)
     return parser.parse_args()
 
@@ -131,6 +156,7 @@ def main() -> int:
         min_recording_support_fraction=args.min_recording_support_fraction,
         min_centered_delta=args.min_centered_delta,
         min_specificity_gap=args.min_specificity_gap,
+        min_target_class_improvement=args.min_target_class_improvement,
     )
     text = json.dumps(result, indent=2, sort_keys=True) + "\n"
     if args.out:

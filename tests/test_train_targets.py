@@ -288,6 +288,17 @@ def test_training_loss_supports_recording_pairwise_rank_mode() -> None:
     assert torch.isfinite(loss)
 
 
+def test_recording_local_auc_surrogate_alias_matches_pairwise_rank() -> None:
+    logits = torch.tensor([[0.0], [2.0], [10.0], [13.0]])
+    target = torch.tensor([[0.0], [1.0], [0.0], [1.0]])
+    meta = {"recording_ids": ["a", "a", "b", "b"]}
+
+    pairwise = training_loss(logits, target, "recording_pairwise_rank", meta)
+    local_auc = training_loss(logits, target, "recording_local_auc_surrogate", meta)
+
+    assert torch.allclose(pairwise, local_auc)
+
+
 def test_pairwise_rank_centered_bce_loss_ignores_recording_offsets() -> None:
     logits = torch.tensor([[0.0], [2.0], [10.0], [13.0]])
     shifted_logits = torch.tensor([[100.0], [102.0], [-40.0], [-37.0]])

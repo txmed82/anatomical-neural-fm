@@ -27,6 +27,8 @@ class StrictGateRow:
     centered_delta: float | None
     paired_true_vs_shuffle: float | None
     specificity_gap: float | None
+    target0_true_class_improved: float | None
+    target1_true_class_improved: float | None
     sign_flip_p: float | None
     source: Path
 
@@ -91,6 +93,8 @@ def read_strict_gate(label: str, path: Path) -> StrictGateRow | None:
         centered_delta=_as_float(metrics.get("centered_auc_delta_vs_shuffle")),
         paired_true_vs_shuffle=_as_float(metrics.get("paired_true_vs_shuffle")),
         specificity_gap=_as_float(metrics.get("paired_specificity_gap")),
+        target0_true_class_improved=_as_float(metrics.get("target0_true_class_improved")),
+        target1_true_class_improved=_as_float(metrics.get("target1_true_class_improved")),
         sign_flip_p=_as_float(sign_flip.get("one_sided_p")),
         source=path,
     )
@@ -150,6 +154,10 @@ def strict_gate_outcome(row: StrictGateRow) -> str:
         failures.append("paired gate")
     if row.specificity_gap is not None and row.specificity_gap <= 0.0:
         failures.append("specificity")
+    if row.target0_true_class_improved is not None and row.target0_true_class_improved < 0.55:
+        failures.append("target0")
+    if row.target1_true_class_improved is not None and row.target1_true_class_improved < 0.55:
+        failures.append("target1")
     if row.sign_flip_p is not None and row.sign_flip_p > 0.05:
         failures.append("sign-flip")
     return "fail: " + ", ".join(failures or ["gate"])
@@ -173,10 +181,10 @@ def summarize(strict_rows: list[StrictGateRow], slice_rows: list[SliceRow]) -> d
         "slice_promising_count": len(promising_slices),
         "decision": "no_paid_broadening_without_new_mechanism",
         "next_mechanism": (
-            "The pairwise-rank objective produced a paired trial-level specificity signal, "
-            "but it still did not produce a recording-stable anatomical signal. The next "
-            "no-spend task is to understand why the paired probability shift does not "
-            "translate into positive recording-centered AUC across recordings."
+            "The bidirectional target-class gate and explicit recording-local AUC surrogate "
+            "are now implemented. The next no-spend task is local objective debugging that "
+            "can satisfy target0, target1, and recording-local AUC checks before any more "
+            "paid broadening."
         ),
     }
 
@@ -204,15 +212,18 @@ def render_markdown(
         "",
         "## Strict Gate Runs",
         "",
-        "| experiment | holdout | gate | centered_delta | paired_true_vs_shuffle | specificity_gap | sign_flip_p | outcome | source |",
-        "|---|---|---|---:|---:|---:|---:|---|---|",
+        "| experiment | holdout | gate | centered_delta | paired_true_vs_shuffle | specificity_gap | target0 | target1 | sign_flip_p | outcome | source |",
+        "|---|---|---|---:|---:|---:|---:|---:|---:|---|---|",
     ]
     for row in strict_rows:
         lines.append(
             "| "
             f"{row.label} | {row.holdout} | {row.pass_gate} | "
             f"{fmt_signed(row.centered_delta)} | {fmt_float(row.paired_true_vs_shuffle)} | "
-            f"{fmt_signed(row.specificity_gap)} | {fmt_float(row.sign_flip_p)} | "
+            f"{fmt_signed(row.specificity_gap)} | "
+            f"{fmt_float(row.target0_true_class_improved)} | "
+            f"{fmt_float(row.target1_true_class_improved)} | "
+            f"{fmt_float(row.sign_flip_p)} | "
             f"{strict_gate_outcome(row)} | `{display_path(row.source)}` |"
         )
 
@@ -359,9 +370,10 @@ def render_markdown(
             f"- mechanism paired true-vs-shuffle: `{fmt_float(true_vs_shuffle.get('improved_fraction'))}`",
             "",
             (
-                "Updated decision: stop paid one-off objective variants for now. The next "
-                "implementation should be a direct recording-local AUC/ranking surrogate and "
-                "a bidirectional target-class gate, then tested locally before another RunPod job."
+                "Updated decision: stop paid one-off objective variants for now. Use the "
+                "implemented bidirectional gate and `recording_local_auc_surrogate` only for "
+                "local objective debugging until a candidate satisfies target0, target1, and "
+                "recording-local AUC checks."
             ),
             "",
         ]

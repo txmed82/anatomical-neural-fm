@@ -41,7 +41,7 @@ def test_anatomy_specific_gate_requires_specificity_and_recording_support(tmp_pa
         {"recording_id": "rec_b", "t0": 0.0, "target": 0, "prob": 0.40},
         {"recording_id": "rec_b", "t0": 1.0, "target": 0, "prob": 0.70},
         {"recording_id": "rec_b", "t0": 2.0, "target": 1, "prob": 0.30},
-        {"recording_id": "rec_b", "t0": 3.0, "target": 1, "prob": 0.80},
+        {"recording_id": "rec_b", "t0": 3.0, "target": 1, "prob": 0.75},
     ]
     region = [
         {"recording_id": "rec_a", "t0": 0.0, "target": 0, "prob": 0.20},
@@ -68,4 +68,43 @@ def test_anatomy_specific_gate_requires_specificity_and_recording_support(tmp_pa
 
     assert result["checks"]["recording_support"] is True
     assert result["checks"]["recording_permutation"] is True
+    assert result["checks"]["bidirectional_target_classes"] is True
     assert result["pass"] is True
+
+
+def test_anatomy_specific_gate_rejects_one_direction_probability_shift(tmp_path) -> None:
+    shared = [
+        {"recording_id": "rec_a", "t0": 0.0, "target": 0, "prob": 0.45},
+        {"recording_id": "rec_a", "t0": 1.0, "target": 0, "prob": 0.45},
+        {"recording_id": "rec_a", "t0": 2.0, "target": 1, "prob": 0.55},
+        {"recording_id": "rec_a", "t0": 3.0, "target": 1, "prob": 0.55},
+        {"recording_id": "rec_b", "t0": 0.0, "target": 0, "prob": 0.45},
+        {"recording_id": "rec_b", "t0": 1.0, "target": 0, "prob": 0.45},
+        {"recording_id": "rec_b", "t0": 2.0, "target": 1, "prob": 0.55},
+        {"recording_id": "rec_b", "t0": 3.0, "target": 1, "prob": 0.55},
+    ]
+    shuffle = [
+        {"recording_id": row["recording_id"], "t0": row["t0"], "target": row["target"], "prob": 0.60}
+        for row in shared
+    ]
+    region = [
+        {"recording_id": row["recording_id"], "t0": row["t0"], "target": row["target"], "prob": 0.30}
+        for row in shared
+    ]
+    write_predictions(tmp_path, "mouse_a", "shared_baseline", 0, shared)
+    write_predictions(tmp_path, "mouse_a", "region_shuffle", 0, shuffle)
+    write_predictions(tmp_path, "mouse_a", "region_only", 0, region)
+
+    result = anatomy_specific_gate(
+        tmp_path,
+        "mouse_a",
+        alpha=1.0,
+        min_recording_support_fraction=0.0,
+        min_centered_delta=-1.0,
+        min_specificity_gap=-1.0,
+    )
+
+    assert result["metrics"]["target0_true_class_improved"] == 1.0
+    assert result["metrics"]["target1_true_class_improved"] == 0.0
+    assert result["checks"]["bidirectional_target_classes"] is False
+    assert result["pass"] is False

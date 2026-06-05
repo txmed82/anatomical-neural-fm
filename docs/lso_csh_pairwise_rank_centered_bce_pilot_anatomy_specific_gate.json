@@ -5,6 +5,7 @@
     "region_shuffle"
   ],
   "checks": {
+    "bidirectional_target_classes": false,
     "positive_centered_delta": false,
     "positive_specificity_gap": true,
     "recording_permutation": false,
@@ -12,6 +13,11 @@
   },
   "holdout": "CSH_ZAD_019",
   "metrics": {
+    "bidirectional_recording_classifications": {
+      "downward_probability_shift": 1,
+      "mixed_or_failed_ranking": 1,
+      "upward_probability_shift": 2
+    },
     "centered_auc_delta_vs_shuffle": -0.015613029738482387,
     "centered_auc_region_only": 0.48464813960371905,
     "centered_auc_region_shuffle": 0.5002611693422014,
@@ -52,7 +58,9 @@
       "one_sided_p": 1.0
     },
     "recording_support_fraction": 0.0,
-    "recordings_positive": 0
+    "recordings_positive": 0,
+    "target0_true_class_improved": 0.3537234042553192,
+    "target1_true_class_improved": 0.6497545008183306
   },
   "pass": false,
   "root": "runs/lso_csh_pairwise_rank_centered_bce_pilot",
@@ -60,6 +68,7 @@
     "alpha": 0.05,
     "min_centered_delta": 0.01,
     "min_recording_support_fraction": 0.75,
-    "min_specificity_gap": 0.0
+    "min_specificity_gap": 0.0,
+    "min_target_class_improvement": 0.55
   }
 }
