@@ -18,6 +18,8 @@ ARTIFACTS = {
     "derived_target_family": "docs/derived_target_family_gate.json",
     "contextual_target_family": "docs/contextual_target_family_gate.json",
     "wheel_target_family": "docs/wheel_target_family_gate.json",
+    "extreme_quantile_target_family": "docs/extreme_quantile_target_family_gate.json",
+    "extreme_quantile_seed_sensitivity": "docs/extreme_quantile_seed_sensitivity.json",
     "reaction_dynamics_target_family_recording_centered": "docs/reaction_dynamics_target_family_gate.json",
     "reaction_dynamics_target_family_counts": "docs/reaction_dynamics_target_family_gate_counts.json",
     "reaction_dynamics_target_family_fractions": "docs/reaction_dynamics_target_family_gate_fractions.json",
@@ -147,6 +149,12 @@ def build_report() -> dict:
     behavior_ready = behavior_summary.get("decision") == "behavior_cache_ready"
     wheel_candidates = summary_value(wheel, "n_candidates", None)
     wheel_done = wheel is not None
+    extreme_quantile = artifacts["extreme_quantile_target_family"]
+    extreme_quantile_done = extreme_quantile is not None
+    extreme_quantile_candidates = summary_value(extreme_quantile, "n_candidates", 0)
+    extreme_seed = artifacts["extreme_quantile_seed_sensitivity"]
+    extreme_seed_summary = extreme_seed.get("summary", {}) if extreme_seed is not None else {}
+    extreme_seed_robust = int(extreme_seed_summary.get("n_robust_shuffle_seed_candidates", 0) or 0)
     reaction_feature_modes = reaction_feature_mode_summary(artifacts)
     cell_type_prior = artifacts["cell_type_prior_target_control"]
     cell_type_prior_done = cell_type_prior is not None
@@ -280,6 +288,49 @@ def build_report() -> dict:
             gpu_trigger=(
                 "At least one local wheel row must clear delta_vs_shuffle>=0, delta_vs_total>=0, "
                 "target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75."
+            ),
+        ),
+        branch(
+            name="extreme-quantile behavioral target gate",
+            status=(
+                "recommended_next"
+                if extreme_quantile_done and (extreme_quantile_candidates or 0) > 0 and extreme_seed is None
+                else "closed"
+                if extreme_seed is not None
+                else "secondary_after_cache"
+            ),
+            priority=85 if extreme_seed is not None else (1 if extreme_quantile_done else 3),
+            evidence=[
+                (
+                    "extreme-quantile target family gate has not been run yet"
+                    if not extreme_quantile_done
+                    else (
+                        "extreme-quantile target family gate found "
+                        f"{summary_value(extreme_quantile, 'n_candidates', 'n/a')} candidates across "
+                        f"{summary_value(extreme_quantile, 'n_rows', 'n/a')} rows and max bidir "
+                        f"{summary_value(extreme_quantile, 'max_bidirectional_recording_fraction', 0.0):.3f}"
+                    )
+                ),
+                (
+                    "seed sensitivity has not validated the extreme-quantile candidate yet"
+                    if extreme_seed is None
+                    else (
+                        "seed sensitivity found "
+                        f"{extreme_seed_summary.get('n_robust_shuffle_seed_candidates', 'n/a')} robust candidates; "
+                        f"max positive seed fraction={extreme_seed_summary.get('max_positive_shuffle_delta_fraction', 0.0):.3f}"
+                    )
+                ),
+            ],
+            next_action=(
+                "Run scripts/audit_extreme_quantile_seed_sensitivity.py before any GPU training."
+                if extreme_quantile_done and (extreme_quantile_candidates or 0) > 0 and extreme_seed is None
+                else extreme_seed_summary.get("next_action", "Keep extreme-quantile redesign local.")
+                if extreme_seed is not None
+                else "Run scripts/audit_extreme_quantile_target_family_gate.py as a local target/control redesign."
+            ),
+            gpu_trigger=(
+                "A candidate must pass the unchanged local gate and remain positive across multiple "
+                "within-recording shuffle seeds before training."
             ),
         ),
         branch(
@@ -829,8 +880,10 @@ def build_report() -> dict:
         if not behavior_ready
         else "wheel_target_audit_required"
         if not wheel_done
+        else "extreme_quantile_seed_validation_required"
+        if extreme_quantile_done and (extreme_quantile_candidates or 0) > 0 and extreme_seed is None
         else "local_training_trigger_available"
-        if (wheel_candidates or 0) > 0 or (projected_support80_candidates or 0) > 0
+        if (wheel_candidates or 0) > 0 or (projected_support80_candidates or 0) > 0 or extreme_seed_robust > 0
         else "no_local_training_trigger"
     )
     return {

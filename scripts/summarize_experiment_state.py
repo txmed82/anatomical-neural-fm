@@ -112,6 +112,8 @@ NEXT_BENCHMARK_CONTROL_OPTIONS_FILE = "docs/next_benchmark_control_options.json"
 DERIVED_TARGET_FAMILY_GATE_FILE = "docs/derived_target_family_gate.json"
 CONTEXTUAL_TARGET_FAMILY_GATE_FILE = "docs/contextual_target_family_gate.json"
 WHEEL_TARGET_FAMILY_GATE_FILE = "docs/wheel_target_family_gate.json"
+EXTREME_QUANTILE_TARGET_FAMILY_GATE_FILE = "docs/extreme_quantile_target_family_gate.json"
+EXTREME_QUANTILE_SEED_SENSITIVITY_FILE = "docs/extreme_quantile_seed_sensitivity.json"
 LOCAL_CACHED_MANIFEST_CANDIDATES_FILE = "docs/local_cached_manifest_candidates.json"
 EXTERNAL_MANIFEST_ACQUISITION_GAP_FILE = "docs/external_manifest_acquisition_gap.json"
 BEHAVIOR_CACHE_PREFLIGHT_FILE = "docs/behavior_cache_preflight.json"
@@ -460,6 +462,8 @@ def render_markdown(
     derived_target_family_gate: dict | None = None,
     contextual_target_family_gate: dict | None = None,
     wheel_target_family_gate: dict | None = None,
+    extreme_quantile_target_family_gate: dict | None = None,
+    extreme_quantile_seed_sensitivity: dict | None = None,
     local_cached_manifest_candidates: dict | None = None,
     external_manifest_acquisition_gap: dict | None = None,
     behavior_cache_preflight: dict | None = None,
@@ -1488,6 +1492,76 @@ def render_markdown(
             ),
             "",
         ]
+    if extreme_quantile_target_family_gate is not None:
+        summary = extreme_quantile_target_family_gate["summary"]
+        top = summary["top_rows"][:8]
+        lines += [
+            "## Extreme-Quantile Target Family Gate",
+            "",
+            "`docs/extreme_quantile_target_family_gate.md` drops middle trials and",
+            "labels continuous behavioral targets by within-recording low/high",
+            "quantiles before running the unchanged shared-family local gate.",
+            "",
+            f"- candidates: `{summary['n_candidates']}`",
+            f"- positive centered-delta rows: `{summary['n_positive_centered_delta']}`",
+            f"- max bidirectional recording fraction: `{summary['max_bidirectional_recording_fraction']:.3f}`",
+            f"- decision: `{summary['decision']}`",
+            "",
+            "| target | family | holdout | decision | delta shuffle | delta total | targets | bidir recs |",
+            "|---|---|---|---|---:|---:|---:|---:|",
+        ]
+        for row in top:
+            lines.append(
+                f"| {row['target_mode']} | {row['family']} | {row['holdout']} | {row['decision']} | "
+                f"{row['centered_delta_vs_shuffle']:+.3f} | {row['centered_delta_vs_total']:+.3f} | "
+                f"{row['target0_improved_vs_shuffle']:.3f}/{row['target1_improved_vs_shuffle']:.3f} | "
+                f"{row['n_bidirectional_recordings']}/{row['n_recordings']} |"
+            )
+        lines += [
+            "",
+            (
+                "Decision before seed validation: this is a local candidate only, not "
+                "a GPU trigger. The margins are tiny, so require shuffle-seed stability "
+                "before any paid training."
+            ),
+            "",
+        ]
+    if extreme_quantile_seed_sensitivity is not None:
+        summary = extreme_quantile_seed_sensitivity["summary"]
+        top = extreme_quantile_seed_sensitivity["rows"][:5]
+        lines += [
+            "## Extreme-Quantile Shuffle Seed Sensitivity",
+            "",
+            "`docs/extreme_quantile_seed_sensitivity.md` reruns the strict",
+            "extreme-quantile candidate across multiple within-recording shuffle seeds.",
+            "",
+            f"- cases: `{summary['n_cases']}`",
+            f"- robust shuffle-seed candidates: `{summary['n_robust_shuffle_seed_candidates']}`",
+            f"- max positive shuffle-delta fraction: `{summary['max_positive_shuffle_delta_fraction']:.3f}`",
+            f"- decision: `{summary['decision']}`",
+            "",
+            "| target | family | holdout | positive seeds | candidate seeds | mean shuffle delta | mean total delta | mean targets | bidir range |",
+            "|---|---|---|---:|---:|---:|---:|---:|---:|",
+        ]
+        for row in top:
+            lines.append(
+                f"| {row['target_mode']} | {row['family']} | {row['holdout']} | "
+                f"{row['n_positive_shuffle_delta_seeds']}/{row['n_seeds']} | "
+                f"{row['n_candidate_seeds']}/{row['n_seeds']} | "
+                f"{row['mean_centered_delta_vs_shuffle']:+.4f} | "
+                f"{row['mean_centered_delta_vs_total']:+.4f} | "
+                f"{row['mean_target0']:.3f}/{row['mean_target1']:.3f} | "
+                f"{row['min_bidirectional_recordings']}-{row['max_bidirectional_recordings']} |"
+            )
+        lines += [
+            "",
+            (
+                "Decision: do not train from the extreme-quantile candidate. It keeps "
+                "4/4 bidirectional recording support, but true-vs-shuffle is positive "
+                "in only 2/5 seeds and the mean shuffle delta is slightly negative."
+            ),
+            "",
+        ]
     if model_free_matched_panel is not None:
         summary = model_free_matched_panel["summary"]
         lines += [
@@ -2446,6 +2520,8 @@ def main() -> int:
     derived_target_family_gate = read_mechanism_audit(REPO_ROOT / DERIVED_TARGET_FAMILY_GATE_FILE)
     contextual_target_family_gate = read_mechanism_audit(REPO_ROOT / CONTEXTUAL_TARGET_FAMILY_GATE_FILE)
     wheel_target_family_gate = read_mechanism_audit(REPO_ROOT / WHEEL_TARGET_FAMILY_GATE_FILE)
+    extreme_quantile_target_family_gate = read_mechanism_audit(REPO_ROOT / EXTREME_QUANTILE_TARGET_FAMILY_GATE_FILE)
+    extreme_quantile_seed_sensitivity = read_mechanism_audit(REPO_ROOT / EXTREME_QUANTILE_SEED_SENSITIVITY_FILE)
     local_cached_manifest_candidates = read_mechanism_audit(REPO_ROOT / LOCAL_CACHED_MANIFEST_CANDIDATES_FILE)
     external_manifest_acquisition_gap = read_mechanism_audit(REPO_ROOT / EXTERNAL_MANIFEST_ACQUISITION_GAP_FILE)
     behavior_cache_preflight = read_mechanism_audit(REPO_ROOT / BEHAVIOR_CACHE_PREFLIGHT_FILE)
@@ -2567,6 +2643,8 @@ def main() -> int:
         derived_target_family_gate,
         contextual_target_family_gate,
         wheel_target_family_gate,
+        extreme_quantile_target_family_gate,
+        extreme_quantile_seed_sensitivity,
         local_cached_manifest_candidates,
         external_manifest_acquisition_gap,
         behavior_cache_preflight,
@@ -2665,6 +2743,8 @@ def main() -> int:
         "derived_target_family_gate": derived_target_family_gate,
         "contextual_target_family_gate": contextual_target_family_gate,
         "wheel_target_family_gate": wheel_target_family_gate,
+        "extreme_quantile_target_family_gate": extreme_quantile_target_family_gate,
+        "extreme_quantile_seed_sensitivity": extreme_quantile_seed_sensitivity,
         "local_cached_manifest_candidates": local_cached_manifest_candidates,
         "external_manifest_acquisition_gap": external_manifest_acquisition_gap,
         "behavior_cache_preflight": behavior_cache_preflight,

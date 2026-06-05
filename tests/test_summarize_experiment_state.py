@@ -97,6 +97,63 @@ def test_render_markdown_includes_subject_stable_mechanism_section() -> None:
     assert "does not justify GPU training" in markdown
 
 
+def test_render_markdown_includes_extreme_quantile_seed_veto() -> None:
+    markdown = render_markdown(
+        [],
+        [],
+        extreme_quantile_target_family_gate={
+            "summary": {
+                "n_candidates": 1,
+                "n_positive_centered_delta": 10,
+                "max_bidirectional_recording_fraction": 1.0,
+                "decision": "extreme_quantile_target_family_candidate",
+                "top_rows": [
+                    {
+                        "target_mode": "response_latency_extreme",
+                        "family": "broad_named_anatomy",
+                        "holdout": "NR_0019",
+                        "decision": "candidate",
+                        "centered_delta_vs_shuffle": 0.001,
+                        "centered_delta_vs_total": 0.0004,
+                        "target0_improved_vs_shuffle": 0.63,
+                        "target1_improved_vs_shuffle": 0.65,
+                        "n_bidirectional_recordings": 4,
+                        "n_recordings": 4,
+                    }
+                ],
+            }
+        },
+        extreme_quantile_seed_sensitivity={
+            "summary": {
+                "n_cases": 1,
+                "n_robust_shuffle_seed_candidates": 0,
+                "max_positive_shuffle_delta_fraction": 0.4,
+                "decision": "no_extreme_quantile_shuffle_seed_candidate",
+            },
+            "rows": [
+                {
+                    "target_mode": "response_latency_extreme",
+                    "family": "broad_named_anatomy",
+                    "holdout": "NR_0019",
+                    "n_positive_shuffle_delta_seeds": 2,
+                    "n_candidate_seeds": 2,
+                    "n_seeds": 5,
+                    "mean_centered_delta_vs_shuffle": -0.0001,
+                    "mean_centered_delta_vs_total": 0.0004,
+                    "mean_target0": 0.64,
+                    "mean_target1": 0.68,
+                    "min_bidirectional_recordings": 4,
+                    "max_bidirectional_recordings": 4,
+                }
+            ],
+        },
+    )
+
+    assert "Extreme-Quantile Target Family Gate" in markdown
+    assert "Extreme-Quantile Shuffle Seed Sensitivity" in markdown
+    assert "do not train from the extreme-quantile candidate" in markdown
+
+
 def test_local_probe_matrix_rejects_failed_target_class(tmp_path: Path) -> None:
     gate_path = tmp_path / "gate.json"
     mismatch_path = tmp_path / "mismatch.json"

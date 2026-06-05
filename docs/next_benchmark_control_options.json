@@ -6,6 +6,8 @@
     "derived_target_family": "docs/derived_target_family_gate.json",
     "derived_target_family_prospect_leads": "docs/derived_target_family_gate_prospect_leads.json",
     "external_manifest_acquisition_gap": "docs/external_manifest_acquisition_gap.json",
+    "extreme_quantile_seed_sensitivity": "docs/extreme_quantile_seed_sensitivity.json",
+    "extreme_quantile_target_family": "docs/extreme_quantile_target_family_gate.json",
     "family_alt_feedback": "docs/model_free_family_bidirectional_gate_feedback_recording_centered.json",
     "family_alt_prior": "docs/model_free_family_bidirectional_gate_prior_side_recording_centered.json",
     "iterative_manifest": "docs/shared_family_iterative_manifest_gate.json",
@@ -57,6 +59,17 @@
       "next_action": "Do not launch GPU training from the projected support80 panel; its model-free family and feature-mode gates have no candidates. Redesign the target/control locally.",
       "priority": 1,
       "status": "recommended_next"
+    },
+    {
+      "evidence": [
+        "extreme-quantile target family gate found 1 candidates across 175 rows and max bidir 1.000",
+        "seed sensitivity found 0 robust candidates; max positive seed fraction=0.400"
+      ],
+      "gpu_trigger": "A candidate must pass the unchanged local gate and remain positive across multiple within-recording shuffle seeds before training.",
+      "name": "extreme-quantile behavioral target gate",
+      "next_action": "Do not train: the extreme-quantile candidate does not robustly beat within-recording shuffled anatomy across seeds.",
+      "priority": 85,
+      "status": "closed"
     },
     {
       "evidence": [
@@ -252,7 +265,7 @@
     }
   ],
   "summary": {
-    "closed_branches": 17,
+    "closed_branches": 18,
     "decision": "no_local_training_trigger",
     "gpu_training_trigger": "At least one local row on the proposed manifest must clear delta_vs_shuffle>=0, delta_vs_total>=0, target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75 before training.",
     "recommended_next": "new manifest with prospective bidirectional support"

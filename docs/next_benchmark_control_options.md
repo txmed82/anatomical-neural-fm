@@ -3,13 +3,14 @@
 Ranks remaining no-spend branches after the current local audits. This is the planning gate before any new RunPod training.
 
 - recommended next: `new manifest with prospective bidirectional support`
-- closed branches: `17`
+- closed branches: `18`
 - decision: `no_local_training_trigger`
 - GPU trigger: At least one local row on the proposed manifest must clear delta_vs_shuffle>=0, delta_vs_total>=0, target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75 before training.
 
 | priority | branch | status | next action |
 |---:|---|---|---|
 | 1 | new manifest with prospective bidirectional support | `recommended_next` | Do not launch GPU training from the projected support80 panel; its model-free family and feature-mode gates have no candidates. Redesign the target/control locally. |
+| 85 | extreme-quantile behavioral target gate | `closed` | Do not train: the extreme-quantile candidate does not robustly beat within-recording shuffled anatomy across seeds. |
 | 86 | wheel-derived target family gate | `closed` | Do not spend on the tested wheel targets; move to a prospectively supported manifest. |
 | 87 | reaction-dynamics wheel targets | `closed` | Do not spend on reaction-dynamics wheel targets; the near miss fails true-vs-shuffle and does not replicate across feature modes. |
 | 88 | cell-type prior target/control gate | `closed` | Do not spend on broad ABC cell-class prior channels; they do not pass the local bidirectional gate. |
@@ -43,6 +44,11 @@ Ranks remaining no-spend branches after the current local audits. This is the pl
 - subject-stable shuffle-seed sensitivity found 0 robust candidates; max positive seed fraction=0.4
 - recording-subset replication selected zero stable validation rows
 - GPU trigger: At least one local row on the proposed manifest must clear delta_vs_shuffle>=0, delta_vs_total>=0, target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75 before training.
+
+### extreme-quantile behavioral target gate
+- extreme-quantile target family gate found 1 candidates across 175 rows and max bidir 1.000
+- seed sensitivity found 0 robust candidates; max positive seed fraction=0.400
+- GPU trigger: A candidate must pass the unchanged local gate and remain positive across multiple within-recording shuffle seeds before training.
 
 ### wheel-derived target family gate
 - behavior-cache preflight has wheel in 28/28 matched recordings

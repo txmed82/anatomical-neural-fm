@@ -520,6 +520,46 @@ and `choice_aligned_wheel`.
 
 Decision: wheel-derived targets only justify paid training if they clear the same true-vs-shuffle, total-baseline, global target, and same-recording bidirectional gate used by the prior audits.
 
+## Extreme-Quantile Target Family Gate
+
+`docs/extreme_quantile_target_family_gate.md` drops middle trials and
+labels continuous behavioral targets by within-recording low/high
+quantiles before running the unchanged shared-family local gate.
+
+- candidates: `1`
+- positive centered-delta rows: `78`
+- max bidirectional recording fraction: `1.000`
+- decision: `extreme_quantile_target_family_candidate`
+
+| target | family | holdout | decision | delta shuffle | delta total | targets | bidir recs |
+|---|---|---|---|---:|---:|---:|---:|
+| response_latency_extreme | broad_named_anatomy | NR_0019 | candidate | +0.001 | +0.000 | 0.639/0.648 | 4/4 |
+| wheel_displacement_extreme | broad_named_anatomy | NR_0019 | reject: total baseline | +0.000 | -0.001 | 0.566/0.618 | 3/4 |
+| wheel_reaction_latency_extreme | broad_named_anatomy | KS014 | reject: shuffle | -0.003 | +0.003 | 0.738/0.753 | 3/4 |
+| response_latency_extreme | broad_named_anatomy | KS014 | reject: shuffle | -0.004 | -0.004 | 0.702/0.767 | 3/4 |
+| wheel_active_extreme | broad_named_anatomy | KS014 | reject: shuffle | -0.006 | -0.005 | 0.697/0.683 | 3/4 |
+| post_stim_speedup_extreme | broad_named_anatomy | KS014 | reject: shuffle | -0.007 | -0.005 | 0.649/0.631 | 3/4 |
+| wheel_displacement_extreme | broad_named_anatomy | KS014 | reject: shuffle | -0.009 | -0.007 | 0.668/0.700 | 3/4 |
+| response_latency_extreme | hippocampal_formation | KS014 | reject: target1 | +0.754 | +0.001 | 0.978/0.549 | 2/4 |
+
+Decision before seed validation: this is a local candidate only, not a GPU trigger. The margins are tiny, so require shuffle-seed stability before any paid training.
+
+## Extreme-Quantile Shuffle Seed Sensitivity
+
+`docs/extreme_quantile_seed_sensitivity.md` reruns the strict
+extreme-quantile candidate across multiple within-recording shuffle seeds.
+
+- cases: `1`
+- robust shuffle-seed candidates: `0`
+- max positive shuffle-delta fraction: `0.400`
+- decision: `no_extreme_quantile_shuffle_seed_candidate`
+
+| target | family | holdout | positive seeds | candidate seeds | mean shuffle delta | mean total delta | mean targets | bidir range |
+|---|---|---|---:|---:|---:|---:|---:|---:|
+| response_latency_extreme | broad_named_anatomy | NR_0019 | 2/5 | 2/5 | -0.0001 | +0.0004 | 0.638/0.676 | 4-4 |
+
+Decision: do not train from the extreme-quantile candidate. It keeps 4/4 bidirectional recording support, but true-vs-shuffle is positive in only 2/5 seeds and the mean shuffle delta is slightly negative.
+
 ## Matched-Region Model-Free Panel
 
 `docs/model_free_matched_support80_hdf5_panel.md` runs the closed-form
