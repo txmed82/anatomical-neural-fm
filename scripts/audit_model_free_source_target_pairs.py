@@ -6,6 +6,8 @@ import json
 import sys
 from pathlib import Path
 
+import numpy as np
+
 REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO_ROOT / "scripts"))
 sys.path.insert(0, str(REPO_ROOT / "vendor" / "torch_brain"))
@@ -25,6 +27,10 @@ from audit_model_free_region_signal import (  # noqa: E402
     summarize_results,
     total_spike_feature,
     transform_region_features,
+)
+from scan_model_free_region_family_candidates import (  # noqa: E402
+    aggregate_features,
+    present_family_definitions,
 )
 from train import build_trial_samples, build_vocab, select_recording_ids  # noqa: E402
 
@@ -66,6 +72,18 @@ def summarize_pairs(rows: list[dict]) -> dict:
     }
 
 
+def aggregate_unit_fraction_map(
+    unit_fractions: dict[str, np.ndarray],
+    *,
+    regions: list[str],
+    family_definitions: dict[str, tuple[str, ...]],
+) -> dict[str, np.ndarray]:
+    rids = list(unit_fractions)
+    matrix = np.vstack([unit_fractions[rid] for rid in rids])
+    family_matrix = aggregate_features(matrix, regions, family_definitions)
+    return {rid: family_matrix[idx] for idx, rid in enumerate(rids)}
+
+
 def audit_pair(args: argparse.Namespace, ds: Dataset, vocab: dict, source: str, target: str) -> dict | None:
     source_rids = rids_for_subject(vocab["subject_by_rid"], source)
     target_rids = rids_for_subject(vocab["subject_by_rid"], target)
@@ -78,6 +96,8 @@ def audit_pair(args: argparse.Namespace, ds: Dataset, vocab: dict, source: str, 
         return None
 
     regions = build_region_vocab(vocab["recs"], source_rids + target_rids, args.region_granularity)
+    family_definitions = present_family_definitions(regions) if args.feature_space == "families" else {}
+    feature_names = list(family_definitions) if args.feature_space == "families" else regions
     train_true_x, train_y, train_recordings = make_feature_matrix(
         ds,
         vocab["recs"],
@@ -134,6 +154,21 @@ def audit_pair(args: argparse.Namespace, ds: Dataset, vocab: dict, source: str, 
         region_control="within_recording_shuffle",
         seed=args.seed,
     )
+    if args.feature_space == "families":
+        train_true_x = aggregate_features(train_true_x, regions, family_definitions)
+        eval_true_x = aggregate_features(eval_true_x, regions, family_definitions)
+        train_shuffle_x = aggregate_features(train_shuffle_x, regions, family_definitions)
+        eval_shuffle_x = aggregate_features(eval_shuffle_x, regions, family_definitions)
+        true_unit_fractions = aggregate_unit_fraction_map(
+            true_unit_fractions,
+            regions=regions,
+            family_definitions=family_definitions,
+        )
+        shuffle_unit_fractions = aggregate_unit_fraction_map(
+            shuffle_unit_fractions,
+            regions=regions,
+            family_definitions=family_definitions,
+        )
     train_model_x = transform_region_features(
         train_true_x,
         args.feature_mode,
@@ -193,12 +228,15 @@ def audit_pair(args: argparse.Namespace, ds: Dataset, vocab: dict, source: str, 
         "target_subject": target,
         "target_mode": args.target_mode,
         "feature_mode": args.feature_mode,
+        "feature_space": args.feature_space,
         "region_granularity": args.region_granularity,
         "n_source_recordings": len(source_rids),
         "n_target_recordings": len(target_rids),
         "n_train_trials": len(train_trials),
         "n_eval_trials": len(eval_trials),
         "n_regions": len(regions),
+        "n_features": len(feature_names),
+        "feature_names": feature_names,
         "summary": {
             "delta_centered_auc": summary["deltas"]["true_minus_shuffle_centered_auc"],
             "delta_auc": summary["deltas"]["true_minus_shuffle_auc"],
@@ -241,6 +279,7 @@ def render_markdown(report: dict) -> str:
         ),
         "",
         f"- target mode: `{report['target_mode']}`",
+        f"- feature space: `{report['feature_space']}`",
         f"- feature mode: `{report['feature_mode']}`",
         f"- region granularity: `{report['region_granularity']}`",
         f"- source-target pairs: `{summary['n_pairs']}`",
@@ -307,6 +346,7 @@ def parse_args() -> argparse.Namespace:
         default="recording_centered",
         choices=["counts", "fractions", "recording_centered", "unit_residuals"],
     )
+    parser.add_argument("--feature-space", default="regions", choices=["regions", "families"])
     parser.add_argument("--region-granularity", default="parent", choices=["fine", "parent", "grandparent"])
     parser.add_argument("--window-len", type=float, default=1.0)
     parser.add_argument("--seed", type=int, default=0)
@@ -348,6 +388,7 @@ def main() -> int:
         "manifest": str(args.manifest),
         "target_mode": args.target_mode,
         "feature_mode": args.feature_mode,
+        "feature_space": args.feature_space,
         "region_granularity": args.region_granularity,
         "thresholds": {
             "min_centered_delta": args.min_centered_delta,

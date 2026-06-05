@@ -1,4 +1,11 @@
-from scripts.audit_model_free_source_target_pairs import pair_decision_counts, rids_for_subject, summarize_pairs
+import numpy as np
+
+from scripts.audit_model_free_source_target_pairs import (
+    aggregate_unit_fraction_map,
+    pair_decision_counts,
+    rids_for_subject,
+    summarize_pairs,
+)
 
 
 def test_rids_for_subject_sorts_matching_recordings() -> None:
@@ -50,3 +57,19 @@ def test_pair_decision_counts_sorts_decision_names() -> None:
     ]
 
     assert pair_decision_counts(rows) == {"reject: a": 1, "reject: b": 2}
+
+
+def test_aggregate_unit_fraction_map_sums_family_members() -> None:
+    unit_fractions = {
+        "rec1": np.asarray([0.25, 0.50, 0.25], dtype=np.float32),
+        "rec2": np.asarray([0.10, 0.20, 0.70], dtype=np.float32),
+    }
+
+    result = aggregate_unit_fraction_map(
+        unit_fractions,
+        regions=["A", "B", "C"],
+        family_definitions={"fam1": ("A", "C"), "fam2": ("B",)},
+    )
+
+    assert np.allclose(result["rec1"], [0.50, 0.50])
+    assert np.allclose(result["rec2"], [0.80, 0.20])

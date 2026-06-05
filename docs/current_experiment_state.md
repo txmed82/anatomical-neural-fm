@@ -377,6 +377,21 @@ within-recording shuffled-label control.
 
 Decision: single-source training does not reveal a hidden compatible animal pair. The best positive centered-delta pairs still fail global target0 or target1 and have at most `1/4` bidirectional target recordings.
 
+## Family Source-Target Pair Gate
+
+`docs/model_free_source_target_pair_gate_families_recording_centered.md`
+combines the single-source split redesign with predefined family-aggregate
+features and recording centering.
+
+- source-target pairs: `42`
+- candidates: `0`
+- positive centered-delta pairs: `19`
+- mean bidirectional recording fraction: `0.095`
+- decision counts: `reject: centered delta: 29, reject: global target0: 10, reject: global target1: 3`
+- decision: `no_source_target_model_free_signal`
+
+Decision: combining source-target pairing with family aggregation still does not produce a local transfer candidate. It slightly increases same-recording bidirectional support, but top pairs remain below global target0/target1 and never exceed `1/4` bidirectional recordings.
+
 ## Family-Aggregate Recording-Centered Gate
 
 `docs/model_free_family_bidirectional_gate_recording_centered.md` combines

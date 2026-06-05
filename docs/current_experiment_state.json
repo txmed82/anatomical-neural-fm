@@ -23723,6 +23723,3656 @@
     ],
     "window_len": 1.0
   },
+  "model_free_source_target_pair_families_recording_centered": {
+    "feature_mode": "recording_centered",
+    "feature_space": "families",
+    "manifest": "/Users/colin/Desktop/Projects/anatomical-neural-fm/manifests/ibl_bwm_region_matched_candidates_s3_present_support80_hdf5_scored.json",
+    "pairs": [
+      {
+        "feature_mode": "recording_centered",
+        "feature_names": [
+          "cortical_visual",
+          "cortical_sensorimotor",
+          "cortical_retrosplenial",
+          "hippocampal_formation",
+          "thalamic",
+          "midbrain",
+          "basal_ganglia",
+          "brainstem_interbrain",
+          "fiber_tracts",
+          "broad_named_anatomy"
+        ],
+        "feature_space": "families",
+        "n_eval_trials": 2127,
+        "n_features": 10,
+        "n_regions": 38,
+        "n_source_recordings": 4,
+        "n_target_recordings": 4,
+        "n_train_trials": 2726,
+        "recording_bidirectional": {
+          "bidirectional_recording_fraction": 0.0,
+          "bidirectional_recordings": [],
+          "n_bidirectional_recordings": 0,
+          "n_evaluable_recordings": 4
+        },
+        "recording_bidirectional_decision": "reject: centered delta",
+        "recording_target_rows": [
+          {
+            "improved_fraction": 0.5276595744680851,
+            "mean_true_class_delta": 0.08896031591325856,
+            "n_trials": 470,
+            "recording": "16693458-0801-4d35-a3f1-9115c7e5acfd_probe00",
+            "target0_improved": 0.42290748898678415,
+            "target1_fraction": 0.5170212765957447,
+            "target1_improved": 0.6255144032921811
+          },
+          {
+            "improved_fraction": 0.5659574468085107,
+            "mean_true_class_delta": 0.16269109958316907,
+            "n_trials": 470,
+            "recording": "16693458-0801-4d35-a3f1-9115c7e5acfd_probe01",
+            "target0_improved": 0.5462555066079295,
+            "target1_fraction": 0.5170212765957447,
+            "target1_improved": 0.5843621399176955
+          },
+          {
+            "improved_fraction": 0.4381443298969072,
+            "mean_true_class_delta": -0.44919931379357736,
+            "n_trials": 582,
+            "recording": "b9c205c3-feac-485b-a89d-afc96d9cb280_probe00",
+            "target0_improved": 0.3346456692913386,
+            "target1_fraction": 0.563573883161512,
+            "target1_improved": 0.5182926829268293
+          },
+          {
+            "improved_fraction": 0.43471074380165287,
+            "mean_true_class_delta": -0.01832821276499191,
+            "n_trials": 605,
+            "recording": "e1931de1-cf7b-49af-af33-2ade15e8abe7_probe00",
+            "target0_improved": 0.42134831460674155,
+            "target1_fraction": 0.4115702479338843,
+            "target1_improved": 0.4538152610441767
+          }
+        ],
+        "region_granularity": "parent",
+        "source_subject": "CSH_ZAD_019",
+        "summary": {
+          "delta_auc": -0.030745372367890544,
+          "delta_centered_auc": -0.030745372367890544,
+          "n_recordings": 4,
+          "paired_true_vs_shuffle": {
+            "improved_fraction": 0.48519040902679833,
+            "mean_true_class_delta": -0.07251829058174004,
+            "target0_improved_fraction": 0.4276315789473684,
+            "target1_improved_fraction": 0.5428033866415805
+          },
+          "recording_support_fraction": 0.5,
+          "recordings_positive_true_minus_shuffle": 2
+        },
+        "target_mode": "stimulus_side",
+        "target_subject": "KS014"
+      },
+      {
+        "feature_mode": "recording_centered",
+        "feature_names": [
+          "cortical_visual",
+          "cortical_sensorimotor",
+          "cortical_retrosplenial",
+          "hippocampal_formation",
+          "thalamic",
+          "midbrain",
+          "basal_ganglia",
+          "brainstem_interbrain",
+          "fiber_tracts",
+          "broad_named_anatomy"
+        ],
+        "feature_space": "families",
+        "n_eval_trials": 2265,
+        "n_features": 10,
+        "n_regions": 46,
+        "n_source_recordings": 4,
+        "n_target_recordings": 4,
+        "n_train_trials": 2726,
+        "recording_bidirectional": {
+          "bidirectional_recording_fraction": 0.0,
+          "bidirectional_recordings": [],
+          "n_bidirectional_recordings": 0,
+          "n_evaluable_recordings": 4
+        },
+        "recording_bidirectional_decision": "reject: centered delta",
+        "recording_target_rows": [
+          {
+            "improved_fraction": 0.4681818181818182,
+            "mean_true_class_delta": -0.06478638598065908,
+            "n_trials": 660,
+            "recording": "35eeb752-8f4f-4040-9714-ba0f5b7ccdfe_probe00",
+            "target0_improved": 0.4690265486725664,
+            "target1_fraction": 0.4863636363636364,
+            "target1_improved": 0.4672897196261682
+          },
+          {
+            "improved_fraction": 0.4661016949152542,
+            "mean_true_class_delta": -0.02573268736239451,
+            "n_trials": 590,
+            "recording": "3f71aa98-08c6-4e79-b4c8-00eae4f03eff_probe00",
+            "target0_improved": 0.5057803468208093,
+            "target1_fraction": 0.4135593220338983,
+            "target1_improved": 0.4098360655737705
+          },
+          {
+            "improved_fraction": 0.3791208791208791,
+            "mean_true_class_delta": -0.02450770912145571,
+            "n_trials": 364,
+            "recording": "6899a67d-2e53-4215-a52a-c7021b5da5d4_probe00",
+            "target0_improved": 0.422680412371134,
+            "target1_fraction": 0.46703296703296704,
+            "target1_improved": 0.32941176470588235
+          },
+          {
+            "improved_fraction": 0.4869431643625192,
+            "mean_true_class_delta": -0.05057990314098515,
+            "n_trials": 651,
+            "recording": "a1782f4f-86b0-480c-a7f2-3d8f1ab482ab_probe00",
+            "target0_improved": 0.5116959064327485,
+            "target1_fraction": 0.47465437788018433,
+            "target1_improved": 0.459546925566343
+          }
+        ],
+        "region_granularity": "parent",
+        "source_subject": "CSH_ZAD_019",
+        "summary": {
+          "delta_auc": -0.06303325268842508,
+          "delta_centered_auc": -0.06303325268842508,
+          "n_recordings": 4,
+          "paired_true_vs_shuffle": {
+            "improved_fraction": 0.458719646799117,
+            "mean_true_class_delta": -0.04405722885476335,
+            "target0_improved_fraction": 0.48402948402948404,
+            "target1_improved_fraction": 0.42911877394636017
+          },
+          "recording_support_fraction": 0.0,
+          "recordings_positive_true_minus_shuffle": 0
+        },
+        "target_mode": "stimulus_side",
+        "target_subject": "MFD_06"
+      },
+      {
+        "feature_mode": "recording_centered",
+        "feature_names": [
+          "cortical_visual",
+          "cortical_sensorimotor",
+          "cortical_retrosplenial",
+          "hippocampal_formation",
+          "thalamic",
+          "midbrain",
+          "basal_ganglia",
+          "brainstem_interbrain",
+          "fiber_tracts",
+          "broad_named_anatomy"
+        ],
+        "feature_space": "families",
+        "n_eval_trials": 2424,
+        "n_features": 10,
+        "n_regions": 43,
+        "n_source_recordings": 4,
+        "n_target_recordings": 4,
+        "n_train_trials": 2726,
+        "recording_bidirectional": {
+          "bidirectional_recording_fraction": 0.0,
+          "bidirectional_recordings": [],
+          "n_bidirectional_recordings": 0,
+          "n_evaluable_recordings": 4
+        },
+        "recording_bidirectional_decision": "reject: centered delta",
+        "recording_target_rows": [
+          {
+            "improved_fraction": 0.5443037974683544,
+            "mean_true_class_delta": 0.02243650027943239,
+            "n_trials": 790,
+            "recording": "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe00",
+            "target0_improved": 0.4936708860759494,
+            "target1_fraction": 0.5,
+            "target1_improved": 0.5949367088607594
+          },
+          {
+            "improved_fraction": 0.4772151898734177,
+            "mean_true_class_delta": -0.023699213315662288,
+            "n_trials": 790,
+            "recording": "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe01",
+            "target0_improved": 0.5594936708860759,
+            "target1_fraction": 0.5,
+            "target1_improved": 0.3949367088607595
+          },
+          {
+            "improved_fraction": 0.504739336492891,
+            "mean_true_class_delta": -0.047489119425054106,
+            "n_trials": 422,
+            "recording": "b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe00",
+            "target0_improved": 0.4752475247524752,
+            "target1_fraction": 0.5213270142180095,
+            "target1_improved": 0.5318181818181819
+          },
+          {
+            "improved_fraction": 0.41706161137440756,
+            "mean_true_class_delta": -0.04221481546917833,
+            "n_trials": 422,
+            "recording": "b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe01",
+            "target0_improved": 0.4603960396039604,
+            "target1_fraction": 0.5213270142180095,
+            "target1_improved": 0.37727272727272726
+          }
+        ],
+        "region_granularity": "parent",
+        "source_subject": "CSH_ZAD_019",
+        "summary": {
+          "delta_auc": -0.018168076153123325,
+          "delta_centered_auc": -0.018168076153123325,
+          "n_recordings": 4,
+          "paired_true_vs_shuffle": {
+            "improved_fraction": 0.4933993399339934,
+            "mean_true_class_delta": -0.01602830190758569,
+            "target0_improved_fraction": 0.5067001675041876,
+            "target1_improved_fraction": 0.48048780487804876
+          },
+          "recording_support_fraction": 0.25,
+          "recordings_positive_true_minus_shuffle": 1
+        },
+        "target_mode": "stimulus_side",
+        "target_subject": "NR_0019"
+      },
+      {
+        "feature_mode": "recording_centered",
+        "feature_names": [
+          "cortical_visual",
+          "cortical_sensorimotor",
+          "cortical_retrosplenial",
+          "hippocampal_formation",
+          "thalamic",
+          "midbrain",
+          "basal_ganglia",
+          "brainstem_interbrain",
+          "fiber_tracts",
+          "broad_named_anatomy"
+        ],
+        "feature_space": "families",
+        "n_eval_trials": 1875,
+        "n_features": 10,
+        "n_regions": 46,
+        "n_source_recordings": 4,
+        "n_target_recordings": 4,
+        "n_train_trials": 2726,
+        "recording_bidirectional": {
+          "bidirectional_recording_fraction": 0.0,
+          "bidirectional_recordings": [],
+          "n_bidirectional_recordings": 0,
+          "n_evaluable_recordings": 4
+        },
+        "recording_bidirectional_decision": "reject: centered delta",
+        "recording_target_rows": [
+          {
+            "improved_fraction": 0.5313725490196078,
+            "mean_true_class_delta": 0.0204596105082409,
+            "n_trials": 510,
+            "recording": "032ffcdf-7692-40b3-b9ff-8def1fc18b2e_probe00",
+            "target0_improved": 0.5601374570446735,
+            "target1_fraction": 0.4294117647058823,
+            "target1_improved": 0.4931506849315068
+          },
+          {
+            "improved_fraction": 0.5103305785123967,
+            "mean_true_class_delta": -0.0007410476680032305,
+            "n_trials": 484,
+            "recording": "a8a8af78-16de-4841-ab07-fde4b5281a03_probe00",
+            "target0_improved": 0.512,
+            "target1_fraction": 0.4834710743801653,
+            "target1_improved": 0.5085470085470085
+          },
+          {
+            "improved_fraction": 0.48140495867768596,
+            "mean_true_class_delta": 0.025948101232907934,
+            "n_trials": 484,
+            "recording": "a8a8af78-16de-4841-ab07-fde4b5281a03_probe01",
+            "target0_improved": 0.38,
+            "target1_fraction": 0.4834710743801653,
+            "target1_improved": 0.5897435897435898
+          },
+          {
+            "improved_fraction": 0.49370277078085645,
+            "mean_true_class_delta": -0.044493010243767714,
+            "n_trials": 397,
+            "recording": "b182b754-3c3e-4942-8144-6ee790926b58_probe01",
+            "target0_improved": 0.42857142857142855,
+            "target1_fraction": 0.5415617128463476,
+            "target1_improved": 0.5488372093023256
+          }
+        ],
+        "region_granularity": "parent",
+        "source_subject": "CSH_ZAD_019",
+        "summary": {
+          "delta_auc": 0.009697531806673765,
+          "delta_centered_auc": 0.009697531806673765,
+          "n_recordings": 4,
+          "paired_true_vs_shuffle": {
+            "improved_fraction": 0.5050666666666667,
+            "mean_true_class_delta": 0.0026511414495151786,
+            "target0_improved_fraction": 0.47687564234326824,
+            "target1_improved_fraction": 0.5354767184035477
+          },
+          "recording_support_fraction": 0.5,
+          "recordings_positive_true_minus_shuffle": 2
+        },
+        "target_mode": "stimulus_side",
+        "target_subject": "NYU-12"
+      },
+      {
+        "feature_mode": "recording_centered",
+        "feature_names": [
+          "cortical_visual",
+          "cortical_sensorimotor",
+          "cortical_retrosplenial",
+          "hippocampal_formation",
+          "thalamic",
+          "midbrain",
+          "basal_ganglia",
+          "brainstem_interbrain",
+          "fiber_tracts",
+          "broad_named_anatomy"
+        ],
+        "feature_space": "families",
+        "n_eval_trials": 2436,
+        "n_features": 10,
+        "n_regions": 39,
+        "n_source_recordings": 4,
+        "n_target_recordings": 4,
+        "n_train_trials": 2726,
+        "recording_bidirectional": {
+          "bidirectional_recording_fraction": 0.25,
+          "bidirectional_recordings": [
+            "03063955-2523-47bd-ae57-f7489dd40f15_probe01"
+          ],
+          "n_bidirectional_recordings": 1,
+          "n_evaluable_recordings": 4
+        },
+        "recording_bidirectional_decision": "reject: global target0",
+        "recording_target_rows": [
+          {
+            "improved_fraction": 0.5855263157894737,
+            "mean_true_class_delta": 0.04458724090203008,
+            "n_trials": 760,
+            "recording": "03063955-2523-47bd-ae57-f7489dd40f15_probe01",
+            "target0_improved": 0.5863746958637469,
+            "target1_fraction": 0.45921052631578946,
+            "target1_improved": 0.5845272206303725
+          },
+          {
+            "improved_fraction": 0.48451730418943534,
+            "mean_true_class_delta": -0.016272680426458026,
+            "n_trials": 549,
+            "recording": "1e45d992-c356-40e1-9be1-a506d944896f_probe01",
+            "target0_improved": 0.48518518518518516,
+            "target1_fraction": 0.5081967213114754,
+            "target1_improved": 0.4838709677419355
+          },
+          {
+            "improved_fraction": 0.5881057268722467,
+            "mean_true_class_delta": 0.0051206085534445285,
+            "n_trials": 454,
+            "recording": "41872d7f-75cb-4445-bb1a-132b354c44f0_probe01",
+            "target0_improved": 0.48826291079812206,
+            "target1_fraction": 0.5308370044052864,
+            "target1_improved": 0.6763485477178424
+          },
+          {
+            "improved_fraction": 0.5319465081723626,
+            "mean_true_class_delta": 0.011993445075866542,
+            "n_trials": 673,
+            "recording": "4d8c7767-981c-4347-8e5e-5d5fffe38534_probe01",
+            "target0_improved": 0.5754189944134078,
+            "target1_fraction": 0.46805349182763745,
+            "target1_improved": 0.48253968253968255
+          }
+        ],
+        "region_granularity": "parent",
+        "source_subject": "CSH_ZAD_019",
+        "summary": {
+          "delta_auc": 0.028764112555047072,
+          "delta_centered_auc": 0.028764112555047072,
+          "n_recordings": 4,
+          "paired_true_vs_shuffle": {
+            "improved_fraction": 0.548440065681445,
+            "mean_true_class_delta": 0.014511061720336369,
+            "target0_improved_fraction": 0.5447284345047924,
+            "target1_improved_fraction": 0.5523648648648649
+          },
+          "recording_support_fraction": 0.75,
+          "recordings_positive_true_minus_shuffle": 3
+        },
+        "target_mode": "stimulus_side",
+        "target_subject": "SWC_038"
+      },
+      {
+        "feature_mode": "recording_centered",
+        "feature_names": [
+          "cortical_auditory",
+          "cortical_sensorimotor",
+          "cortical_retrosplenial",
+          "hippocampal_formation",
+          "thalamic",
+          "midbrain",
+          "basal_ganglia",
+          "brainstem_interbrain",
+          "fiber_tracts",
+          "broad_named_anatomy"
+        ],
+        "feature_space": "families",
+        "n_eval_trials": 1888,
+        "n_features": 10,
+        "n_regions": 46,
+        "n_source_recordings": 4,
+        "n_target_recordings": 4,
+        "n_train_trials": 2726,
+        "recording_bidirectional": {
+          "bidirectional_recording_fraction": 0.0,
+          "bidirectional_recordings": [],
+          "n_bidirectional_recordings": 0,
+          "n_evaluable_recordings": 4
+        },
+        "recording_bidirectional_decision": "reject: centered delta",
+        "recording_target_rows": [
+          {
+            "improved_fraction": 0.46170212765957447,
+            "mean_true_class_delta": -0.008780984135026653,
+            "n_trials": 470,
+            "recording": "4ecb5d24-f5cc-402c-be28-9d0f7cb14b3a_probe00",
+            "target0_improved": 0.46443514644351463,
+            "target1_fraction": 0.49148936170212765,
+            "target1_improved": 0.4588744588744589
+          },
+          {
+            "improved_fraction": 0.4845360824742268,
+            "mean_true_class_delta": -0.004086034866797884,
+            "n_trials": 485,
+            "recording": "6f09ba7e-e3ce-44b0-932b-c003fb44fb89_probe01",
+            "target0_improved": 0.5677655677655677,
+            "target1_fraction": 0.43711340206185567,
+            "target1_improved": 0.37735849056603776
+          },
+          {
+            "improved_fraction": 0.44789356984478934,
+            "mean_true_class_delta": -0.007744534100747938,
+            "n_trials": 451,
+            "recording": "6fb1e12c-883b-46d1-a745-473cde3232c8_probe00",
+            "target0_improved": 0.4419642857142857,
+            "target1_fraction": 0.5033259423503326,
+            "target1_improved": 0.45374449339207046
+          },
+          {
+            "improved_fraction": 0.4460580912863071,
+            "mean_true_class_delta": -0.02392958418710195,
+            "n_trials": 482,
+            "recording": "88d24c31-52e4-49cc-9f32-6adbeb9eba87_probe00",
+            "target0_improved": 0.40725806451612906,
+            "target1_fraction": 0.4854771784232365,
+            "target1_improved": 0.48717948717948717
+          }
+        ],
+        "region_granularity": "parent",
+        "source_subject": "CSH_ZAD_019",
+        "summary": {
+          "delta_auc": -0.03031580509389159,
+          "delta_centered_auc": -0.03031580509389159,
+          "n_recordings": 4,
+          "paired_true_vs_shuffle": {
+            "improved_fraction": 0.4602754237288136,
+            "mean_true_class_delta": -0.011194721351419473,
+            "target0_improved_fraction": 0.4735772357723577,
+            "target1_improved_fraction": 0.44579646017699115
+          },
+          "recording_support_fraction": 0.25,
+          "recordings_positive_true_minus_shuffle": 1
+        },
+        "target_mode": "stimulus_side",
+        "target_subject": "SWC_043"
+      },
+      {
+        "feature_mode": "recording_centered",
+        "feature_names": [
+          "cortical_visual",
+          "cortical_sensorimotor",
+          "cortical_retrosplenial",
+          "hippocampal_formation",
+          "thalamic",
+          "midbrain",
+          "basal_ganglia",
+          "brainstem_interbrain",
+          "fiber_tracts",
+          "broad_named_anatomy"
+        ],
+        "feature_space": "families",
+        "n_eval_trials": 2726,
+        "n_features": 10,
+        "n_regions": 38,
+        "n_source_recordings": 4,
+        "n_target_recordings": 4,
+        "n_train_trials": 2127,
+        "recording_bidirectional": {
+          "bidirectional_recording_fraction": 0.25,
+          "bidirectional_recordings": [
+            "edd22318-216c-44ff-bc24-49ce8be78374_probe00"
+          ],
+          "n_bidirectional_recordings": 1,
+          "n_evaluable_recordings": 4
+        },
+        "recording_bidirectional_decision": "reject: centered delta",
+        "recording_target_rows": [
+          {
+            "improved_fraction": 0.4157014157014157,
+            "mean_true_class_delta": -0.1975107176696142,
+            "n_trials": 777,
+            "recording": "49e0ab27-827a-4c91-bcaa-97eea27a1b8d_probe01",
+            "target0_improved": 0.4057971014492754,
+            "target1_fraction": 0.4671814671814672,
+            "target1_improved": 0.42699724517906334
+          },
+          {
+            "improved_fraction": 0.47796610169491527,
+            "mean_true_class_delta": -0.13857707507931794,
+            "n_trials": 590,
+            "recording": "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe00",
+            "target0_improved": 0.4653179190751445,
+            "target1_fraction": 0.4135593220338983,
+            "target1_improved": 0.4959016393442623
+          },
+          {
+            "improved_fraction": 0.5338983050847458,
+            "mean_true_class_delta": 0.04997004660605678,
+            "n_trials": 590,
+            "recording": "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe01",
+            "target0_improved": 0.5289017341040463,
+            "target1_fraction": 0.4135593220338983,
+            "target1_improved": 0.5409836065573771
+          },
+          {
+            "improved_fraction": 0.5591677503250976,
+            "mean_true_class_delta": 0.07164743412692491,
+            "n_trials": 769,
+            "recording": "edd22318-216c-44ff-bc24-49ce8be78374_probe00",
+            "target0_improved": 0.5653266331658291,
+            "target1_fraction": 0.48244473342002603,
+            "target1_improved": 0.5525606469002695
+          }
+        ],
+        "region_granularity": "parent",
+        "source_subject": "KS014",
+        "summary": {
+          "delta_auc": -0.0413518125152349,
+          "delta_centered_auc": -0.0413518125152349,
+          "n_recordings": 4,
+          "paired_true_vs_shuffle": {
+            "improved_fraction": 0.49523110785033014,
+            "mean_true_class_delta": -0.055263058541786134,
+            "target0_improved_fraction": 0.4900265957446808,
+            "target1_improved_fraction": 0.5016366612111293
+          },
+          "recording_support_fraction": 0.5,
+          "recordings_positive_true_minus_shuffle": 2
+        },
+        "target_mode": "stimulus_side",
+        "target_subject": "CSH_ZAD_019"
+      },
+      {
+        "feature_mode": "recording_centered",
+        "feature_names": [
+          "cortical_visual",
+          "cortical_retrosplenial",
+          "hippocampal_formation",
+          "thalamic",
+          "midbrain",
+          "brainstem_interbrain",
+          "fiber_tracts",
+          "broad_named_anatomy"
+        ],
+        "feature_space": "families",
+        "n_eval_trials": 2265,
+        "n_features": 8,
+        "n_regions": 36,
+        "n_source_recordings": 4,
+        "n_target_recordings": 4,
+        "n_train_trials": 2127,
+        "recording_bidirectional": {
+          "bidirectional_recording_fraction": 0.25,
+          "bidirectional_recordings": [
+            "6899a67d-2e53-4215-a52a-c7021b5da5d4_probe00"
+          ],
+          "n_bidirectional_recordings": 1,
+          "n_evaluable_recordings": 4
+        },
+        "recording_bidirectional_decision": "reject: global target0",
+        "recording_target_rows": [
+          {
+            "improved_fraction": 0.5378787878787878,
+            "mean_true_class_delta": 0.1515348803783294,
+            "n_trials": 660,
+            "recording": "35eeb752-8f4f-4040-9714-ba0f5b7ccdfe_probe00",
+            "target0_improved": 0.5014749262536873,
+            "target1_fraction": 0.4863636363636364,
+            "target1_improved": 0.5763239875389408
+          },
+          {
+            "improved_fraction": 0.49491525423728816,
+            "mean_true_class_delta": -0.1797990963415646,
+            "n_trials": 590,
+            "recording": "3f71aa98-08c6-4e79-b4c8-00eae4f03eff_probe00",
+            "target0_improved": 0.5895953757225434,
+            "target1_fraction": 0.4135593220338983,
+            "target1_improved": 0.36065573770491804
+          },
+          {
+            "improved_fraction": 0.6538461538461539,
+            "mean_true_class_delta": 0.41186078417005617,
+            "n_trials": 364,
+            "recording": "6899a67d-2e53-4215-a52a-c7021b5da5d4_probe00",
+            "target0_improved": 0.6082474226804123,
+            "target1_fraction": 0.46703296703296704,
+            "target1_improved": 0.7058823529411765
+          },
+          {
+            "improved_fraction": 0.5161290322580645,
+            "mean_true_class_delta": -0.0017306182613653065,
+            "n_trials": 651,
+            "recording": "a1782f4f-86b0-480c-a7f2-3d8f1ab482ab_probe00",
+            "target0_improved": 0.4766081871345029,
+            "target1_fraction": 0.47465437788018433,
+            "target1_improved": 0.5598705501618123
+          }
+        ],
+        "region_granularity": "parent",
+        "source_subject": "KS014",
+        "summary": {
+          "delta_auc": 0.0766534559638008,
+          "delta_centered_auc": 0.0766534559638008,
+          "n_recordings": 4,
+          "paired_true_vs_shuffle": {
+            "improved_fraction": 0.5390728476821192,
+            "mean_true_class_delta": 0.06301202965029845,
+            "target0_improved_fraction": 0.5364455364455365,
+            "target1_improved_fraction": 0.5421455938697318
+          },
+          "recording_support_fraction": 0.75,
+          "recordings_positive_true_minus_shuffle": 3
+        },
+        "target_mode": "stimulus_side",
+        "target_subject": "MFD_06"
+      },
+      {
+        "feature_mode": "recording_centered",
+        "feature_names": [
+          "cortical_visual",
+          "cortical_sensorimotor",
+          "cortical_retrosplenial",
+          "hippocampal_formation",
+          "thalamic",
+          "midbrain",
+          "basal_ganglia",
+          "brainstem_interbrain",
+          "fiber_tracts",
+          "broad_named_anatomy"
+        ],
+        "feature_space": "families",
+        "n_eval_trials": 2424,
+        "n_features": 10,
+        "n_regions": 35,
+        "n_source_recordings": 4,
+        "n_target_recordings": 4,
+        "n_train_trials": 2127,
+        "recording_bidirectional": {
+          "bidirectional_recording_fraction": 0.0,
+          "bidirectional_recordings": [],
+          "n_bidirectional_recordings": 0,
+          "n_evaluable_recordings": 4
+        },
+        "recording_bidirectional_decision": "reject: centered delta",
+        "recording_target_rows": [
+          {
+            "improved_fraction": 0.5265822784810127,
+            "mean_true_class_delta": 0.05817285765410382,
+            "n_trials": 790,
+            "recording": "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe00",
+            "target0_improved": 0.5721518987341773,
+            "target1_fraction": 0.5,
+            "target1_improved": 0.4810126582278481
+          },
+          {
+            "improved_fraction": 0.4506329113924051,
+            "mean_true_class_delta": 0.0009260857413715879,
+            "n_trials": 790,
+            "recording": "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe01",
+            "target0_improved": 0.3924050632911392,
+            "target1_fraction": 0.5,
+            "target1_improved": 0.5088607594936709
+          },
+          {
+            "improved_fraction": 0.47393364928909953,
+            "mean_true_class_delta": -0.010060328461088642,
+            "n_trials": 422,
+            "recording": "b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe00",
+            "target0_improved": 0.5,
+            "target1_fraction": 0.5213270142180095,
+            "target1_improved": 0.45
+          },
+          {
+            "improved_fraction": 0.4597156398104265,
+            "mean_true_class_delta": -0.5260669019225491,
+            "n_trials": 422,
+            "recording": "b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe01",
+            "target0_improved": 0.3316831683168317,
+            "target1_fraction": 0.5213270142180095,
+            "target1_improved": 0.5772727272727273
+          }
+        ],
+        "region_granularity": "parent",
+        "source_subject": "KS014",
+        "summary": {
+          "delta_auc": -0.007935340659939172,
+          "delta_centered_auc": -0.007935340659939172,
+          "n_recordings": 4,
+          "paired_true_vs_shuffle": {
+            "improved_fraction": 0.48102310231023104,
+            "mean_true_class_delta": -0.07407488693872503,
+            "target0_improved_fraction": 0.45979899497487436,
+            "target1_improved_fraction": 0.5016260162601626
+          },
+          "recording_support_fraction": 0.25,
+          "recordings_positive_true_minus_shuffle": 1
+        },
+        "target_mode": "stimulus_side",
+        "target_subject": "NR_0019"
+      },
+      {
+        "feature_mode": "recording_centered",
+        "feature_names": [
+          "cortical_visual",
+          "cortical_retrosplenial",
+          "hippocampal_formation",
+          "thalamic",
+          "midbrain",
+          "brainstem_interbrain",
+          "fiber_tracts",
+          "broad_named_anatomy"
+        ],
+        "feature_space": "families",
+        "n_eval_trials": 1875,
+        "n_features": 8,
+        "n_regions": 39,
+        "n_source_recordings": 4,
+        "n_target_recordings": 4,
+        "n_train_trials": 2127,
+        "recording_bidirectional": {
+          "bidirectional_recording_fraction": 0.0,
+          "bidirectional_recordings": [],
+          "n_bidirectional_recordings": 0,
+          "n_evaluable_recordings": 4
+        },
+        "recording_bidirectional_decision": "reject: centered delta",
+        "recording_target_rows": [
+          {
+            "improved_fraction": 0.4588235294117647,
+            "mean_true_class_delta": -0.06769834651288233,
+            "n_trials": 510,
+            "recording": "032ffcdf-7692-40b3-b9ff-8def1fc18b2e_probe00",
+            "target0_improved": 0.44329896907216493,
+            "target1_fraction": 0.4294117647058823,
+            "target1_improved": 0.4794520547945205
+          },
+          {
+            "improved_fraction": 0.4462809917355372,
+            "mean_true_class_delta": -0.05732957510859976,
+            "n_trials": 484,
+            "recording": "a8a8af78-16de-4841-ab07-fde4b5281a03_probe00",
+            "target0_improved": 0.436,
+            "target1_fraction": 0.4834710743801653,
+            "target1_improved": 0.45726495726495725
+          },
+          {
+            "improved_fraction": 0.5144628099173554,
+            "mean_true_class_delta": -0.2893528818773295,
+            "n_trials": 484,
+            "recording": "a8a8af78-16de-4841-ab07-fde4b5281a03_probe01",
+            "target0_improved": 0.62,
+            "target1_fraction": 0.4834710743801653,
+            "target1_improved": 0.4017094017094017
+          },
+          {
+            "improved_fraction": 0.4987405541561713,
+            "mean_true_class_delta": 0.06522194112469243,
+            "n_trials": 397,
+            "recording": "b182b754-3c3e-4942-8144-6ee790926b58_probe01",
+            "target0_improved": 0.5659340659340659,
+            "target1_fraction": 0.5415617128463476,
+            "target1_improved": 0.4418604651162791
+          }
+        ],
+        "region_granularity": "parent",
+        "source_subject": "KS014",
+        "summary": {
+          "delta_auc": -0.03126431385775136,
+          "delta_centered_auc": -0.03126431385775136,
+          "n_recordings": 4,
+          "paired_true_vs_shuffle": {
+            "improved_fraction": 0.4784,
+            "mean_true_class_delta": -0.09409458948067032,
+            "target0_improved_fraction": 0.5097636176772867,
+            "target1_improved_fraction": 0.4445676274944568
+          },
+          "recording_support_fraction": 0.25,
+          "recordings_positive_true_minus_shuffle": 1
+        },
+        "target_mode": "stimulus_side",
+        "target_subject": "NYU-12"
+      },
+      {
+        "feature_mode": "recording_centered",
+        "feature_names": [
+          "cortical_visual",
+          "cortical_sensorimotor",
+          "cortical_retrosplenial",
+          "hippocampal_formation",
+          "thalamic",
+          "midbrain",
+          "basal_ganglia",
+          "brainstem_interbrain",
+          "fiber_tracts",
+          "broad_named_anatomy"
+        ],
+        "feature_space": "families",
+        "n_eval_trials": 2436,
+        "n_features": 10,
+        "n_regions": 31,
+        "n_source_recordings": 4,
+        "n_target_recordings": 4,
+        "n_train_trials": 2127,
+        "recording_bidirectional": {
+          "bidirectional_recording_fraction": 0.25,
+          "bidirectional_recordings": [
+            "03063955-2523-47bd-ae57-f7489dd40f15_probe01"
+          ],
+          "n_bidirectional_recordings": 1,
+          "n_evaluable_recordings": 4
+        },
+        "recording_bidirectional_decision": "reject: global target1",
+        "recording_target_rows": [
+          {
+            "improved_fraction": 0.6171052631578947,
+            "mean_true_class_delta": 0.030546150142054394,
+            "n_trials": 760,
+            "recording": "03063955-2523-47bd-ae57-f7489dd40f15_probe01",
+            "target0_improved": 0.6690997566909975,
+            "target1_fraction": 0.45921052631578946,
+            "target1_improved": 0.5558739255014327
+          },
+          {
+            "improved_fraction": 0.5336976320582878,
+            "mean_true_class_delta": 0.016355346828961136,
+            "n_trials": 549,
+            "recording": "1e45d992-c356-40e1-9be1-a506d944896f_probe01",
+            "target0_improved": 0.5370370370370371,
+            "target1_fraction": 0.5081967213114754,
+            "target1_improved": 0.5304659498207885
+          },
+          {
+            "improved_fraction": 0.4669603524229075,
+            "mean_true_class_delta": -0.005088099234679006,
+            "n_trials": 454,
+            "recording": "41872d7f-75cb-4445-bb1a-132b354c44f0_probe01",
+            "target0_improved": 0.5305164319248826,
+            "target1_fraction": 0.5308370044052864,
+            "target1_improved": 0.4107883817427386
+          },
+          {
+            "improved_fraction": 0.5274888558692422,
+            "mean_true_class_delta": 0.001399654609244496,
+            "n_trials": 673,
+            "recording": "4d8c7767-981c-4347-8e5e-5d5fffe38534_probe01",
+            "target0_improved": 0.5810055865921788,
+            "target1_fraction": 0.46805349182763745,
+            "target1_improved": 0.4666666666666667
+          }
+        ],
+        "region_granularity": "parent",
+        "source_subject": "KS014",
+        "summary": {
+          "delta_auc": 0.08217932389258265,
+          "delta_centered_auc": 0.08217999848890423,
+          "n_recordings": 4,
+          "paired_true_vs_shuffle": {
+            "improved_fraction": 0.5455665024630542,
+            "mean_true_class_delta": 0.012654404768693875,
+            "target0_improved_fraction": 0.59185303514377,
+            "target1_improved_fraction": 0.4966216216216216
+          },
+          "recording_support_fraction": 0.75,
+          "recordings_positive_true_minus_shuffle": 3
+        },
+        "target_mode": "stimulus_side",
+        "target_subject": "SWC_038"
+      },
+      {
+        "feature_mode": "recording_centered",
+        "feature_names": [
+          "cortical_visual",
+          "cortical_auditory",
+          "cortical_sensorimotor",
+          "cortical_retrosplenial",
+          "hippocampal_formation",
+          "thalamic",
+          "midbrain",
+          "basal_ganglia",
+          "brainstem_interbrain",
+          "fiber_tracts",
+          "broad_named_anatomy"
+        ],
+        "feature_space": "families",
+        "n_eval_trials": 1888,
+        "n_features": 11,
+        "n_regions": 42,
+        "n_source_recordings": 4,
+        "n_target_recordings": 4,
+        "n_train_trials": 2127,
+        "recording_bidirectional": {
+          "bidirectional_recording_fraction": 0.0,
+          "bidirectional_recordings": [],
+          "n_bidirectional_recordings": 0,
+          "n_evaluable_recordings": 4
+        },
+        "recording_bidirectional_decision": "reject: centered delta",
+        "recording_target_rows": [
+          {
+            "improved_fraction": 0.48936170212765956,
+            "mean_true_class_delta": -0.021876054978152287,
+            "n_trials": 470,
+            "recording": "4ecb5d24-f5cc-402c-be28-9d0f7cb14b3a_probe00",
+            "target0_improved": 0.49372384937238495,
+            "target1_fraction": 0.49148936170212765,
+            "target1_improved": 0.48484848484848486
+          },
+          {
+            "improved_fraction": 0.5484536082474227,
+            "mean_true_class_delta": 0.04510870957158683,
+            "n_trials": 485,
+            "recording": "6f09ba7e-e3ce-44b0-932b-c003fb44fb89_probe01",
+            "target0_improved": 0.4981684981684982,
+            "target1_fraction": 0.43711340206185567,
+            "target1_improved": 0.6132075471698113
+          },
+          {
+            "improved_fraction": 0.4722838137472284,
+            "mean_true_class_delta": -0.042242596907013014,
+            "n_trials": 451,
+            "recording": "6fb1e12c-883b-46d1-a745-473cde3232c8_probe00",
+            "target0_improved": 0.5,
+            "target1_fraction": 0.5033259423503326,
+            "target1_improved": 0.44493392070484583
+          },
+          {
+            "improved_fraction": 0.475103734439834,
+            "mean_true_class_delta": -0.012021774010440574,
+            "n_trials": 482,
+            "recording": "88d24c31-52e4-49cc-9f32-6adbeb9eba87_probe00",
+            "target0_improved": 0.45161290322580644,
+            "target1_fraction": 0.4854771784232365,
+            "target1_improved": 0.5
+          }
+        ],
+        "region_granularity": "parent",
+        "source_subject": "KS014",
+        "summary": {
+          "delta_auc": -0.010223307432189355,
+          "delta_centered_auc": -0.010223307432189355,
+          "n_recordings": 4,
+          "paired_true_vs_shuffle": {
+            "improved_fraction": 0.4968220338983051,
+            "mean_true_class_delta": -0.007017970326063128,
+            "target0_improved_fraction": 0.48577235772357724,
+            "target1_improved_fraction": 0.5088495575221239
+          },
+          "recording_support_fraction": 0.25,
+          "recordings_positive_true_minus_shuffle": 1
+        },
+        "target_mode": "stimulus_side",
+        "target_subject": "SWC_043"
+      },
+      {
+        "feature_mode": "recording_centered",
+        "feature_names": [
+          "cortical_visual",
+          "cortical_sensorimotor",
+          "cortical_retrosplenial",
+          "hippocampal_formation",
+          "thalamic",
+          "midbrain",
+          "basal_ganglia",
+          "brainstem_interbrain",
+          "fiber_tracts",
+          "broad_named_anatomy"
+        ],
+        "feature_space": "families",
+        "n_eval_trials": 2726,
+        "n_features": 10,
+        "n_regions": 46,
+        "n_source_recordings": 4,
+        "n_target_recordings": 4,
+        "n_train_trials": 2265,
+        "recording_bidirectional": {
+          "bidirectional_recording_fraction": 0.0,
+          "bidirectional_recordings": [],
+          "n_bidirectional_recordings": 0,
+          "n_evaluable_recordings": 4
+        },
+        "recording_bidirectional_decision": "reject: centered delta",
+        "recording_target_rows": [
+          {
+            "improved_fraction": 0.4337194337194337,
+            "mean_true_class_delta": -0.06184155445982473,
+            "n_trials": 777,
+            "recording": "49e0ab27-827a-4c91-bcaa-97eea27a1b8d_probe01",
+            "target0_improved": 0.3864734299516908,
+            "target1_fraction": 0.4671814671814672,
+            "target1_improved": 0.48760330578512395
+          },
+          {
+            "improved_fraction": 0.5169491525423728,
+            "mean_true_class_delta": 0.009114375642136942,
+            "n_trials": 590,
+            "recording": "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe00",
+            "target0_improved": 0.5115606936416185,
+            "target1_fraction": 0.4135593220338983,
+            "target1_improved": 0.5245901639344263
+          },
+          {
+            "improved_fraction": 0.4847457627118644,
+            "mean_true_class_delta": 0.013607057681440249,
+            "n_trials": 590,
+            "recording": "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe01",
+            "target0_improved": 0.44508670520231214,
+            "target1_fraction": 0.4135593220338983,
+            "target1_improved": 0.5409836065573771
+          },
+          {
+            "improved_fraction": 0.5552665799739922,
+            "mean_true_class_delta": 0.10187166562218937,
+            "n_trials": 769,
+            "recording": "edd22318-216c-44ff-bc24-49ce8be78374_probe00",
+            "target0_improved": 0.5879396984924623,
+            "target1_fraction": 0.48244473342002603,
+            "target1_improved": 0.5202156334231806
+          }
+        ],
+        "region_granularity": "parent",
+        "source_subject": "MFD_06",
+        "summary": {
+          "delta_auc": 0.0005919838423233403,
+          "delta_centered_auc": 0.0005919838423233403,
+          "n_recordings": 4,
+          "paired_true_vs_shuffle": {
+            "improved_fraction": 0.4970652971386647,
+            "mean_true_class_delta": 0.016028638557993528,
+            "target0_improved_fraction": 0.4820478723404255,
+            "target1_improved_fraction": 0.5155482815057283
+          },
+          "recording_support_fraction": 0.75,
+          "recordings_positive_true_minus_shuffle": 3
+        },
+        "target_mode": "stimulus_side",
+        "target_subject": "CSH_ZAD_019"
+      },
+      {
+        "feature_mode": "recording_centered",
+        "feature_names": [
+          "cortical_visual",
+          "cortical_retrosplenial",
+          "hippocampal_formation",
+          "thalamic",
+          "midbrain",
+          "brainstem_interbrain",
+          "fiber_tracts",
+          "broad_named_anatomy"
+        ],
+        "feature_space": "families",
+        "n_eval_trials": 2127,
+        "n_features": 8,
+        "n_regions": 36,
+        "n_source_recordings": 4,
+        "n_target_recordings": 4,
+        "n_train_trials": 2265,
+        "recording_bidirectional": {
+          "bidirectional_recording_fraction": 0.25,
+          "bidirectional_recordings": [
+            "e1931de1-cf7b-49af-af33-2ade15e8abe7_probe00"
+          ],
+          "n_bidirectional_recordings": 1,
+          "n_evaluable_recordings": 4
+        },
+        "recording_bidirectional_decision": "reject: global target0",
+        "recording_target_rows": [
+          {
+            "improved_fraction": 0.5170212765957447,
+            "mean_true_class_delta": 0.00372405828494618,
+            "n_trials": 470,
+            "recording": "16693458-0801-4d35-a3f1-9115c7e5acfd_probe00",
+            "target0_improved": 0.4581497797356828,
+            "target1_fraction": 0.5170212765957447,
+            "target1_improved": 0.5720164609053497
+          },
+          {
+            "improved_fraction": 0.5936170212765958,
+            "mean_true_class_delta": 0.031596042551116664,
+            "n_trials": 470,
+            "recording": "16693458-0801-4d35-a3f1-9115c7e5acfd_probe01",
+            "target0_improved": 0.6696035242290749,
+            "target1_fraction": 0.5170212765957447,
+            "target1_improved": 0.522633744855967
+          },
+          {
+            "improved_fraction": 0.47766323024054985,
+            "mean_true_class_delta": -0.01603853320834899,
+            "n_trials": 582,
+            "recording": "b9c205c3-feac-485b-a89d-afc96d9cb280_probe00",
+            "target0_improved": 0.40551181102362205,
+            "target1_fraction": 0.563573883161512,
+            "target1_improved": 0.5335365853658537
+          },
+          {
+            "improved_fraction": 0.5834710743801653,
+            "mean_true_class_delta": 0.09687082136528873,
+            "n_trials": 605,
+            "recording": "e1931de1-cf7b-49af-af33-2ade15e8abe7_probe00",
+            "target0_improved": 0.598314606741573,
+            "target1_fraction": 0.4115702479338843,
+            "target1_improved": 0.5622489959839357
+          }
+        ],
+        "region_granularity": "parent",
+        "source_subject": "MFD_06",
+        "summary": {
+          "delta_auc": 0.08190219198042137,
+          "delta_centered_auc": 0.08190219198042137,
+          "n_recordings": 4,
+          "paired_true_vs_shuffle": {
+            "improved_fraction": 0.5420780441937001,
+            "mean_true_class_delta": 0.030969848609163186,
+            "target0_improved_fraction": 0.5375939849624061,
+            "target1_improved_fraction": 0.5465663217309501
+          },
+          "recording_support_fraction": 0.75,
+          "recordings_positive_true_minus_shuffle": 3
+        },
+        "target_mode": "stimulus_side",
+        "target_subject": "KS014"
+      },
+      {
+        "feature_mode": "recording_centered",
+        "feature_names": [
+          "cortical_visual",
+          "cortical_sensorimotor",
+          "cortical_retrosplenial",
+          "hippocampal_formation",
+          "thalamic",
+          "midbrain",
+          "basal_ganglia",
+          "brainstem_interbrain",
+          "fiber_tracts",
+          "broad_named_anatomy"
+        ],
+        "feature_space": "families",
+        "n_eval_trials": 2424,
+        "n_features": 10,
+        "n_regions": 45,
+        "n_source_recordings": 4,
+        "n_target_recordings": 4,
+        "n_train_trials": 2265,
+        "recording_bidirectional": {
+          "bidirectional_recording_fraction": 0.25,
+          "bidirectional_recordings": [
+            "b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe01"
+          ],
+          "n_bidirectional_recordings": 1,
+          "n_evaluable_recordings": 4
+        },
+        "recording_bidirectional_decision": "reject: centered delta",
+        "recording_target_rows": [
+          {
+            "improved_fraction": 0.4810126582278481,
+            "mean_true_class_delta": -0.03236251385836898,
+            "n_trials": 790,
+            "recording": "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe00",
+            "target0_improved": 0.40759493670886077,
+            "target1_fraction": 0.5,
+            "target1_improved": 0.5544303797468354
+          },
+          {
+            "improved_fraction": 0.35822784810126584,
+            "mean_true_class_delta": -0.01837109873778425,
+            "n_trials": 790,
+            "recording": "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe01",
+            "target0_improved": 0.3392405063291139,
+            "target1_fraction": 0.5,
+            "target1_improved": 0.37721518987341773
+          },
+          {
+            "improved_fraction": 0.514218009478673,
+            "mean_true_class_delta": -0.02392152127550228,
+            "n_trials": 422,
+            "recording": "b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe00",
+            "target0_improved": 0.4405940594059406,
+            "target1_fraction": 0.5213270142180095,
+            "target1_improved": 0.5818181818181818
+          },
+          {
+            "improved_fraction": 0.6208530805687204,
+            "mean_true_class_delta": 0.041260381903638746,
+            "n_trials": 422,
+            "recording": "b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe01",
+            "target0_improved": 0.693069306930693,
+            "target1_fraction": 0.5213270142180095,
+            "target1_improved": 0.5545454545454546
+          }
+        ],
+        "region_granularity": "parent",
+        "source_subject": "MFD_06",
+        "summary": {
+          "delta_auc": -0.058641445710939544,
+          "delta_centered_auc": -0.058641445710939544,
+          "n_recordings": 4,
+          "paired_true_vs_shuffle": {
+            "improved_fraction": 0.47112211221122113,
+            "mean_true_class_delta": -0.013515905431471726,
+            "target0_improved_fraction": 0.4388609715242881,
+            "target1_improved_fraction": 0.5024390243902439
+          },
+          "recording_support_fraction": 0.25,
+          "recordings_positive_true_minus_shuffle": 1
+        },
+        "target_mode": "stimulus_side",
+        "target_subject": "NR_0019"
+      },
+      {
+        "feature_mode": "recording_centered",
+        "feature_names": [
+          "cortical_visual",
+          "hippocampal_formation",
+          "thalamic",
+          "midbrain",
+          "brainstem_interbrain",
+          "fiber_tracts",
+          "broad_named_anatomy"
+        ],
+        "feature_space": "families",
+        "n_eval_trials": 1875,
+        "n_features": 7,
+        "n_regions": 36,
+        "n_source_recordings": 4,
+        "n_target_recordings": 4,
+        "n_train_trials": 2265,
+        "recording_bidirectional": {
+          "bidirectional_recording_fraction": 0.0,
+          "bidirectional_recordings": [],
+          "n_bidirectional_recordings": 0,
+          "n_evaluable_recordings": 4
+        },
+        "recording_bidirectional_decision": "reject: centered delta",
+        "recording_target_rows": [
+          {
+            "improved_fraction": 0.503921568627451,
+            "mean_true_class_delta": 0.033888921256744635,
+            "n_trials": 510,
+            "recording": "032ffcdf-7692-40b3-b9ff-8def1fc18b2e_probe00",
+            "target0_improved": 0.4329896907216495,
+            "target1_fraction": 0.4294117647058823,
+            "target1_improved": 0.5981735159817352
+          },
+          {
+            "improved_fraction": 0.49173553719008267,
+            "mean_true_class_delta": 0.0027550441537819662,
+            "n_trials": 484,
+            "recording": "a8a8af78-16de-4841-ab07-fde4b5281a03_probe00",
+            "target0_improved": 0.488,
+            "target1_fraction": 0.4834710743801653,
+            "target1_improved": 0.49572649572649574
+          },
+          {
+            "improved_fraction": 0.5144628099173554,
+            "mean_true_class_delta": -0.004988307247287942,
+            "n_trials": 484,
+            "recording": "a8a8af78-16de-4841-ab07-fde4b5281a03_probe01",
+            "target0_improved": 0.62,
+            "target1_fraction": 0.4834710743801653,
+            "target1_improved": 0.4017094017094017
+          },
+          {
+            "improved_fraction": 0.48614609571788414,
+            "mean_true_class_delta": -0.01994382236887908,
+            "n_trials": 397,
+            "recording": "b182b754-3c3e-4942-8144-6ee790926b58_probe01",
+            "target0_improved": 0.46153846153846156,
+            "target1_fraction": 0.5415617128463476,
+            "target1_improved": 0.5069767441860465
+          }
+        ],
+        "region_granularity": "parent",
+        "source_subject": "MFD_06",
+        "summary": {
+          "delta_auc": -0.00024269466276838347,
+          "delta_centered_auc": -0.00024269466276838347,
+          "n_recordings": 4,
+          "paired_true_vs_shuffle": {
+            "improved_fraction": 0.4997333333333333,
+            "mean_true_class_delta": 0.004418534945726864,
+            "target0_improved_fraction": 0.5005138746145941,
+            "target1_improved_fraction": 0.49889135254988914
+          },
+          "recording_support_fraction": 0.75,
+          "recordings_positive_true_minus_shuffle": 3
+        },
+        "target_mode": "stimulus_side",
+        "target_subject": "NYU-12"
+      },
+      {
+        "feature_mode": "recording_centered",
+        "feature_names": [
+          "cortical_visual",
+          "cortical_sensorimotor",
+          "hippocampal_formation",
+          "thalamic",
+          "midbrain",
+          "basal_ganglia",
+          "brainstem_interbrain",
+          "fiber_tracts",
+          "broad_named_anatomy"
+        ],
+        "feature_space": "families",
+        "n_eval_trials": 2436,
+        "n_features": 9,
+        "n_regions": 38,
+        "n_source_recordings": 4,
+        "n_target_recordings": 4,
+        "n_train_trials": 2265,
+        "recording_bidirectional": {
+          "bidirectional_recording_fraction": 0.25,
+          "bidirectional_recordings": [
+            "1e45d992-c356-40e1-9be1-a506d944896f_probe01"
+          ],
+          "n_bidirectional_recordings": 1,
+          "n_evaluable_recordings": 4
+        },
+        "recording_bidirectional_decision": "reject: global target1",
+        "recording_target_rows": [
+          {
+            "improved_fraction": 0.6,
+            "mean_true_class_delta": 0.024700450805053623,
+            "n_trials": 760,
+            "recording": "03063955-2523-47bd-ae57-f7489dd40f15_probe01",
+            "target0_improved": 0.656934306569343,
+            "target1_fraction": 0.45921052631578946,
+            "target1_improved": 0.5329512893982808
+          },
+          {
+            "improved_fraction": 0.5828779599271403,
+            "mean_true_class_delta": 0.016408939502790997,
+            "n_trials": 549,
+            "recording": "1e45d992-c356-40e1-9be1-a506d944896f_probe01",
+            "target0_improved": 0.6111111111111112,
+            "target1_fraction": 0.5081967213114754,
+            "target1_improved": 0.5555555555555556
+          },
+          {
+            "improved_fraction": 0.5352422907488987,
+            "mean_true_class_delta": 0.008392999155422335,
+            "n_trials": 454,
+            "recording": "41872d7f-75cb-4445-bb1a-132b354c44f0_probe01",
+            "target0_improved": 0.5164319248826291,
+            "target1_fraction": 0.5308370044052864,
+            "target1_improved": 0.5518672199170125
+          },
+          {
+            "improved_fraction": 0.5274888558692422,
+            "mean_true_class_delta": 0.006382965508116633,
+            "n_trials": 673,
+            "recording": "4d8c7767-981c-4347-8e5e-5d5fffe38534_probe01",
+            "target0_improved": 0.5810055865921788,
+            "target1_fraction": 0.46805349182763745,
+            "target1_improved": 0.4666666666666667
+          }
+        ],
+        "region_granularity": "parent",
+        "source_subject": "MFD_06",
+        "summary": {
+          "delta_auc": 0.0884213636559883,
+          "delta_centered_auc": 0.0884213636559883,
+          "n_recordings": 4,
+          "paired_true_vs_shuffle": {
+            "improved_fraction": 0.5640394088669951,
+            "mean_true_class_delta": 0.014731940805581791,
+            "target0_improved_fraction": 0.6014376996805112,
+            "target1_improved_fraction": 0.5244932432432432
+          },
+          "recording_support_fraction": 1.0,
+          "recordings_positive_true_minus_shuffle": 4
+        },
+        "target_mode": "stimulus_side",
+        "target_subject": "SWC_038"
+      },
+      {
+        "feature_mode": "recording_centered",
+        "feature_names": [
+          "cortical_visual",
+          "cortical_auditory",
+          "cortical_sensorimotor",
+          "hippocampal_formation",
+          "thalamic",
+          "midbrain",
+          "basal_ganglia",
+          "brainstem_interbrain",
+          "fiber_tracts",
+          "broad_named_anatomy"
+        ],
+        "feature_space": "families",
+        "n_eval_trials": 1888,
+        "n_features": 10,
+        "n_regions": 47,
+        "n_source_recordings": 4,
+        "n_target_recordings": 4,
+        "n_train_trials": 2265,
+        "recording_bidirectional": {
+          "bidirectional_recording_fraction": 0.0,
+          "bidirectional_recordings": [],
+          "n_bidirectional_recordings": 0,
+          "n_evaluable_recordings": 4
+        },
+        "recording_bidirectional_decision": "reject: centered delta",
+        "recording_target_rows": [
+          {
+            "improved_fraction": 0.5574468085106383,
+            "mean_true_class_delta": 0.010881019714039058,
+            "n_trials": 470,
+            "recording": "4ecb5d24-f5cc-402c-be28-9d0f7cb14b3a_probe00",
+            "target0_improved": 0.5648535564853556,
+            "target1_fraction": 0.49148936170212765,
+            "target1_improved": 0.5497835497835498
+          },
+          {
+            "improved_fraction": 0.49896907216494846,
+            "mean_true_class_delta": -0.018430419971216496,
+            "n_trials": 485,
+            "recording": "6f09ba7e-e3ce-44b0-932b-c003fb44fb89_probe01",
+            "target0_improved": 0.45787545787545786,
+            "target1_fraction": 0.43711340206185567,
+            "target1_improved": 0.5518867924528302
+          },
+          {
+            "improved_fraction": 0.47671840354767187,
+            "mean_true_class_delta": -0.05404221292863503,
+            "n_trials": 451,
+            "recording": "6fb1e12c-883b-46d1-a745-473cde3232c8_probe00",
+            "target0_improved": 0.4955357142857143,
+            "target1_fraction": 0.5033259423503326,
+            "target1_improved": 0.4581497797356828
+          },
+          {
+            "improved_fraction": 0.46887966804979253,
+            "mean_true_class_delta": -0.008253241166764933,
+            "n_trials": 482,
+            "recording": "88d24c31-52e4-49cc-9f32-6adbeb9eba87_probe00",
+            "target0_improved": 0.4717741935483871,
+            "target1_fraction": 0.4854771784232365,
+            "target1_improved": 0.4658119658119658
+          }
+        ],
+        "region_granularity": "parent",
+        "source_subject": "MFD_06",
+        "summary": {
+          "delta_auc": -0.04403082056263036,
+          "delta_centered_auc": -0.04403082056263036,
+          "n_recordings": 4,
+          "paired_true_vs_shuffle": {
+            "improved_fraction": 0.5005296610169492,
+            "mean_true_class_delta": -0.017042253545358443,
+            "target0_improved_fraction": 0.4959349593495935,
+            "target1_improved_fraction": 0.5055309734513275
+          },
+          "recording_support_fraction": 0.25,
+          "recordings_positive_true_minus_shuffle": 1
+        },
+        "target_mode": "stimulus_side",
+        "target_subject": "SWC_043"
+      },
+      {
+        "feature_mode": "recording_centered",
+        "feature_names": [
+          "cortical_visual",
+          "cortical_sensorimotor",
+          "cortical_retrosplenial",
+          "hippocampal_formation",
+          "thalamic",
+          "midbrain",
+          "basal_ganglia",
+          "brainstem_interbrain",
+          "fiber_tracts",
+          "broad_named_anatomy"
+        ],
+        "feature_space": "families",
+        "n_eval_trials": 2726,
+        "n_features": 10,
+        "n_regions": 43,
+        "n_source_recordings": 4,
+        "n_target_recordings": 4,
+        "n_train_trials": 2424,
+        "recording_bidirectional": {
+          "bidirectional_recording_fraction": 0.0,
+          "bidirectional_recordings": [],
+          "n_bidirectional_recordings": 0,
+          "n_evaluable_recordings": 4
+        },
+        "recording_bidirectional_decision": "reject: global target0",
+        "recording_target_rows": [
+          {
+            "improved_fraction": 0.46846846846846846,
+            "mean_true_class_delta": -0.009787287018192406,
+            "n_trials": 777,
+            "recording": "49e0ab27-827a-4c91-bcaa-97eea27a1b8d_probe01",
+            "target0_improved": 0.47342995169082125,
+            "target1_fraction": 0.4671814671814672,
+            "target1_improved": 0.4628099173553719
+          },
+          {
+            "improved_fraction": 0.5406779661016949,
+            "mean_true_class_delta": 0.024565866537567642,
+            "n_trials": 590,
+            "recording": "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe00",
+            "target0_improved": 0.6011560693641619,
+            "target1_fraction": 0.4135593220338983,
+            "target1_improved": 0.45491803278688525
+          },
+          {
+            "improved_fraction": 0.5203389830508475,
+            "mean_true_class_delta": -0.004594641350123122,
+            "n_trials": 590,
+            "recording": "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe01",
+            "target0_improved": 0.5260115606936416,
+            "target1_fraction": 0.4135593220338983,
+            "target1_improved": 0.5122950819672131
+          },
+          {
+            "improved_fraction": 0.5591677503250976,
+            "mean_true_class_delta": 0.2609620638889069,
+            "n_trials": 769,
+            "recording": "edd22318-216c-44ff-bc24-49ce8be78374_probe00",
+            "target0_improved": 0.5904522613065326,
+            "target1_fraction": 0.48244473342002603,
+            "target1_improved": 0.5256064690026954
+          }
+        ],
+        "region_granularity": "parent",
+        "source_subject": "NR_0019",
+        "summary": {
+          "delta_auc": 0.045347159348121335,
+          "delta_centered_auc": 0.045347159348121335,
+          "n_recordings": 4,
+          "paired_true_vs_shuffle": {
+            "improved_fraction": 0.520909757887014,
+            "mean_true_class_delta": 0.07514971679311307,
+            "target0_improved_fraction": 0.5458776595744681,
+            "target1_improved_fraction": 0.49018003273322425
+          },
+          "recording_support_fraction": 0.75,
+          "recordings_positive_true_minus_shuffle": 3
+        },
+        "target_mode": "stimulus_side",
+        "target_subject": "CSH_ZAD_019"
+      },
+      {
+        "feature_mode": "recording_centered",
+        "feature_names": [
+          "cortical_visual",
+          "cortical_sensorimotor",
+          "cortical_retrosplenial",
+          "hippocampal_formation",
+          "thalamic",
+          "midbrain",
+          "basal_ganglia",
+          "brainstem_interbrain",
+          "fiber_tracts",
+          "broad_named_anatomy"
+        ],
+        "feature_space": "families",
+        "n_eval_trials": 2127,
+        "n_features": 10,
+        "n_regions": 35,
+        "n_source_recordings": 4,
+        "n_target_recordings": 4,
+        "n_train_trials": 2424,
+        "recording_bidirectional": {
+          "bidirectional_recording_fraction": 0.0,
+          "bidirectional_recordings": [],
+          "n_bidirectional_recordings": 0,
+          "n_evaluable_recordings": 4
+        },
+        "recording_bidirectional_decision": "reject: centered delta",
+        "recording_target_rows": [
+          {
+            "improved_fraction": 0.5212765957446809,
+            "mean_true_class_delta": 0.006495570725754958,
+            "n_trials": 470,
+            "recording": "16693458-0801-4d35-a3f1-9115c7e5acfd_probe00",
+            "target0_improved": 0.46255506607929514,
+            "target1_fraction": 0.5170212765957447,
+            "target1_improved": 0.5761316872427984
+          },
+          {
+            "improved_fraction": 0.4553191489361702,
+            "mean_true_class_delta": -0.20002337090114028,
+            "n_trials": 470,
+            "recording": "16693458-0801-4d35-a3f1-9115c7e5acfd_probe01",
+            "target0_improved": 0.42731277533039647,
+            "target1_fraction": 0.5170212765957447,
+            "target1_improved": 0.48148148148148145
+          },
+          {
+            "improved_fraction": 0.43986254295532645,
+            "mean_true_class_delta": -0.12413011728016603,
+            "n_trials": 582,
+            "recording": "b9c205c3-feac-485b-a89d-afc96d9cb280_probe00",
+            "target0_improved": 0.39763779527559057,
+            "target1_fraction": 0.563573883161512,
+            "target1_improved": 0.4725609756097561
+          },
+          {
+            "improved_fraction": 0.39669421487603307,
+            "mean_true_class_delta": -0.3349356927146248,
+            "n_trials": 605,
+            "recording": "e1931de1-cf7b-49af-af33-2ade15e8abe7_probe00",
+            "target0_improved": 0.33707865168539325,
+            "target1_fraction": 0.4115702479338843,
+            "target1_improved": 0.4819277108433735
+          }
+        ],
+        "region_granularity": "parent",
+        "source_subject": "NR_0019",
+        "summary": {
+          "delta_auc": -0.043782138790060765,
+          "delta_centered_auc": -0.04378302293834302,
+          "n_recordings": 4,
+          "paired_true_vs_shuffle": {
+            "improved_fraction": 0.44898918664786086,
+            "mean_true_class_delta": -0.17199712667223122,
+            "target0_improved_fraction": 0.3975563909774436,
+            "target1_improved_fraction": 0.5004703668861712
+          },
+          "recording_support_fraction": 0.5,
+          "recordings_positive_true_minus_shuffle": 2
+        },
+        "target_mode": "stimulus_side",
+        "target_subject": "KS014"
+      },
+      {
+        "feature_mode": "recording_centered",
+        "feature_names": [
+          "cortical_visual",
+          "cortical_sensorimotor",
+          "cortical_retrosplenial",
+          "hippocampal_formation",
+          "thalamic",
+          "midbrain",
+          "basal_ganglia",
+          "brainstem_interbrain",
+          "fiber_tracts",
+          "broad_named_anatomy"
+        ],
+        "feature_space": "families",
+        "n_eval_trials": 2265,
+        "n_features": 10,
+        "n_regions": 45,
+        "n_source_recordings": 4,
+        "n_target_recordings": 4,
+        "n_train_trials": 2424,
+        "recording_bidirectional": {
+          "bidirectional_recording_fraction": 0.25,
+          "bidirectional_recordings": [
+            "6899a67d-2e53-4215-a52a-c7021b5da5d4_probe00"
+          ],
+          "n_bidirectional_recordings": 1,
+          "n_evaluable_recordings": 4
+        },
+        "recording_bidirectional_decision": "reject: global target1",
+        "recording_target_rows": [
+          {
+            "improved_fraction": 0.4727272727272727,
+            "mean_true_class_delta": -0.03324709969274143,
+            "n_trials": 660,
+            "recording": "35eeb752-8f4f-4040-9714-ba0f5b7ccdfe_probe00",
+            "target0_improved": 0.48672566371681414,
+            "target1_fraction": 0.4863636363636364,
+            "target1_improved": 0.45794392523364486
+          },
+          {
+            "improved_fraction": 0.5169491525423728,
+            "mean_true_class_delta": -0.039830937187963274,
+            "n_trials": 590,
+            "recording": "3f71aa98-08c6-4e79-b4c8-00eae4f03eff_probe00",
+            "target0_improved": 0.7312138728323699,
+            "target1_fraction": 0.4135593220338983,
+            "target1_improved": 0.21311475409836064
+          },
+          {
+            "improved_fraction": 0.6236263736263736,
+            "mean_true_class_delta": 0.38441465057864116,
+            "n_trials": 364,
+            "recording": "6899a67d-2e53-4215-a52a-c7021b5da5d4_probe00",
+            "target0_improved": 0.6134020618556701,
+            "target1_fraction": 0.46703296703296704,
+            "target1_improved": 0.6352941176470588
+          },
+          {
+            "improved_fraction": 0.4930875576036866,
+            "mean_true_class_delta": -0.030116741212916336,
+            "n_trials": 651,
+            "recording": "a1782f4f-86b0-480c-a7f2-3d8f1ab482ab_probe00",
+            "target0_improved": 0.5672514619883041,
+            "target1_fraction": 0.47465437788018433,
+            "target1_improved": 0.4110032362459547
+          }
+        ],
+        "region_granularity": "parent",
+        "source_subject": "NR_0019",
+        "summary": {
+          "delta_auc": 0.028577950991744094,
+          "delta_centered_auc": 0.028577950991744094,
+          "n_recordings": 4,
+          "paired_true_vs_shuffle": {
+            "improved_fraction": 0.5143487858719646,
+            "mean_true_class_delta": 0.033058541078547096,
+            "target0_improved_fraction": 0.5986895986895987,
+            "target1_improved_fraction": 0.4157088122605364
+          },
+          "recording_support_fraction": 0.5,
+          "recordings_positive_true_minus_shuffle": 2
+        },
+        "target_mode": "stimulus_side",
+        "target_subject": "MFD_06"
+      },
+      {
+        "feature_mode": "recording_centered",
+        "feature_names": [
+          "cortical_visual",
+          "cortical_sensorimotor",
+          "cortical_retrosplenial",
+          "hippocampal_formation",
+          "thalamic",
+          "midbrain",
+          "basal_ganglia",
+          "brainstem_interbrain",
+          "fiber_tracts",
+          "broad_named_anatomy"
+        ],
+        "feature_space": "families",
+        "n_eval_trials": 1875,
+        "n_features": 10,
+        "n_regions": 47,
+        "n_source_recordings": 4,
+        "n_target_recordings": 4,
+        "n_train_trials": 2424,
+        "recording_bidirectional": {
+          "bidirectional_recording_fraction": 0.0,
+          "bidirectional_recordings": [],
+          "n_bidirectional_recordings": 0,
+          "n_evaluable_recordings": 4
+        },
+        "recording_bidirectional_decision": "reject: centered delta",
+        "recording_target_rows": [
+          {
+            "improved_fraction": 0.503921568627451,
+            "mean_true_class_delta": -0.10170793746225892,
+            "n_trials": 510,
+            "recording": "032ffcdf-7692-40b3-b9ff-8def1fc18b2e_probe00",
+            "target0_improved": 0.5738831615120275,
+            "target1_fraction": 0.4294117647058823,
+            "target1_improved": 0.410958904109589
+          },
+          {
+            "improved_fraction": 0.5475206611570248,
+            "mean_true_class_delta": 0.06770774325932802,
+            "n_trials": 484,
+            "recording": "a8a8af78-16de-4841-ab07-fde4b5281a03_probe00",
+            "target0_improved": 0.6,
+            "target1_fraction": 0.4834710743801653,
+            "target1_improved": 0.49145299145299143
+          },
+          {
+            "improved_fraction": 0.5144628099173554,
+            "mean_true_class_delta": -0.041795616656153944,
+            "n_trials": 484,
+            "recording": "a8a8af78-16de-4841-ab07-fde4b5281a03_probe01",
+            "target0_improved": 0.62,
+            "target1_fraction": 0.4834710743801653,
+            "target1_improved": 0.4017094017094017
+          },
+          {
+            "improved_fraction": 0.45843828715365237,
+            "mean_true_class_delta": -0.024729776951091752,
+            "n_trials": 397,
+            "recording": "b182b754-3c3e-4942-8144-6ee790926b58_probe01",
+            "target0_improved": 0.4945054945054945,
+            "target1_fraction": 0.5415617128463476,
+            "target1_improved": 0.42790697674418604
+          }
+        ],
+        "region_granularity": "parent",
+        "source_subject": "NR_0019",
+        "summary": {
+          "delta_auc": -0.010531581070272078,
+          "delta_centered_auc": -0.010531581070272078,
+          "n_recordings": 4,
+          "paired_true_vs_shuffle": {
+            "improved_fraction": 0.5082666666666666,
+            "mean_true_class_delta": -0.02621189348234625,
+            "target0_improved_fraction": 0.5775950668036999,
+            "target1_improved_fraction": 0.4334811529933481
+          },
+          "recording_support_fraction": 0.5,
+          "recordings_positive_true_minus_shuffle": 2
+        },
+        "target_mode": "stimulus_side",
+        "target_subject": "NYU-12"
+      },
+      {
+        "feature_mode": "recording_centered",
+        "feature_names": [
+          "cortical_visual",
+          "cortical_sensorimotor",
+          "cortical_retrosplenial",
+          "hippocampal_formation",
+          "thalamic",
+          "midbrain",
+          "basal_ganglia",
+          "brainstem_interbrain",
+          "fiber_tracts",
+          "broad_named_anatomy"
+        ],
+        "feature_space": "families",
+        "n_eval_trials": 2436,
+        "n_features": 10,
+        "n_regions": 40,
+        "n_source_recordings": 4,
+        "n_target_recordings": 4,
+        "n_train_trials": 2424,
+        "recording_bidirectional": {
+          "bidirectional_recording_fraction": 0.0,
+          "bidirectional_recordings": [],
+          "n_bidirectional_recordings": 0,
+          "n_evaluable_recordings": 4
+        },
+        "recording_bidirectional_decision": "reject: centered delta",
+        "recording_target_rows": [
+          {
+            "improved_fraction": 0.4276315789473684,
+            "mean_true_class_delta": -0.6940305512742917,
+            "n_trials": 760,
+            "recording": "03063955-2523-47bd-ae57-f7489dd40f15_probe01",
+            "target0_improved": 0.4233576642335766,
+            "target1_fraction": 0.45921052631578946,
+            "target1_improved": 0.4326647564469914
+          },
+          {
+            "improved_fraction": 0.5081967213114754,
+            "mean_true_class_delta": -0.07581396852150084,
+            "n_trials": 549,
+            "recording": "1e45d992-c356-40e1-9be1-a506d944896f_probe01",
+            "target0_improved": 0.5185185185185185,
+            "target1_fraction": 0.5081967213114754,
+            "target1_improved": 0.4982078853046595
+          },
+          {
+            "improved_fraction": 0.4779735682819383,
+            "mean_true_class_delta": -0.004025273987858857,
+            "n_trials": 454,
+            "recording": "41872d7f-75cb-4445-bb1a-132b354c44f0_probe01",
+            "target0_improved": 0.49765258215962443,
+            "target1_fraction": 0.5308370044052864,
+            "target1_improved": 0.4605809128630705
+          },
+          {
+            "improved_fraction": 0.46953937592867756,
+            "mean_true_class_delta": -0.03166115707231751,
+            "n_trials": 673,
+            "recording": "4d8c7767-981c-4347-8e5e-5d5fffe38534_probe01",
+            "target0_improved": 0.41899441340782123,
+            "target1_fraction": 0.46805349182763745,
+            "target1_improved": 0.526984126984127
+          }
+        ],
+        "region_granularity": "parent",
+        "source_subject": "NR_0019",
+        "summary": {
+          "delta_auc": -0.05026821949745275,
+          "delta_centered_auc": -0.05026821949745275,
+          "n_recordings": 4,
+          "paired_true_vs_shuffle": {
+            "improved_fraction": 0.4667487684729064,
+            "mean_true_class_delta": -0.2431118722442213,
+            "target0_improved_fraction": 0.45527156549520764,
+            "target1_improved_fraction": 0.47888513513513514
+          },
+          "recording_support_fraction": 0.0,
+          "recordings_positive_true_minus_shuffle": 0
+        },
+        "target_mode": "stimulus_side",
+        "target_subject": "SWC_038"
+      },
+      {
+        "feature_mode": "recording_centered",
+        "feature_names": [
+          "cortical_visual",
+          "cortical_auditory",
+          "cortical_sensorimotor",
+          "cortical_retrosplenial",
+          "hippocampal_formation",
+          "thalamic",
+          "midbrain",
+          "basal_ganglia",
+          "brainstem_interbrain",
+          "fiber_tracts",
+          "broad_named_anatomy"
+        ],
+        "feature_space": "families",
+        "n_eval_trials": 1888,
+        "n_features": 11,
+        "n_regions": 46,
+        "n_source_recordings": 4,
+        "n_target_recordings": 4,
+        "n_train_trials": 2424,
+        "recording_bidirectional": {
+          "bidirectional_recording_fraction": 0.0,
+          "bidirectional_recordings": [],
+          "n_bidirectional_recordings": 0,
+          "n_evaluable_recordings": 4
+        },
+        "recording_bidirectional_decision": "reject: centered delta",
+        "recording_target_rows": [
+          {
+            "improved_fraction": 0.4276595744680851,
+            "mean_true_class_delta": -0.16985298129955026,
+            "n_trials": 470,
+            "recording": "4ecb5d24-f5cc-402c-be28-9d0f7cb14b3a_probe00",
+            "target0_improved": 0.48535564853556484,
+            "target1_fraction": 0.49148936170212765,
+            "target1_improved": 0.36796536796536794
+          },
+          {
+            "improved_fraction": 0.51340206185567,
+            "mean_true_class_delta": -0.002816765830117356,
+            "n_trials": 485,
+            "recording": "6f09ba7e-e3ce-44b0-932b-c003fb44fb89_probe01",
+            "target0_improved": 0.45787545787545786,
+            "target1_fraction": 0.43711340206185567,
+            "target1_improved": 0.5849056603773585
+          },
+          {
+            "improved_fraction": 0.458980044345898,
+            "mean_true_class_delta": -0.06981839457786061,
+            "n_trials": 451,
+            "recording": "6fb1e12c-883b-46d1-a745-473cde3232c8_probe00",
+            "target0_improved": 0.45089285714285715,
+            "target1_fraction": 0.5033259423503326,
+            "target1_improved": 0.4669603524229075
+          },
+          {
+            "improved_fraction": 0.558091286307054,
+            "mean_true_class_delta": 0.6674843797655714,
+            "n_trials": 482,
+            "recording": "88d24c31-52e4-49cc-9f32-6adbeb9eba87_probe00",
+            "target0_improved": 0.5887096774193549,
+            "target1_fraction": 0.4854771784232365,
+            "target1_improved": 0.5256410256410257
+          }
+        ],
+        "region_granularity": "parent",
+        "source_subject": "NR_0019",
+        "summary": {
+          "delta_auc": -0.02331440211526009,
+          "delta_centered_auc": -0.02331440211526009,
+          "n_recordings": 4,
+          "paired_true_vs_shuffle": {
+            "improved_fraction": 0.4904661016949153,
+            "mean_true_class_delta": 0.11072157968961578,
+            "target0_improved_fraction": 0.4959349593495935,
+            "target1_improved_fraction": 0.48451327433628316
+          },
+          "recording_support_fraction": 0.25,
+          "recordings_positive_true_minus_shuffle": 1
+        },
+        "target_mode": "stimulus_side",
+        "target_subject": "SWC_043"
+      },
+      {
+        "feature_mode": "recording_centered",
+        "feature_names": [
+          "cortical_visual",
+          "cortical_sensorimotor",
+          "cortical_retrosplenial",
+          "hippocampal_formation",
+          "thalamic",
+          "midbrain",
+          "basal_ganglia",
+          "brainstem_interbrain",
+          "fiber_tracts",
+          "broad_named_anatomy"
+        ],
+        "feature_space": "families",
+        "n_eval_trials": 2726,
+        "n_features": 10,
+        "n_regions": 46,
+        "n_source_recordings": 4,
+        "n_target_recordings": 4,
+        "n_train_trials": 1875,
+        "recording_bidirectional": {
+          "bidirectional_recording_fraction": 0.0,
+          "bidirectional_recordings": [],
+          "n_bidirectional_recordings": 0,
+          "n_evaluable_recordings": 4
+        },
+        "recording_bidirectional_decision": "reject: global target0",
+        "recording_target_rows": [
+          {
+            "improved_fraction": 0.546975546975547,
+            "mean_true_class_delta": 0.0061201443637802794,
+            "n_trials": 777,
+            "recording": "49e0ab27-827a-4c91-bcaa-97eea27a1b8d_probe01",
+            "target0_improved": 0.5555555555555556,
+            "target1_fraction": 0.4671814671814672,
+            "target1_improved": 0.5371900826446281
+          },
+          {
+            "improved_fraction": 0.49322033898305084,
+            "mean_true_class_delta": -0.0024883693431520418,
+            "n_trials": 590,
+            "recording": "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe00",
+            "target0_improved": 0.4653179190751445,
+            "target1_fraction": 0.4135593220338983,
+            "target1_improved": 0.5327868852459017
+          },
+          {
+            "improved_fraction": 0.5322033898305085,
+            "mean_true_class_delta": 0.006088488868811449,
+            "n_trials": 590,
+            "recording": "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe01",
+            "target0_improved": 0.546242774566474,
+            "target1_fraction": 0.4135593220338983,
+            "target1_improved": 0.5122950819672131
+          },
+          {
+            "improved_fraction": 0.5435630689206762,
+            "mean_true_class_delta": 0.0804391919198789,
+            "n_trials": 769,
+            "recording": "edd22318-216c-44ff-bc24-49ce8be78374_probe00",
+            "target0_improved": 0.5954773869346733,
+            "target1_fraction": 0.48244473342002603,
+            "target1_improved": 0.48787061994609165
+          }
+        ],
+        "region_granularity": "parent",
+        "source_subject": "NYU-12",
+        "summary": {
+          "delta_auc": 0.02812195302434095,
+          "delta_centered_auc": 0.02812195302434095,
+          "n_recordings": 4,
+          "paired_true_vs_shuffle": {
+            "improved_fraction": 0.5311812179016875,
+            "mean_true_class_delta": 0.025215392985026855,
+            "target0_improved_fraction": 0.543218085106383,
+            "target1_improved_fraction": 0.516366612111293
+          },
+          "recording_support_fraction": 0.75,
+          "recordings_positive_true_minus_shuffle": 3
+        },
+        "target_mode": "stimulus_side",
+        "target_subject": "CSH_ZAD_019"
+      },
+      {
+        "feature_mode": "recording_centered",
+        "feature_names": [
+          "cortical_visual",
+          "cortical_retrosplenial",
+          "hippocampal_formation",
+          "thalamic",
+          "midbrain",
+          "brainstem_interbrain",
+          "fiber_tracts",
+          "broad_named_anatomy"
+        ],
+        "feature_space": "families",
+        "n_eval_trials": 2127,
+        "n_features": 8,
+        "n_regions": 39,
+        "n_source_recordings": 4,
+        "n_target_recordings": 4,
+        "n_train_trials": 1875,
+        "recording_bidirectional": {
+          "bidirectional_recording_fraction": 0.25,
+          "bidirectional_recordings": [
+            "16693458-0801-4d35-a3f1-9115c7e5acfd_probe01"
+          ],
+          "n_bidirectional_recordings": 1,
+          "n_evaluable_recordings": 4
+        },
+        "recording_bidirectional_decision": "reject: centered delta",
+        "recording_target_rows": [
+          {
+            "improved_fraction": 0.5297872340425532,
+            "mean_true_class_delta": 0.01375028339597059,
+            "n_trials": 470,
+            "recording": "16693458-0801-4d35-a3f1-9115c7e5acfd_probe00",
+            "target0_improved": 0.45374449339207046,
+            "target1_fraction": 0.5170212765957447,
+            "target1_improved": 0.6008230452674898
+          },
+          {
+            "improved_fraction": 0.5765957446808511,
+            "mean_true_class_delta": 0.0677801602944358,
+            "n_trials": 470,
+            "recording": "16693458-0801-4d35-a3f1-9115c7e5acfd_probe01",
+            "target0_improved": 0.5859030837004405,
+            "target1_fraction": 0.5170212765957447,
+            "target1_improved": 0.5679012345679012
+          },
+          {
+            "improved_fraction": 0.4484536082474227,
+            "mean_true_class_delta": -0.07165925691747843,
+            "n_trials": 582,
+            "recording": "b9c205c3-feac-485b-a89d-afc96d9cb280_probe00",
+            "target0_improved": 0.35039370078740156,
+            "target1_fraction": 0.563573883161512,
+            "target1_improved": 0.524390243902439
+          },
+          {
+            "improved_fraction": 0.509090909090909,
+            "mean_true_class_delta": -0.004835246218390246,
+            "n_trials": 605,
+            "recording": "e1931de1-cf7b-49af-af33-2ade15e8abe7_probe00",
+            "target0_improved": 0.5056179775280899,
+            "target1_fraction": 0.4115702479338843,
+            "target1_improved": 0.5140562248995983
+          }
+        ],
+        "region_granularity": "parent",
+        "source_subject": "NYU-12",
+        "summary": {
+          "delta_auc": 0.0007727455987098786,
+          "delta_centered_auc": 0.0007727455987098786,
+          "n_recordings": 4,
+          "paired_true_vs_shuffle": {
+            "improved_fraction": 0.5119887165021156,
+            "mean_true_class_delta": -0.0029674202884849726,
+            "target0_improved_fraction": 0.47462406015037595,
+            "target1_improved_fraction": 0.5493885230479775
+          },
+          "recording_support_fraction": 0.5,
+          "recordings_positive_true_minus_shuffle": 2
+        },
+        "target_mode": "stimulus_side",
+        "target_subject": "KS014"
+      },
+      {
+        "feature_mode": "recording_centered",
+        "feature_names": [
+          "cortical_visual",
+          "hippocampal_formation",
+          "thalamic",
+          "midbrain",
+          "brainstem_interbrain",
+          "fiber_tracts",
+          "broad_named_anatomy"
+        ],
+        "feature_space": "families",
+        "n_eval_trials": 2265,
+        "n_features": 7,
+        "n_regions": 36,
+        "n_source_recordings": 4,
+        "n_target_recordings": 4,
+        "n_train_trials": 1875,
+        "recording_bidirectional": {
+          "bidirectional_recording_fraction": 0.25,
+          "bidirectional_recordings": [
+            "6899a67d-2e53-4215-a52a-c7021b5da5d4_probe00"
+          ],
+          "n_bidirectional_recordings": 1,
+          "n_evaluable_recordings": 4
+        },
+        "recording_bidirectional_decision": "reject: centered delta",
+        "recording_target_rows": [
+          {
+            "improved_fraction": 0.41818181818181815,
+            "mean_true_class_delta": -0.03019799308722296,
+            "n_trials": 660,
+            "recording": "35eeb752-8f4f-4040-9714-ba0f5b7ccdfe_probe00",
+            "target0_improved": 0.44837758112094395,
+            "target1_fraction": 0.4863636363636364,
+            "target1_improved": 0.3862928348909657
+          },
+          {
+            "improved_fraction": 0.49830508474576274,
+            "mean_true_class_delta": -0.005165924805569465,
+            "n_trials": 590,
+            "recording": "3f71aa98-08c6-4e79-b4c8-00eae4f03eff_probe00",
+            "target0_improved": 0.6560693641618497,
+            "target1_fraction": 0.4135593220338983,
+            "target1_improved": 0.27459016393442626
+          },
+          {
+            "improved_fraction": 0.6016483516483516,
+            "mean_true_class_delta": 0.009544112990729901,
+            "n_trials": 364,
+            "recording": "6899a67d-2e53-4215-a52a-c7021b5da5d4_probe00",
+            "target0_improved": 0.6288659793814433,
+            "target1_fraction": 0.46703296703296704,
+            "target1_improved": 0.5705882352941176
+          },
+          {
+            "improved_fraction": 0.47619047619047616,
+            "mean_true_class_delta": -0.0019256362918251418,
+            "n_trials": 651,
+            "recording": "a1782f4f-86b0-480c-a7f2-3d8f1ab482ab_probe00",
+            "target0_improved": 0.5058479532163743,
+            "target1_fraction": 0.47465437788018433,
+            "target1_improved": 0.44336569579288027
+          }
+        ],
+        "region_granularity": "parent",
+        "source_subject": "NYU-12",
+        "summary": {
+          "delta_auc": -0.03473065542031062,
+          "delta_centered_auc": -0.03473065542031062,
+          "n_recordings": 4,
+          "paired_true_vs_shuffle": {
+            "improved_fraction": 0.48520971302428256,
+            "mean_true_class_delta": -0.009164725461459435,
+            "target0_improved_fraction": 0.552006552006552,
+            "target1_improved_fraction": 0.407088122605364
+          },
+          "recording_support_fraction": 0.25,
+          "recordings_positive_true_minus_shuffle": 1
+        },
+        "target_mode": "stimulus_side",
+        "target_subject": "MFD_06"
+      },
+      {
+        "feature_mode": "recording_centered",
+        "feature_names": [
+          "cortical_visual",
+          "cortical_sensorimotor",
+          "cortical_retrosplenial",
+          "hippocampal_formation",
+          "thalamic",
+          "midbrain",
+          "basal_ganglia",
+          "brainstem_interbrain",
+          "fiber_tracts",
+          "broad_named_anatomy"
+        ],
+        "feature_space": "families",
+        "n_eval_trials": 2424,
+        "n_features": 10,
+        "n_regions": 47,
+        "n_source_recordings": 4,
+        "n_target_recordings": 4,
+        "n_train_trials": 1875,
+        "recording_bidirectional": {
+          "bidirectional_recording_fraction": 0.0,
+          "bidirectional_recordings": [],
+          "n_bidirectional_recordings": 0,
+          "n_evaluable_recordings": 4
+        },
+        "recording_bidirectional_decision": "reject: centered delta",
+        "recording_target_rows": [
+          {
+            "improved_fraction": 0.4962025316455696,
+            "mean_true_class_delta": -0.001524926579484265,
+            "n_trials": 790,
+            "recording": "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe00",
+            "target0_improved": 0.5113924050632911,
+            "target1_fraction": 0.5,
+            "target1_improved": 0.4810126582278481
+          },
+          {
+            "improved_fraction": 0.4139240506329114,
+            "mean_true_class_delta": -0.04109007921908772,
+            "n_trials": 790,
+            "recording": "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe01",
+            "target0_improved": 0.4379746835443038,
+            "target1_fraction": 0.5,
+            "target1_improved": 0.389873417721519
+          },
+          {
+            "improved_fraction": 0.4194312796208531,
+            "mean_true_class_delta": -0.01961042303098032,
+            "n_trials": 422,
+            "recording": "b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe00",
+            "target0_improved": 0.36633663366336633,
+            "target1_fraction": 0.5213270142180095,
+            "target1_improved": 0.4681818181818182
+          },
+          {
+            "improved_fraction": 0.5687203791469194,
+            "mean_true_class_delta": 0.013514190884471226,
+            "n_trials": 422,
+            "recording": "b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe01",
+            "target0_improved": 0.6039603960396039,
+            "target1_fraction": 0.5213270142180095,
+            "target1_improved": 0.5363636363636364
+          }
+        ],
+        "region_granularity": "parent",
+        "source_subject": "NYU-12",
+        "summary": {
+          "delta_auc": -0.04061227546948837,
+          "delta_centered_auc": -0.040611594558156605,
+          "n_recordings": 4,
+          "paired_true_vs_shuffle": {
+            "improved_fraction": 0.46864686468646866,
+            "mean_true_class_delta": -0.014949861611674385,
+            "target0_improved_fraction": 0.47822445561139026,
+            "target1_improved_fraction": 0.45934959349593496
+          },
+          "recording_support_fraction": 0.25,
+          "recordings_positive_true_minus_shuffle": 1
+        },
+        "target_mode": "stimulus_side",
+        "target_subject": "NR_0019"
+      },
+      {
+        "feature_mode": "recording_centered",
+        "feature_names": [
+          "cortical_visual",
+          "cortical_sensorimotor",
+          "hippocampal_formation",
+          "thalamic",
+          "midbrain",
+          "basal_ganglia",
+          "brainstem_interbrain",
+          "fiber_tracts",
+          "broad_named_anatomy"
+        ],
+        "feature_space": "families",
+        "n_eval_trials": 2436,
+        "n_features": 9,
+        "n_regions": 41,
+        "n_source_recordings": 4,
+        "n_target_recordings": 4,
+        "n_train_trials": 1875,
+        "recording_bidirectional": {
+          "bidirectional_recording_fraction": 0.0,
+          "bidirectional_recordings": [],
+          "n_bidirectional_recordings": 0,
+          "n_evaluable_recordings": 4
+        },
+        "recording_bidirectional_decision": "reject: global target0",
+        "recording_target_rows": [
+          {
+            "improved_fraction": 0.4789473684210526,
+            "mean_true_class_delta": -0.004885762528113339,
+            "n_trials": 760,
+            "recording": "03063955-2523-47bd-ae57-f7489dd40f15_probe01",
+            "target0_improved": 0.46715328467153283,
+            "target1_fraction": 0.45921052631578946,
+            "target1_improved": 0.49283667621776506
+          },
+          {
+            "improved_fraction": 0.5081967213114754,
+            "mean_true_class_delta": 0.006830676144496511,
+            "n_trials": 549,
+            "recording": "1e45d992-c356-40e1-9be1-a506d944896f_probe01",
+            "target0_improved": 0.5814814814814815,
+            "target1_fraction": 0.5081967213114754,
+            "target1_improved": 0.43727598566308246
+          },
+          {
+            "improved_fraction": 0.5242290748898678,
+            "mean_true_class_delta": 0.0002517996482425906,
+            "n_trials": 454,
+            "recording": "41872d7f-75cb-4445-bb1a-132b354c44f0_probe01",
+            "target0_improved": 0.5023474178403756,
+            "target1_fraction": 0.5308370044052864,
+            "target1_improved": 0.5435684647302904
+          },
+          {
+            "improved_fraction": 0.5274888558692422,
+            "mean_true_class_delta": 0.012263298601500801,
+            "n_trials": 673,
+            "recording": "4d8c7767-981c-4347-8e5e-5d5fffe38534_probe01",
+            "target0_improved": 0.5810055865921788,
+            "target1_fraction": 0.46805349182763745,
+            "target1_improved": 0.4666666666666667
+          }
+        ],
+        "region_granularity": "parent",
+        "source_subject": "NYU-12",
+        "summary": {
+          "delta_auc": 0.037596602193247564,
+          "delta_centered_auc": 0.037596602193247564,
+          "n_recordings": 4,
+          "paired_true_vs_shuffle": {
+            "improved_fraction": 0.5073891625615764,
+            "mean_true_class_delta": 0.0034500733501948372,
+            "target0_improved_fraction": 0.5303514376996805,
+            "target1_improved_fraction": 0.4831081081081081
+          },
+          "recording_support_fraction": 0.75,
+          "recordings_positive_true_minus_shuffle": 3
+        },
+        "target_mode": "stimulus_side",
+        "target_subject": "SWC_038"
+      },
+      {
+        "feature_mode": "recording_centered",
+        "feature_names": [
+          "cortical_visual",
+          "cortical_auditory",
+          "cortical_sensorimotor",
+          "hippocampal_formation",
+          "thalamic",
+          "midbrain",
+          "basal_ganglia",
+          "brainstem_interbrain",
+          "fiber_tracts",
+          "broad_named_anatomy"
+        ],
+        "feature_space": "families",
+        "n_eval_trials": 1888,
+        "n_features": 10,
+        "n_regions": 48,
+        "n_source_recordings": 4,
+        "n_target_recordings": 4,
+        "n_train_trials": 1875,
+        "recording_bidirectional": {
+          "bidirectional_recording_fraction": 0.25,
+          "bidirectional_recordings": [
+            "4ecb5d24-f5cc-402c-be28-9d0f7cb14b3a_probe00"
+          ],
+          "n_bidirectional_recordings": 1,
+          "n_evaluable_recordings": 4
+        },
+        "recording_bidirectional_decision": "reject: centered delta",
+        "recording_target_rows": [
+          {
+            "improved_fraction": 0.5702127659574469,
+            "mean_true_class_delta": 0.01956771230746959,
+            "n_trials": 470,
+            "recording": "4ecb5d24-f5cc-402c-be28-9d0f7cb14b3a_probe00",
+            "target0_improved": 0.5774058577405857,
+            "target1_fraction": 0.49148936170212765,
+            "target1_improved": 0.5627705627705628
+          },
+          {
+            "improved_fraction": 0.40824742268041236,
+            "mean_true_class_delta": -0.019841456366678736,
+            "n_trials": 485,
+            "recording": "6f09ba7e-e3ce-44b0-932b-c003fb44fb89_probe01",
+            "target0_improved": 0.4249084249084249,
+            "target1_fraction": 0.43711340206185567,
+            "target1_improved": 0.3867924528301887
+          },
+          {
+            "improved_fraction": 0.4878048780487805,
+            "mean_true_class_delta": -0.02877608365038,
+            "n_trials": 451,
+            "recording": "6fb1e12c-883b-46d1-a745-473cde3232c8_probe00",
+            "target0_improved": 0.5044642857142857,
+            "target1_fraction": 0.5033259423503326,
+            "target1_improved": 0.4713656387665198
+          },
+          {
+            "improved_fraction": 0.5601659751037344,
+            "mean_true_class_delta": 0.010075941759844989,
+            "n_trials": 482,
+            "recording": "88d24c31-52e4-49cc-9f32-6adbeb9eba87_probe00",
+            "target0_improved": 0.5443548387096774,
+            "target1_fraction": 0.4854771784232365,
+            "target1_improved": 0.5769230769230769
+          }
+        ],
+        "region_granularity": "parent",
+        "source_subject": "NYU-12",
+        "summary": {
+          "delta_auc": -0.0059525415497517775,
+          "delta_centered_auc": -0.0059525415497517775,
+          "n_recordings": 4,
+          "paired_true_vs_shuffle": {
+            "improved_fraction": 0.5063559322033898,
+            "mean_true_class_delta": -0.004527378893752427,
+            "target0_improved_fraction": 0.5101626016260162,
+            "target1_improved_fraction": 0.5022123893805309
+          },
+          "recording_support_fraction": 0.5,
+          "recordings_positive_true_minus_shuffle": 2
+        },
+        "target_mode": "stimulus_side",
+        "target_subject": "SWC_043"
+      },
+      {
+        "feature_mode": "recording_centered",
+        "feature_names": [
+          "cortical_visual",
+          "cortical_sensorimotor",
+          "cortical_retrosplenial",
+          "hippocampal_formation",
+          "thalamic",
+          "midbrain",
+          "basal_ganglia",
+          "brainstem_interbrain",
+          "fiber_tracts",
+          "broad_named_anatomy"
+        ],
+        "feature_space": "families",
+        "n_eval_trials": 2726,
+        "n_features": 10,
+        "n_regions": 39,
+        "n_source_recordings": 4,
+        "n_target_recordings": 4,
+        "n_train_trials": 2436,
+        "recording_bidirectional": {
+          "bidirectional_recording_fraction": 0.25,
+          "bidirectional_recordings": [
+            "49e0ab27-827a-4c91-bcaa-97eea27a1b8d_probe01"
+          ],
+          "n_bidirectional_recordings": 1,
+          "n_evaluable_recordings": 4
+        },
+        "recording_bidirectional_decision": "reject: global target0",
+        "recording_target_rows": [
+          {
+            "improved_fraction": 0.583011583011583,
+            "mean_true_class_delta": 0.08419904211995943,
+            "n_trials": 777,
+            "recording": "49e0ab27-827a-4c91-bcaa-97eea27a1b8d_probe01",
+            "target0_improved": 0.5893719806763285,
+            "target1_fraction": 0.4671814671814672,
+            "target1_improved": 0.5757575757575758
+          },
+          {
+            "improved_fraction": 0.5406779661016949,
+            "mean_true_class_delta": 0.07134063741234979,
+            "n_trials": 590,
+            "recording": "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe00",
+            "target0_improved": 0.5780346820809249,
+            "target1_fraction": 0.4135593220338983,
+            "target1_improved": 0.48770491803278687
+          },
+          {
+            "improved_fraction": 0.4847457627118644,
+            "mean_true_class_delta": -0.008753558037380408,
+            "n_trials": 590,
+            "recording": "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe01",
+            "target0_improved": 0.430635838150289,
+            "target1_fraction": 0.4135593220338983,
+            "target1_improved": 0.5614754098360656
+          },
+          {
+            "improved_fraction": 0.45513654096228867,
+            "mean_true_class_delta": -0.10270837819052489,
+            "n_trials": 769,
+            "recording": "edd22318-216c-44ff-bc24-49ce8be78374_probe00",
+            "target0_improved": 0.4020100502512563,
+            "target1_fraction": 0.48244473342002603,
+            "target1_improved": 0.5121293800539084
+          }
+        ],
+        "region_granularity": "parent",
+        "source_subject": "SWC_038",
+        "summary": {
+          "delta_auc": 0.03719813176863884,
+          "delta_centered_auc": 0.03719813176863884,
+          "n_recordings": 4,
+          "paired_true_vs_shuffle": {
+            "improved_fraction": 0.516507703595011,
+            "mean_true_class_delta": 0.008571639666150679,
+            "target0_improved_fraction": 0.5006648936170213,
+            "target1_improved_fraction": 0.5360065466448445
+          },
+          "recording_support_fraction": 0.5,
+          "recordings_positive_true_minus_shuffle": 2
+        },
+        "target_mode": "stimulus_side",
+        "target_subject": "CSH_ZAD_019"
+      },
+      {
+        "feature_mode": "recording_centered",
+        "feature_names": [
+          "cortical_visual",
+          "cortical_sensorimotor",
+          "cortical_retrosplenial",
+          "hippocampal_formation",
+          "thalamic",
+          "midbrain",
+          "basal_ganglia",
+          "brainstem_interbrain",
+          "fiber_tracts",
+          "broad_named_anatomy"
+        ],
+        "feature_space": "families",
+        "n_eval_trials": 2127,
+        "n_features": 10,
+        "n_regions": 31,
+        "n_source_recordings": 4,
+        "n_target_recordings": 4,
+        "n_train_trials": 2436,
+        "recording_bidirectional": {
+          "bidirectional_recording_fraction": 0.0,
+          "bidirectional_recordings": [],
+          "n_bidirectional_recordings": 0,
+          "n_evaluable_recordings": 4
+        },
+        "recording_bidirectional_decision": "reject: centered delta",
+        "recording_target_rows": [
+          {
+            "improved_fraction": 0.5468085106382978,
+            "mean_true_class_delta": 0.02883109343720257,
+            "n_trials": 470,
+            "recording": "16693458-0801-4d35-a3f1-9115c7e5acfd_probe00",
+            "target0_improved": 0.43171806167400884,
+            "target1_fraction": 0.5170212765957447,
+            "target1_improved": 0.654320987654321
+          },
+          {
+            "improved_fraction": 0.5574468085106383,
+            "mean_true_class_delta": 0.082561071762324,
+            "n_trials": 470,
+            "recording": "16693458-0801-4d35-a3f1-9115c7e5acfd_probe01",
+            "target0_improved": 0.5418502202643172,
+            "target1_fraction": 0.5170212765957447,
+            "target1_improved": 0.5720164609053497
+          },
+          {
+            "improved_fraction": 0.33676975945017185,
+            "mean_true_class_delta": -0.11218446852607786,
+            "n_trials": 582,
+            "recording": "b9c205c3-feac-485b-a89d-afc96d9cb280_probe00",
+            "target0_improved": 0.3188976377952756,
+            "target1_fraction": 0.563573883161512,
+            "target1_improved": 0.35060975609756095
+          },
+          {
+            "improved_fraction": 0.45950413223140496,
+            "mean_true_class_delta": -0.015824956261516625,
+            "n_trials": 605,
+            "recording": "e1931de1-cf7b-49af-af33-2ade15e8abe7_probe00",
+            "target0_improved": 0.43258426966292135,
+            "target1_fraction": 0.4115702479338843,
+            "target1_improved": 0.4979919678714859
+          }
+        ],
+        "region_granularity": "parent",
+        "source_subject": "SWC_038",
+        "summary": {
+          "delta_auc": -0.00579824443517063,
+          "delta_centered_auc": -0.00579824443517063,
+          "n_recordings": 4,
+          "paired_true_vs_shuffle": {
+            "improved_fraction": 0.46685472496473907,
+            "mean_true_class_delta": -0.010583517431413919,
+            "target0_improved_fraction": 0.42857142857142855,
+            "target1_improved_fraction": 0.5051740357478833
+          },
+          "recording_support_fraction": 0.5,
+          "recordings_positive_true_minus_shuffle": 2
+        },
+        "target_mode": "stimulus_side",
+        "target_subject": "KS014"
+      },
+      {
+        "feature_mode": "recording_centered",
+        "feature_names": [
+          "cortical_visual",
+          "cortical_sensorimotor",
+          "hippocampal_formation",
+          "thalamic",
+          "midbrain",
+          "basal_ganglia",
+          "brainstem_interbrain",
+          "fiber_tracts",
+          "broad_named_anatomy"
+        ],
+        "feature_space": "families",
+        "n_eval_trials": 2265,
+        "n_features": 9,
+        "n_regions": 38,
+        "n_source_recordings": 4,
+        "n_target_recordings": 4,
+        "n_train_trials": 2436,
+        "recording_bidirectional": {
+          "bidirectional_recording_fraction": 0.0,
+          "bidirectional_recordings": [],
+          "n_bidirectional_recordings": 0,
+          "n_evaluable_recordings": 4
+        },
+        "recording_bidirectional_decision": "reject: centered delta",
+        "recording_target_rows": [
+          {
+            "improved_fraction": 0.48787878787878786,
+            "mean_true_class_delta": -0.01775597305404825,
+            "n_trials": 660,
+            "recording": "35eeb752-8f4f-4040-9714-ba0f5b7ccdfe_probe00",
+            "target0_improved": 0.5103244837758112,
+            "target1_fraction": 0.4863636363636364,
+            "target1_improved": 0.46417445482866043
+          },
+          {
+            "improved_fraction": 0.48983050847457626,
+            "mean_true_class_delta": -0.020789115208765523,
+            "n_trials": 590,
+            "recording": "3f71aa98-08c6-4e79-b4c8-00eae4f03eff_probe00",
+            "target0_improved": 0.5,
+            "target1_fraction": 0.4135593220338983,
+            "target1_improved": 0.47540983606557374
+          },
+          {
+            "improved_fraction": 0.3598901098901099,
+            "mean_true_class_delta": -0.07367401225543546,
+            "n_trials": 364,
+            "recording": "6899a67d-2e53-4215-a52a-c7021b5da5d4_probe00",
+            "target0_improved": 0.4072164948453608,
+            "target1_fraction": 0.46703296703296704,
+            "target1_improved": 0.3058823529411765
+          },
+          {
+            "improved_fraction": 0.5668202764976958,
+            "mean_true_class_delta": 0.0652919014179958,
+            "n_trials": 651,
+            "recording": "a1782f4f-86b0-480c-a7f2-3d8f1ab482ab_probe00",
+            "target0_improved": 0.41812865497076024,
+            "target1_fraction": 0.47465437788018433,
+            "target1_improved": 0.7313915857605178
+          }
+        ],
+        "region_granularity": "parent",
+        "source_subject": "SWC_038",
+        "summary": {
+          "delta_auc": -0.012749426542530085,
+          "delta_centered_auc": -0.012749426542530085,
+          "n_recordings": 4,
+          "paired_true_vs_shuffle": {
+            "improved_fraction": 0.49050772626931566,
+            "mean_true_class_delta": -0.003663060850643151,
+            "target0_improved_fraction": 0.4651924651924652,
+            "target1_improved_fraction": 0.5201149425287356
+          },
+          "recording_support_fraction": 0.5,
+          "recordings_positive_true_minus_shuffle": 2
+        },
+        "target_mode": "stimulus_side",
+        "target_subject": "MFD_06"
+      },
+      {
+        "feature_mode": "recording_centered",
+        "feature_names": [
+          "cortical_visual",
+          "cortical_sensorimotor",
+          "cortical_retrosplenial",
+          "hippocampal_formation",
+          "thalamic",
+          "midbrain",
+          "basal_ganglia",
+          "brainstem_interbrain",
+          "fiber_tracts",
+          "broad_named_anatomy"
+        ],
+        "feature_space": "families",
+        "n_eval_trials": 2424,
+        "n_features": 10,
+        "n_regions": 40,
+        "n_source_recordings": 4,
+        "n_target_recordings": 4,
+        "n_train_trials": 2436,
+        "recording_bidirectional": {
+          "bidirectional_recording_fraction": 0.25,
+          "bidirectional_recordings": [
+            "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe01"
+          ],
+          "n_bidirectional_recordings": 1,
+          "n_evaluable_recordings": 4
+        },
+        "recording_bidirectional_decision": "reject: global target0",
+        "recording_target_rows": [
+          {
+            "improved_fraction": 0.4620253164556962,
+            "mean_true_class_delta": -0.0016344158938166584,
+            "n_trials": 790,
+            "recording": "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe00",
+            "target0_improved": 0.43544303797468353,
+            "target1_fraction": 0.5,
+            "target1_improved": 0.48860759493670886
+          },
+          {
+            "improved_fraction": 0.5822784810126582,
+            "mean_true_class_delta": 0.0462430976249489,
+            "n_trials": 790,
+            "recording": "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe01",
+            "target0_improved": 0.5569620253164557,
+            "target1_fraction": 0.5,
+            "target1_improved": 0.6075949367088608
+          },
+          {
+            "improved_fraction": 0.48104265402843605,
+            "mean_true_class_delta": -0.02445709447630852,
+            "n_trials": 422,
+            "recording": "b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe00",
+            "target0_improved": 0.4207920792079208,
+            "target1_fraction": 0.5213270142180095,
+            "target1_improved": 0.5363636363636364
+          },
+          {
+            "improved_fraction": 0.5165876777251185,
+            "mean_true_class_delta": 0.16089688535638244,
+            "n_trials": 422,
+            "recording": "b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe01",
+            "target0_improved": 0.6386138613861386,
+            "target1_fraction": 0.5213270142180095,
+            "target1_improved": 0.40454545454545454
+          }
+        ],
+        "region_granularity": "parent",
+        "source_subject": "SWC_038",
+        "summary": {
+          "delta_auc": 0.04734785036292577,
+          "delta_centered_auc": 0.04734785036292577,
+          "n_recordings": 4,
+          "paired_true_vs_shuffle": {
+            "improved_fraction": 0.514026402640264,
+            "mean_true_class_delta": 0.03829143990057165,
+            "target0_improved_fraction": 0.507537688442211,
+            "target1_improved_fraction": 0.5203252032520326
+          },
+          "recording_support_fraction": 0.5,
+          "recordings_positive_true_minus_shuffle": 2
+        },
+        "target_mode": "stimulus_side",
+        "target_subject": "NR_0019"
+      },
+      {
+        "feature_mode": "recording_centered",
+        "feature_names": [
+          "cortical_visual",
+          "cortical_sensorimotor",
+          "hippocampal_formation",
+          "thalamic",
+          "midbrain",
+          "basal_ganglia",
+          "brainstem_interbrain",
+          "fiber_tracts",
+          "broad_named_anatomy"
+        ],
+        "feature_space": "families",
+        "n_eval_trials": 1875,
+        "n_features": 9,
+        "n_regions": 41,
+        "n_source_recordings": 4,
+        "n_target_recordings": 4,
+        "n_train_trials": 2436,
+        "recording_bidirectional": {
+          "bidirectional_recording_fraction": 0.25,
+          "bidirectional_recordings": [
+            "032ffcdf-7692-40b3-b9ff-8def1fc18b2e_probe00"
+          ],
+          "n_bidirectional_recordings": 1,
+          "n_evaluable_recordings": 4
+        },
+        "recording_bidirectional_decision": "reject: global target0",
+        "recording_target_rows": [
+          {
+            "improved_fraction": 0.5705882352941176,
+            "mean_true_class_delta": 0.03896806637510092,
+            "n_trials": 510,
+            "recording": "032ffcdf-7692-40b3-b9ff-8def1fc18b2e_probe00",
+            "target0_improved": 0.5601374570446735,
+            "target1_fraction": 0.4294117647058823,
+            "target1_improved": 0.5844748858447488
+          },
+          {
+            "improved_fraction": 0.5433884297520661,
+            "mean_true_class_delta": 0.016795450497877867,
+            "n_trials": 484,
+            "recording": "a8a8af78-16de-4841-ab07-fde4b5281a03_probe00",
+            "target0_improved": 0.56,
+            "target1_fraction": 0.4834710743801653,
+            "target1_improved": 0.5256410256410257
+          },
+          {
+            "improved_fraction": 0.48140495867768596,
+            "mean_true_class_delta": 0.12316691859881888,
+            "n_trials": 484,
+            "recording": "a8a8af78-16de-4841-ab07-fde4b5281a03_probe01",
+            "target0_improved": 0.38,
+            "target1_fraction": 0.4834710743801653,
+            "target1_improved": 0.5897435897435898
+          },
+          {
+            "improved_fraction": 0.5188916876574308,
+            "mean_true_class_delta": 0.0019402846018212387,
+            "n_trials": 397,
+            "recording": "b182b754-3c3e-4942-8144-6ee790926b58_probe01",
+            "target0_improved": 0.42857142857142855,
+            "target1_fraction": 0.5415617128463476,
+            "target1_improved": 0.5953488372093023
+          }
+        ],
+        "region_granularity": "parent",
+        "source_subject": "SWC_038",
+        "summary": {
+          "delta_auc": 0.03437034977656134,
+          "delta_centered_auc": 0.034369210364999125,
+          "n_recordings": 4,
+          "paired_true_vs_shuffle": {
+            "improved_fraction": 0.5296,
+            "mean_true_class_delta": 0.047139089856547065,
+            "target0_improved_fraction": 0.4892086330935252,
+            "target1_improved_fraction": 0.573170731707317
+          },
+          "recording_support_fraction": 0.75,
+          "recordings_positive_true_minus_shuffle": 3
+        },
+        "target_mode": "stimulus_side",
+        "target_subject": "NYU-12"
+      },
+      {
+        "feature_mode": "recording_centered",
+        "feature_names": [
+          "cortical_visual",
+          "cortical_auditory",
+          "cortical_sensorimotor",
+          "hippocampal_formation",
+          "thalamic",
+          "basal_ganglia",
+          "brainstem_interbrain",
+          "fiber_tracts",
+          "broad_named_anatomy"
+        ],
+        "feature_space": "families",
+        "n_eval_trials": 1888,
+        "n_features": 9,
+        "n_regions": 33,
+        "n_source_recordings": 4,
+        "n_target_recordings": 4,
+        "n_train_trials": 2436,
+        "recording_bidirectional": {
+          "bidirectional_recording_fraction": 0.25,
+          "bidirectional_recordings": [
+            "4ecb5d24-f5cc-402c-be28-9d0f7cb14b3a_probe00"
+          ],
+          "n_bidirectional_recordings": 1,
+          "n_evaluable_recordings": 4
+        },
+        "recording_bidirectional_decision": "reject: centered delta",
+        "recording_target_rows": [
+          {
+            "improved_fraction": 0.6319148936170212,
+            "mean_true_class_delta": 0.03339132684655377,
+            "n_trials": 470,
+            "recording": "4ecb5d24-f5cc-402c-be28-9d0f7cb14b3a_probe00",
+            "target0_improved": 0.6234309623430963,
+            "target1_fraction": 0.49148936170212765,
+            "target1_improved": 0.6406926406926406
+          },
+          {
+            "improved_fraction": 0.47010309278350515,
+            "mean_true_class_delta": 0.004113852858547936,
+            "n_trials": 485,
+            "recording": "6f09ba7e-e3ce-44b0-932b-c003fb44fb89_probe01",
+            "target0_improved": 0.5457875457875457,
+            "target1_fraction": 0.43711340206185567,
+            "target1_improved": 0.37264150943396224
+          },
+          {
+            "improved_fraction": 0.49223946784922396,
+            "mean_true_class_delta": -0.002941468046913945,
+            "n_trials": 451,
+            "recording": "6fb1e12c-883b-46d1-a745-473cde3232c8_probe00",
+            "target0_improved": 0.46875,
+            "target1_fraction": 0.5033259423503326,
+            "target1_improved": 0.5154185022026432
+          },
+          {
+            "improved_fraction": 0.45020746887966806,
+            "mean_true_class_delta": -0.0071056075006233265,
+            "n_trials": 482,
+            "recording": "88d24c31-52e4-49cc-9f32-6adbeb9eba87_probe00",
+            "target0_improved": 0.4717741935483871,
+            "target1_fraction": 0.4854771784232365,
+            "target1_improved": 0.42735042735042733
+          }
+        ],
+        "region_granularity": "parent",
+        "source_subject": "SWC_038",
+        "summary": {
+          "delta_auc": -0.010191830347507036,
+          "delta_centered_auc": -0.010190706165911223,
+          "n_recordings": 4,
+          "paired_true_vs_shuffle": {
+            "improved_fraction": 0.510593220338983,
+            "mean_true_class_delta": 0.006852562155623619,
+            "target0_improved_fraction": 0.5284552845528455,
+            "target1_improved_fraction": 0.4911504424778761
+          },
+          "recording_support_fraction": 0.5,
+          "recordings_positive_true_minus_shuffle": 2
+        },
+        "target_mode": "stimulus_side",
+        "target_subject": "SWC_043"
+      },
+      {
+        "feature_mode": "recording_centered",
+        "feature_names": [
+          "cortical_auditory",
+          "cortical_sensorimotor",
+          "cortical_retrosplenial",
+          "hippocampal_formation",
+          "thalamic",
+          "midbrain",
+          "basal_ganglia",
+          "brainstem_interbrain",
+          "fiber_tracts",
+          "broad_named_anatomy"
+        ],
+        "feature_space": "families",
+        "n_eval_trials": 2726,
+        "n_features": 10,
+        "n_regions": 46,
+        "n_source_recordings": 4,
+        "n_target_recordings": 4,
+        "n_train_trials": 1888,
+        "recording_bidirectional": {
+          "bidirectional_recording_fraction": 0.0,
+          "bidirectional_recordings": [],
+          "n_bidirectional_recordings": 0,
+          "n_evaluable_recordings": 4
+        },
+        "recording_bidirectional_decision": "reject: centered delta",
+        "recording_target_rows": [
+          {
+            "improved_fraction": 0.42213642213642216,
+            "mean_true_class_delta": -0.03940925558870163,
+            "n_trials": 777,
+            "recording": "49e0ab27-827a-4c91-bcaa-97eea27a1b8d_probe01",
+            "target0_improved": 0.32367149758454106,
+            "target1_fraction": 0.4671814671814672,
+            "target1_improved": 0.5344352617079889
+          },
+          {
+            "improved_fraction": 0.5186440677966102,
+            "mean_true_class_delta": 0.062420251605926576,
+            "n_trials": 590,
+            "recording": "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe00",
+            "target0_improved": 0.5115606936416185,
+            "target1_fraction": 0.4135593220338983,
+            "target1_improved": 0.5286885245901639
+          },
+          {
+            "improved_fraction": 0.46440677966101696,
+            "mean_true_class_delta": -0.010604177113373397,
+            "n_trials": 590,
+            "recording": "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe01",
+            "target0_improved": 0.41040462427745666,
+            "target1_fraction": 0.4135593220338983,
+            "target1_improved": 0.5409836065573771
+          },
+          {
+            "improved_fraction": 0.5578673602080624,
+            "mean_true_class_delta": 0.025753047503306325,
+            "n_trials": 769,
+            "recording": "edd22318-216c-44ff-bc24-49ce8be78374_probe00",
+            "target0_improved": 0.5804020100502513,
+            "target1_fraction": 0.48244473342002603,
+            "target1_improved": 0.5336927223719676
+          }
+        ],
+        "region_granularity": "parent",
+        "source_subject": "SWC_043",
+        "summary": {
+          "delta_auc": -0.01921390204408535,
+          "delta_centered_auc": -0.01921390204408535,
+          "n_recordings": 4,
+          "paired_true_vs_shuffle": {
+            "improved_fraction": 0.4904622157006603,
+            "mean_true_class_delta": 0.007246729966334468,
+            "target0_improved_fraction": 0.45478723404255317,
+            "target1_improved_fraction": 0.5343698854337152
+          },
+          "recording_support_fraction": 0.5,
+          "recordings_positive_true_minus_shuffle": 2
+        },
+        "target_mode": "stimulus_side",
+        "target_subject": "CSH_ZAD_019"
+      },
+      {
+        "feature_mode": "recording_centered",
+        "feature_names": [
+          "cortical_visual",
+          "cortical_auditory",
+          "cortical_sensorimotor",
+          "cortical_retrosplenial",
+          "hippocampal_formation",
+          "thalamic",
+          "midbrain",
+          "basal_ganglia",
+          "brainstem_interbrain",
+          "fiber_tracts",
+          "broad_named_anatomy"
+        ],
+        "feature_space": "families",
+        "n_eval_trials": 2127,
+        "n_features": 11,
+        "n_regions": 42,
+        "n_source_recordings": 4,
+        "n_target_recordings": 4,
+        "n_train_trials": 1888,
+        "recording_bidirectional": {
+          "bidirectional_recording_fraction": 0.0,
+          "bidirectional_recordings": [],
+          "n_bidirectional_recordings": 0,
+          "n_evaluable_recordings": 4
+        },
+        "recording_bidirectional_decision": "reject: centered delta",
+        "recording_target_rows": [
+          {
+            "improved_fraction": 0.4723404255319149,
+            "mean_true_class_delta": -0.008077148368133785,
+            "n_trials": 470,
+            "recording": "16693458-0801-4d35-a3f1-9115c7e5acfd_probe00",
+            "target0_improved": 0.5286343612334802,
+            "target1_fraction": 0.5170212765957447,
+            "target1_improved": 0.41975308641975306
+          },
+          {
+            "improved_fraction": 0.44042553191489364,
+            "mean_true_class_delta": -0.09195469971326474,
+            "n_trials": 470,
+            "recording": "16693458-0801-4d35-a3f1-9115c7e5acfd_probe01",
+            "target0_improved": 0.45374449339207046,
+            "target1_fraction": 0.5170212765957447,
+            "target1_improved": 0.4279835390946502
+          },
+          {
+            "improved_fraction": 0.6030927835051546,
+            "mean_true_class_delta": 0.19498579663076615,
+            "n_trials": 582,
+            "recording": "b9c205c3-feac-485b-a89d-afc96d9cb280_probe00",
+            "target0_improved": 0.6889763779527559,
+            "target1_fraction": 0.563573883161512,
+            "target1_improved": 0.5365853658536586
+          },
+          {
+            "improved_fraction": 0.5289256198347108,
+            "mean_true_class_delta": 0.015947180359178373,
+            "n_trials": 605,
+            "recording": "e1931de1-cf7b-49af-af33-2ade15e8abe7_probe00",
+            "target0_improved": 0.547752808988764,
+            "target1_fraction": 0.4115702479338843,
+            "target1_improved": 0.5020080321285141
+          }
+        ],
+        "region_granularity": "parent",
+        "source_subject": "SWC_043",
+        "summary": {
+          "delta_auc": 0.0032686961995769814,
+          "delta_centered_auc": 0.0032686961995769814,
+          "n_recordings": 4,
+          "paired_true_vs_shuffle": {
+            "improved_fraction": 0.5171603196991067,
+            "mean_true_class_delta": 0.03578505367096921,
+            "target0_improved_fraction": 0.5573308270676691,
+            "target1_improved_fraction": 0.47695202257761055
+          },
+          "recording_support_fraction": 0.75,
+          "recordings_positive_true_minus_shuffle": 3
+        },
+        "target_mode": "stimulus_side",
+        "target_subject": "KS014"
+      },
+      {
+        "feature_mode": "recording_centered",
+        "feature_names": [
+          "cortical_visual",
+          "cortical_auditory",
+          "cortical_sensorimotor",
+          "hippocampal_formation",
+          "thalamic",
+          "midbrain",
+          "basal_ganglia",
+          "brainstem_interbrain",
+          "fiber_tracts",
+          "broad_named_anatomy"
+        ],
+        "feature_space": "families",
+        "n_eval_trials": 2265,
+        "n_features": 10,
+        "n_regions": 47,
+        "n_source_recordings": 4,
+        "n_target_recordings": 4,
+        "n_train_trials": 1888,
+        "recording_bidirectional": {
+          "bidirectional_recording_fraction": 0.0,
+          "bidirectional_recordings": [],
+          "n_bidirectional_recordings": 0,
+          "n_evaluable_recordings": 4
+        },
+        "recording_bidirectional_decision": "reject: centered delta",
+        "recording_target_rows": [
+          {
+            "improved_fraction": 0.47424242424242424,
+            "mean_true_class_delta": 0.004284312626507899,
+            "n_trials": 660,
+            "recording": "35eeb752-8f4f-4040-9714-ba0f5b7ccdfe_probe00",
+            "target0_improved": 0.48672566371681414,
+            "target1_fraction": 0.4863636363636364,
+            "target1_improved": 0.46105919003115264
+          },
+          {
+            "improved_fraction": 0.4864406779661017,
+            "mean_true_class_delta": 0.07090404925498893,
+            "n_trials": 590,
+            "recording": "3f71aa98-08c6-4e79-b4c8-00eae4f03eff_probe00",
+            "target0_improved": 0.2774566473988439,
+            "target1_fraction": 0.4135593220338983,
+            "target1_improved": 0.7827868852459017
+          },
+          {
+            "improved_fraction": 0.35714285714285715,
+            "mean_true_class_delta": -0.04093871199279249,
+            "n_trials": 364,
+            "recording": "6899a67d-2e53-4215-a52a-c7021b5da5d4_probe00",
+            "target0_improved": 0.3711340206185567,
+            "target1_fraction": 0.46703296703296704,
+            "target1_improved": 0.3411764705882353
+          },
+          {
+            "improved_fraction": 0.43010752688172044,
+            "mean_true_class_delta": -0.03521579039090981,
+            "n_trials": 651,
+            "recording": "a1782f4f-86b0-480c-a7f2-3d8f1ab482ab_probe00",
+            "target0_improved": 0.47076023391812866,
+            "target1_fraction": 0.47465437788018433,
+            "target1_improved": 0.3851132686084142
+          }
+        ],
+        "region_granularity": "parent",
+        "source_subject": "SWC_043",
+        "summary": {
+          "delta_auc": -0.026066034686724304,
+          "delta_centered_auc": -0.02606681917026743,
+          "n_recordings": 4,
+          "paired_true_vs_shuffle": {
+            "improved_fraction": 0.445916114790287,
+            "mean_true_class_delta": 0.0030171588009182903,
+            "target0_improved_fraction": 0.4045864045864046,
+            "target1_improved_fraction": 0.4942528735632184
+          },
+          "recording_support_fraction": 0.25,
+          "recordings_positive_true_minus_shuffle": 1
+        },
+        "target_mode": "stimulus_side",
+        "target_subject": "MFD_06"
+      },
+      {
+        "feature_mode": "recording_centered",
+        "feature_names": [
+          "cortical_visual",
+          "cortical_auditory",
+          "cortical_sensorimotor",
+          "cortical_retrosplenial",
+          "hippocampal_formation",
+          "thalamic",
+          "midbrain",
+          "basal_ganglia",
+          "brainstem_interbrain",
+          "fiber_tracts",
+          "broad_named_anatomy"
+        ],
+        "feature_space": "families",
+        "n_eval_trials": 2424,
+        "n_features": 11,
+        "n_regions": 46,
+        "n_source_recordings": 4,
+        "n_target_recordings": 4,
+        "n_train_trials": 1888,
+        "recording_bidirectional": {
+          "bidirectional_recording_fraction": 0.0,
+          "bidirectional_recordings": [],
+          "n_bidirectional_recordings": 0,
+          "n_evaluable_recordings": 4
+        },
+        "recording_bidirectional_decision": "reject: centered delta",
+        "recording_target_rows": [
+          {
+            "improved_fraction": 0.4620253164556962,
+            "mean_true_class_delta": -0.06494265039070216,
+            "n_trials": 790,
+            "recording": "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe00",
+            "target0_improved": 0.37468354430379747,
+            "target1_fraction": 0.5,
+            "target1_improved": 0.549367088607595
+          },
+          {
+            "improved_fraction": 0.5556962025316455,
+            "mean_true_class_delta": 0.10233077609388486,
+            "n_trials": 790,
+            "recording": "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe01",
+            "target0_improved": 0.4962025316455696,
+            "target1_fraction": 0.5,
+            "target1_improved": 0.6151898734177215
+          },
+          {
+            "improved_fraction": 0.5616113744075829,
+            "mean_true_class_delta": 0.03556937840915106,
+            "n_trials": 422,
+            "recording": "b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe00",
+            "target0_improved": 0.5247524752475248,
+            "target1_fraction": 0.5213270142180095,
+            "target1_improved": 0.5954545454545455
+          },
+          {
+            "improved_fraction": 0.5592417061611374,
+            "mean_true_class_delta": 0.22131668648450872,
+            "n_trials": 422,
+            "recording": "b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe01",
+            "target0_improved": 0.7079207920792079,
+            "target1_fraction": 0.5213270142180095,
+            "target1_improved": 0.42272727272727273
+          }
+        ],
+        "region_granularity": "parent",
+        "source_subject": "SWC_043",
+        "summary": {
+          "delta_auc": 0.009849382413422147,
+          "delta_centered_auc": 0.009849382413422147,
+          "n_recordings": 4,
+          "paired_true_vs_shuffle": {
+            "improved_fraction": 0.5268151815181518,
+            "mean_true_class_delta": 0.056906987908679374,
+            "target0_improved_fraction": 0.4966499162479062,
+            "target1_improved_fraction": 0.5560975609756098
+          },
+          "recording_support_fraction": 0.5,
+          "recordings_positive_true_minus_shuffle": 2
+        },
+        "target_mode": "stimulus_side",
+        "target_subject": "NR_0019"
+      },
+      {
+        "feature_mode": "recording_centered",
+        "feature_names": [
+          "cortical_visual",
+          "cortical_auditory",
+          "cortical_sensorimotor",
+          "hippocampal_formation",
+          "thalamic",
+          "midbrain",
+          "basal_ganglia",
+          "brainstem_interbrain",
+          "fiber_tracts",
+          "broad_named_anatomy"
+        ],
+        "feature_space": "families",
+        "n_eval_trials": 1875,
+        "n_features": 10,
+        "n_regions": 48,
+        "n_source_recordings": 4,
+        "n_target_recordings": 4,
+        "n_train_trials": 1888,
+        "recording_bidirectional": {
+          "bidirectional_recording_fraction": 0.0,
+          "bidirectional_recordings": [],
+          "n_bidirectional_recordings": 0,
+          "n_evaluable_recordings": 4
+        },
+        "recording_bidirectional_decision": "reject: global target0",
+        "recording_target_rows": [
+          {
+            "improved_fraction": 0.5313725490196078,
+            "mean_true_class_delta": 0.030932392325946422,
+            "n_trials": 510,
+            "recording": "032ffcdf-7692-40b3-b9ff-8def1fc18b2e_probe00",
+            "target0_improved": 0.4948453608247423,
+            "target1_fraction": 0.4294117647058823,
+            "target1_improved": 0.5799086757990868
+          },
+          {
+            "improved_fraction": 0.5413223140495868,
+            "mean_true_class_delta": 0.047483017873201944,
+            "n_trials": 484,
+            "recording": "a8a8af78-16de-4841-ab07-fde4b5281a03_probe00",
+            "target0_improved": 0.54,
+            "target1_fraction": 0.4834710743801653,
+            "target1_improved": 0.5427350427350427
+          },
+          {
+            "improved_fraction": 0.4855371900826446,
+            "mean_true_class_delta": 0.07341587627192103,
+            "n_trials": 484,
+            "recording": "a8a8af78-16de-4841-ab07-fde4b5281a03_probe01",
+            "target0_improved": 0.38,
+            "target1_fraction": 0.4834710743801653,
+            "target1_improved": 0.5982905982905983
+          },
+          {
+            "improved_fraction": 0.5062972292191436,
+            "mean_true_class_delta": -0.0046051400510313655,
+            "n_trials": 397,
+            "recording": "b182b754-3c3e-4942-8144-6ee790926b58_probe01",
+            "target0_improved": 0.4340659340659341,
+            "target1_fraction": 0.5415617128463476,
+            "target1_improved": 0.5674418604651162
+          }
+        ],
+        "region_granularity": "parent",
+        "source_subject": "SWC_043",
+        "summary": {
+          "delta_auc": 0.03520781727484662,
+          "delta_centered_auc": 0.03520781727484662,
+          "n_recordings": 4,
+          "paired_true_vs_shuffle": {
+            "improved_fraction": 0.5168,
+            "mean_true_class_delta": 0.03864658360118013,
+            "target0_improved_fraction": 0.46557040082219936,
+            "target1_improved_fraction": 0.5720620842572062
+          },
+          "recording_support_fraction": 0.5,
+          "recordings_positive_true_minus_shuffle": 2
+        },
+        "target_mode": "stimulus_side",
+        "target_subject": "NYU-12"
+      },
+      {
+        "feature_mode": "recording_centered",
+        "feature_names": [
+          "cortical_visual",
+          "cortical_auditory",
+          "cortical_sensorimotor",
+          "hippocampal_formation",
+          "thalamic",
+          "basal_ganglia",
+          "brainstem_interbrain",
+          "fiber_tracts",
+          "broad_named_anatomy"
+        ],
+        "feature_space": "families",
+        "n_eval_trials": 2436,
+        "n_features": 9,
+        "n_regions": 33,
+        "n_source_recordings": 4,
+        "n_target_recordings": 4,
+        "n_train_trials": 1888,
+        "recording_bidirectional": {
+          "bidirectional_recording_fraction": 0.25,
+          "bidirectional_recordings": [
+            "03063955-2523-47bd-ae57-f7489dd40f15_probe01"
+          ],
+          "n_bidirectional_recordings": 1,
+          "n_evaluable_recordings": 4
+        },
+        "recording_bidirectional_decision": "reject: centered delta",
+        "recording_target_rows": [
+          {
+            "improved_fraction": 0.5736842105263158,
+            "mean_true_class_delta": 0.0385305490849888,
+            "n_trials": 760,
+            "recording": "03063955-2523-47bd-ae57-f7489dd40f15_probe01",
+            "target0_improved": 0.5936739659367397,
+            "target1_fraction": 0.45921052631578946,
+            "target1_improved": 0.5501432664756447
+          },
+          {
+            "improved_fraction": 0.48633879781420764,
+            "mean_true_class_delta": -0.005866323883449717,
+            "n_trials": 549,
+            "recording": "1e45d992-c356-40e1-9be1-a506d944896f_probe01",
+            "target0_improved": 0.42592592592592593,
+            "target1_fraction": 0.5081967213114754,
+            "target1_improved": 0.5448028673835126
+          },
+          {
+            "improved_fraction": 0.5044052863436124,
+            "mean_true_class_delta": -0.00033505867231967736,
+            "n_trials": 454,
+            "recording": "41872d7f-75cb-4445-bb1a-132b354c44f0_probe01",
+            "target0_improved": 0.47417840375586856,
+            "target1_fraction": 0.5308370044052864,
+            "target1_improved": 0.5311203319502075
+          },
+          {
+            "improved_fraction": 0.46805349182763745,
+            "mean_true_class_delta": -0.09214572304909316,
+            "n_trials": 673,
+            "recording": "4d8c7767-981c-4347-8e5e-5d5fffe38534_probe01",
+            "target0_improved": 0.42178770949720673,
+            "target1_fraction": 0.46805349182763745,
+            "target1_improved": 0.5206349206349207
+          }
+        ],
+        "region_granularity": "parent",
+        "source_subject": "SWC_043",
+        "summary": {
+          "delta_auc": 0.006860644590277187,
+          "delta_centered_auc": 0.006860644590277187,
+          "n_recordings": 4,
+          "paired_true_vs_shuffle": {
+            "improved_fraction": 0.5119047619047619,
+            "mean_true_class_delta": -0.014820846780252556,
+            "target0_improved_fraction": 0.48801916932907347,
+            "target1_improved_fraction": 0.5371621621621622
+          },
+          "recording_support_fraction": 0.25,
+          "recordings_positive_true_minus_shuffle": 1
+        },
+        "target_mode": "stimulus_side",
+        "target_subject": "SWC_038"
+      }
+    ],
+    "region_granularity": "parent",
+    "summary": {
+      "candidate_pairs": [],
+      "decision": "no_source_target_model_free_signal",
+      "decision_counts": {
+        "reject: centered delta": 29,
+        "reject: global target0": 10,
+        "reject: global target1": 3
+      },
+      "mean_bidirectional_recording_fraction": 0.09523809523809523,
+      "n_candidates": 0,
+      "n_pairs": 42,
+      "n_positive_delta_pairs": 19,
+      "positive_delta_pairs": [
+        {
+          "source": "CSH_ZAD_019",
+          "target": "NYU-12"
+        },
+        {
+          "source": "CSH_ZAD_019",
+          "target": "SWC_038"
+        },
+        {
+          "source": "KS014",
+          "target": "MFD_06"
+        },
+        {
+          "source": "KS014",
+          "target": "SWC_038"
+        },
+        {
+          "source": "MFD_06",
+          "target": "CSH_ZAD_019"
+        },
+        {
+          "source": "MFD_06",
+          "target": "KS014"
+        },
+        {
+          "source": "MFD_06",
+          "target": "SWC_038"
+        },
+        {
+          "source": "NR_0019",
+          "target": "CSH_ZAD_019"
+        },
+        {
+          "source": "NR_0019",
+          "target": "MFD_06"
+        },
+        {
+          "source": "NYU-12",
+          "target": "CSH_ZAD_019"
+        },
+        {
+          "source": "NYU-12",
+          "target": "KS014"
+        },
+        {
+          "source": "NYU-12",
+          "target": "SWC_038"
+        },
+        {
+          "source": "SWC_038",
+          "target": "CSH_ZAD_019"
+        },
+        {
+          "source": "SWC_038",
+          "target": "NR_0019"
+        },
+        {
+          "source": "SWC_038",
+          "target": "NYU-12"
+        },
+        {
+          "source": "SWC_043",
+          "target": "KS014"
+        },
+        {
+          "source": "SWC_043",
+          "target": "NR_0019"
+        },
+        {
+          "source": "SWC_043",
+          "target": "NYU-12"
+        },
+        {
+          "source": "SWC_043",
+          "target": "SWC_038"
+        }
+      ]
+    },
+    "target_mode": "stimulus_side",
+    "thresholds": {
+      "min_bidirectional_recording_fraction": 0.75,
+      "min_centered_delta": 0.01,
+      "min_target_improvement": 0.55
+    },
+    "top_pairs": 16
+  },
   "model_free_source_target_pair_recording_centered": {
     "feature_mode": "recording_centered",
     "manifest": "/Users/colin/Desktop/Projects/anatomical-neural-fm/manifests/ibl_bwm_region_matched_candidates_s3_present_support80_hdf5_scored.json",

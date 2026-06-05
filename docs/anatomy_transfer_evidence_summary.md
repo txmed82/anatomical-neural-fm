@@ -353,6 +353,15 @@ all fail global target0/target1 or same-recording bidirectionality; the mean
 bidirectional recording fraction is only `0.065`. Decision: source-target
 pairing does not provide a local promotion path to GPU training.
 
+Family source-target pair check:
+`docs/model_free_source_target_pair_gate_families_recording_centered.md`
+combines single-source animal pairing with predefined family aggregates. It
+also finds zero candidates across 42 source-target pairs. Family aggregation
+raises mean bidirectional recording fraction to `0.095`, but all positive
+pairs still fail global target0/target1 or same-recording bidirectionality, and
+no top pair exceeds `1/4` bidirectional recordings. Decision: the best
+remaining no-spend combination still does not justify A100 training.
+
 Recording-centered feature check:
 `docs/model_free_recording_bidirectional_gate_recording_centered.md` subtracts
 each recording's own mean parent-region feature vector before ridge fitting.

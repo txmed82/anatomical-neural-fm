@@ -1423,6 +1423,15 @@ same-recording bidirectionality; the mean bidirectional recording fraction is
 `0.065`. This closes single-source animal pairing as an immediate no-spend
 rescue path.
 
+Family source-target pair check:
+The same source-target screen was rerun with `--feature-space families`, which
+combines the single-source split redesign with the strongest family-aggregate
+feature path. It still has zero candidates across 42 pairs. The mean
+bidirectional recording fraction improves slightly to `0.095`, but the top
+pairs still fail global target0/target1 and never exceed `1/4` bidirectional
+recordings. This closes the combined source-pairing plus family-aggregation
+branch under the current matched cache.
+
 Recording-centered feature check:
 The gate also supports `--feature-mode recording_centered`, which subtracts
 each recording's mean parent-region feature vector before fitting. This reduces

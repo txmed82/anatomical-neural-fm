@@ -121,6 +121,9 @@ MODEL_FREE_RECORDING_BIDIRECTIONAL_FEEDBACK_FILE = "docs/model_free_recording_bi
 MODEL_FREE_SOURCE_TARGET_PAIR_RECORDING_CENTERED_FILE = (
     "docs/model_free_source_target_pair_gate_recording_centered.json"
 )
+MODEL_FREE_SOURCE_TARGET_PAIR_FAMILIES_RECORDING_CENTERED_FILE = (
+    "docs/model_free_source_target_pair_gate_families_recording_centered.json"
+)
 MODEL_FREE_FAMILY_BIDIRECTIONAL_RECORDING_CENTERED_FILE = (
     "docs/model_free_family_bidirectional_gate_recording_centered.json"
 )
@@ -425,6 +428,7 @@ def render_markdown(
     model_free_recording_bidirectional_prior: dict | None = None,
     model_free_recording_bidirectional_feedback: dict | None = None,
     model_free_source_target_pair_recording_centered: dict | None = None,
+    model_free_source_target_pair_families_recording_centered: dict | None = None,
     model_free_family_bidirectional_recording_centered: dict | None = None,
     model_free_family_bidirectional_prior_recording_centered: dict | None = None,
     model_free_family_bidirectional_feedback_recording_centered: dict | None = None,
@@ -1163,6 +1167,34 @@ def render_markdown(
             ),
             "",
         ]
+    if model_free_source_target_pair_families_recording_centered is not None:
+        summary = model_free_source_target_pair_families_recording_centered["summary"]
+        counts = ", ".join(
+            f"{decision}: {count}"
+            for decision, count in summary["decision_counts"].items()
+        )
+        lines += [
+            "## Family Source-Target Pair Gate",
+            "",
+            "`docs/model_free_source_target_pair_gate_families_recording_centered.md`",
+            "combines the single-source split redesign with predefined family-aggregate",
+            "features and recording centering.",
+            "",
+            f"- source-target pairs: `{summary['n_pairs']}`",
+            f"- candidates: `{summary['n_candidates']}`",
+            f"- positive centered-delta pairs: `{summary['n_positive_delta_pairs']}`",
+            f"- mean bidirectional recording fraction: `{summary['mean_bidirectional_recording_fraction']:.3f}`",
+            f"- decision counts: `{counts}`",
+            f"- decision: `{summary['decision']}`",
+            "",
+            (
+                "Decision: combining source-target pairing with family aggregation still "
+                "does not produce a local transfer candidate. It slightly increases "
+                "same-recording bidirectional support, but top pairs remain below global "
+                "target0/target1 and never exceed `1/4` bidirectional recordings."
+            ),
+            "",
+        ]
     if model_free_family_bidirectional_recording_centered is not None:
         summary = model_free_family_bidirectional_recording_centered["summary"]
         lines += [
@@ -1357,6 +1389,9 @@ def main() -> int:
     model_free_source_target_pair_recording_centered = read_mechanism_audit(
         REPO_ROOT / MODEL_FREE_SOURCE_TARGET_PAIR_RECORDING_CENTERED_FILE
     )
+    model_free_source_target_pair_families_recording_centered = read_mechanism_audit(
+        REPO_ROOT / MODEL_FREE_SOURCE_TARGET_PAIR_FAMILIES_RECORDING_CENTERED_FILE
+    )
     model_free_family_bidirectional_recording_centered = read_mechanism_audit(
         REPO_ROOT / MODEL_FREE_FAMILY_BIDIRECTIONAL_RECORDING_CENTERED_FILE
     )
@@ -1404,6 +1439,7 @@ def main() -> int:
         model_free_recording_bidirectional_prior,
         model_free_recording_bidirectional_feedback,
         model_free_source_target_pair_recording_centered,
+        model_free_source_target_pair_families_recording_centered,
         model_free_family_bidirectional_recording_centered,
         model_free_family_bidirectional_prior_recording_centered,
         model_free_family_bidirectional_feedback_recording_centered,
@@ -1476,6 +1512,9 @@ def main() -> int:
         "model_free_recording_bidirectional_prior_side": model_free_recording_bidirectional_prior,
         "model_free_recording_bidirectional_feedback": model_free_recording_bidirectional_feedback,
         "model_free_source_target_pair_recording_centered": model_free_source_target_pair_recording_centered,
+        "model_free_source_target_pair_families_recording_centered": (
+            model_free_source_target_pair_families_recording_centered
+        ),
         "model_free_family_bidirectional_recording_centered": (
             model_free_family_bidirectional_recording_centered
         ),
