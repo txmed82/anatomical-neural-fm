@@ -40,6 +40,8 @@ Success-mode audit: `docs/transfer_success_mode_audit.md`.
 CSH diagnostic output audit: `docs/csh_diagnostic_output_audit.md`.
 Recovered full-trial summary source:
 `docs/lso_csh_diagnostic_outputs_results.md`.
+Full-eval launch attempt:
+`docs/lso_csh_full_eval_shared_parent_shuffle_results.md`.
 
 ## Why This Is Real Enough To Demo
 
@@ -99,3 +101,6 @@ reports those deterministic full held-out-trial metrics directly. If spending
 again, rerun only the canonical `CSH_ZAD_019` control with
 `FULL_EVAL_ON_BEST=1`; do not broaden to more held-out animals unless CSH
 survives that full-trial true-vs-shuffled gate across seeds.
+
+The first paid attempt to run that gate failed at RunPod provisioning and
+produced no training metrics, so it does not change the evidence table.

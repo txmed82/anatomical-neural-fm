@@ -773,3 +773,12 @@ Use `SAVE_DIAGNOSTICS=0` unless embeddings or exported predictions are needed
 again, because `full_eval` log events are enough for the official summary and
 are cheaper to preserve. Stop immediately if the full-trial true-label arm does
 not beat both the shared null and the shuffled-label arm across seeds.
+
+First CSH full-eval launch attempt:
+`docs/lso_csh_full_eval_shared_parent_shuffle_results.md` records a RunPod
+provisioning failure, not an experiment. Two A100 pods landed on the same
+unusable machine id without runtime access, `US-MO-1` was rejected as an invalid
+current datacenter id, and `US-IL-1` had no matching A100 capacity. Cleanup
+returned active pods to zero. The launcher now treats machine id alone as
+unprovisioned for the billing guard; a future paid retry should wait for
+healthier A100 capacity or use a different valid GPU/datacenter path.

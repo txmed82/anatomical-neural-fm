@@ -1,31 +1,60 @@
-# Cloud Phase 3-5 Results
+# CSH Full-Eval Shared-Parent Launch Attempt
 
-Date: 2026-06-05T01:06:04Z
+## Launch Goal
 
-RunPod target: A100 pilot.
+Run only the canonical `CSH_ZAD_019` shared-parent true-vs-shuffled control with
+`FULL_EVAL_ON_BEST=1`, three seeds, and no new held-out subjects.
 
-Exit status: 0
+Budget guard:
 
-Configuration:
+- user cap: $100
+- launch guard: 5,400 seconds max runtime
+- provisioning guard: 300 seconds
+- listed pod rate: $1.49/hr
+- worst-case guarded run estimate: about $2.24 per successful launch
 
-- branch: runpod-pilot-phases-3-5
-- build recordings: 0
-- max steps: 300
-- eval batches: 20
-- target mode: stimulus_side
-- sweep script: scripts/run_lso_csh_zad_019_shared_parent_shuffle_a100.sh
-- setup mode: project
-- skip cell-type priors: True
-- skip sweep: False
-- startup smoke only: False
-- dependency diagnostic: False
-- max runtime seconds: 5400
-- output root: `runs/lso_csh_full_eval_shared_parent_shuffle`
-- sweep env: `FULL_EVAL_ON_BEST=1, SAVE_DIAGNOSTICS=0`
+## Attempt Log
 
-## Missing Sweep Summary
+Preflight before launch reported a clean branch, `active_pods: 0`, and an
+estimated guarded cost of $4.50 under the conservative $3/hr preflight
+assumption.
 
-No `runs/lso_csh_full_eval_shared_parent_shuffle/summary.md`, `within_summary.md`, or
-`cross_summary.md` file was present when cleanup pushed artifacts. Treat this
-cloud result as incomplete/non-evidence even if the pod exit status is 0.
+Attempt 1:
 
+- pod: `wprz1ze9ox8uvx`
+- name: `anfm-csh-full-eval-20260604-195834`
+- GPU request: `NVIDIA A100 80GB PCIe,NVIDIA A100-SXM4-80GB`
+- datacenter: `ANY`
+- rate: $1.49/hr
+- outcome: RunPod assigned machine id `oqo2eflpgwbo`, but the pod never exposed
+  machine details or a public IP. The 300-second provisioning guard terminated
+  it before training started.
+
+Attempt 2:
+
+- datacenter `US-MO-1`: rejected by current RunPod API because that datacenter
+  id is no longer valid.
+- datacenter `US-IL-1`: rejected before pod creation because no matching A100
+  capacity was available.
+- pod: `8piygo34j6vdt0`
+- name: `anfm-csh-full-eval-20260604-200451`
+- GPU request: `NVIDIA A100-SXM4-80GB`
+- datacenter: `ANY`
+- rate: $1.49/hr
+- outcome: RunPod again assigned machine id `oqo2eflpgwbo` with no runtime
+  access. The pod was manually terminated before the full guard window.
+
+During cleanup, an unexpected active project pod
+`9sb1b5aiqur37r` (`anfm-two-parent-compact-20260604-200502`) was visible and
+was terminated to enforce the budget cap.
+
+Final post-cleanup preflight reported `active_pods: 0`.
+
+## Result
+
+No training ran and no `full_eval` CSH metrics were produced. Treat this as a
+RunPod provisioning failure, not experimental evidence.
+
+Next launch should either wait for healthier A100 capacity or use a different
+valid datacenter/GPU availability path. Do not start more than one pod at a time,
+and keep the `active_pods: 0` preflight gate before each paid attempt.

@@ -9,6 +9,7 @@ from scripts.runpod_clone_a100 import (
     authenticated_repo_url,
     build_pod_body,
     build_start_script,
+    pod_is_provisioned,
     s3_log_key,
     summarize_pod,
 )
@@ -151,6 +152,12 @@ def test_summarize_pod_reports_provisioning_state() -> None:
     assert summary["cpuFlavorId"] == "cpu3c"
     assert summary["volumeInGb"] == 0
     assert summary["lastStatusChange"] == "Rented by User"
+
+
+def test_pod_is_provisioned_ignores_machine_id_without_runtime_access() -> None:
+    assert not pod_is_provisioned({"machineId": "assigned", "machine": {}, "publicIp": ""})
+    assert pod_is_provisioned({"machineId": "assigned", "machine": {"id": "machine"}, "publicIp": ""})
+    assert pod_is_provisioned({"machineId": "assigned", "machine": {}, "publicIp": "203.0.113.10"})
 
 
 def test_start_script_can_run_leave_subject_out_report() -> None:

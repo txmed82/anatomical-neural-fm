@@ -537,6 +537,11 @@ def summarize_pod(pod: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def pod_is_provisioned(pod: dict[str, Any]) -> bool:
+    """Machine id alone is not enough; stuck pods can be billed without runtime access."""
+    return bool(pod.get("machine") or pod.get("publicIp"))
+
+
 def s3_log_key(config: ClonePilotConfig) -> str:
     prefix = config.s3_prefix.strip("/")
     key = f"logs/{config.result_doc.replace('/', '_').removesuffix('.md')}.log"
@@ -746,13 +751,10 @@ def main() -> int:
                 print("Body completion marker found in S3 log; terminating pod.", flush=True)
                 client.terminate_pod(pod_id)
                 break
-            machine = current.get("machine") or {}
-            public_ip = current.get("publicIp")
             if (
                 args.max_provision_seconds > 0
                 and time.time() > provision_deadline
-                and not machine
-                and not public_ip
+                and not pod_is_provisioned(current)
             ):
                 print(
                     f"Pod stayed unprovisioned for {args.max_provision_seconds}s; terminating.",
