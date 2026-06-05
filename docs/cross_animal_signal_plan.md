@@ -1555,13 +1555,15 @@ define a new benchmark/control target, not further subset this cache.
 
 Next benchmark/control options audit:
 `scripts/audit_next_benchmark_control_options.py` converts the negative local
-audits into a ranked plan. It recommends `new benchmark/control target
-definition` as the next branch and closes more feature/L2 sweeps, further
-manifest narrowing, recording-subset selection, the current shared-family grid,
-cached alternative targets, and source-target narrowing as GPU triggers. The
-only training trigger remains a local row with delta_vs_shuffle>=`0`,
-delta_vs_total>=`0`, target0>=`0.55`, target1>=`0.55`, and
-bidirectional_recording_fraction>=`0.75`.
+audits into a ranked plan. After the direct derived-target and contextual
+trial-state screens, it now recommends `behavior-cache rebuild or external
+target preflight` as the next branch and closes more feature/L2 sweeps,
+further manifest narrowing, recording-subset selection, the current
+shared-family grid, cached alternative targets, direct cached-field derived
+targets, contextual cached trial-state targets, and source-target narrowing as
+GPU triggers. The only training trigger remains a local row with
+delta_vs_shuffle>=`0`, delta_vs_total>=`0`, target0>=`0.55`,
+target1>=`0.55`, and bidirectional_recording_fraction>=`0.75`.
 
 Derived target family gate:
 `scripts/audit_derived_target_family_gate.py` implements the first concrete
@@ -1581,6 +1583,21 @@ target derivation as an A100 trigger. The next roadmap branch should use a
 genuinely different benchmark/control source, such as an externally defined
 behavioral state, anatomy-informed task family, or new data slice, and still
 pass the local gate before any paid training.
+
+Contextual target family gate:
+`scripts/audit_contextual_target_family_gate.py` tests the next no-spend
+variant of target redesign using trial-sequence context instead of direct task
+labels. It defines `post_error` from previous-trial feedback, `prior_block_switch`
+from early trials after probability-left changes versus stable block tails, and
+`prior_block_late` from early versus late block edges. This remains CPU-only
+and uses the same shared-family gate. The result is again negative: zero
+candidates across 84 rows, 40 positive centered-delta rows, and max
+same-recording bidirectional support only `2/4`. The compact local HDF5 cache
+contains only spikes, units, and trial arrays, so richer external behavioral
+state such as wheel is not available in this matched cache. The next branch
+should be a behavior-cache rebuild/fetch preflight for a genuinely external
+target source, followed by the same local model-free gate; do not spend on A100
+training from the contextual trial-state branch.
 
 Recording-centered feature check:
 The gate also supports `--feature-mode recording_centered`, which subtracts

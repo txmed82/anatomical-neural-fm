@@ -110,6 +110,7 @@ SHARED_BROAD_ANATOMY_REPAIR_SWEEP_FILE = "docs/shared_broad_anatomy_repair_sweep
 SHARED_FAMILY_ITERATIVE_MANIFEST_GATE_FILE = "docs/shared_family_iterative_manifest_gate.json"
 NEXT_BENCHMARK_CONTROL_OPTIONS_FILE = "docs/next_benchmark_control_options.json"
 DERIVED_TARGET_FAMILY_GATE_FILE = "docs/derived_target_family_gate.json"
+CONTEXTUAL_TARGET_FAMILY_GATE_FILE = "docs/contextual_target_family_gate.json"
 MODEL_FREE_MATCHED_SUPPORT80_PANEL_FILE = "docs/model_free_matched_support80_hdf5_panel.json"
 MODEL_FREE_POSITIVE_HOLDOUTS_MECHANISM_FILE = "docs/model_free_positive_holdouts_mechanism.json"
 MODEL_FREE_RECORDING_BIDIRECTIONAL_GATE_FILE = "docs/model_free_recording_bidirectional_gate.json"
@@ -445,6 +446,7 @@ def render_markdown(
     shared_family_iterative_manifest_gate: dict | None = None,
     next_benchmark_control_options: dict | None = None,
     derived_target_family_gate: dict | None = None,
+    contextual_target_family_gate: dict | None = None,
     model_free_matched_panel: dict | None = None,
     model_free_positive_holdouts: dict | None = None,
     model_free_recording_bidirectional_gate: dict | None = None,
@@ -1170,10 +1172,10 @@ def render_markdown(
         lines += [
             "",
             (
-                "Decision: the next aligned work is a new benchmark/control target "
-                "definition that first passes the same local model-free gate. Current "
-                "feature sweeps, manifest narrowing, source-target narrowing, and "
-                "recording-subset selection are closed as GPU triggers."
+                "Decision: direct cached target redesign is now closed as a GPU "
+                "trigger. The next aligned work is a richer behavior-cache rebuild "
+                "or external target preflight, followed by the same local model-free "
+                "gate before any paid training."
             ),
             "",
         ]
@@ -1222,6 +1224,53 @@ def render_markdown(
                 "with `3/4` bidirectional recordings, but it still loses to the "
                 "within-recording shuffle control. Other positive rows remain "
                 "one-sided or fail the total-spike baseline."
+            ),
+            "",
+        ]
+    if contextual_target_family_gate is not None:
+        summary = contextual_target_family_gate["summary"]
+        balances = summary["target_balances"]
+        top = summary["top_rows"][:6]
+        lines += [
+            "## Contextual Target Family Gate",
+            "",
+            "`docs/contextual_target_family_gate.md` tests trial-sequence target",
+            "definitions that are not direct task labels: `post_error`,",
+            "`prior_block_switch`, and `prior_block_late`.",
+            "",
+            f"- rows: `{summary['n_rows']}`",
+            f"- candidates: `{summary['n_candidates']}`",
+            f"- positive centered-delta rows: `{summary['n_positive_centered_delta']}`",
+            f"- max bidirectional recordings: `{summary['max_bidirectional_recordings']}`",
+            f"- max bidirectional recording fraction: `{summary['max_bidirectional_recording_fraction']:.3f}`",
+            f"- decision: `{summary['decision']}`",
+            "",
+            "| target | trials | eligible recordings | recordings |",
+            "|---|---:|---:|---:|",
+        ]
+        for target, row in balances.items():
+            lines.append(
+                f"| {target} | {row['n_trials']} | {row['eligible_recordings']} | {row['n_recordings']} |"
+            )
+        lines += [
+            "",
+            "| target | family | holdout | decision | delta shuffle | delta total | targets | bidir recs |",
+            "|---|---|---|---|---:|---:|---|---:|",
+        ]
+        for row in top:
+            lines.append(
+                f"| {row['target_mode']} | {row['family']} | {row['holdout']} | {row['decision']} | "
+                f"{row['centered_delta_vs_shuffle']:+.3f} | {row['centered_delta_vs_total']:+.3f} | "
+                f"{row['target0_improved_vs_shuffle']:.3f}/{row['target1_improved_vs_shuffle']:.3f} | "
+                f"{row['n_bidirectional_recordings']}/{row['n_recordings']} |"
+            )
+        lines += [
+            "",
+            (
+                "Decision: trial-sequence context does not create a training trigger. "
+                "The best contextual rows still fail the shuffle control, one global "
+                "target direction, or the total-spike baseline, and max same-recording "
+                "bidirectional support is only `2/4`."
             ),
             "",
         ]
@@ -1943,6 +1992,7 @@ def main() -> int:
     shared_family_iterative_manifest_gate = read_mechanism_audit(REPO_ROOT / SHARED_FAMILY_ITERATIVE_MANIFEST_GATE_FILE)
     next_benchmark_control_options = read_mechanism_audit(REPO_ROOT / NEXT_BENCHMARK_CONTROL_OPTIONS_FILE)
     derived_target_family_gate = read_mechanism_audit(REPO_ROOT / DERIVED_TARGET_FAMILY_GATE_FILE)
+    contextual_target_family_gate = read_mechanism_audit(REPO_ROOT / CONTEXTUAL_TARGET_FAMILY_GATE_FILE)
     model_free_matched_panel = read_mechanism_audit(REPO_ROOT / MODEL_FREE_MATCHED_SUPPORT80_PANEL_FILE)
     model_free_positive_holdouts = read_mechanism_audit(REPO_ROOT / MODEL_FREE_POSITIVE_HOLDOUTS_MECHANISM_FILE)
     model_free_recording_bidirectional_gate = read_mechanism_audit(
@@ -2035,6 +2085,7 @@ def main() -> int:
         shared_family_iterative_manifest_gate,
         next_benchmark_control_options,
         derived_target_family_gate,
+        contextual_target_family_gate,
         model_free_matched_panel,
         model_free_positive_holdouts,
         model_free_recording_bidirectional_gate,
@@ -2120,6 +2171,7 @@ def main() -> int:
         "shared_family_iterative_manifest_gate": shared_family_iterative_manifest_gate,
         "next_benchmark_control_options": next_benchmark_control_options,
         "derived_target_family_gate": derived_target_family_gate,
+        "contextual_target_family_gate": contextual_target_family_gate,
         "model_free_matched_support80_panel": model_free_matched_panel,
         "model_free_positive_holdouts_mechanism": model_free_positive_holdouts,
         "model_free_recording_bidirectional_gate": model_free_recording_bidirectional_gate,

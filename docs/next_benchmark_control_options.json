@@ -1,5 +1,7 @@
 {
   "artifacts": {
+    "contextual_target_family": "docs/contextual_target_family_gate.json",
+    "derived_target_family": "docs/derived_target_family_gate.json",
     "family_alt_feedback": "docs/model_free_family_bidirectional_gate_feedback_recording_centered.json",
     "family_alt_prior": "docs/model_free_family_bidirectional_gate_prior_side_recording_centered.json",
     "iterative_manifest": "docs/shared_family_iterative_manifest_gate.json",
@@ -14,12 +16,14 @@
     {
       "evidence": [
         "current cached trial targets and shared-family controls all fail strict same-recording bidirectionality",
+        "direct derived cached-field target gate has 0 candidates and max bidir 0.750",
+        "contextual trial-state target gate has 0 candidates and max bidir 0.500",
         "strict symmetric gate has 0 candidates and 0 one-recording-short global-clear rows",
         "threshold sensitivity only finds default-target candidates when bidirectional support is relaxed to 0.25 (3 candidates)"
       ],
       "gpu_trigger": "At least one local row must clear delta_vs_shuffle>=0, delta_vs_total>=0, target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75.",
-      "name": "new benchmark/control target definition",
-      "next_action": "Define a prospectively balanced target/control that is not just another feature transform of the four cached trial targets. Before training, run the same model-free true-vs-shuffle, total-baseline, global target, and same-recording bidirectional gate.",
+      "name": "behavior-cache rebuild or external target preflight",
+      "next_action": "Fetch or rebuild a richer behavior cache, or attach externally defined state labels, then define a prospectively balanced target/control and run the same model-free true-vs-shuffle, total-baseline, global target, and same-recording bidirectional gate before training.",
       "priority": 1,
       "status": "recommended_next"
     },
@@ -34,6 +38,28 @@
       "next_action": "Only build or fetch more recordings after a target/control proposal defines which recordings should prospectively contain target0+target1 evidence.",
       "priority": 2,
       "status": "secondary_after_new_target"
+    },
+    {
+      "evidence": [
+        "derived target family gate has 0 candidates across 84 rows",
+        "nearest response_latency row reaches 3/4 bidirectional recordings but fails true-vs-shuffle"
+      ],
+      "gpu_trigger": "none",
+      "name": "direct cached-field derived targets",
+      "next_action": "Do not launch GPU training from contrast_strength, response_latency, or prior_engaged.",
+      "priority": 88,
+      "status": "closed"
+    },
+    {
+      "evidence": [
+        "contextual target family gate has 0 candidates across 84 rows and max bidir 0.500",
+        "post_error, prior_block_switch, and prior_block_late do not clear the local gate"
+      ],
+      "gpu_trigger": "none",
+      "name": "contextual cached trial-state targets",
+      "next_action": "Do not spend on contextual trial-sequence targets from the compact cache.",
+      "priority": 89,
+      "status": "closed"
     },
     {
       "evidence": [
@@ -99,9 +125,9 @@
     }
   ],
   "summary": {
-    "closed_branches": 6,
-    "decision": "new_benchmark_control_definition_required",
+    "closed_branches": 8,
+    "decision": "behavior_cache_or_external_target_required",
     "gpu_training_trigger": "At least one local row must clear delta_vs_shuffle>=0, delta_vs_total>=0, target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75.",
-    "recommended_next": "new benchmark/control target definition"
+    "recommended_next": "behavior-cache rebuild or external target preflight"
   }
 }

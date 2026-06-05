@@ -353,19 +353,19 @@ Decision: stricter manifest support alone does not rescue the signal. The clean 
 `docs/next_benchmark_control_options.md` ranks the remaining no-spend
 branches after the current local negative audits.
 
-- recommended next: `new benchmark/control target definition`
-- closed branches: `6`
-- decision: `new_benchmark_control_definition_required`
+- recommended next: `behavior-cache rebuild or external target preflight`
+- closed branches: `8`
+- decision: `behavior_cache_or_external_target_required`
 - GPU trigger: At least one local row must clear delta_vs_shuffle>=0, delta_vs_total>=0, target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75.
 
 | priority | branch | status | next action |
 |---:|---|---|---|
-| 1 | new benchmark/control target definition | `recommended_next` | Define a prospectively balanced target/control that is not just another feature transform of the four cached trial targets. Before training, run the same model-free true-vs-shuffle, total-baseline, global target, and same-recording bidirectional gate. |
+| 1 | behavior-cache rebuild or external target preflight | `recommended_next` | Fetch or rebuild a richer behavior cache, or attach externally defined state labels, then define a prospectively balanced target/control and run the same model-free true-vs-shuffle, total-baseline, global target, and same-recording bidirectional gate before training. |
 | 2 | new manifest with prospective bidirectional support | `secondary_after_new_target` | Only build or fetch more recordings after a target/control proposal defines which recordings should prospectively contain target0+target1 evidence. |
-| 90 | more feature-mode or l2 sweeps on shared broad anatomy | `closed` | Do not spend more local or GPU time on simple broad-anatomy feature/regularization repair. |
-| 91 | narrow existing manifest further | `closed` | Do not keep shrinking the existing cache as the primary rescue path. |
+| 88 | direct cached-field derived targets | `closed` | Do not launch GPU training from contrast_strength, response_latency, or prior_engaged. |
+| 89 | contextual cached trial-state targets | `closed` | Do not spend on contextual trial-sequence targets from the compact cache. |
 
-Decision: the next aligned work is a new benchmark/control target definition that first passes the same local model-free gate. Current feature sweeps, manifest narrowing, source-target narrowing, and recording-subset selection are closed as GPU triggers.
+Decision: direct cached target redesign is now closed as a GPU trigger. The next aligned work is a richer behavior-cache rebuild or external target preflight, followed by the same local model-free gate before any paid training.
 
 ## Derived Target Family Gate
 
@@ -396,6 +396,36 @@ benchmark/control direction using three cached trial-field targets:
 | contrast_strength | broad_named_anatomy | KS014 | reject: shuffle | -0.005 | -0.006 | 0.564/0.507 | 2/4 |
 
 Decision: cached trial-field target redesign does not yet justify GPU training. `response_latency` gives the nearest symmetric row with `3/4` bidirectional recordings, but it still loses to the within-recording shuffle control. Other positive rows remain one-sided or fail the total-spike baseline.
+
+## Contextual Target Family Gate
+
+`docs/contextual_target_family_gate.md` tests trial-sequence target
+definitions that are not direct task labels: `post_error`,
+`prior_block_switch`, and `prior_block_late`.
+
+- rows: `84`
+- candidates: `0`
+- positive centered-delta rows: `40`
+- max bidirectional recordings: `2`
+- max bidirectional recording fraction: `0.500`
+- decision: `no_contextual_target_family_candidate`
+
+| target | trials | eligible recordings | recordings |
+|---|---:|---:|---:|
+| post_error | 17854 | 28 | 28 |
+| prior_block_late | 4798 | 28 | 28 |
+| prior_block_switch | 7280 | 23 | 28 |
+
+| target | family | holdout | decision | delta shuffle | delta total | targets | bidir recs |
+|---|---|---|---|---:|---:|---|---:|
+| post_error | fiber_tracts | SWC_043 | reject: shuffle | -0.031 | -0.050 | 0.527/0.472 | 2/4 |
+| post_error | fiber_tracts | NYU-12 | reject: target0 | +0.083 | +0.130 | 0.411/0.679 | 1/4 |
+| prior_block_late | thalamic | SWC_038 | reject: target0 | +0.022 | +0.047 | 0.094/0.943 | 1/4 |
+| post_error | broad_named_anatomy | MFD_06 | reject: target0 | +0.013 | +0.009 | 0.476/0.500 | 1/4 |
+| post_error | hippocampal_formation | NYU-12 | reject: target0 | +0.003 | +0.119 | 0.426/0.651 | 1/4 |
+| post_error | broad_named_anatomy | SWC_038 | reject: total baseline | +0.002 | -0.069 | 0.502/0.536 | 1/4 |
+
+Decision: trial-sequence context does not create a training trigger. The best contextual rows still fail the shuffle control, one global target direction, or the total-spike baseline, and max same-recording bidirectional support is only `2/4`.
 
 ## Matched-Region Model-Free Panel
 

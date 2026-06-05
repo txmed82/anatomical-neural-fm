@@ -483,11 +483,12 @@ definition rather than keep shrinking this cache.
 Next benchmark/control options audit:
 `docs/next_benchmark_control_options.md` ranks the remaining branches. It marks
 simple feature/L2 sweeps, further manifest narrowing, recording-subset
-selection, the current shared-family grid, cached alternative targets, and
-source-target narrowing as closed GPU triggers. The recommended next branch is
-a new benchmark/control target definition, with the same local promotion gate:
-delta vs shuffle and total baseline nonnegative, target0 and target1 >=`0.55`,
-and same-recording bidirectional fraction >=`0.75`.
+selection, the current shared-family grid, cached alternative targets,
+source-target narrowing, direct cached-field derived targets, and contextual
+trial-state targets as closed GPU triggers. The recommended next branch is a
+behavior-cache rebuild or external target preflight, still with the same local
+promotion gate: delta vs shuffle and total baseline nonnegative, target0 and
+target1 >=`0.55`, and same-recording bidirectional fraction >=`0.75`.
 
 Derived target family gate:
 `docs/derived_target_family_gate.md` tests the first concrete version of that
@@ -502,6 +503,20 @@ lose to the total-spike baseline. Decision: cached-derived trial targets do
 not justify GPU training; the next target/control redesign needs either
 external behavioral/neural structure or a genuinely different benchmark, not
 another direct transform of these cached fields.
+
+Contextual target family gate:
+`docs/contextual_target_family_gate.md` tests trial-sequence target definitions
+that are less direct transforms of the cached labels: `post_error`,
+`prior_block_switch`, and `prior_block_late`. These are also not training
+triggers. The audit finds zero candidates across 84 rows, 40 positive
+centered-delta rows, and max same-recording bidirectional support only `2/4`.
+`post_error` is fully evaluable in all 28 recordings; `prior_block_late` is
+also fully evaluable, while `prior_block_switch` has 23 eligible recordings.
+Decision: the compact no-wheel cache does not contain a usable contextual
+trial-state benchmark that passes the local gate. The next genuinely different
+target source likely requires rebuilding/fetching richer behavioral streams
+such as wheel or externally defined state labels, then rerunning the same
+model-free promotion gate before any GPU training.
 
 Recording-centered feature check:
 `docs/model_free_recording_bidirectional_gate_recording_centered.md` subtracts

@@ -2,15 +2,17 @@
 
 Ranks remaining no-spend branches after the current local audits. This is the planning gate before any new RunPod training.
 
-- recommended next: `new benchmark/control target definition`
-- closed branches: `6`
-- decision: `new_benchmark_control_definition_required`
+- recommended next: `behavior-cache rebuild or external target preflight`
+- closed branches: `8`
+- decision: `behavior_cache_or_external_target_required`
 - GPU trigger: At least one local row must clear delta_vs_shuffle>=0, delta_vs_total>=0, target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75.
 
 | priority | branch | status | next action |
 |---:|---|---|---|
-| 1 | new benchmark/control target definition | `recommended_next` | Define a prospectively balanced target/control that is not just another feature transform of the four cached trial targets. Before training, run the same model-free true-vs-shuffle, total-baseline, global target, and same-recording bidirectional gate. |
+| 1 | behavior-cache rebuild or external target preflight | `recommended_next` | Fetch or rebuild a richer behavior cache, or attach externally defined state labels, then define a prospectively balanced target/control and run the same model-free true-vs-shuffle, total-baseline, global target, and same-recording bidirectional gate before training. |
 | 2 | new manifest with prospective bidirectional support | `secondary_after_new_target` | Only build or fetch more recordings after a target/control proposal defines which recordings should prospectively contain target0+target1 evidence. |
+| 88 | direct cached-field derived targets | `closed` | Do not launch GPU training from contrast_strength, response_latency, or prior_engaged. |
+| 89 | contextual cached trial-state targets | `closed` | Do not spend on contextual trial-sequence targets from the compact cache. |
 | 90 | more feature-mode or l2 sweeps on shared broad anatomy | `closed` | Do not spend more local or GPU time on simple broad-anatomy feature/regularization repair. |
 | 91 | narrow existing manifest further | `closed` | Do not keep shrinking the existing cache as the primary rescue path. |
 | 92 | recording-subset selection from current artifacts | `closed` | Do not train on selected current recordings unless a new target/control first passes locally. |
@@ -20,8 +22,10 @@ Ranks remaining no-spend branches after the current local audits. This is the pl
 
 ## Evidence
 
-### new benchmark/control target definition
+### behavior-cache rebuild or external target preflight
 - current cached trial targets and shared-family controls all fail strict same-recording bidirectionality
+- direct derived cached-field target gate has 0 candidates and max bidir 0.750
+- contextual trial-state target gate has 0 candidates and max bidir 0.500
 - strict symmetric gate has 0 candidates and 0 one-recording-short global-clear rows
 - threshold sensitivity only finds default-target candidates when bidirectional support is relaxed to 0.25 (3 candidates)
 - GPU trigger: At least one local row must clear delta_vs_shuffle>=0, delta_vs_total>=0, target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75.
@@ -31,6 +35,16 @@ Ranks remaining no-spend branches after the current local audits. This is the pl
 - strict iterative 8-recording manifest has 0 candidates and max bidir 0.250
 - recording-subset replication selected zero stable validation rows
 - GPU trigger: Same local gate as above, measured on the proposed manifest before training.
+
+### direct cached-field derived targets
+- derived target family gate has 0 candidates across 84 rows
+- nearest response_latency row reaches 3/4 bidirectional recordings but fails true-vs-shuffle
+- GPU trigger: none
+
+### contextual cached trial-state targets
+- contextual target family gate has 0 candidates across 84 rows and max bidir 0.500
+- post_error, prior_block_switch, and prior_block_late do not clear the local gate
+- GPU trigger: none
 
 ### more feature-mode or l2 sweeps on shared broad anatomy
 - shared broad-anatomy repair sweep has 0 candidates, max bidir 2, and max min target margin -0.010

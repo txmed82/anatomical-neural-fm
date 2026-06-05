@@ -1,11 +1,11 @@
 from scripts.audit_next_benchmark_control_options import build_report, render_markdown
 
 
-def test_build_report_recommends_new_benchmark_control_definition() -> None:
+def test_build_report_recommends_behavior_cache_preflight() -> None:
     report = build_report()
 
-    assert report["summary"]["decision"] == "new_benchmark_control_definition_required"
-    assert report["summary"]["recommended_next"] == "new benchmark/control target definition"
+    assert report["summary"]["decision"] == "behavior_cache_or_external_target_required"
+    assert report["summary"]["recommended_next"] == "behavior-cache rebuild or external target preflight"
     assert report["branches"][0]["status"] == "recommended_next"
     assert report["summary"]["closed_branches"] >= 5
 
@@ -23,6 +23,7 @@ def test_render_markdown_lists_closed_branches() -> None:
     markdown = render_markdown(build_report())
 
     assert "# Next Benchmark/Control Options Audit" in markdown
-    assert "new benchmark/control target definition" in markdown
+    assert "behavior-cache rebuild or external target preflight" in markdown
+    assert "contextual cached trial-state targets" in markdown
     assert "narrow existing manifest further" in markdown
     assert "`closed`" in markdown
