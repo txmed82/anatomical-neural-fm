@@ -1329,3 +1329,12 @@ Metadata support scorer update: the 47-recording S3-present panel scores
 support scoring on this cached subset, then either drop the remaining
 low-support subject or proceed to a small training gate only if the HDF5 support
 check agrees.
+
+HDF5-confirmed support scorer update: the 28-recording subset still scores
+`6/7` support80, with `SWC_043` below gate at `65.8%`. A strict iterative
+all-pass filter collapses to only two subjects (`MFD_06`, `NYU-12`), which is
+too narrow for the open computational neuroscience claim. Do not present the
+28-recording panel as a clean broad benchmark. The next useful step is a
+no-spend/model-free screen across the 28-recording panel, or a tightly bounded
+training gate that predeclares `SWC_043` as weak-support and requires the other
+six subjects to carry the signal.

@@ -235,12 +235,14 @@ Decision: do not launch training. Replace or drop the single failed recording, t
 
 ## Matched-Region Support Scoring
 
-Metadata-only OpenAlyx region support has been scored for the S3-present
-cache panel. This is a planning gate; confirm again from HDF5s before training.
+Region support has been scored for the S3-present cache panel. Metadata-only
+scoring is a planning gate; HDF5 scoring is the stronger pre-training check.
 
 | manifest | recordings | subjects | support80 subjects | min support |
 |---|---:|---:|---:|---:|
 | `manifests/ibl_bwm_region_matched_candidates_s3_present_scored.json` | 47 | 12 | 8/12 | 66.6% |
 | `manifests/ibl_bwm_region_matched_candidates_s3_present_support80.json` | 28 | 7 | 6/7 | 65.8% |
+| `manifests/ibl_bwm_region_matched_candidates_s3_present_support80_hdf5_scored.json` | 28 | 7 | 6/7 | 65.8% |
+| `manifests/ibl_bwm_region_matched_candidates_s3_present_support80_hdf5_iterative_pass.json` | 8 | 2 | 2/2 | 88.5% |
 
-Decision: the 47-recording cacheable panel is close but not clean. Use the optimized 28-recording support80 subset for HDF5-confirmed support scoring, or drop the remaining low-support subject before any training sweep.
+Decision: the HDF5-confirmed 28-recording panel is close but not clean at `6/7` support80 subjects, while the strict iterative all-pass filter collapses to 2 subjects. Do not claim a clean broad benchmark from this panel. Treat `SWC_043` as a known weak-support holdout in any bounded training gate, or run another no-spend/model-free screen before spending.

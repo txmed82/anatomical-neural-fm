@@ -4788,6 +4788,40 @@
     "source": "manifests/ibl_bwm_region_matched_candidates_s3_present_support80.json",
     "subject_count": 7
   },
+  "matched_region_s3_present_support80_hdf5": {
+    "min_support": 0.6575512740832815,
+    "n_recordings": 28,
+    "n_subjects": 7,
+    "optimized": {
+      "min_subjects": 6,
+      "min_support": 0.8,
+      "min_unit_support_frac": 0.6575512740832815,
+      "pass_count": 6,
+      "pass_frac": 0.8571428571428571,
+      "subject_count": 7,
+      "total_units": 27365
+    },
+    "pass_count": 6,
+    "source": "manifests/ibl_bwm_region_matched_candidates_s3_present_support80_hdf5_scored.json",
+    "subject_count": 7
+  },
+  "matched_region_s3_present_support80_hdf5_iterative": {
+    "min_support": 0.8850763807285547,
+    "n_recordings": 8,
+    "n_subjects": 2,
+    "optimized": {
+      "min_subjects": 6,
+      "min_support": 0.8,
+      "min_unit_support_frac": 0.6575512740832815,
+      "pass_count": 6,
+      "pass_frac": 0.8571428571428571,
+      "subject_count": 7,
+      "total_units": 27365
+    },
+    "pass_count": 2,
+    "source": "manifests/ibl_bwm_region_matched_candidates_s3_present_support80_hdf5_iterative_pass.json",
+    "subject_count": 2
+  },
   "mechanism": {
     "carriers": [
       "PRT",

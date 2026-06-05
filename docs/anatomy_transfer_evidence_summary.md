@@ -268,6 +268,9 @@ the 47-recording panel has `8/12` subjects above 80% held-out unit support.
 The optimized cached subset in
 `manifests/ibl_bwm_region_matched_candidates_s3_present_support80.json` has
 28 recordings across 7 subjects, with `6/7` subjects above 80%. Decision:
-confirm support from the actual HDF5 cache for that subset before any training
-sweep; if the low-support subject remains below gate, drop it rather than
-spend on a weak panel.
+the actual HDF5 cache confirms the same `6/7` support80 result. `SWC_043`
+remains below gate at `65.8%`; enforcing an iterative all-pass filter collapses
+to only 2 subjects (`MFD_06`, `NYU-12`). Do not call this a clean broad
+benchmark. Any paid next step should either be a no-spend/model-free screen on
+the 28-recording panel or a bounded training gate that treats `SWC_043` as a
+predeclared weak-support holdout.

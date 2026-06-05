@@ -97,6 +97,12 @@ MATCHED_REGION_CACHE_AUDIT_FILE = "docs/matched_region_cache_audit.md"
 MATCHED_REGION_MISSING_MANIFEST_FILE = "manifests/ibl_bwm_region_matched_candidates_missing_s3.json"
 MATCHED_REGION_S3_PRESENT_SCORED_FILE = "manifests/ibl_bwm_region_matched_candidates_s3_present_scored.json"
 MATCHED_REGION_S3_PRESENT_SUPPORT80_FILE = "manifests/ibl_bwm_region_matched_candidates_s3_present_support80.json"
+MATCHED_REGION_S3_PRESENT_SUPPORT80_HDF5_FILE = (
+    "manifests/ibl_bwm_region_matched_candidates_s3_present_support80_hdf5_scored.json"
+)
+MATCHED_REGION_S3_PRESENT_SUPPORT80_HDF5_ITERATIVE_FILE = (
+    "manifests/ibl_bwm_region_matched_candidates_s3_present_support80_hdf5_iterative_pass.json"
+)
 LOCAL_PROBE_FILES = (
     (
         "local AUC surrogate",
@@ -379,6 +385,8 @@ def render_markdown(
     matched_missing_manifest: dict | None = None,
     matched_present_support: dict | None = None,
     matched_support80: dict | None = None,
+    matched_support80_hdf5: dict | None = None,
+    matched_support80_hdf5_iterative: dict | None = None,
 ) -> str:
     summary = summarize(strict_rows, slice_rows)
     lines = [
@@ -853,13 +861,18 @@ def render_markdown(
         lines += [
             "## Matched-Region Support Scoring",
             "",
-            "Metadata-only OpenAlyx region support has been scored for the S3-present",
-            "cache panel. This is a planning gate; confirm again from HDF5s before training.",
+            "Region support has been scored for the S3-present cache panel. Metadata-only",
+            "scoring is a planning gate; HDF5 scoring is the stronger pre-training check.",
             "",
             "| manifest | recordings | subjects | support80 subjects | min support |",
             "|---|---:|---:|---:|---:|",
         ]
-        for row in [matched_present_support, matched_support80]:
+        for row in [
+            matched_present_support,
+            matched_support80,
+            matched_support80_hdf5,
+            matched_support80_hdf5_iterative,
+        ]:
             if row is None:
                 continue
             min_support = row.get("min_support")
@@ -871,10 +884,11 @@ def render_markdown(
         lines += [
             "",
             (
-                "Decision: the 47-recording cacheable panel is close but not clean. "
-                "Use the optimized 28-recording support80 subset for HDF5-confirmed "
-                "support scoring, or drop the remaining low-support subject before any "
-                "training sweep."
+                "Decision: the HDF5-confirmed 28-recording panel is close but not clean "
+                "at `6/7` support80 subjects, while the strict iterative all-pass filter "
+                "collapses to 2 subjects. Do not claim a clean broad benchmark from this "
+                "panel. Treat `SWC_043` as a known weak-support holdout in any bounded "
+                "training gate, or run another no-spend/model-free screen before spending."
             ),
             "",
         ]
@@ -920,6 +934,12 @@ def main() -> int:
     matched_missing_manifest = read_manifest_summary(REPO_ROOT / MATCHED_REGION_MISSING_MANIFEST_FILE)
     matched_present_support = read_support_manifest_summary(REPO_ROOT / MATCHED_REGION_S3_PRESENT_SCORED_FILE)
     matched_support80 = read_support_manifest_summary(REPO_ROOT / MATCHED_REGION_S3_PRESENT_SUPPORT80_FILE)
+    matched_support80_hdf5 = read_support_manifest_summary(
+        REPO_ROOT / MATCHED_REGION_S3_PRESENT_SUPPORT80_HDF5_FILE
+    )
+    matched_support80_hdf5_iterative = read_support_manifest_summary(
+        REPO_ROOT / MATCHED_REGION_S3_PRESENT_SUPPORT80_HDF5_ITERATIVE_FILE
+    )
     args.out_md.parent.mkdir(parents=True, exist_ok=True)
     args.out_md.write_text(render_markdown(
         strict_rows,
@@ -943,6 +963,8 @@ def main() -> int:
         matched_missing_manifest,
         matched_present_support,
         matched_support80,
+        matched_support80_hdf5,
+        matched_support80_hdf5_iterative,
     ))
     args.out_json.parent.mkdir(parents=True, exist_ok=True)
     args.out_json.write_text(json.dumps({
@@ -986,6 +1008,16 @@ def main() -> int:
         "matched_region_s3_present_support80": (
             None if matched_support80 is None
             else matched_support80 | {"source": display_path(matched_support80["source"])}
+        ),
+        "matched_region_s3_present_support80_hdf5": (
+            None if matched_support80_hdf5 is None
+            else matched_support80_hdf5 | {"source": display_path(matched_support80_hdf5["source"])}
+        ),
+        "matched_region_s3_present_support80_hdf5_iterative": (
+            None if matched_support80_hdf5_iterative is None
+            else matched_support80_hdf5_iterative | {
+                "source": display_path(matched_support80_hdf5_iterative["source"])
+            }
         ),
     }, indent=2, sort_keys=True) + "\n")
     print(f"wrote {args.out_md}")

@@ -7,7 +7,9 @@ from scripts.plan_matched_region_manifest import (
     filter_manifest_to_subjects,
     local_subject_row,
     manifest_from_existing,
+    manifest_recording_ids,
     selected_subject_counts,
+    summarize_local_regions,
     subjects_passing_support_gate,
     support_summary,
     support_against_others,
@@ -161,6 +163,57 @@ def test_manifest_from_existing_overrides_region_granularity(tmp_path):
     manifest = manifest_from_existing(path, "parent")
 
     assert manifest["selection"]["region_granularity"] == "parent"
+
+
+def test_manifest_recording_ids_accepts_manifest_schemas():
+    manifest = {
+        "recordings": [
+            {"session_id": "eid-a", "probe_name": "probe00"},
+            {"eid": "eid-b", "probe": "probe01"},
+            {"session": "eid-c", "name": "probe00"},
+            {"session_id": "missing-probe"},
+        ],
+    }
+
+    assert manifest_recording_ids(manifest) == {
+        "eid-a_probe00",
+        "eid-b_probe01",
+        "eid-c_probe00",
+    }
+
+
+def test_summarize_local_regions_filters_recording_ids(monkeypatch, tmp_path):
+    class FakeUnits:
+        def __init__(self, regions):
+            self.region_acronym = regions
+
+    class FakeSubject:
+        def __init__(self, subject_id):
+            self.id = subject_id
+
+    class FakeRecording:
+        def __init__(self, subject_id, regions):
+            self.subject = FakeSubject(subject_id)
+            self.units = FakeUnits(regions)
+
+    class FakeDataset:
+        recording_ids = ["keep_probe00", "drop_probe00"]
+
+        def __init__(self, *args, **kwargs):
+            pass
+
+        def get_recording(self, rid):
+            if rid == "keep_probe00":
+                return FakeRecording("S1", ["CA1", "CA1"])
+            return FakeRecording("S2", ["VISp"])
+
+    monkeypatch.setitem(__import__("sys").modules, "torch_brain.dataset", type("M", (), {"Dataset": FakeDataset}))
+    (tmp_path / "dummy.h5").write_text("x")
+
+    rows = summarize_local_regions(tmp_path, "fine", recording_ids={"keep_probe00"})
+
+    assert set(rows) == {"S1"}
+    assert rows["S1"]["recording_ids"] == ["keep_probe00"]
 
 
 def test_local_subject_row_accumulates_region_counts():

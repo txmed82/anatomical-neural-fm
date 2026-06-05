@@ -201,6 +201,13 @@ Metadata-only support scoring on the cacheable panel is now:
 Next paid work, if any, should be HDF5 support confirmation for the cached
 28-recording subset, not model training.
 
+HDF5 support confirmation is now complete for the cached 28-recording subset:
+`6/7` subjects pass support80 and `SWC_043` remains below gate at `65.8%`.
+The strict iterative all-pass filter keeps only `MFD_06` and `NYU-12`, which is
+too narrow for the intended cross-animal claim. Do not launch broad training
+from this as if the support gate fully passed; use it for a no-spend/model-free
+screen or a bounded run with `SWC_043` predeclared as weak-support.
+
 Use the missing-only manifest with the incremental builder for the next cache
 completion attempt, so each successful recording uploads immediately:
 

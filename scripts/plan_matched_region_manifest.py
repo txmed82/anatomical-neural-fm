@@ -73,6 +73,16 @@ def manifest_from_existing(path: Path, region_granularity: str) -> dict[str, Any
     return manifest
 
 
+def manifest_recording_ids(manifest: dict[str, Any]) -> set[str]:
+    ids: set[str] = set()
+    for row in manifest.get("recordings", []):
+        eid = row.get("session_id") or row.get("eid") or row.get("session")
+        probe = row.get("probe_name") or row.get("probe") or row.get("name")
+        if eid and probe:
+            ids.add(f"{eid}_{probe}")
+    return ids
+
+
 def _as_list(values) -> list:
     return values.tolist() if hasattr(values, "tolist") else list(values)
 
@@ -95,7 +105,12 @@ def local_subject_row(
     row["regions"].update(regions)
 
 
-def summarize_local_regions(data_dir: Path, region_granularity: str) -> dict[str, dict]:
+def summarize_local_regions(
+    data_dir: Path,
+    region_granularity: str,
+    *,
+    recording_ids: set[str] | None = None,
+) -> dict[str, dict]:
     if not data_dir.exists() or not any(data_dir.glob("*.h5")):
         return {}
     from torch_brain.dataset import Dataset
@@ -103,6 +118,8 @@ def summarize_local_regions(data_dir: Path, region_granularity: str) -> dict[str
     ds = Dataset(dataset_dir=data_dir, keep_files_open=True)
     out: dict[str, dict] = {}
     for rid in ds.recording_ids:
+        if recording_ids is not None and rid not in recording_ids:
+            continue
         rec = ds.get_recording(rid)
         subject = str(rec.subject.id)
         fine_regions = [str(r) for r in _as_list(rec.units.region_acronym)]
@@ -501,7 +518,11 @@ def main() -> int:
         )
         region_source = "OpenAlyx cluster/channel metadata"
     else:
-        local_subjects = summarize_local_regions(args.data_dir, args.region_granularity)
+        local_subjects = summarize_local_regions(
+            args.data_dir,
+            args.region_granularity,
+            recording_ids=manifest_recording_ids(manifest),
+        )
         region_source = "local BrainSet HDF5 cache"
     if args.filter_min_support is not None:
         keep_subjects = subjects_passing_support_gate(
