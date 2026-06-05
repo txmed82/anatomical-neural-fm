@@ -403,6 +403,50 @@ def test_render_markdown_includes_low_contrast_choice_seed_veto() -> None:
     assert "do not train from the low-contrast choice row" in markdown
 
 
+def test_render_markdown_includes_correct_low_contrast_choice_veto() -> None:
+    gate_payload = {
+        "summary": {
+            "n_rows": 96,
+            "n_candidates": 0,
+            "n_positive_centered_delta": 52,
+            "max_bidirectional_recording_fraction": 1 / 3,
+            "decision": "no_correct_low_contrast_choice_family_candidate",
+            "target_balances": {
+                "correct_low_contrast_choice_le_0.125": {
+                    "n_trials": 8287,
+                    "eligible_recordings": 31,
+                    "n_recordings": 31,
+                }
+            },
+            "top_rows": [
+                {
+                    "target_mode": "correct_low_contrast_choice_le_0.125",
+                    "family": "fiber_tracts",
+                    "holdout": "ZFM-01577",
+                    "decision": "reject: target1",
+                    "centered_delta_vs_shuffle": 0.018,
+                    "centered_delta_vs_total": 0.095,
+                    "target0_improved_vs_shuffle": 0.657,
+                    "target1_improved_vs_shuffle": 0.426,
+                    "n_bidirectional_recordings": 1,
+                    "n_recordings": 3,
+                }
+            ],
+        }
+    }
+
+    markdown = render_markdown(
+        [],
+        [],
+        correct_low_contrast_choice_family_gate=gate_payload,
+        correct_low_contrast_choice_projected_gate=gate_payload,
+    )
+
+    assert "Correct Low-Contrast Choice Family Gate" in markdown
+    assert "Correct Low-Contrast Choice Projected Manifest Gate" in markdown
+    assert "do not train from the correct-only low-contrast target" in markdown
+
+
 def test_local_probe_matrix_rejects_failed_target_class(tmp_path: Path) -> None:
     gate_path = tmp_path / "gate.json"
     mismatch_path = tmp_path / "mismatch.json"

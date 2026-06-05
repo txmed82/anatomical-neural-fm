@@ -403,16 +403,16 @@ Decision: stricter manifest support alone does not rescue the signal. The clean 
 branches after the current local negative audits.
 
 - recommended next: `new manifest with prospective bidirectional support`
-- closed branches: `18`
+- closed branches: `19`
 - decision: `no_local_training_trigger`
 - GPU trigger: At least one local row on the proposed manifest must clear delta_vs_shuffle>=0, delta_vs_total>=0, target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75 before training.
 
 | priority | branch | status | next action |
 |---:|---|---|---|
 | 1 | new manifest with prospective bidirectional support | `recommended_next` | Do not launch GPU training from the projected support80 panel; its model-free family and feature-mode gates have no candidates. Redesign the target/control locally. |
+| 84 | low-contrast choice target redesign | `closed` | Do not train: the low-contrast choice candidate does not remain a strict candidate across shuffle seeds. |
 | 85 | extreme-quantile behavioral target gate | `closed` | Do not train: exploratory interpretable region-pair candidates do not remain strict candidates across shuffle seeds. |
 | 86 | wheel-derived target family gate | `closed` | Do not spend on the tested wheel targets; move to a prospectively supported manifest. |
-| 87 | reaction-dynamics wheel targets | `closed` | Do not spend on reaction-dynamics wheel targets; the near miss fails true-vs-shuffle and does not replicate across feature modes. |
 
 Decision: the current cached target, contextual target, wheel-derived target, reaction-dynamics target, cell-type prior target/control, waveform target/control, and meta-failure synthesis branches are closed as GPU triggers. The next aligned work is a prospectively supported benchmark/control redesign, still gated locally before any paid training.
 
@@ -596,6 +596,63 @@ low-contrast choice candidate across multiple within-recording shuffle seeds.
 | low_contrast_choice_le_0.125 | fiber_tracts | CSH_ZAD_019 | 4/5 | 1/5 | +0.0186 | +0.2152 | 0.527/0.560 | 0-3 |
 
 Decision: do not train from the low-contrast choice row. It was a valid seed-0 projected-manifest candidate, but only 1/5 shuffle seeds remain strict candidates.
+
+## Correct Low-Contrast Choice Family Gate
+
+`docs/correct_low_contrast_choice_family_gate.md` keeps only correct
+low-contrast trials before classifying left-vs-right choice under the
+unchanged local gate.
+
+- rows: `84`
+- candidates: `0`
+- positive centered-delta rows: `45`
+- max bidirectional recording fraction: `0.500`
+- decision: `no_correct_low_contrast_choice_family_candidate`
+
+| target | trials | eligible recordings | recordings |
+|---|---:|---:|---:|
+| correct_low_contrast_choice_le_0.0625 | 3948 | 22 | 28 |
+| correct_low_contrast_choice_le_0.125 | 7137 | 28 | 28 |
+| correct_low_contrast_choice_le_0.25 | 10718 | 28 | 28 |
+
+| target | family | holdout | decision | delta shuffle | delta total | targets | bidir recs |
+|---|---|---|---|---:|---:|---|---:|
+| correct_low_contrast_choice_le_0.25 | fiber_tracts | SWC_038 | reject: target1 | +0.016 | +0.130 | 0.665/0.381 | 2/4 |
+| correct_low_contrast_choice_le_0.25 | broad_named_anatomy | SWC_043 | reject: total baseline | +0.009 | -0.147 | 0.539/0.598 | 2/4 |
+| correct_low_contrast_choice_le_0.25 | fiber_tracts | CSH_ZAD_019 | reject: target0 | +0.007 | +0.150 | 0.520/0.582 | 2/4 |
+| correct_low_contrast_choice_le_0.125 | fiber_tracts | CSH_ZAD_019 | reject: target0 | +0.006 | +0.161 | 0.526/0.601 | 2/4 |
+| correct_low_contrast_choice_le_0.0625 | thalamic | NYU-12 | reject: target0 | +0.253 | +0.238 | 0.139/0.878 | 1/4 |
+| correct_low_contrast_choice_le_0.0625 | hippocampal_formation | SWC_038 | reject: target0 | +0.252 | +0.308 | 0.194/0.963 | 1/4 |
+
+Decision: the current panel has no correct low-contrast choice training trigger.
+
+## Correct Low-Contrast Choice Projected Manifest Gate
+
+`docs/correct_low_contrast_choice_family_gate_projected_hdf5.md` reruns
+the correct-only low-contrast choice target on the projected local manifest.
+
+- rows: `96`
+- candidates: `0`
+- positive centered-delta rows: `52`
+- max bidirectional recording fraction: `0.333`
+- decision: `no_correct_low_contrast_choice_family_candidate`
+
+| target | trials | eligible recordings | recordings |
+|---|---:|---:|---:|
+| correct_low_contrast_choice_le_0.0625 | 4565 | 24 | 31 |
+| correct_low_contrast_choice_le_0.125 | 8287 | 31 | 31 |
+| correct_low_contrast_choice_le_0.25 | 12449 | 31 | 31 |
+
+| target | family | holdout | decision | delta shuffle | delta total | targets | bidir recs |
+|---|---|---|---|---:|---:|---|---:|
+| correct_low_contrast_choice_le_0.25 | fiber_tracts | ZFM-01577 | reject: target1 | +0.022 | +0.085 | 0.675/0.411 | 1/3 |
+| correct_low_contrast_choice_le_0.125 | fiber_tracts | ZFM-01577 | reject: target1 | +0.018 | +0.095 | 0.657/0.426 | 1/3 |
+| correct_low_contrast_choice_le_0.0625 | hippocampal_formation | SWC_038 | reject: target0 | +0.069 | +0.029 | 0.194/0.963 | 1/4 |
+| correct_low_contrast_choice_le_0.0625 | hippocampal_formation | MFD_06 | reject: target0 | +0.065 | +0.061 | 0.338/0.716 | 1/4 |
+| correct_low_contrast_choice_le_0.0625 | thalamic | NYU-12 | reject: target1 | +0.039 | +0.063 | 0.900/0.163 | 1/4 |
+| correct_low_contrast_choice_le_0.0625 | fiber_tracts | NYU-12 | reject: target0 | +0.032 | +0.037 | 0.426/0.622 | 1/4 |
+
+Decision: do not train from the correct-only low-contrast target. It removes the projected-panel low-contrast candidate and reaches only 1/3 same-recording bidirectional support.
 
 ## Extreme-Quantile Target Family Gate
 

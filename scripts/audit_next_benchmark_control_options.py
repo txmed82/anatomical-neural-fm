@@ -21,6 +21,8 @@ ARTIFACTS = {
     "low_contrast_choice_family": "docs/low_contrast_choice_family_gate.json",
     "low_contrast_choice_projected": "docs/low_contrast_choice_family_gate_projected_hdf5.json",
     "low_contrast_choice_seed_sensitivity": "docs/low_contrast_choice_seed_sensitivity.json",
+    "correct_low_contrast_choice_family": "docs/correct_low_contrast_choice_family_gate.json",
+    "correct_low_contrast_choice_projected": "docs/correct_low_contrast_choice_family_gate_projected_hdf5.json",
     "extreme_quantile_target_family": "docs/extreme_quantile_target_family_gate.json",
     "extreme_quantile_seed_sensitivity": "docs/extreme_quantile_seed_sensitivity.json",
     "extreme_quantile_cutoff_sensitivity": "docs/extreme_quantile_cutoff_sensitivity.json",
@@ -172,6 +174,16 @@ def build_report() -> dict:
     low_contrast_seed_summary = low_contrast_seed.get("summary", {}) if low_contrast_seed is not None else {}
     low_contrast_seed_robust = int(
         low_contrast_seed_summary.get("n_robust_low_contrast_choice_seed_candidates", 0) or 0
+    )
+    correct_low_contrast = artifacts["correct_low_contrast_choice_family"]
+    correct_low_contrast_summary = (
+        correct_low_contrast.get("summary", {}) if correct_low_contrast is not None else {}
+    )
+    correct_low_contrast_projected = artifacts["correct_low_contrast_choice_projected"]
+    correct_low_contrast_projected_summary = (
+        correct_low_contrast_projected.get("summary", {})
+        if correct_low_contrast_projected is not None
+        else {}
     )
     extreme_quantile = artifacts["extreme_quantile_target_family"]
     extreme_quantile_done = extreme_quantile is not None
@@ -327,6 +339,39 @@ def build_report() -> dict:
                 "At least one local wheel row must clear delta_vs_shuffle>=0, delta_vs_total>=0, "
                 "target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75."
             ),
+        ),
+        branch(
+            name="correct low-contrast choice target redesign",
+            status="closed" if correct_low_contrast_projected is not None else "secondary_after_new_target",
+            priority=83 if correct_low_contrast_projected is not None else 3,
+            evidence=[
+                (
+                    "current-panel correct low-contrast choice gate has not been run yet"
+                    if correct_low_contrast is None
+                    else (
+                        "current-panel correct low-contrast choice gate found "
+                        f"{correct_low_contrast_summary.get('n_candidates', 'n/a')} candidates across "
+                        f"{correct_low_contrast_summary.get('n_rows', 'n/a')} rows and max bidir "
+                        f"{correct_low_contrast_summary.get('max_bidirectional_recording_fraction', 0.0):.3f}"
+                    )
+                ),
+                (
+                    "projected-panel correct low-contrast choice gate has not been run yet"
+                    if correct_low_contrast_projected is None
+                    else (
+                        "projected-panel correct low-contrast choice gate found "
+                        f"{correct_low_contrast_projected_summary.get('n_candidates', 'n/a')} candidates across "
+                        f"{correct_low_contrast_projected_summary.get('n_rows', 'n/a')} rows and max bidir "
+                        f"{correct_low_contrast_projected_summary.get('max_bidirectional_recording_fraction', 0.0):.3f}"
+                    )
+                ),
+            ],
+            next_action=(
+                "Do not train: correct-only low-contrast choice removes the projected-panel candidate."
+                if correct_low_contrast_projected is not None
+                else "Run scripts/audit_correct_low_contrast_choice_family_gate.py as a stricter target redesign."
+            ),
+            gpu_trigger="none",
         ),
         branch(
             name="low-contrast choice target redesign",

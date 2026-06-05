@@ -3,6 +3,8 @@
     "behavior_cache_preflight": "docs/behavior_cache_preflight.json",
     "cell_type_prior_target_control": "docs/cell_type_prior_target_control_gate.json",
     "contextual_target_family": "docs/contextual_target_family_gate.json",
+    "correct_low_contrast_choice_family": "docs/correct_low_contrast_choice_family_gate.json",
+    "correct_low_contrast_choice_projected": "docs/correct_low_contrast_choice_family_gate_projected_hdf5.json",
     "derived_target_family": "docs/derived_target_family_gate.json",
     "derived_target_family_prospect_leads": "docs/derived_target_family_gate_prospect_leads.json",
     "external_manifest_acquisition_gap": "docs/external_manifest_acquisition_gap.json",
@@ -68,6 +70,17 @@
       "next_action": "Do not launch GPU training from the projected support80 panel; its model-free family and feature-mode gates have no candidates. Redesign the target/control locally.",
       "priority": 1,
       "status": "recommended_next"
+    },
+    {
+      "evidence": [
+        "current-panel correct low-contrast choice gate found 0 candidates across 84 rows and max bidir 0.500",
+        "projected-panel correct low-contrast choice gate found 0 candidates across 96 rows and max bidir 0.333"
+      ],
+      "gpu_trigger": "none",
+      "name": "correct low-contrast choice target redesign",
+      "next_action": "Do not train: correct-only low-contrast choice removes the projected-panel candidate.",
+      "priority": 83,
+      "status": "closed"
     },
     {
       "evidence": [
@@ -292,7 +305,7 @@
     }
   ],
   "summary": {
-    "closed_branches": 19,
+    "closed_branches": 20,
     "decision": "no_local_training_trigger",
     "gpu_training_trigger": "At least one local row on the proposed manifest must clear delta_vs_shuffle>=0, delta_vs_total>=0, target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75 before training.",
     "recommended_next": "new manifest with prospective bidirectional support"
