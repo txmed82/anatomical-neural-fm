@@ -68,3 +68,14 @@ At recording level, the strongest slice candidate is `a8a8af78-16de-4841-ab07-fd
 Completed paid result: `docs/lso_nyu12_parent_slice_results.md` ran `NYU-12` with `--region-filter include_regions`, `--region-granularity parent`, and `--region-include "PRT,CA,VP,MOp,DG,mfbc"`. The true-label arm was weakly positive (`region_only` +0.013 mean delta, 2/3 positive seeds), but the shuffled-label arm was larger and more consistent (`region_shuffle` +0.020 mean delta, 3/3 positive seeds).
 
 Conclusion: this carrier-parent gate is not sufficient for a demo-grade cross-animal anatomical transfer claim. Do not spend on the same fixed-slice run again. The next step should be a no-spend diagnostic that explains why the CSH_ZAD_019 carrier parents transfer under true labels while `NYU-12` does not separate true labels from shuffled labels.
+
+Follow-up diagnostic: `docs/transfer_success_mode_audit.md` tightens the gate
+from CSH-sign alignment to leave-subject-out training alignment plus
+CSH-weighted carrier coverage. Under that stricter screen, `NYU-12` fails
+because it covers only 44.9% of the CSH carrier-weighted signal. `SWC_038` is
+the next candidate because it has 503 slice units, 78.5% CSH carrier-weighted
+coverage, and 76.7% sign-aligned unit mass against its LSO training aggregate.
+
+Next paid test, if launched: `SWC_038` only, same parent include list
+(`PRT,CA,VP,MOp,DG,mfbc`), same true-vs-shuffled control, and stop unless true
+labels beat shuffled labels.

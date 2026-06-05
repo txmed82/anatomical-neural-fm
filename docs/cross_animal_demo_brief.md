@@ -35,6 +35,7 @@ Candidate ranking: `docs/csh_composition_candidate_ranking.md`.
 Failure-mode audit: `docs/cross_holdout_failure_mode_audit.md`.
 Parent-region slice plan: `docs/parent_region_slice_plan.md`.
 Fixed-slice run: `docs/lso_nyu12_parent_slice_results.md`.
+Success-mode audit: `docs/transfer_success_mode_audit.md`.
 
 ## Why This Is Real Enough To Demo
 
@@ -60,6 +61,10 @@ Fixed-slice run: `docs/lso_nyu12_parent_slice_results.md`.
 - The fixed carrier-parent slice on `NYU-12` also did not reproduce the
   controlled effect: true labels were weakly positive, but shuffled labels were
   larger and positive in all seeds.
+- A follow-up success-mode audit found that `NYU-12` matched the
+  leave-subject-out training aggregate sign, but represented only 44.9% of the
+  CSH carrier-weighted signal and lacked the strongest CSH carrier parent
+  (`PRT`) plus `MOp`.
 - The failure-mode audit rules out several simple gates on their own:
   parent-region support, CSH-like composition, trial count, class balance, and
   raw parent-level stimulus contrast.
@@ -70,7 +75,10 @@ Fixed-slice run: `docs/lso_nyu12_parent_slice_results.md`.
 
 Do not launch another paid broadening run unchanged. The fixed carrier-parent
 true-vs-shuffled control has now failed the demo gate on `NYU-12`, despite
-passing the no-spend support/alignment screen. The next useful work is a
-no-spend diagnostic of what makes `CSH_ZAD_019` special at the trial/session
-and region-interaction level, followed by a stricter falsifiable slice before
-any additional GPU rental.
+passing the initial no-spend support/alignment screen. The next paid run, if
+launched, should be `SWC_038` under the same fixed carrier-parent
+true-vs-shuffled control because it is the only untested subject that clears the
+stricter gate: >=500 slice units, >=70% CSH carrier-weighted coverage, and
+>=75% sign alignment to the leave-subject-out training aggregate. Keep the
+RunPod preflight cost envelope below the $100 cap and verify zero active pods
+before launch.

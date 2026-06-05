@@ -660,3 +660,29 @@ session/probe contributions, and trial-conditioned behavior across CSH_ZAD_019
 versus the failed follow-ups. Only launch another GPU run after defining a
 stricter falsifiable slice that predicts true labels should beat shuffled
 labels, not merely clear support and contrast-alignment thresholds.
+
+Completed no-spend success-mode audit:
+`docs/transfer_success_mode_audit.md` compares the CSH carrier parents against
+the actual leave-subject-out training aggregate for each candidate. This is
+closer to the model's transfer setting than the earlier CSH-sign-only slice.
+
+Key findings:
+
+- `NYU-12` failed despite 100.0% sign alignment to the LSO training aggregate,
+  so sign alignment alone is not sufficient.
+- `NYU-12` covers only 44.9% of the CSH carrier-weighted signal because it
+  includes `CA`, `VP`, and `DG` but lacks `PRT` and `MOp`.
+- `MFD_06` and `NR_0019` fail the LSO-train sign screen: 1.2% and 20.8%
+  aligned unit mass.
+- `SWC_038` is now the only untested subject clearing the stricter gate: 503
+  slice units, 78.5% CSH carrier-weighted coverage, and 76.7% LSO-train
+  aligned unit mass.
+- `SWC_043` remains below gate: 42.3% CSH carrier-weighted coverage and 74.0%
+  LSO-train aligned unit mass.
+
+Next falsifiable paid gate, if spending again: run only `SWC_038` under the
+same fixed carrier-parent true-vs-shuffled control, with output isolated under
+`runs/lso_swc038_parent_slice` and result doc
+`docs/lso_swc038_parent_slice_results.md`. Preflight must show zero active
+RunPod pods and a worst-case cost envelope below the $100 cap. Stop after this
+single subject unless true labels beat shuffled labels.
