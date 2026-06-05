@@ -33,6 +33,7 @@ ARTIFACTS = {
     "prospect_lead_candidate_validation": "docs/prospect_lead_candidate_validation.json",
     "prospect_lead_feature_mode_validation": "docs/prospect_lead_feature_mode_validation.json",
     "prospect_lead_subject_stability": "docs/prospect_lead_subject_stability.json",
+    "subject_stable_local_gate_prospectus": "docs/subject_stable_local_gate_prospectus.json",
     "local_cached_manifest_candidates": "docs/local_cached_manifest_candidates.json",
     "projected_support80_shared_family": "docs/shared_family_target_control_gate_projected_support80.json",
     "projected_support80_all_families_recording_centered": (
@@ -165,6 +166,10 @@ def build_report() -> dict:
     prospect_subject_stability = artifacts["prospect_lead_subject_stability"]
     prospect_subject_summary = (
         prospect_subject_stability.get("summary", {}) if prospect_subject_stability is not None else {}
+    )
+    subject_stable_prospectus = artifacts["subject_stable_local_gate_prospectus"]
+    subject_stable_summary = (
+        subject_stable_prospectus.get("summary", {}) if subject_stable_prospectus is not None else {}
     )
     local_manifest_summary = local_manifest_candidates.get("summary", {}) if local_manifest_candidates is not None else {}
     local_manifest_decision = local_manifest_summary.get("decision")
@@ -355,12 +360,13 @@ def build_report() -> dict:
                 ),
                 (
                     "prospect-lead candidate validation has not been run yet"
-                    if prospect_subject_stability is None
+                    if subject_stable_prospectus is None
                     else (
-                        "prospect-lead subject-stability audit has "
-                        f"{prospect_subject_summary.get('n_same_subject_stable_candidates', 'n/a')} stable candidates; "
-                        f"{prospect_subject_summary.get('n_candidates_with_nonlead_failure', 'n/a')} fail on "
-                        "same-subject non-lead recordings"
+                        "subject-stable local-gate prospectus found "
+                        f"{subject_stable_summary.get('n_subject_stable_candidates', 'n/a')} candidates and "
+                        f"{subject_stable_summary.get('n_subject_stable_rows', 'n/a')} subject-stable near misses; "
+                        "stable holdouts="
+                        f"{', '.join(subject_stable_summary.get('subject_stable_holdouts', [])) or 'none'}"
                     )
                 ),
                 "recording-subset replication selected zero stable validation rows",
@@ -644,6 +650,40 @@ def build_report() -> dict:
                 else prospect_feature_summary.get("next_action", "Keep validation no-spend.")
                 if prospect_feature_validation is not None
                 else "Run scripts/audit_prospect_lead_feature_mode_validation.py before any training decision."
+            ),
+            gpu_trigger="none",
+        ),
+        branch(
+            name="subject-stable local gate prospectus",
+            status="closed" if subject_stable_prospectus is not None else "recommended_next",
+            priority=90 if subject_stable_prospectus is not None else 1,
+            evidence=[
+                (
+                    "subject-stable local-gate prospectus has not been run yet"
+                    if subject_stable_prospectus is None
+                    else (
+                        "prospectus found "
+                        f"{subject_stable_summary.get('n_subject_stable_rows', 'n/a')} subject-stable rows, "
+                        f"{subject_stable_summary.get('n_subject_stable_candidates', 'n/a')} candidates, and "
+                        f"{subject_stable_summary.get('n_subject_stable_one_failure_rows', 'n/a')} one-failure rows"
+                    )
+                ),
+                (
+                    "subject-stable failure counts unavailable"
+                    if subject_stable_prospectus is None
+                    else (
+                        "subject-stable failures are "
+                        + ", ".join(
+                            f"{name}={count}"
+                            for name, count in sorted(subject_stable_summary.get("failure_counts", {}).items())
+                        )
+                    )
+                ),
+            ],
+            next_action=(
+                subject_stable_summary.get("next_action", "Keep subject-stable redesign local.")
+                if subject_stable_prospectus is not None
+                else "Run scripts/audit_subject_stable_local_gate_prospectus.py before another target/control branch."
             ),
             gpu_trigger="none",
         ),

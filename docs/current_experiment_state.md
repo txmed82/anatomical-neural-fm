@@ -403,7 +403,7 @@ Decision: stricter manifest support alone does not rescue the signal. The clean 
 branches after the current local negative audits.
 
 - recommended next: `new manifest with prospective bidirectional support`
-- closed branches: `16`
+- closed branches: `17`
 - decision: `no_local_training_trigger`
 - GPU trigger: At least one local row on the proposed manifest must clear delta_vs_shuffle>=0, delta_vs_total>=0, target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75 before training.
 
@@ -789,6 +789,29 @@ derived candidates also hold on same-subject non-lead recordings.
 - decision: `no_same_subject_stable_prospect_candidate`
 
 Decision: the prospect-lead rows are selected-recording effects, not subject-stable transfer signals. A future target/control rule must be stable across multiple recordings within the held-out subject before any GPU run.
+
+## Subject-Stable Local Gate Prospectus
+
+`docs/subject_stable_local_gate_prospectus.md` searches all current
+local-gate rows for target/control definitions that are stable across
+multiple recordings in the held-out subject.
+
+- rows: `2428`
+- subject-stable rows: `5`
+- subject-stable candidates: `0`
+- subject-stable one-failure rows: `1`
+- subject-stable holdouts: `KS014`
+- decision: `no_subject_stable_local_gate_candidate`
+
+| source | target | feature | holdout | failures | delta shuffle | delta total | targets | bidir recs |
+|---|---|---|---|---|---:|---:|---:|---:|
+| reaction_recording_centered | wheel_reaction_latency | broad_named_anatomy | KS014 | shuffle | -0.001 | +0.003 | 0.667/0.715 | 3/4 |
+| wheel_targets | wheel_active | broad_named_anatomy | KS014 | shuffle, total_baseline | -0.002 | -0.002 | 0.587/0.598 | 3/4 |
+| reaction_recording_centered | post_stim_speedup | broad_named_anatomy | KS014 | shuffle, total_baseline | -0.004 | -0.002 | 0.608/0.584 | 3/4 |
+| derived_recording_centered | response_latency | broad_named_anatomy | KS014 | shuffle, total_baseline | -0.004 | -0.005 | 0.714/0.745 | 3/4 |
+| wheel_targets | wheel_displacement | broad_named_anatomy | KS014 | shuffle, total_baseline | -0.008 | -0.009 | 0.556/0.593 | 3/4 |
+
+Decision: the best stable local branch is now a shuffle-control problem, not just a recording-support problem. The next redesign should target anatomical information that beats within-recording shuffled anatomy while preserving KS014-like subject stability.
 
 ## Model-Free Recording Directionality Audit
 

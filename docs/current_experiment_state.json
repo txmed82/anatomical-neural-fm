@@ -62589,6 +62589,7 @@
       "shared_broad_repair": "docs/shared_broad_anatomy_repair_sweep.json",
       "shared_family": "docs/shared_family_target_control_gate.json",
       "source_target_families": "docs/model_free_source_target_pair_gate_families_recording_centered.json",
+      "subject_stable_local_gate_prospectus": "docs/subject_stable_local_gate_prospectus.json",
       "symmetric_strict": "docs/symmetric_strict_failure_modes.json",
       "symmetric_threshold": "docs/symmetric_threshold_sensitivity_audit.json",
       "waveform_target_control": "docs/waveform_target_control_gate.json",
@@ -62606,7 +62607,7 @@
           "local gate meta-failure audit has 0 candidates across 1924 rows; recording bidirectionality fails in 1919 rows",
           "recording bidirectionality prospectus found 18 prospect recordings from 262 bidirectional observations",
           "prospect-lead manifest has 18 recordings across 7 subjects with 0 missing local recordings",
-          "prospect-lead subject-stability audit has 0 stable candidates; 4 fail on same-subject non-lead recordings",
+          "subject-stable local-gate prospectus found 0 candidates and 5 subject-stable near misses; stable holdouts=KS014",
           "recording-subset replication selected zero stable validation rows"
         ],
         "gpu_trigger": "At least one local row on the proposed manifest must clear delta_vs_shuffle>=0, delta_vs_total>=0, target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75 before training.",
@@ -62692,6 +62693,17 @@
         "gpu_trigger": "none",
         "name": "prospect-lead derived target validation",
         "next_action": "Do not train on prospect-lead candidates; same-subject non-lead recordings do not validate them.",
+        "priority": 90,
+        "status": "closed"
+      },
+      {
+        "evidence": [
+          "prospectus found 5 subject-stable rows, 0 candidates, and 1 one-failure rows",
+          "subject-stable failures are shuffle=5, total_baseline=4"
+        ],
+        "gpu_trigger": "none",
+        "name": "subject-stable local gate prospectus",
+        "next_action": "Do not train yet: subject-stable near misses exist, but they fail the unchanged local gate.",
         "priority": 90,
         "status": "closed"
       },
@@ -62796,7 +62808,7 @@
       }
     ],
     "summary": {
-      "closed_branches": 16,
+      "closed_branches": 17,
       "decision": "no_local_training_trigger",
       "gpu_training_trigger": "At least one local row on the proposed manifest must clear delta_vs_shuffle>=0, delta_vs_total>=0, target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75 before training.",
       "recommended_next": "new manifest with prospective bidirectional support"
@@ -88337,6 +88349,505 @@
       "target1_true_class_improved": 0.6497545008183306
     }
   ],
+  "subject_stable_local_gate_prospectus": {
+    "artifacts": {
+      "cell_type_priors": {
+        "n_rows": 112,
+        "n_subject_stable_candidates": 0,
+        "n_subject_stable_rows": 0,
+        "path": "docs/cell_type_prior_target_control_gate.json",
+        "present": true
+      },
+      "contextual_targets": {
+        "n_rows": 84,
+        "n_subject_stable_candidates": 0,
+        "n_subject_stable_rows": 0,
+        "path": "docs/contextual_target_family_gate.json",
+        "present": true
+      },
+      "derived_counts": {
+        "n_rows": 84,
+        "n_subject_stable_candidates": 0,
+        "n_subject_stable_rows": 0,
+        "path": "docs/derived_target_family_gate_counts.json",
+        "present": true
+      },
+      "derived_fractions": {
+        "n_rows": 84,
+        "n_subject_stable_candidates": 0,
+        "n_subject_stable_rows": 0,
+        "path": "docs/derived_target_family_gate_fractions.json",
+        "present": true
+      },
+      "derived_recording_centered": {
+        "n_rows": 84,
+        "n_subject_stable_candidates": 0,
+        "n_subject_stable_rows": 1,
+        "path": "docs/derived_target_family_gate.json",
+        "present": true
+      },
+      "derived_unit_residuals": {
+        "n_rows": 84,
+        "n_subject_stable_candidates": 0,
+        "n_subject_stable_rows": 0,
+        "path": "docs/derived_target_family_gate_unit_residuals.json",
+        "present": true
+      },
+      "projected_support80_counts": {
+        "n_rows": 320,
+        "n_subject_stable_candidates": 0,
+        "n_subject_stable_rows": 0,
+        "path": "docs/shared_family_target_control_gate_projected_support80_all_families_counts.json",
+        "present": true
+      },
+      "projected_support80_fractions": {
+        "n_rows": 320,
+        "n_subject_stable_candidates": 0,
+        "n_subject_stable_rows": 0,
+        "path": "docs/shared_family_target_control_gate_projected_support80_all_families_fractions.json",
+        "present": true
+      },
+      "projected_support80_recording_centered": {
+        "n_rows": 320,
+        "n_subject_stable_candidates": 0,
+        "n_subject_stable_rows": 0,
+        "path": "docs/shared_family_target_control_gate_projected_support80_all_families.json",
+        "present": true
+      },
+      "projected_support80_unit_residuals": {
+        "n_rows": 320,
+        "n_subject_stable_candidates": 0,
+        "n_subject_stable_rows": 0,
+        "path": "docs/shared_family_target_control_gate_projected_support80_all_families_unit_residuals.json",
+        "present": true
+      },
+      "reaction_counts": {
+        "n_rows": 84,
+        "n_subject_stable_candidates": 0,
+        "n_subject_stable_rows": 0,
+        "path": "docs/reaction_dynamics_target_family_gate_counts.json",
+        "present": true
+      },
+      "reaction_fractions": {
+        "n_rows": 84,
+        "n_subject_stable_candidates": 0,
+        "n_subject_stable_rows": 0,
+        "path": "docs/reaction_dynamics_target_family_gate_fractions.json",
+        "present": true
+      },
+      "reaction_recording_centered": {
+        "n_rows": 84,
+        "n_subject_stable_candidates": 0,
+        "n_subject_stable_rows": 2,
+        "path": "docs/reaction_dynamics_target_family_gate.json",
+        "present": true
+      },
+      "reaction_unit_residuals": {
+        "n_rows": 84,
+        "n_subject_stable_candidates": 0,
+        "n_subject_stable_rows": 0,
+        "path": "docs/reaction_dynamics_target_family_gate_unit_residuals.json",
+        "present": true
+      },
+      "shared_family": {
+        "n_rows": 112,
+        "n_subject_stable_candidates": 0,
+        "n_subject_stable_rows": 0,
+        "path": "docs/shared_family_target_control_gate.json",
+        "present": true
+      },
+      "waveform": {
+        "n_rows": 84,
+        "n_subject_stable_candidates": 0,
+        "n_subject_stable_rows": 0,
+        "path": "docs/waveform_target_control_gate.json",
+        "present": true
+      },
+      "wheel_targets": {
+        "n_rows": 84,
+        "n_subject_stable_candidates": 0,
+        "n_subject_stable_rows": 2,
+        "path": "docs/wheel_target_family_gate.json",
+        "present": true
+      }
+    },
+    "subject_stable_candidates": [],
+    "subject_stable_one_failure_rows": [
+      {
+        "bidirectional_recording_fraction": 0.75,
+        "centered_delta_vs_shuffle": -0.0005148643237161687,
+        "centered_delta_vs_total": 0.002745943059819622,
+        "decision": "reject: shuffle",
+        "failures": [
+          "shuffle"
+        ],
+        "feature": "broad_named_anatomy",
+        "gate_score": -0.0005148643237161687,
+        "holdout": "KS014",
+        "n_bidirectional_recordings": 3,
+        "n_failures": 1,
+        "n_recordings": 4,
+        "recording_target_rows": [
+          {
+            "improved_fraction": 0.721830985915493,
+            "mean_true_class_delta": 0.004699857576316247,
+            "n_trials": 284,
+            "recording": "16693458-0801-4d35-a3f1-9115c7e5acfd_probe00",
+            "target0_improved": 0.6690140845070423,
+            "target1_fraction": 0.5,
+            "target1_improved": 0.7746478873239436
+          },
+          {
+            "improved_fraction": 0.5774647887323944,
+            "mean_true_class_delta": 0.0015537614702036712,
+            "n_trials": 284,
+            "recording": "16693458-0801-4d35-a3f1-9115c7e5acfd_probe01",
+            "target0_improved": 0.676056338028169,
+            "target1_fraction": 0.5,
+            "target1_improved": 0.4788732394366197
+          },
+          {
+            "improved_fraction": 0.7514285714285714,
+            "mean_true_class_delta": 0.009422895011449649,
+            "n_trials": 350,
+            "recording": "b9c205c3-feac-485b-a89d-afc96d9cb280_probe00",
+            "target0_improved": 0.6742857142857143,
+            "target1_fraction": 0.5,
+            "target1_improved": 0.8285714285714286
+          },
+          {
+            "improved_fraction": 0.6951754385964912,
+            "mean_true_class_delta": 0.004567868056539237,
+            "n_trials": 456,
+            "recording": "e1931de1-cf7b-49af-af33-2ade15e8abe7_probe00",
+            "target0_improved": 0.6535087719298246,
+            "target1_fraction": 0.5,
+            "target1_improved": 0.7368421052631579
+          }
+        ],
+        "source": "reaction_recording_centered",
+        "target0_improved_vs_shuffle": 0.6666666666666666,
+        "target1_improved_vs_shuffle": 0.7147016011644832,
+        "target_mode": "wheel_reaction_latency"
+      }
+    ],
+    "subject_stable_rows": [
+      {
+        "bidirectional_recording_fraction": 0.75,
+        "centered_delta_vs_shuffle": -0.0005148643237161687,
+        "centered_delta_vs_total": 0.002745943059819622,
+        "decision": "reject: shuffle",
+        "failures": [
+          "shuffle"
+        ],
+        "feature": "broad_named_anatomy",
+        "gate_score": -0.0005148643237161687,
+        "holdout": "KS014",
+        "n_bidirectional_recordings": 3,
+        "n_failures": 1,
+        "n_recordings": 4,
+        "recording_target_rows": [
+          {
+            "improved_fraction": 0.721830985915493,
+            "mean_true_class_delta": 0.004699857576316247,
+            "n_trials": 284,
+            "recording": "16693458-0801-4d35-a3f1-9115c7e5acfd_probe00",
+            "target0_improved": 0.6690140845070423,
+            "target1_fraction": 0.5,
+            "target1_improved": 0.7746478873239436
+          },
+          {
+            "improved_fraction": 0.5774647887323944,
+            "mean_true_class_delta": 0.0015537614702036712,
+            "n_trials": 284,
+            "recording": "16693458-0801-4d35-a3f1-9115c7e5acfd_probe01",
+            "target0_improved": 0.676056338028169,
+            "target1_fraction": 0.5,
+            "target1_improved": 0.4788732394366197
+          },
+          {
+            "improved_fraction": 0.7514285714285714,
+            "mean_true_class_delta": 0.009422895011449649,
+            "n_trials": 350,
+            "recording": "b9c205c3-feac-485b-a89d-afc96d9cb280_probe00",
+            "target0_improved": 0.6742857142857143,
+            "target1_fraction": 0.5,
+            "target1_improved": 0.8285714285714286
+          },
+          {
+            "improved_fraction": 0.6951754385964912,
+            "mean_true_class_delta": 0.004567868056539237,
+            "n_trials": 456,
+            "recording": "e1931de1-cf7b-49af-af33-2ade15e8abe7_probe00",
+            "target0_improved": 0.6535087719298246,
+            "target1_fraction": 0.5,
+            "target1_improved": 0.7368421052631579
+          }
+        ],
+        "source": "reaction_recording_centered",
+        "target0_improved_vs_shuffle": 0.6666666666666666,
+        "target1_improved_vs_shuffle": 0.7147016011644832,
+        "target_mode": "wheel_reaction_latency"
+      },
+      {
+        "bidirectional_recording_fraction": 0.75,
+        "centered_delta_vs_shuffle": -0.0017914153778290087,
+        "centered_delta_vs_total": -0.001577842736683932,
+        "decision": "reject: shuffle",
+        "failures": [
+          "shuffle",
+          "total_baseline"
+        ],
+        "feature": "broad_named_anatomy",
+        "gate_score": -0.0017914153778290087,
+        "holdout": "KS014",
+        "n_bidirectional_recordings": 3,
+        "n_failures": 2,
+        "n_recordings": 4,
+        "recording_target_rows": [
+          {
+            "improved_fraction": 0.6643192488262911,
+            "mean_true_class_delta": 0.0030971754706330423,
+            "n_trials": 426,
+            "recording": "16693458-0801-4d35-a3f1-9115c7e5acfd_probe00",
+            "target0_improved": 0.6197183098591549,
+            "target1_fraction": 0.5,
+            "target1_improved": 0.7089201877934272
+          },
+          {
+            "improved_fraction": 0.6244131455399061,
+            "mean_true_class_delta": 0.0019655182149687085,
+            "n_trials": 426,
+            "recording": "16693458-0801-4d35-a3f1-9115c7e5acfd_probe01",
+            "target0_improved": 0.6150234741784038,
+            "target1_fraction": 0.5,
+            "target1_improved": 0.6338028169014085
+          },
+          {
+            "improved_fraction": 0.7348484848484849,
+            "mean_true_class_delta": 0.008044308766414003,
+            "n_trials": 528,
+            "recording": "b9c205c3-feac-485b-a89d-afc96d9cb280_probe00",
+            "target0_improved": 0.6704545454545454,
+            "target1_fraction": 0.5,
+            "target1_improved": 0.7992424242424242
+          },
+          {
+            "improved_fraction": 0.40192926045016075,
+            "mean_true_class_delta": -0.004351005786816311,
+            "n_trials": 622,
+            "recording": "e1931de1-cf7b-49af-af33-2ade15e8abe7_probe00",
+            "target0_improved": 0.4758842443729904,
+            "target1_fraction": 0.5,
+            "target1_improved": 0.3279742765273312
+          }
+        ],
+        "source": "wheel_targets",
+        "target0_improved_vs_shuffle": 0.5874125874125874,
+        "target1_improved_vs_shuffle": 0.5984015984015985,
+        "target_mode": "wheel_active"
+      },
+      {
+        "bidirectional_recording_fraction": 0.75,
+        "centered_delta_vs_shuffle": -0.003544162473243073,
+        "centered_delta_vs_total": -0.0024186649852812048,
+        "decision": "reject: shuffle",
+        "failures": [
+          "shuffle",
+          "total_baseline"
+        ],
+        "feature": "broad_named_anatomy",
+        "gate_score": -0.003544162473243073,
+        "holdout": "KS014",
+        "n_bidirectional_recordings": 3,
+        "n_failures": 2,
+        "n_recordings": 4,
+        "recording_target_rows": [
+          {
+            "improved_fraction": 0.669047619047619,
+            "mean_true_class_delta": 0.0030504135384304973,
+            "n_trials": 420,
+            "recording": "16693458-0801-4d35-a3f1-9115c7e5acfd_probe00",
+            "target0_improved": 0.6714285714285714,
+            "target1_fraction": 0.5,
+            "target1_improved": 0.6666666666666666
+          },
+          {
+            "improved_fraction": 0.6523809523809524,
+            "mean_true_class_delta": 0.0017837492204578632,
+            "n_trials": 420,
+            "recording": "16693458-0801-4d35-a3f1-9115c7e5acfd_probe01",
+            "target0_improved": 0.6428571428571429,
+            "target1_fraction": 0.5,
+            "target1_improved": 0.6619047619047619
+          },
+          {
+            "improved_fraction": 0.7896678966789668,
+            "mean_true_class_delta": 0.008727060442617465,
+            "n_trials": 542,
+            "recording": "b9c205c3-feac-485b-a89d-afc96d9cb280_probe00",
+            "target0_improved": 0.7712177121771218,
+            "target1_fraction": 0.5,
+            "target1_improved": 0.8081180811808119
+          },
+          {
+            "improved_fraction": 0.33713355048859933,
+            "mean_true_class_delta": -0.009762356185447348,
+            "n_trials": 614,
+            "recording": "e1931de1-cf7b-49af-af33-2ade15e8abe7_probe00",
+            "target0_improved": 0.3973941368078176,
+            "target1_fraction": 0.5,
+            "target1_improved": 0.2768729641693811
+          }
+        ],
+        "source": "reaction_recording_centered",
+        "target0_improved_vs_shuffle": 0.6082164328657315,
+        "target1_improved_vs_shuffle": 0.5841683366733467,
+        "target_mode": "post_stim_speedup"
+      },
+      {
+        "bidirectional_recording_fraction": 0.75,
+        "centered_delta_vs_shuffle": -0.004263352627050243,
+        "centered_delta_vs_total": -0.005311626800482139,
+        "decision": "reject: shuffle",
+        "failures": [
+          "shuffle",
+          "total_baseline"
+        ],
+        "feature": "broad_named_anatomy",
+        "gate_score": -0.005311626800482139,
+        "holdout": "KS014",
+        "n_bidirectional_recordings": 3,
+        "n_failures": 2,
+        "n_recordings": 4,
+        "recording_target_rows": [
+          {
+            "improved_fraction": 0.8754716981132076,
+            "mean_true_class_delta": 0.014727894787369345,
+            "n_trials": 530,
+            "recording": "16693458-0801-4d35-a3f1-9115c7e5acfd_probe00",
+            "target0_improved": 0.8037735849056604,
+            "target1_fraction": 0.5,
+            "target1_improved": 0.9471698113207547
+          },
+          {
+            "improved_fraction": 0.8056603773584906,
+            "mean_true_class_delta": 0.011028908747681863,
+            "n_trials": 530,
+            "recording": "16693458-0801-4d35-a3f1-9115c7e5acfd_probe01",
+            "target0_improved": 0.7811320754716982,
+            "target1_fraction": 0.5,
+            "target1_improved": 0.8301886792452831
+          },
+          {
+            "improved_fraction": 0.9246153846153846,
+            "mean_true_class_delta": 0.02996736427237826,
+            "n_trials": 650,
+            "recording": "b9c205c3-feac-485b-a89d-afc96d9cb280_probe00",
+            "target0_improved": 0.88,
+            "target1_fraction": 0.5,
+            "target1_improved": 0.9692307692307692
+          },
+          {
+            "improved_fraction": 0.373546511627907,
+            "mean_true_class_delta": -0.005158527863660632,
+            "n_trials": 688,
+            "recording": "e1931de1-cf7b-49af-af33-2ade15e8abe7_probe00",
+            "target0_improved": 0.436046511627907,
+            "target1_fraction": 0.5,
+            "target1_improved": 0.311046511627907
+          }
+        ],
+        "source": "derived_recording_centered",
+        "target0_improved_vs_shuffle": 0.7139282735613011,
+        "target1_improved_vs_shuffle": 0.7447873227689742,
+        "target_mode": "response_latency"
+      },
+      {
+        "bidirectional_recording_fraction": 0.75,
+        "centered_delta_vs_shuffle": -0.008447008447008408,
+        "centered_delta_vs_total": -0.00850500850500846,
+        "decision": "reject: shuffle",
+        "failures": [
+          "shuffle",
+          "total_baseline"
+        ],
+        "feature": "broad_named_anatomy",
+        "gate_score": -0.00850500850500846,
+        "holdout": "KS014",
+        "n_bidirectional_recordings": 3,
+        "n_failures": 2,
+        "n_recordings": 4,
+        "recording_target_rows": [
+          {
+            "improved_fraction": 0.6643192488262911,
+            "mean_true_class_delta": 0.005448311117898255,
+            "n_trials": 426,
+            "recording": "16693458-0801-4d35-a3f1-9115c7e5acfd_probe00",
+            "target0_improved": 0.5774647887323944,
+            "target1_fraction": 0.5,
+            "target1_improved": 0.7511737089201878
+          },
+          {
+            "improved_fraction": 0.6502347417840375,
+            "mean_true_class_delta": 0.0053126336035785645,
+            "n_trials": 426,
+            "recording": "16693458-0801-4d35-a3f1-9115c7e5acfd_probe01",
+            "target0_improved": 0.6431924882629108,
+            "target1_fraction": 0.5,
+            "target1_improved": 0.6572769953051644
+          },
+          {
+            "improved_fraction": 0.6931818181818182,
+            "mean_true_class_delta": 0.01417804793910399,
+            "n_trials": 528,
+            "recording": "b9c205c3-feac-485b-a89d-afc96d9cb280_probe00",
+            "target0_improved": 0.6136363636363636,
+            "target1_fraction": 0.5,
+            "target1_improved": 0.7727272727272727
+          },
+          {
+            "improved_fraction": 0.3596774193548387,
+            "mean_true_class_delta": -0.006802951184548273,
+            "n_trials": 620,
+            "recording": "e1931de1-cf7b-49af-af33-2ade15e8abe7_probe00",
+            "target0_improved": 0.4340836012861736,
+            "target1_fraction": 0.49838709677419357,
+            "target1_improved": 0.284789644012945
+          }
+        ],
+        "source": "wheel_targets",
+        "target0_improved_vs_shuffle": 0.5564435564435565,
+        "target1_improved_vs_shuffle": 0.5925925925925926,
+        "target_mode": "wheel_displacement"
+      }
+    ],
+    "summary": {
+      "decision": "no_subject_stable_local_gate_candidate",
+      "failure_counts": {
+        "shuffle": 5,
+        "total_baseline": 4
+      },
+      "gpu_training_ready": false,
+      "n_rows": 2428,
+      "n_subject_stable_candidates": 0,
+      "n_subject_stable_one_failure_rows": 1,
+      "n_subject_stable_rows": 5,
+      "next_action": "Do not train yet: subject-stable near misses exist, but they fail the unchanged local gate.",
+      "subject_stable_holdouts": [
+        "KS014"
+      ]
+    },
+    "thresholds": {
+      "bidirectional_recording_fraction": 0.75,
+      "centered_delta_vs_shuffle": 0.0,
+      "centered_delta_vs_total": 0.0,
+      "min_bidirectional_fraction": 0.75,
+      "min_recordings": 3,
+      "target0_improved_vs_shuffle": 0.55,
+      "target1_improved_vs_shuffle": 0.55
+    }
+  },
   "summary": {
     "decision": "no_paid_broadening_without_new_mechanism",
     "next_mechanism": "The bidirectional target-class gate and explicit recording-local AUC surrogate are now implemented. The next no-spend task is local objective debugging that can satisfy target0, target1, and recording-local AUC checks before any more paid broadening.",

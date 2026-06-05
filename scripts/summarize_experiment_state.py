@@ -143,6 +143,7 @@ DERIVED_TARGET_FAMILY_PROSPECT_LEADS_FILE = "docs/derived_target_family_gate_pro
 PROSPECT_LEAD_CANDIDATE_VALIDATION_FILE = "docs/prospect_lead_candidate_validation.json"
 PROSPECT_LEAD_FEATURE_MODE_VALIDATION_FILE = "docs/prospect_lead_feature_mode_validation.json"
 PROSPECT_LEAD_SUBJECT_STABILITY_FILE = "docs/prospect_lead_subject_stability.json"
+SUBJECT_STABLE_LOCAL_GATE_PROSPECTUS_FILE = "docs/subject_stable_local_gate_prospectus.json"
 MODEL_FREE_RECORDING_DIRECTIONALITY_AUDIT_FILE = "docs/model_free_recording_directionality_audit.json"
 SYMMETRIC_RECORDING_SUPPORT_AUDIT_FILE = "docs/symmetric_recording_support_audit.json"
 SYMMETRIC_THRESHOLD_SENSITIVITY_AUDIT_FILE = "docs/symmetric_threshold_sensitivity_audit.json"
@@ -478,6 +479,7 @@ def render_markdown(
     prospect_lead_candidate_validation: dict | None = None,
     prospect_lead_feature_mode_validation: dict | None = None,
     prospect_lead_subject_stability: dict | None = None,
+    subject_stable_local_gate_prospectus: dict | None = None,
     model_free_recording_directionality_audit: dict | None = None,
     symmetric_recording_support_audit: dict | None = None,
     symmetric_threshold_sensitivity_audit: dict | None = None,
@@ -1944,6 +1946,44 @@ def render_markdown(
             ),
             "",
         ]
+    if subject_stable_local_gate_prospectus is not None:
+        summary = subject_stable_local_gate_prospectus["summary"]
+        top = subject_stable_local_gate_prospectus["subject_stable_rows"][:5]
+        lines += [
+            "## Subject-Stable Local Gate Prospectus",
+            "",
+            "`docs/subject_stable_local_gate_prospectus.md` searches all current",
+            "local-gate rows for target/control definitions that are stable across",
+            "multiple recordings in the held-out subject.",
+            "",
+            f"- rows: `{summary['n_rows']}`",
+            f"- subject-stable rows: `{summary['n_subject_stable_rows']}`",
+            f"- subject-stable candidates: `{summary['n_subject_stable_candidates']}`",
+            f"- subject-stable one-failure rows: `{summary['n_subject_stable_one_failure_rows']}`",
+            f"- subject-stable holdouts: `{', '.join(summary['subject_stable_holdouts']) or 'none'}`",
+            f"- decision: `{summary['decision']}`",
+            "",
+            "| source | target | feature | holdout | failures | delta shuffle | delta total | targets | bidir recs |",
+            "|---|---|---|---|---|---:|---:|---:|---:|",
+        ]
+        for row in top:
+            lines.append(
+                f"| {row['source']} | {row['target_mode']} | {row['feature']} | "
+                f"{row['holdout']} | {', '.join(row['failures']) or 'none'} | "
+                f"{row['centered_delta_vs_shuffle']:+.3f} | {row['centered_delta_vs_total']:+.3f} | "
+                f"{row['target0_improved_vs_shuffle']:.3f}/{row['target1_improved_vs_shuffle']:.3f} | "
+                f"{row['n_bidirectional_recordings']}/{row['n_recordings']} |"
+            )
+        lines += [
+            "",
+            (
+                "Decision: the best stable local branch is now a shuffle-control "
+                "problem, not just a recording-support problem. The next redesign "
+                "should target anatomical information that beats within-recording "
+                "shuffled anatomy while preserving KS014-like subject stability."
+            ),
+            "",
+        ]
     if model_free_recording_directionality_audit is not None:
         summary = model_free_recording_directionality_audit["summary"]
         overall = summary["overall"]
@@ -2381,6 +2421,9 @@ def main() -> int:
     prospect_lead_subject_stability = read_mechanism_audit(
         REPO_ROOT / PROSPECT_LEAD_SUBJECT_STABILITY_FILE
     )
+    subject_stable_local_gate_prospectus = read_mechanism_audit(
+        REPO_ROOT / SUBJECT_STABLE_LOCAL_GATE_PROSPECTUS_FILE
+    )
     model_free_recording_directionality_audit = read_mechanism_audit(
         REPO_ROOT / MODEL_FREE_RECORDING_DIRECTIONALITY_AUDIT_FILE
     )
@@ -2465,6 +2508,7 @@ def main() -> int:
         prospect_lead_candidate_validation,
         prospect_lead_feature_mode_validation,
         prospect_lead_subject_stability,
+        subject_stable_local_gate_prospectus,
         model_free_recording_directionality_audit,
         symmetric_recording_support_audit,
         symmetric_threshold_sensitivity_audit,
@@ -2566,6 +2610,7 @@ def main() -> int:
         "prospect_lead_candidate_validation": prospect_lead_candidate_validation,
         "prospect_lead_feature_mode_validation": prospect_lead_feature_mode_validation,
         "prospect_lead_subject_stability": prospect_lead_subject_stability,
+        "subject_stable_local_gate_prospectus": subject_stable_local_gate_prospectus,
         "model_free_recording_directionality_audit": model_free_recording_directionality_audit,
         "symmetric_recording_support_audit": symmetric_recording_support_audit,
         "symmetric_threshold_sensitivity_audit": symmetric_threshold_sensitivity_audit,
