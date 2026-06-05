@@ -27,7 +27,7 @@ from audit_model_free_region_signal import (  # noqa: E402
 )
 from audit_shared_family_target_control_gate import family_gate_decision, summarize_rows  # noqa: E402
 from scan_model_free_region_family_candidates import aggregate_features, present_family_definitions  # noqa: E402
-from train import build_vocab, select_recording_ids, split_recordings_by_subject  # noqa: E402
+from train import build_vocab, select_recording_ids  # noqa: E402
 
 
 DERIVED_TARGETS = ("contrast_strength", "response_latency", "prior_engaged")

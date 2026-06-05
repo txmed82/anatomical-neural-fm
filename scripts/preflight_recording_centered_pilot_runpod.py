@@ -96,7 +96,7 @@ def print_preflight(config: PreflightConfig, *, repo_root: Path = REPO_ROOT) -> 
     print(f"max_dollars: ${config.max_dollars:.2f}")
     print(f"gpu_type: {config.gpu_type}")
     print(f"seeds: {config.seeds}")
-    print(f"best_metric: full_eval_centered_auc")
+    print("best_metric: full_eval_centered_auc")
     print("negative_control: within_recording_shuffle")
     print(f"output_root: {config.output_root}")
     print(f"result_doc: {config.result_doc}")

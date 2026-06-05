@@ -35,7 +35,6 @@ from train import (  # noqa: E402
     build_trial_samples,
     build_vocab,
     select_recording_ids,
-    split_recordings_by_subject,
 )
 
 

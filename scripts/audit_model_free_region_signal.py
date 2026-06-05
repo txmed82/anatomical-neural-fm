@@ -11,7 +11,6 @@ import argparse
 import hashlib
 import json
 import sys
-from collections import defaultdict
 from dataclasses import dataclass
 from pathlib import Path
 

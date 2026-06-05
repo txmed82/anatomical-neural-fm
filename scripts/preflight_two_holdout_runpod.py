@@ -6,7 +6,6 @@ import shlex
 import subprocess
 import sys
 from dataclasses import dataclass
-from pathlib import Path
 
 try:
     from scripts.runpod_first_a100 import REPO_ROOT, RunpodClient, load_dotenv, require_env

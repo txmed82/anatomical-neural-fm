@@ -17,5 +17,10 @@ RUN python -m pip install --upgrade pip \
         iblatlas \
         temporaldata
 
+RUN groupadd -r appuser && useradd -r -g appuser appuser
+
 WORKDIR /workspace
+RUN chown -R appuser:appuser /workspace
+
+USER appuser
 CMD ["bash", "-lc", "python --version && sleep infinity"]

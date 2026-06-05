@@ -21,7 +21,6 @@ sys.path.insert(0, str(REPO_ROOT / "vendor" / "torch_brain"))
 from torch_brain.dataset import Dataset  # noqa: E402
 from audit_model_free_region_signal import (  # noqa: E402
     build_region_vocab,
-    centered_auc,
     evaluate_feature_set,
     make_feature_matrix,
     paired_improvement,

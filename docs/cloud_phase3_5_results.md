@@ -49,7 +49,7 @@ Configuration:
 | 2 | 0.614 | 0.543 | -0.071 |
 
 **mean Δ AUC** = -0.0885    **paired SE** = 0.0264    **t** = -3.35 (df=2)    **positive seeds** = 0/3
-→ **Significant by t but inconsistent across seeds.**
+→ **Not significant at p<0.05 (two-tailed p≈0.0829). Direction consistent across seeds (all negative).**
 
 ## Paired comparison: waveform_only − baseline
 
@@ -60,7 +60,7 @@ Configuration:
 | 2 | 0.614 | 0.529 | -0.086 |
 
 **mean Δ AUC** = -0.0890    **paired SE** = 0.0232    **t** = -3.83 (df=2)    **positive seeds** = 0/3
-→ **Significant by t but inconsistent across seeds.**
+→ **Not significant at p<0.05 (two-tailed p≈0.0619) but marginal at p<0.10. Direction consistent across seeds (all negative).**
 
 ## Cross-Animal Summary
 
