@@ -13,6 +13,7 @@ from scripts.runpod_clone_a100 import (
     build_pod_body,
     build_start_script,
     pod_is_provisioned,
+    remote_log_last_modified,
     remote_log_touched,
     s3_log_key,
     summarize_pod,
@@ -368,7 +369,23 @@ def test_remote_log_touched_uses_s3_last_modified(monkeypatch) -> None:
 
     assert remote_log_touched(cfg, env, modified_after=last_modified - timedelta(seconds=1))
     assert not remote_log_touched(cfg, env, modified_after=last_modified + timedelta(seconds=1))
+    assert not remote_log_touched(cfg, env, modified_after=last_modified)
     assert seen == {"bucket": "brainset-cache", "key": "ibl/test/logs/docs_cloud_phase3_5_results.log"}
+
+
+def test_remote_log_last_modified_returns_fresh_timestamp(monkeypatch) -> None:
+    last_modified = datetime(2026, 6, 5, 1, 44, tzinfo=timezone.utc)
+
+    class FakeS3:
+        def head_object(self, *, Bucket: str, Key: str) -> dict:
+            return {"LastModified": last_modified}
+
+    monkeypatch.setitem(sys.modules, "boto3", SimpleNamespace(client=lambda *args, **kwargs: FakeS3()))
+    cfg = replace(config(), s3_bucket="brainset-cache", s3_datacenter="US-IL-1")
+    env = {"BRAINSET_S3_ACCESS_KEY": "access", "BRAINSET_S3_SECRET_KEY": "secret"}
+
+    assert remote_log_last_modified(cfg, env, modified_after=last_modified - timedelta(seconds=1)) == last_modified
+    assert remote_log_last_modified(cfg, env, modified_after=last_modified) is None
 
 
 def test_pod_body_passes_s3_credentials_when_cache_enabled(monkeypatch) -> None:

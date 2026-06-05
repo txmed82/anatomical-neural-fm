@@ -604,12 +604,21 @@ def remote_log_touched(
     *,
     modified_after: datetime | None = None,
 ) -> bool:
+    return remote_log_last_modified(config, env, modified_after=modified_after) is not None
+
+
+def remote_log_last_modified(
+    config: ClonePilotConfig,
+    env: dict[str, str],
+    *,
+    modified_after: datetime | None = None,
+) -> datetime | None:
     if not config.s3_bucket:
-        return False
+        return None
     try:
         import boto3
     except Exception:
-        return False
+        return None
     access_key = (
         os.environ.get("BRAINSET_S3_ACCESS_KEY")
         or os.environ.get("RUNPOD_S3_ACCESS_KEY")
@@ -628,7 +637,7 @@ def remote_log_touched(
     if not endpoint_url and config.s3_datacenter:
         endpoint_url = S3_ENDPOINTS.get(config.s3_datacenter, "")
     if not access_key or not secret_key or not endpoint_url:
-        return False
+        return None
     client = boto3.client(
         "s3",
         aws_access_key_id=access_key,
@@ -639,11 +648,12 @@ def remote_log_touched(
     try:
         obj = client.head_object(Bucket=config.s3_bucket, Key=s3_log_key(config))
     except Exception:
-        return False
+        return None
     last_modified = obj.get("LastModified")
     if modified_after is not None and last_modified is not None:
-        return last_modified >= modified_after
-    return bool(last_modified)
+        if last_modified <= modified_after:
+            return None
+    return last_modified
 
 
 def parse_args() -> argparse.Namespace:
@@ -769,6 +779,7 @@ def main() -> int:
         print("Polling pod status; the pod has a self-termination trap.", flush=True)
         poll_started_at = datetime.now(timezone.utc)
         provision_deadline = time.time() + args.max_provision_seconds
+        last_remote_log_seen_at = poll_started_at
         diagnostic_stop_marker = "=== dependency diagnostic complete ==="
         body_stop_marker = "=== phase 3-5 body complete ==="
         while True:
@@ -804,7 +815,13 @@ def main() -> int:
                 and time.time() > provision_deadline
                 and not pod_is_provisioned(current)
             ):
-                if remote_log_touched(config, env, modified_after=poll_started_at):
+                remote_log_modified_at = remote_log_last_modified(
+                    config,
+                    env,
+                    modified_after=last_remote_log_seen_at,
+                )
+                if remote_log_modified_at is not None:
+                    last_remote_log_seen_at = remote_log_modified_at
                     print(
                         "Remote S3 log updated despite missing runtime details; "
                         "continuing until completion marker or runtime guard.",

@@ -937,6 +937,20 @@ minutes to avoid idle spend. Follow-up preflight again reported
 shape but with a shorter provisioning cap or a more reliable datacenter/GPU
 availability target.
 
+Target-balanced resume state: a later cloud artifact push produced partial
+prediction files for `runs/lso_csh_target_balanced_pilot`. Seed 0 has
+`shared_baseline`, `region_only`, and `region_shuffle` prediction artifacts;
+seed 1 has `shared_baseline` only. The current full-trial gate is still false:
+seed 0 passes paired true-vs-shuffle (`0.557` over the `0.550` threshold) and
+full AUC true-vs-shuffle, but fails centered-AUC true-vs-shared/shuffle
+(`region_only=0.473`, `region_shuffle=0.474`, `shared=0.478`). The wrappers now
+resume from prediction-only diagnostic arms so these artifacts are not wiped on
+the next attempt. A second L4 placement, pod `kwsbwnvn2d6jrm`, hit the same
+machine id `8mfa5qalulbd` and again failed to expose runtime details; it was
+terminated with follow-up preflight showing `active_pods: 0`. The launcher guard
+was fixed so stale S3 log timestamps cannot indefinitely extend the provisioning
+deadline.
+
 After cleanup, run:
 
 ```bash
