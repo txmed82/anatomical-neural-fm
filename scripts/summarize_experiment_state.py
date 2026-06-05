@@ -112,6 +112,9 @@ NEXT_BENCHMARK_CONTROL_OPTIONS_FILE = "docs/next_benchmark_control_options.json"
 DERIVED_TARGET_FAMILY_GATE_FILE = "docs/derived_target_family_gate.json"
 CONTEXTUAL_TARGET_FAMILY_GATE_FILE = "docs/contextual_target_family_gate.json"
 WHEEL_TARGET_FAMILY_GATE_FILE = "docs/wheel_target_family_gate.json"
+LOW_CONTRAST_CHOICE_FAMILY_GATE_FILE = "docs/low_contrast_choice_family_gate.json"
+LOW_CONTRAST_CHOICE_PROJECTED_GATE_FILE = "docs/low_contrast_choice_family_gate_projected_hdf5.json"
+LOW_CONTRAST_CHOICE_SEED_SENSITIVITY_FILE = "docs/low_contrast_choice_seed_sensitivity.json"
 EXTREME_QUANTILE_TARGET_FAMILY_GATE_FILE = "docs/extreme_quantile_target_family_gate.json"
 EXTREME_QUANTILE_SEED_SENSITIVITY_FILE = "docs/extreme_quantile_seed_sensitivity.json"
 EXTREME_QUANTILE_CUTOFF_SENSITIVITY_FILE = "docs/extreme_quantile_cutoff_sensitivity.json"
@@ -507,6 +510,9 @@ def render_markdown(
     derived_target_family_gate: dict | None = None,
     contextual_target_family_gate: dict | None = None,
     wheel_target_family_gate: dict | None = None,
+    low_contrast_choice_family_gate: dict | None = None,
+    low_contrast_choice_projected_gate: dict | None = None,
+    low_contrast_choice_seed_sensitivity: dict | None = None,
     extreme_quantile_target_family_gate: dict | None = None,
     extreme_quantile_seed_sensitivity: dict | None = None,
     extreme_quantile_cutoff_sensitivity: dict | None = None,
@@ -1540,6 +1546,131 @@ def render_markdown(
                 "Decision: wheel-derived targets only justify paid training if they "
                 "clear the same true-vs-shuffle, total-baseline, global target, and "
                 "same-recording bidirectional gate used by the prior audits."
+            ),
+            "",
+        ]
+    if low_contrast_choice_family_gate is not None:
+        summary = low_contrast_choice_family_gate["summary"]
+        balances = summary["target_balances"]
+        top = summary["top_rows"][:6]
+        lines += [
+            "## Low-Contrast Choice Family Gate",
+            "",
+            "`docs/low_contrast_choice_family_gate.md` prospectively restricts trials",
+            "by absolute stimulus contrast and classifies left-vs-right choice under",
+            "the unchanged shared-family local gate.",
+            "",
+            f"- rows: `{summary['n_rows']}`",
+            f"- candidates: `{summary['n_candidates']}`",
+            f"- positive centered-delta rows: `{summary['n_positive_centered_delta']}`",
+            f"- max bidirectional recordings: `{summary['max_bidirectional_recordings']}`",
+            f"- max bidirectional recording fraction: `{summary['max_bidirectional_recording_fraction']:.3f}`",
+            f"- decision: `{summary['decision']}`",
+            "",
+            "| target | trials | eligible recordings | recordings |",
+            "|---|---:|---:|---:|",
+        ]
+        for target, row in balances.items():
+            lines.append(
+                f"| {target} | {row['n_trials']} | {row['eligible_recordings']} | {row['n_recordings']} |"
+            )
+        lines += [
+            "",
+            "| target | family | holdout | decision | delta shuffle | delta total | targets | bidir recs |",
+            "|---|---|---|---|---:|---:|---|---:|",
+        ]
+        for row in top:
+            lines.append(
+                f"| {row['target_mode']} | {row['family']} | {row['holdout']} | {row['decision']} | "
+                f"{row['centered_delta_vs_shuffle']:+.3f} | {row['centered_delta_vs_total']:+.3f} | "
+                f"{row['target0_improved_vs_shuffle']:.3f}/{row['target1_improved_vs_shuffle']:.3f} | "
+                f"{row['n_bidirectional_recordings']}/{row['n_recordings']} |"
+            )
+        lines += [
+            "",
+            "Decision: the current 28-recording panel has no low-contrast choice training trigger.",
+            "",
+        ]
+    if low_contrast_choice_projected_gate is not None:
+        summary = low_contrast_choice_projected_gate["summary"]
+        balances = summary["target_balances"]
+        top = summary["top_rows"][:6]
+        lines += [
+            "## Low-Contrast Choice Projected Manifest Gate",
+            "",
+            "`docs/low_contrast_choice_family_gate_projected_hdf5.md` reruns the",
+            "same prospective target on the 31-recording projected local HDF5 manifest.",
+            "",
+            f"- rows: `{summary['n_rows']}`",
+            f"- candidates: `{summary['n_candidates']}`",
+            f"- positive centered-delta rows: `{summary['n_positive_centered_delta']}`",
+            f"- max bidirectional recordings: `{summary['max_bidirectional_recordings']}`",
+            f"- max bidirectional recording fraction: `{summary['max_bidirectional_recording_fraction']:.3f}`",
+            f"- decision: `{summary['decision']}`",
+            f"- gpu training ready: `{summary['gpu_training_ready']}`",
+            "",
+            "| target | trials | eligible recordings | recordings |",
+            "|---|---:|---:|---:|",
+        ]
+        for target, row in balances.items():
+            lines.append(
+                f"| {target} | {row['n_trials']} | {row['eligible_recordings']} | {row['n_recordings']} |"
+            )
+        lines += [
+            "",
+            "| target | family | holdout | decision | delta shuffle | delta total | targets | bidir recs |",
+            "|---|---|---|---|---:|---:|---|---:|",
+        ]
+        for row in top:
+            lines.append(
+                f"| {row['target_mode']} | {row['family']} | {row['holdout']} | {row['decision']} | "
+                f"{row['centered_delta_vs_shuffle']:+.3f} | {row['centered_delta_vs_total']:+.3f} | "
+                f"{row['target0_improved_vs_shuffle']:.3f}/{row['target1_improved_vs_shuffle']:.3f} | "
+                f"{row['n_bidirectional_recordings']}/{row['n_recordings']} |"
+            )
+        lines += [
+            "",
+            (
+                "Decision before seed validation: projected support creates a real "
+                "local near miss, but it must remain a strict candidate across shuffle "
+                "seeds before any paid training."
+            ),
+            "",
+        ]
+    if low_contrast_choice_seed_sensitivity is not None:
+        summary = low_contrast_choice_seed_sensitivity["summary"]
+        top = low_contrast_choice_seed_sensitivity["rows"][:5]
+        lines += [
+            "## Low-Contrast Choice Seed Sensitivity",
+            "",
+            "`docs/low_contrast_choice_seed_sensitivity.md` reruns the projected-panel",
+            "low-contrast choice candidate across multiple within-recording shuffle seeds.",
+            "",
+            f"- cases: `{summary['n_cases']}`",
+            f"- robust low-contrast choice seed candidates: `{summary['n_robust_low_contrast_choice_seed_candidates']}`",
+            f"- max positive shuffle-delta fraction: `{summary['max_positive_shuffle_delta_fraction']:.3f}`",
+            f"- decision: `{summary['decision']}`",
+            f"- gpu training ready: `{summary['gpu_training_ready']}`",
+            "",
+            "| target | family | holdout | positive seeds | candidate seeds | mean shuffle delta | mean total delta | mean targets | bidir range |",
+            "|---|---|---|---:|---:|---:|---:|---:|---:|",
+        ]
+        for row in top:
+            lines.append(
+                f"| {row['target_mode']} | {row['family']} | {row['holdout']} | "
+                f"{row['n_positive_shuffle_delta_seeds']}/{row['n_seeds']} | "
+                f"{row['n_candidate_seeds']}/{row['n_seeds']} | "
+                f"{row['mean_centered_delta_vs_shuffle']:+.4f} | "
+                f"{row['mean_centered_delta_vs_total']:+.4f} | "
+                f"{row['mean_target0']:.3f}/{row['mean_target1']:.3f} | "
+                f"{row['min_bidirectional_recordings']}-{row['max_bidirectional_recordings']} |"
+            )
+        lines += [
+            "",
+            (
+                "Decision: do not train from the low-contrast choice row. It was a "
+                "valid seed-0 projected-manifest candidate, but only 1/5 shuffle seeds "
+                "remain strict candidates."
             ),
             "",
         ]
@@ -2795,6 +2926,11 @@ def main() -> int:
     derived_target_family_gate = read_mechanism_audit(REPO_ROOT / DERIVED_TARGET_FAMILY_GATE_FILE)
     contextual_target_family_gate = read_mechanism_audit(REPO_ROOT / CONTEXTUAL_TARGET_FAMILY_GATE_FILE)
     wheel_target_family_gate = read_mechanism_audit(REPO_ROOT / WHEEL_TARGET_FAMILY_GATE_FILE)
+    low_contrast_choice_family_gate = read_mechanism_audit(REPO_ROOT / LOW_CONTRAST_CHOICE_FAMILY_GATE_FILE)
+    low_contrast_choice_projected_gate = read_mechanism_audit(REPO_ROOT / LOW_CONTRAST_CHOICE_PROJECTED_GATE_FILE)
+    low_contrast_choice_seed_sensitivity = read_mechanism_audit(
+        REPO_ROOT / LOW_CONTRAST_CHOICE_SEED_SENSITIVITY_FILE
+    )
     extreme_quantile_target_family_gate = read_mechanism_audit(REPO_ROOT / EXTREME_QUANTILE_TARGET_FAMILY_GATE_FILE)
     extreme_quantile_seed_sensitivity = read_mechanism_audit(REPO_ROOT / EXTREME_QUANTILE_SEED_SENSITIVITY_FILE)
     extreme_quantile_cutoff_sensitivity = read_mechanism_audit(
@@ -2934,6 +3070,9 @@ def main() -> int:
         derived_target_family_gate,
         contextual_target_family_gate,
         wheel_target_family_gate,
+        low_contrast_choice_family_gate,
+        low_contrast_choice_projected_gate,
+        low_contrast_choice_seed_sensitivity,
         extreme_quantile_target_family_gate,
         extreme_quantile_seed_sensitivity,
         extreme_quantile_cutoff_sensitivity,
@@ -3040,6 +3179,9 @@ def main() -> int:
         "derived_target_family_gate": derived_target_family_gate,
         "contextual_target_family_gate": contextual_target_family_gate,
         "wheel_target_family_gate": wheel_target_family_gate,
+        "low_contrast_choice_family_gate": low_contrast_choice_family_gate,
+        "low_contrast_choice_projected_gate": low_contrast_choice_projected_gate,
+        "low_contrast_choice_seed_sensitivity": low_contrast_choice_seed_sensitivity,
         "extreme_quantile_target_family_gate": extreme_quantile_target_family_gate,
         "extreme_quantile_seed_sensitivity": extreme_quantile_seed_sensitivity,
         "extreme_quantile_cutoff_sensitivity": extreme_quantile_cutoff_sensitivity,

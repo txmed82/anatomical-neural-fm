@@ -18,6 +18,9 @@ ARTIFACTS = {
     "derived_target_family": "docs/derived_target_family_gate.json",
     "contextual_target_family": "docs/contextual_target_family_gate.json",
     "wheel_target_family": "docs/wheel_target_family_gate.json",
+    "low_contrast_choice_family": "docs/low_contrast_choice_family_gate.json",
+    "low_contrast_choice_projected": "docs/low_contrast_choice_family_gate_projected_hdf5.json",
+    "low_contrast_choice_seed_sensitivity": "docs/low_contrast_choice_seed_sensitivity.json",
     "extreme_quantile_target_family": "docs/extreme_quantile_target_family_gate.json",
     "extreme_quantile_seed_sensitivity": "docs/extreme_quantile_seed_sensitivity.json",
     "extreme_quantile_cutoff_sensitivity": "docs/extreme_quantile_cutoff_sensitivity.json",
@@ -159,6 +162,17 @@ def build_report() -> dict:
     behavior_ready = behavior_summary.get("decision") == "behavior_cache_ready"
     wheel_candidates = summary_value(wheel, "n_candidates", None)
     wheel_done = wheel is not None
+    low_contrast = artifacts["low_contrast_choice_family"]
+    low_contrast_summary = low_contrast.get("summary", {}) if low_contrast is not None else {}
+    low_contrast_projected = artifacts["low_contrast_choice_projected"]
+    low_contrast_projected_summary = (
+        low_contrast_projected.get("summary", {}) if low_contrast_projected is not None else {}
+    )
+    low_contrast_seed = artifacts["low_contrast_choice_seed_sensitivity"]
+    low_contrast_seed_summary = low_contrast_seed.get("summary", {}) if low_contrast_seed is not None else {}
+    low_contrast_seed_robust = int(
+        low_contrast_seed_summary.get("n_robust_low_contrast_choice_seed_candidates", 0) or 0
+    )
     extreme_quantile = artifacts["extreme_quantile_target_family"]
     extreme_quantile_done = extreme_quantile is not None
     extreme_quantile_candidates = summary_value(extreme_quantile, "n_candidates", 0)
@@ -312,6 +326,67 @@ def build_report() -> dict:
             gpu_trigger=(
                 "At least one local wheel row must clear delta_vs_shuffle>=0, delta_vs_total>=0, "
                 "target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75."
+            ),
+        ),
+        branch(
+            name="low-contrast choice target redesign",
+            status=(
+                "recommended_next"
+                if low_contrast_projected is not None
+                and (low_contrast_projected_summary.get("n_candidates", 0) or 0) > 0
+                and low_contrast_seed is None
+                else "closed"
+                if low_contrast_seed is not None
+                else "secondary_after_new_target"
+            ),
+            priority=84 if low_contrast_seed is not None else (1 if low_contrast_projected is not None else 3),
+            evidence=[
+                (
+                    "current-panel low-contrast choice gate has not been run yet"
+                    if low_contrast is None
+                    else (
+                        "current-panel low-contrast choice gate found "
+                        f"{low_contrast_summary.get('n_candidates', 'n/a')} candidates across "
+                        f"{low_contrast_summary.get('n_rows', 'n/a')} rows and max bidir "
+                        f"{low_contrast_summary.get('max_bidirectional_recording_fraction', 0.0):.3f}"
+                    )
+                ),
+                (
+                    "projected-panel low-contrast choice gate has not been run yet"
+                    if low_contrast_projected is None
+                    else (
+                        "projected-panel low-contrast choice gate found "
+                        f"{low_contrast_projected_summary.get('n_candidates', 'n/a')} candidates across "
+                        f"{low_contrast_projected_summary.get('n_rows', 'n/a')} rows and max bidir "
+                        f"{low_contrast_projected_summary.get('max_bidirectional_recording_fraction', 0.0):.3f}"
+                    )
+                ),
+                (
+                    "low-contrast seed sensitivity has not been run yet"
+                    if low_contrast_seed is None
+                    else (
+                        "low-contrast seed sensitivity found "
+                        f"{low_contrast_seed_summary.get('n_robust_low_contrast_choice_seed_candidates', 'n/a')} "
+                        "robust candidates; max positive seed fraction="
+                        f"{low_contrast_seed_summary.get('max_positive_shuffle_delta_fraction', 0.0):.3f}"
+                    )
+                ),
+            ],
+            next_action=(
+                "Run scripts/audit_low_contrast_choice_seed_sensitivity.py before any GPU training."
+                if low_contrast_projected is not None
+                and (low_contrast_projected_summary.get("n_candidates", 0) or 0) > 0
+                and low_contrast_seed is None
+                else low_contrast_seed_summary.get(
+                    "next_action",
+                    "Run the low-contrast choice gate on the projected local manifest before training.",
+                )
+                if low_contrast_seed is not None
+                else "Run scripts/audit_low_contrast_choice_family_gate.py as a prospective target redesign."
+            ),
+            gpu_trigger=(
+                "A projected-panel low-contrast choice row must pass the unchanged local gate "
+                "and remain a strict candidate across shuffle seeds before training."
             ),
         ),
         branch(
@@ -980,10 +1055,19 @@ def build_report() -> dict:
         if not behavior_ready
         else "wheel_target_audit_required"
         if not wheel_done
+        else "low_contrast_choice_seed_validation_required"
+        if low_contrast_projected is not None
+        and (low_contrast_projected_summary.get("n_candidates", 0) or 0) > 0
+        and low_contrast_seed is None
         else "extreme_quantile_seed_validation_required"
         if extreme_quantile_done and (extreme_quantile_candidates or 0) > 0 and extreme_seed is None
         else "local_training_trigger_available"
-        if (wheel_candidates or 0) > 0 or (projected_support80_candidates or 0) > 0 or extreme_seed_robust > 0
+        if (
+            (wheel_candidates or 0) > 0
+            or (projected_support80_candidates or 0) > 0
+            or extreme_seed_robust > 0
+            or low_contrast_seed_robust > 0
+        )
         else "no_local_training_trigger"
     )
     return {

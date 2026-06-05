@@ -303,6 +303,106 @@ def test_render_markdown_includes_extreme_quantile_seed_veto() -> None:
     assert "do not train from the exploratory region-pair rows" in markdown
 
 
+def test_render_markdown_includes_low_contrast_choice_seed_veto() -> None:
+    markdown = render_markdown(
+        [],
+        [],
+        low_contrast_choice_family_gate={
+            "summary": {
+                "n_rows": 84,
+                "n_candidates": 0,
+                "n_positive_centered_delta": 41,
+                "max_bidirectional_recordings": 2,
+                "max_bidirectional_recording_fraction": 0.5,
+                "decision": "no_low_contrast_choice_family_candidate",
+                "target_balances": {
+                    "low_contrast_choice_le_0.125": {
+                        "n_trials": 9786,
+                        "eligible_recordings": 28,
+                        "n_recordings": 28,
+                    }
+                },
+                "top_rows": [
+                    {
+                        "target_mode": "low_contrast_choice_le_0.125",
+                        "family": "fiber_tracts",
+                        "holdout": "CSH_ZAD_019",
+                        "decision": "reject: target0",
+                        "centered_delta_vs_shuffle": 0.209,
+                        "centered_delta_vs_total": 0.215,
+                        "target0_improved_vs_shuffle": 0.545,
+                        "target1_improved_vs_shuffle": 0.629,
+                        "n_bidirectional_recordings": 2,
+                        "n_recordings": 4,
+                    }
+                ],
+            }
+        },
+        low_contrast_choice_projected_gate={
+            "summary": {
+                "n_rows": 96,
+                "n_candidates": 1,
+                "n_positive_centered_delta": 48,
+                "max_bidirectional_recordings": 3,
+                "max_bidirectional_recording_fraction": 0.75,
+                "decision": "low_contrast_choice_family_candidate",
+                "gpu_training_ready": False,
+                "target_balances": {
+                    "low_contrast_choice_le_0.125": {
+                        "n_trials": 11384,
+                        "eligible_recordings": 31,
+                        "n_recordings": 31,
+                    }
+                },
+                "top_rows": [
+                    {
+                        "target_mode": "low_contrast_choice_le_0.125",
+                        "family": "fiber_tracts",
+                        "holdout": "CSH_ZAD_019",
+                        "decision": "candidate",
+                        "centered_delta_vs_shuffle": 0.021,
+                        "centered_delta_vs_total": 0.215,
+                        "target0_improved_vs_shuffle": 0.552,
+                        "target1_improved_vs_shuffle": 0.593,
+                        "n_bidirectional_recordings": 3,
+                        "n_recordings": 4,
+                    }
+                ],
+            }
+        },
+        low_contrast_choice_seed_sensitivity={
+            "summary": {
+                "n_cases": 1,
+                "n_robust_low_contrast_choice_seed_candidates": 0,
+                "max_positive_shuffle_delta_fraction": 0.8,
+                "decision": "no_low_contrast_choice_seed_candidate",
+                "gpu_training_ready": False,
+            },
+            "rows": [
+                {
+                    "target_mode": "low_contrast_choice_le_0.125",
+                    "family": "fiber_tracts",
+                    "holdout": "CSH_ZAD_019",
+                    "n_positive_shuffle_delta_seeds": 4,
+                    "n_candidate_seeds": 1,
+                    "n_seeds": 5,
+                    "mean_centered_delta_vs_shuffle": 0.019,
+                    "mean_centered_delta_vs_total": 0.215,
+                    "mean_target0": 0.527,
+                    "mean_target1": 0.560,
+                    "min_bidirectional_recordings": 0,
+                    "max_bidirectional_recordings": 3,
+                }
+            ],
+        },
+    )
+
+    assert "Low-Contrast Choice Family Gate" in markdown
+    assert "Low-Contrast Choice Projected Manifest Gate" in markdown
+    assert "Low-Contrast Choice Seed Sensitivity" in markdown
+    assert "do not train from the low-contrast choice row" in markdown
+
+
 def test_local_probe_matrix_rejects_failed_target_class(tmp_path: Path) -> None:
     gate_path = tmp_path / "gate.json"
     mismatch_path = tmp_path / "mismatch.json"

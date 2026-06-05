@@ -13,6 +13,7 @@ def test_build_report_tracks_current_no_spend_state() -> None:
         "behavior_cache_rebuild_required",
         "wheel_target_audit_required",
         "extreme_quantile_seed_validation_required",
+        "low_contrast_choice_seed_validation_required",
         "local_training_trigger_available",
         "no_local_training_trigger",
     }
@@ -80,6 +81,7 @@ def test_render_markdown_lists_closed_branches() -> None:
     assert "# Next Benchmark/Control Options Audit" in markdown
     assert "behavior-inclusive cache rebuild" in markdown
     assert "wheel-derived target family gate" in markdown
+    assert "low-contrast choice target redesign" in markdown
     assert "extreme-quantile behavioral target gate" in markdown
     assert "cutoff sensitivity" in markdown
     assert "region specificity scan" in markdown

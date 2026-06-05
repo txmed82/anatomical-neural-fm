@@ -3,13 +3,14 @@
 Ranks remaining no-spend branches after the current local audits. This is the planning gate before any new RunPod training.
 
 - recommended next: `new manifest with prospective bidirectional support`
-- closed branches: `18`
+- closed branches: `19`
 - decision: `no_local_training_trigger`
 - GPU trigger: At least one local row on the proposed manifest must clear delta_vs_shuffle>=0, delta_vs_total>=0, target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75 before training.
 
 | priority | branch | status | next action |
 |---:|---|---|---|
 | 1 | new manifest with prospective bidirectional support | `recommended_next` | Do not launch GPU training from the projected support80 panel; its model-free family and feature-mode gates have no candidates. Redesign the target/control locally. |
+| 84 | low-contrast choice target redesign | `closed` | Do not train: the low-contrast choice candidate does not remain a strict candidate across shuffle seeds. |
 | 85 | extreme-quantile behavioral target gate | `closed` | Do not train: exploratory interpretable region-pair candidates do not remain strict candidates across shuffle seeds. |
 | 86 | wheel-derived target family gate | `closed` | Do not spend on the tested wheel targets; move to a prospectively supported manifest. |
 | 87 | reaction-dynamics wheel targets | `closed` | Do not spend on reaction-dynamics wheel targets; the near miss fails true-vs-shuffle and does not replicate across feature modes. |
@@ -44,6 +45,12 @@ Ranks remaining no-spend branches after the current local audits. This is the pl
 - subject-stable shuffle-seed sensitivity found 0 robust candidates; max positive seed fraction=0.4
 - recording-subset replication selected zero stable validation rows
 - GPU trigger: At least one local row on the proposed manifest must clear delta_vs_shuffle>=0, delta_vs_total>=0, target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75 before training.
+
+### low-contrast choice target redesign
+- current-panel low-contrast choice gate found 0 candidates across 84 rows and max bidir 0.500
+- projected-panel low-contrast choice gate found 1 candidates across 96 rows and max bidir 0.750
+- low-contrast seed sensitivity found 0 robust candidates; max positive seed fraction=0.800
+- GPU trigger: A projected-panel low-contrast choice row must pass the unchanged local gate and remain a strict candidate across shuffle seeds before training.
 
 ### extreme-quantile behavioral target gate
 - extreme-quantile target family gate found 1 candidates across 175 rows and max bidir 1.000
