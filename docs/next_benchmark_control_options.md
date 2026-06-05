@@ -17,7 +17,7 @@ Ranks remaining no-spend branches after the current local audits. This is the pl
 | 90 | local gate meta-failure synthesis | `closed` | Use the meta-audit redesign rule: require prospectively defined same-recording target0+target1 evidence before any GPU run. |
 | 90 | recording bidirectionality prospectus | `closed` | Run the unchanged local gate on manifests/ibl_bwm_recording_bidirectionality_prospect_leads.json; treat any pass as a local redesign candidate, not a training trigger. |
 | 90 | prospect-lead derived target validation | `closed` | Do not train on prospect-lead candidates; same-subject non-lead recordings do not validate them. |
-| 90 | subject-stable local gate prospectus | `closed` | Do not train: subject-stable near misses do not robustly beat shuffled anatomy across seeds. |
+| 90 | subject-stable local gate prospectus | `closed` | Do not train from the current subject-stable broad-anatomy branch; exact family gates remain negative. |
 | 91 | behavior-inclusive cache rebuild | `closed` | Cache rebuild is complete; all matched recordings now expose wheel. Use the wheel-derived local target gate before any training. |
 | 92 | direct cached-field derived targets | `closed` | Do not launch GPU training from contrast_strength, response_latency, or prior_engaged. |
 | 93 | contextual cached trial-state targets | `closed` | Do not spend on contextual trial-sequence targets from the compact cache. |
@@ -86,6 +86,7 @@ Ranks remaining no-spend branches after the current local audits. This is the pl
 - prospectus found 5 subject-stable rows, 0 candidates, and 1 one-failure rows
 - subject-stable failures are shuffle=5, total_baseline=4
 - shuffle-seed sensitivity found 0 robust candidates across 5 subject-stable near misses
+- broad-anatomy mechanism audit found 9 contribution candidates but 0 exact family-gate candidates
 - GPU trigger: none
 
 ### behavior-inclusive cache rebuild

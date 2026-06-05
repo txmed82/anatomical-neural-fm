@@ -145,6 +145,7 @@ PROSPECT_LEAD_FEATURE_MODE_VALIDATION_FILE = "docs/prospect_lead_feature_mode_va
 PROSPECT_LEAD_SUBJECT_STABILITY_FILE = "docs/prospect_lead_subject_stability.json"
 SUBJECT_STABLE_LOCAL_GATE_PROSPECTUS_FILE = "docs/subject_stable_local_gate_prospectus.json"
 SUBJECT_STABLE_SHUFFLE_SEED_SENSITIVITY_FILE = "docs/subject_stable_shuffle_seed_sensitivity.json"
+SUBJECT_STABLE_BROAD_ANATOMY_MECHANISM_FILE = "docs/subject_stable_broad_anatomy_mechanism.json"
 MODEL_FREE_RECORDING_DIRECTIONALITY_AUDIT_FILE = "docs/model_free_recording_directionality_audit.json"
 SYMMETRIC_RECORDING_SUPPORT_AUDIT_FILE = "docs/symmetric_recording_support_audit.json"
 SYMMETRIC_THRESHOLD_SENSITIVITY_AUDIT_FILE = "docs/symmetric_threshold_sensitivity_audit.json"
@@ -482,6 +483,7 @@ def render_markdown(
     prospect_lead_subject_stability: dict | None = None,
     subject_stable_local_gate_prospectus: dict | None = None,
     subject_stable_shuffle_seed_sensitivity: dict | None = None,
+    subject_stable_broad_anatomy_mechanism: dict | None = None,
     model_free_recording_directionality_audit: dict | None = None,
     symmetric_recording_support_audit: dict | None = None,
     symmetric_threshold_sensitivity_audit: dict | None = None,
@@ -2021,6 +2023,41 @@ def render_markdown(
             ),
             "",
         ]
+    if subject_stable_broad_anatomy_mechanism is not None:
+        summary = subject_stable_broad_anatomy_mechanism["summary"]
+        top = subject_stable_broad_anatomy_mechanism["rows"][:5]
+        lines += [
+            "## Subject-Stable Broad-Anatomy Mechanism",
+            "",
+            "`docs/subject_stable_broad_anatomy_mechanism.md` decomposes the",
+            "subject-stable broad-anatomy near misses by predefined family",
+            "contribution, then checks each contribution candidate with the exact",
+            "single-family promotion gate.",
+            "",
+            f"- subject-stable rows: `{summary['n_subject_stable_rows']}`",
+            f"- contribution candidates: `{summary['n_bidirectional_family_candidates']}`",
+            f"- exact family-gate candidates: `{summary['n_family_gate_candidates']}`",
+            f"- decision: `{summary['decision']}`",
+            "",
+            "| source | target | holdout | contribution candidates | exact gate candidates |",
+            "|---|---|---|---|---|",
+        ]
+        for row in top:
+            contribution_candidates = ", ".join(row["bidirectional_family_candidates"]) or "none"
+            gate_candidates = ", ".join(item["family"] for item in row["family_gate_candidates"]) or "none"
+            lines.append(
+                f"| {row['source']} | {row['target_mode']} | {row['holdout']} | "
+                f"{contribution_candidates} | {gate_candidates} |"
+            )
+        lines += [
+            "",
+            (
+                "Decision: the apparent broad-anatomy family mechanism is contribution-only. "
+                "The exact single-family gates still fail shuffle and/or total baselines, "
+                "so this branch does not justify GPU training."
+            ),
+            "",
+        ]
     if model_free_recording_directionality_audit is not None:
         summary = model_free_recording_directionality_audit["summary"]
         overall = summary["overall"]
@@ -2464,6 +2501,9 @@ def main() -> int:
     subject_stable_shuffle_seed_sensitivity = read_mechanism_audit(
         REPO_ROOT / SUBJECT_STABLE_SHUFFLE_SEED_SENSITIVITY_FILE
     )
+    subject_stable_broad_anatomy_mechanism = read_mechanism_audit(
+        REPO_ROOT / SUBJECT_STABLE_BROAD_ANATOMY_MECHANISM_FILE
+    )
     model_free_recording_directionality_audit = read_mechanism_audit(
         REPO_ROOT / MODEL_FREE_RECORDING_DIRECTIONALITY_AUDIT_FILE
     )
@@ -2550,6 +2590,7 @@ def main() -> int:
         prospect_lead_subject_stability,
         subject_stable_local_gate_prospectus,
         subject_stable_shuffle_seed_sensitivity,
+        subject_stable_broad_anatomy_mechanism,
         model_free_recording_directionality_audit,
         symmetric_recording_support_audit,
         symmetric_threshold_sensitivity_audit,
@@ -2653,6 +2694,7 @@ def main() -> int:
         "prospect_lead_subject_stability": prospect_lead_subject_stability,
         "subject_stable_local_gate_prospectus": subject_stable_local_gate_prospectus,
         "subject_stable_shuffle_seed_sensitivity": subject_stable_shuffle_seed_sensitivity,
+        "subject_stable_broad_anatomy_mechanism": subject_stable_broad_anatomy_mechanism,
         "model_free_recording_directionality_audit": model_free_recording_directionality_audit,
         "symmetric_recording_support_audit": symmetric_recording_support_audit,
         "symmetric_threshold_sensitivity_audit": symmetric_threshold_sensitivity_audit,

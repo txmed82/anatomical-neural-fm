@@ -89,6 +89,7 @@ def test_render_markdown_lists_closed_branches() -> None:
     assert "subject-stability audit" in markdown
     assert "subject-stable local gate prospectus" in markdown
     assert "shuffle-seed sensitivity" in markdown
+    assert "broad-anatomy mechanism audit" in markdown
     assert "wheel in" in markdown
     assert "contextual cached trial-state targets" in markdown
     assert "narrow existing manifest further" in markdown

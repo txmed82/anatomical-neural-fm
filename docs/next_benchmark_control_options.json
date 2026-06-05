@@ -29,6 +29,7 @@
     "shared_broad_repair": "docs/shared_broad_anatomy_repair_sweep.json",
     "shared_family": "docs/shared_family_target_control_gate.json",
     "source_target_families": "docs/model_free_source_target_pair_gate_families_recording_centered.json",
+    "subject_stable_broad_anatomy_mechanism": "docs/subject_stable_broad_anatomy_mechanism.json",
     "subject_stable_local_gate_prospectus": "docs/subject_stable_local_gate_prospectus.json",
     "subject_stable_shuffle_seed_sensitivity": "docs/subject_stable_shuffle_seed_sensitivity.json",
     "symmetric_strict": "docs/symmetric_strict_failure_modes.json",
@@ -141,11 +142,12 @@
       "evidence": [
         "prospectus found 5 subject-stable rows, 0 candidates, and 1 one-failure rows",
         "subject-stable failures are shuffle=5, total_baseline=4",
-        "shuffle-seed sensitivity found 0 robust candidates across 5 subject-stable near misses"
+        "shuffle-seed sensitivity found 0 robust candidates across 5 subject-stable near misses",
+        "broad-anatomy mechanism audit found 9 contribution candidates but 0 exact family-gate candidates"
       ],
       "gpu_trigger": "none",
       "name": "subject-stable local gate prospectus",
-      "next_action": "Do not train: subject-stable near misses do not robustly beat shuffled anatomy across seeds.",
+      "next_action": "Do not train from the current subject-stable broad-anatomy branch; exact family gates remain negative.",
       "priority": 90,
       "status": "closed"
     },

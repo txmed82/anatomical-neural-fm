@@ -833,6 +833,28 @@ near misses across multiple within-recording shuffle seeds.
 
 Decision: the KS014 stable near misses are not robust to the within-recording shuffle seed. A future local trigger should require positive true-vs-shuffle evidence across multiple shuffle seeds before any GPU run.
 
+## Subject-Stable Broad-Anatomy Mechanism
+
+`docs/subject_stable_broad_anatomy_mechanism.md` decomposes the
+subject-stable broad-anatomy near misses by predefined family
+contribution, then checks each contribution candidate with the exact
+single-family promotion gate.
+
+- subject-stable rows: `5`
+- contribution candidates: `9`
+- exact family-gate candidates: `0`
+- decision: `contribution_only_subject_stable_broad_family_mechanism`
+
+| source | target | holdout | contribution candidates | exact gate candidates |
+|---|---|---|---|---|
+| reaction_recording_centered | wheel_reaction_latency | KS014 | broad_named_anatomy | none |
+| wheel_targets | wheel_active | KS014 | midbrain, broad_named_anatomy | none |
+| reaction_recording_centered | post_stim_speedup | KS014 | midbrain, broad_named_anatomy | none |
+| derived_recording_centered | response_latency | KS014 | broad_named_anatomy, fiber_tracts | none |
+| wheel_targets | wheel_displacement | KS014 | broad_named_anatomy, midbrain | none |
+
+Decision: the apparent broad-anatomy family mechanism is contribution-only. The exact single-family gates still fail shuffle and/or total baselines, so this branch does not justify GPU training.
+
 ## Model-Free Recording Directionality Audit
 
 `docs/model_free_recording_directionality_audit.md` classifies every

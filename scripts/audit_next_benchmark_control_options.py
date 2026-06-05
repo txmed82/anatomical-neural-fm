@@ -35,6 +35,7 @@ ARTIFACTS = {
     "prospect_lead_subject_stability": "docs/prospect_lead_subject_stability.json",
     "subject_stable_local_gate_prospectus": "docs/subject_stable_local_gate_prospectus.json",
     "subject_stable_shuffle_seed_sensitivity": "docs/subject_stable_shuffle_seed_sensitivity.json",
+    "subject_stable_broad_anatomy_mechanism": "docs/subject_stable_broad_anatomy_mechanism.json",
     "local_cached_manifest_candidates": "docs/local_cached_manifest_candidates.json",
     "projected_support80_shared_family": "docs/shared_family_target_control_gate_projected_support80.json",
     "projected_support80_all_families_recording_centered": (
@@ -174,6 +175,10 @@ def build_report() -> dict:
     )
     seed_sensitivity = artifacts["subject_stable_shuffle_seed_sensitivity"]
     seed_sensitivity_summary = seed_sensitivity.get("summary", {}) if seed_sensitivity is not None else {}
+    subject_stable_mechanism = artifacts["subject_stable_broad_anatomy_mechanism"]
+    subject_stable_mechanism_summary = (
+        subject_stable_mechanism.get("summary", {}) if subject_stable_mechanism is not None else {}
+    )
     local_manifest_summary = local_manifest_candidates.get("summary", {}) if local_manifest_candidates is not None else {}
     local_manifest_decision = local_manifest_summary.get("decision")
     local_projected_panel_ready = local_manifest_decision == "local_expanded_candidate_ready_for_model_free_gate"
@@ -691,9 +696,22 @@ def build_report() -> dict:
                         f"{seed_sensitivity_summary.get('n_cases', 'n/a')} subject-stable near misses"
                     )
                 ),
+                (
+                    "subject-stable broad-anatomy mechanism audit has not been run yet"
+                    if subject_stable_mechanism is None
+                    else (
+                        "broad-anatomy mechanism audit found "
+                        f"{subject_stable_mechanism_summary.get('n_bidirectional_family_candidates', 'n/a')} "
+                        "contribution candidates but "
+                        f"{subject_stable_mechanism_summary.get('n_family_gate_candidates', 'n/a')} "
+                        "exact family-gate candidates"
+                    )
+                ),
             ],
             next_action=(
-                seed_sensitivity_summary.get("next_action", "Keep subject-stable redesign local.")
+                "Do not train from the current subject-stable broad-anatomy branch; exact family gates remain negative."
+                if subject_stable_mechanism is not None
+                else seed_sensitivity_summary.get("next_action", "Keep subject-stable redesign local.")
                 if seed_sensitivity is not None
                 else subject_stable_summary.get("next_action", "Keep subject-stable redesign local.")
                 if subject_stable_prospectus is not None

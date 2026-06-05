@@ -69,6 +69,34 @@ def test_render_markdown_keeps_no_paid_broadening_decision(tmp_path: Path) -> No
     assert "No current strict-gate artifact supports paid broadening" in markdown
 
 
+def test_render_markdown_includes_subject_stable_mechanism_section() -> None:
+    markdown = render_markdown(
+        [],
+        [],
+        subject_stable_broad_anatomy_mechanism={
+            "summary": {
+                "n_subject_stable_rows": 1,
+                "n_bidirectional_family_candidates": 1,
+                "n_family_gate_candidates": 0,
+                "decision": "contribution_only_subject_stable_broad_family_mechanism",
+            },
+            "rows": [
+                {
+                    "source": "reaction_recording_centered",
+                    "target_mode": "wheel_reaction_latency",
+                    "holdout": "KS014",
+                    "bidirectional_family_candidates": ["broad_named_anatomy"],
+                    "family_gate_candidates": [],
+                }
+            ],
+        },
+    )
+
+    assert "Subject-Stable Broad-Anatomy Mechanism" in markdown
+    assert "exact family-gate candidates: `0`" in markdown
+    assert "does not justify GPU training" in markdown
+
+
 def test_local_probe_matrix_rejects_failed_target_class(tmp_path: Path) -> None:
     gate_path = tmp_path / "gate.json"
     mismatch_path = tmp_path / "mismatch.json"
