@@ -117,7 +117,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--name-prefix", default="anfm-nr0019-parent-compact")
     parser.add_argument("--output-root", default="runs/lso_nr0019_shared_parent_shuffle")
     parser.add_argument("--result-doc", default="docs/lso_nr0019_shared_parent_shuffle_results.md")
-    parser.add_argument("--sweep-env", action="append", default=["SUBJECTS=NR_0019"])
+    parser.add_argument("--sweep-env", action="append", default=None)
     parser.add_argument("--dependency-diagnostic", action="store_true")
     return parser.parse_args()
 
@@ -137,7 +137,7 @@ def main() -> int:
         output_root=args.output_root,
         result_doc=args.result_doc,
         dependency_diagnostic=args.dependency_diagnostic,
-        sweep_env=tuple(args.sweep_env),
+        sweep_env=tuple(args.sweep_env or ["SUBJECTS=NR_0019"]),
     )
 
     branch, git_ready = git_branch_status()
