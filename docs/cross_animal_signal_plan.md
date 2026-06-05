@@ -1563,6 +1563,25 @@ only training trigger remains a local row with delta_vs_shuffle>=`0`,
 delta_vs_total>=`0`, target0>=`0.55`, target1>=`0.55`, and
 bidirectional_recording_fraction>=`0.75`.
 
+Derived target family gate:
+`scripts/audit_derived_target_family_gate.py` implements the first concrete
+new-target branch from cached trial fields. It defines `contrast_strength`
+(above/below per-recording nonzero contrast median), `response_latency`
+(fast/slow response relative to each recording's median), and `prior_engaged`
+(biased prior block versus neutral), then applies the same shared-family
+true-vs-shuffle, total-baseline, target0/target1, and same-recording
+bidirectionality gate. All three targets are usable in all 28 recordings, but
+the screen still finds zero candidates across 84 rows. The closest row is
+`response_latency` + `broad_named_anatomy` for `KS014`: target0 `0.714`,
+target1 `0.745`, and `3/4` bidirectional recordings, but centered delta vs
+within-recording shuffle is `-0.004`, so it fails the control. High positive
+rows for `hippocampal_formation`, `fiber_tracts`, and `thalamic` remain
+one-sided or fail the total-spike baseline. This closes direct cached-field
+target derivation as an A100 trigger. The next roadmap branch should use a
+genuinely different benchmark/control source, such as an externally defined
+behavioral state, anatomy-informed task family, or new data slice, and still
+pass the local gate before any paid training.
+
 Recording-centered feature check:
 The gate also supports `--feature-mode recording_centered`, which subtracts
 each recording's mean parent-region feature vector before fitting. This reduces

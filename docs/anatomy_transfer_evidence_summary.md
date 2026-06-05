@@ -489,6 +489,20 @@ a new benchmark/control target definition, with the same local promotion gate:
 delta vs shuffle and total baseline nonnegative, target0 and target1 >=`0.55`,
 and same-recording bidirectional fraction >=`0.75`.
 
+Derived target family gate:
+`docs/derived_target_family_gate.md` tests the first concrete version of that
+branch using cached trial fields: `contrast_strength`, `response_latency`, and
+`prior_engaged`. All three targets are trial-balanced across the full
+28-recording panel, but none pass the shared-family gate: zero candidates
+across 84 rows. The nearest symmetric row is `response_latency` +
+`broad_named_anatomy` on `KS014`, with target0 `0.714`, target1 `0.745`, and
+`3/4` bidirectional recordings, but it fails the within-recording shuffle
+control with centered delta `-0.004`. Other high-delta rows are one-sided or
+lose to the total-spike baseline. Decision: cached-derived trial targets do
+not justify GPU training; the next target/control redesign needs either
+external behavioral/neural structure or a genuinely different benchmark, not
+another direct transform of these cached fields.
+
 Recording-centered feature check:
 `docs/model_free_recording_bidirectional_gate_recording_centered.md` subtracts
 each recording's own mean parent-region feature vector before ridge fitting.

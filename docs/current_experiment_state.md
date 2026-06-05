@@ -367,6 +367,36 @@ branches after the current local negative audits.
 
 Decision: the next aligned work is a new benchmark/control target definition that first passes the same local model-free gate. Current feature sweeps, manifest narrowing, source-target narrowing, and recording-subset selection are closed as GPU triggers.
 
+## Derived Target Family Gate
+
+`docs/derived_target_family_gate.md` tests the recommended new
+benchmark/control direction using three cached trial-field targets:
+`contrast_strength`, `response_latency`, and `prior_engaged`.
+
+- rows: `84`
+- candidates: `0`
+- positive centered-delta rows: `38`
+- max bidirectional recordings: `3`
+- max bidirectional recording fraction: `0.750`
+- decision: `no_derived_target_family_candidate`
+
+| target | trials | eligible recordings | recordings |
+|---|---:|---:|---:|
+| contrast_strength | 11556 | 28 | 28 |
+| prior_engaged | 17882 | 28 | 28 |
+| response_latency | 17868 | 28 | 28 |
+
+| target | family | holdout | decision | delta shuffle | delta total | targets | bidir recs |
+|---|---|---|---|---:|---:|---|---:|
+| response_latency | broad_named_anatomy | KS014 | reject: shuffle | -0.004 | -0.005 | 0.714/0.745 | 3/4 |
+| response_latency | hippocampal_formation | KS014 | reject: total baseline | +0.669 | -0.004 | 0.915/0.527 | 2/4 |
+| prior_engaged | fiber_tracts | KS014 | reject: target1 | +0.263 | +0.220 | 0.850/0.473 | 2/4 |
+| prior_engaged | fiber_tracts | CSH_ZAD_019 | reject: total baseline | +0.042 | -0.061 | 0.739/0.546 | 2/4 |
+| response_latency | broad_named_anatomy | SWC_038 | reject: shuffle | -0.004 | -0.005 | 0.609/0.543 | 2/4 |
+| contrast_strength | broad_named_anatomy | KS014 | reject: shuffle | -0.005 | -0.006 | 0.564/0.507 | 2/4 |
+
+Decision: cached trial-field target redesign does not yet justify GPU training. `response_latency` gives the nearest symmetric row with `3/4` bidirectional recordings, but it still loses to the within-recording shuffle control. Other positive rows remain one-sided or fail the total-spike baseline.
+
 ## Matched-Region Model-Free Panel
 
 `docs/model_free_matched_support80_hdf5_panel.md` runs the closed-form
