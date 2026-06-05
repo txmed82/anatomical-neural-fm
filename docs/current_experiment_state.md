@@ -403,16 +403,16 @@ Decision: stricter manifest support alone does not rescue the signal. The clean 
 branches after the current local negative audits.
 
 - recommended next: `new manifest with prospective bidirectional support`
-- closed branches: `24`
+- closed branches: `25`
 - decision: `no_local_training_trigger`
 - GPU trigger: At least one local row on the proposed manifest must clear delta_vs_shuffle>=0, delta_vs_total>=0, target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75 before training.
 
 | priority | branch | status | next action |
 |---:|---|---|---|
 | 1 | new manifest with prospective bidirectional support | `recommended_next` | Do not launch GPU training from the projected support80 panel; its model-free family and feature-mode gates have no candidates. Redesign the target/control locally. |
-| 81 | signed wheel-direction motor target | `closed` | Do not train: signed wheel-direction does not pass current or projected local gates. |
-| 82 | neutral-prior low-contrast choice target redesign | `closed` | Do not train: neutral-prior low-contrast choice fails projected-panel and seed-stability gates. |
-| 83 | recording-zscore anatomy representation | `closed` | Do not train: recording-zscore anatomy features do not pass the local gate. |
+| 81 | lateralized family anatomy target | `closed` | Do not train: left/right family anatomy does not pass current or projected local gates. |
+| 82 | signed wheel-direction motor target | `closed` | Do not train: signed wheel-direction does not pass current or projected local gates. |
+| 83 | neutral-prior low-contrast choice target redesign | `closed` | Do not train: neutral-prior low-contrast choice fails projected-panel and seed-stability gates. |
 
 Decision: the current cached target, contextual target, wheel-derived target, reaction-dynamics target, cell-type prior target/control, waveform target/control, and meta-failure synthesis branches are closed as GPU triggers. The next aligned work is a prospectively supported benchmark/control redesign, still gated locally before any paid training.
 
@@ -573,6 +573,52 @@ the signed wheel-direction target on the projected local manifest.
 | signed_wheel_direction | broad_named_anatomy | SWC_038 | reject: shuffle | -0.001 | -0.003 | 0.529/0.497 | 1/4 |
 
 Decision: the projected panel also has zero signed wheel-direction candidates. Max same-recording bidirectional support remains 2/4, so this motor target is closed.
+
+## Lateralized Family Target Gate
+
+`docs/lateralized_family_target_gate.md` splits each anatomical family
+into left/right hemisphere count channels before the local model-free gate.
+
+- rows: `210`
+- candidates: `0`
+- positive centered-delta rows: `93`
+- max bidirectional recordings: `2`
+- max bidirectional recording fraction: `0.500`
+- decision: `no_lateralized_family_target_candidate`
+
+| target | family | holdout | decision | delta shuffle | delta total | targets | bidir recs | left/right auc |
+|---|---|---|---|---:|---:|---|---:|---:|
+| choice | broad_named_anatomy | SWC_043 | reject: total baseline | +0.008 | -0.149 | 0.536/0.610 | 2/4 | 0.423/0.604 |
+| stimulus_side | midbrain | KS014 | reject: target1 | +0.212 | +0.134 | 0.918/0.135 | 1/4 | 0.666/0.604 |
+| stimulus_side | cortical_visual | NR_0019 | reject: target0 | +0.168 | +0.248 | 0.095/0.925 | 1/4 | 0.695/0.989 |
+| choice | basal_ganglia | NR_0019 | reject: target1 | +0.136 | +0.184 | 0.714/0.427 | 1/4 | 0.570/0.586 |
+| stimulus_side | brainstem_interbrain | NR_0019 | reject: target0 | +0.123 | +0.075 | 0.377/0.742 | 1/4 | 0.649/0.989 |
+| signed_wheel_direction | brainstem_interbrain | NR_0019 | reject: target0 | +0.119 | +0.175 | 0.462/0.745 | 1/4 | 0.621/0.821 |
+
+Decision: left/right family features do not create a training trigger on the current panel. Positive deltas remain one-sided or below 3/4 same-recording bidirectional support.
+
+## Lateralized Family Projected Manifest Gate
+
+`docs/lateralized_family_target_gate_projected_hdf5.md` reruns
+the left/right family target gate on the projected local manifest.
+
+- rows: `240`
+- candidates: `0`
+- positive centered-delta rows: `127`
+- max bidirectional recordings: `2`
+- max bidirectional recording fraction: `0.500`
+- decision: `no_lateralized_family_target_candidate`
+
+| target | family | holdout | decision | delta shuffle | delta total | targets | bidir recs | left/right auc |
+|---|---|---|---|---:|---:|---|---:|---:|
+| signed_wheel_direction | basal_ganglia | CSHL045 | reject: shuffle | -0.140 | +0.066 | 0.204/0.860 | 2/4 | 0.520/0.525 |
+| signed_wheel_direction | midbrain | ZFM-01577 | reject: target1 | +0.226 | +0.265 | 0.907/0.151 | 1/3 | 0.505/0.542 |
+| choice | midbrain | ZFM-01577 | reject: target1 | +0.162 | +0.198 | 0.894/0.131 | 1/3 | 0.529/0.529 |
+| stimulus_side | midbrain | ZFM-01577 | reject: total baseline | +0.060 | -0.002 | 0.912/0.160 | 1/3 | 0.775/0.964 |
+| choice | basal_ganglia | ZFM-01577 | reject: total baseline | +0.045 | -0.019 | 0.887/0.138 | 1/3 | 0.537/0.953 |
+| stimulus_side | cortical_visual | MFD_06 | reject: target1 | +0.259 | +0.187 | 0.819/0.221 | 1/4 | 0.491/0.949 |
+
+Decision: the projected panel also has zero lateralized-family candidates. This closes simple hemisphere-split family counts as the rescue path.
 
 ## Low-Contrast Choice Family Gate
 

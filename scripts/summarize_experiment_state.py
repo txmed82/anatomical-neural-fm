@@ -114,6 +114,8 @@ CONTEXTUAL_TARGET_FAMILY_GATE_FILE = "docs/contextual_target_family_gate.json"
 WHEEL_TARGET_FAMILY_GATE_FILE = "docs/wheel_target_family_gate.json"
 SIGNED_WHEEL_DIRECTION_FAMILY_GATE_FILE = "docs/signed_wheel_direction_family_gate.json"
 SIGNED_WHEEL_DIRECTION_PROJECTED_GATE_FILE = "docs/signed_wheel_direction_family_gate_projected_hdf5.json"
+LATERALIZED_FAMILY_TARGET_GATE_FILE = "docs/lateralized_family_target_gate.json"
+LATERALIZED_FAMILY_TARGET_PROJECTED_GATE_FILE = "docs/lateralized_family_target_gate_projected_hdf5.json"
 LOW_CONTRAST_CHOICE_FAMILY_GATE_FILE = "docs/low_contrast_choice_family_gate.json"
 LOW_CONTRAST_CHOICE_PROJECTED_GATE_FILE = "docs/low_contrast_choice_family_gate_projected_hdf5.json"
 LOW_CONTRAST_CHOICE_SEED_SENSITIVITY_FILE = "docs/low_contrast_choice_seed_sensitivity.json"
@@ -530,6 +532,8 @@ def render_markdown(
     wheel_target_family_gate: dict | None = None,
     signed_wheel_direction_family_gate: dict | None = None,
     signed_wheel_direction_projected_gate: dict | None = None,
+    lateralized_family_target_gate: dict | None = None,
+    lateralized_family_target_projected_gate: dict | None = None,
     low_contrast_choice_family_gate: dict | None = None,
     low_contrast_choice_projected_gate: dict | None = None,
     low_contrast_choice_seed_sensitivity: dict | None = None,
@@ -1663,6 +1667,77 @@ def render_markdown(
             (
                 "Decision: the projected panel also has zero signed wheel-direction candidates. "
                 "Max same-recording bidirectional support remains 2/4, so this motor target is closed."
+            ),
+            "",
+        ]
+    if lateralized_family_target_gate is not None:
+        summary = lateralized_family_target_gate["summary"]
+        top = summary["top_rows"][:6]
+        lines += [
+            "## Lateralized Family Target Gate",
+            "",
+            "`docs/lateralized_family_target_gate.md` splits each anatomical family",
+            "into left/right hemisphere count channels before the local model-free gate.",
+            "",
+            f"- rows: `{summary['n_rows']}`",
+            f"- candidates: `{summary['n_candidates']}`",
+            f"- positive centered-delta rows: `{summary['n_positive_centered_delta']}`",
+            f"- max bidirectional recordings: `{summary['max_bidirectional_recordings']}`",
+            f"- max bidirectional recording fraction: `{summary['max_bidirectional_recording_fraction']:.3f}`",
+            f"- decision: `{summary['decision']}`",
+            "",
+            "| target | family | holdout | decision | delta shuffle | delta total | targets | bidir recs | left/right auc |",
+            "|---|---|---|---|---:|---:|---|---:|---:|",
+        ]
+        for row in top:
+            lines.append(
+                f"| {row['target_mode']} | {row['family']} | {row['holdout']} | {row['decision']} | "
+                f"{row['centered_delta_vs_shuffle']:+.3f} | {row['centered_delta_vs_total']:+.3f} | "
+                f"{row['target0_improved_vs_shuffle']:.3f}/{row['target1_improved_vs_shuffle']:.3f} | "
+                f"{row['n_bidirectional_recordings']}/{row['n_recordings']} | "
+                f"{row['left_centered_auc']:.3f}/{row['right_centered_auc']:.3f} |"
+            )
+        lines += [
+            "",
+            (
+                "Decision: left/right family features do not create a training trigger on "
+                "the current panel. Positive deltas remain one-sided or below 3/4 "
+                "same-recording bidirectional support."
+            ),
+            "",
+        ]
+    if lateralized_family_target_projected_gate is not None:
+        summary = lateralized_family_target_projected_gate["summary"]
+        top = summary["top_rows"][:6]
+        lines += [
+            "## Lateralized Family Projected Manifest Gate",
+            "",
+            "`docs/lateralized_family_target_gate_projected_hdf5.md` reruns",
+            "the left/right family target gate on the projected local manifest.",
+            "",
+            f"- rows: `{summary['n_rows']}`",
+            f"- candidates: `{summary['n_candidates']}`",
+            f"- positive centered-delta rows: `{summary['n_positive_centered_delta']}`",
+            f"- max bidirectional recordings: `{summary['max_bidirectional_recordings']}`",
+            f"- max bidirectional recording fraction: `{summary['max_bidirectional_recording_fraction']:.3f}`",
+            f"- decision: `{summary['decision']}`",
+            "",
+            "| target | family | holdout | decision | delta shuffle | delta total | targets | bidir recs | left/right auc |",
+            "|---|---|---|---|---:|---:|---|---:|---:|",
+        ]
+        for row in top:
+            lines.append(
+                f"| {row['target_mode']} | {row['family']} | {row['holdout']} | {row['decision']} | "
+                f"{row['centered_delta_vs_shuffle']:+.3f} | {row['centered_delta_vs_total']:+.3f} | "
+                f"{row['target0_improved_vs_shuffle']:.3f}/{row['target1_improved_vs_shuffle']:.3f} | "
+                f"{row['n_bidirectional_recordings']}/{row['n_recordings']} | "
+                f"{row['left_centered_auc']:.3f}/{row['right_centered_auc']:.3f} |"
+            )
+        lines += [
+            "",
+            (
+                "Decision: the projected panel also has zero lateralized-family candidates. "
+                "This closes simple hemisphere-split family counts as the rescue path."
             ),
             "",
         ]
@@ -3369,6 +3444,10 @@ def main() -> int:
     wheel_target_family_gate = read_mechanism_audit(REPO_ROOT / WHEEL_TARGET_FAMILY_GATE_FILE)
     signed_wheel_direction_family_gate = read_mechanism_audit(REPO_ROOT / SIGNED_WHEEL_DIRECTION_FAMILY_GATE_FILE)
     signed_wheel_direction_projected_gate = read_mechanism_audit(REPO_ROOT / SIGNED_WHEEL_DIRECTION_PROJECTED_GATE_FILE)
+    lateralized_family_target_gate = read_mechanism_audit(REPO_ROOT / LATERALIZED_FAMILY_TARGET_GATE_FILE)
+    lateralized_family_target_projected_gate = read_mechanism_audit(
+        REPO_ROOT / LATERALIZED_FAMILY_TARGET_PROJECTED_GATE_FILE
+    )
     low_contrast_choice_family_gate = read_mechanism_audit(REPO_ROOT / LOW_CONTRAST_CHOICE_FAMILY_GATE_FILE)
     low_contrast_choice_projected_gate = read_mechanism_audit(REPO_ROOT / LOW_CONTRAST_CHOICE_PROJECTED_GATE_FILE)
     low_contrast_choice_seed_sensitivity = read_mechanism_audit(
@@ -3535,6 +3614,8 @@ def main() -> int:
         wheel_target_family_gate,
         signed_wheel_direction_family_gate,
         signed_wheel_direction_projected_gate,
+        lateralized_family_target_gate,
+        lateralized_family_target_projected_gate,
         low_contrast_choice_family_gate,
         low_contrast_choice_projected_gate,
         low_contrast_choice_seed_sensitivity,
@@ -3654,6 +3735,8 @@ def main() -> int:
         "wheel_target_family_gate": wheel_target_family_gate,
         "signed_wheel_direction_family_gate": signed_wheel_direction_family_gate,
         "signed_wheel_direction_projected_gate": signed_wheel_direction_projected_gate,
+        "lateralized_family_target_gate": lateralized_family_target_gate,
+        "lateralized_family_target_projected_gate": lateralized_family_target_projected_gate,
         "low_contrast_choice_family_gate": low_contrast_choice_family_gate,
         "low_contrast_choice_projected_gate": low_contrast_choice_projected_gate,
         "low_contrast_choice_seed_sensitivity": low_contrast_choice_seed_sensitivity,

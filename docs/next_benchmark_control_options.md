@@ -3,22 +3,23 @@
 Ranks remaining no-spend branches after the current local audits. This is the planning gate before any new RunPod training.
 
 - recommended next: `new manifest with prospective bidirectional support`
-- closed branches: `24`
+- closed branches: `25`
 - decision: `no_local_training_trigger`
 - GPU trigger: At least one local row on the proposed manifest must clear delta_vs_shuffle>=0, delta_vs_total>=0, target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75 before training.
 
 | priority | branch | status | next action |
 |---:|---|---|---|
 | 1 | new manifest with prospective bidirectional support | `recommended_next` | Do not launch GPU training from the projected support80 panel; its model-free family and feature-mode gates have no candidates. Redesign the target/control locally. |
-| 81 | signed wheel-direction motor target | `closed` | Do not train: signed wheel-direction does not pass current or projected local gates. |
-| 82 | neutral-prior low-contrast choice target redesign | `closed` | Do not train: neutral-prior low-contrast choice fails projected-panel and seed-stability gates. |
-| 83 | recording-zscore anatomy representation | `closed` | Do not train: recording-zscore anatomy features do not pass the local gate. |
-| 84 | prior-aligned choice target redesign | `closed` | Do not train: prior-aligned choice does not pass the projected-panel local gate. |
-| 85 | correct low-contrast choice target redesign | `closed` | Do not train: correct-only low-contrast choice removes the projected-panel candidate. |
-| 86 | low-contrast choice target redesign | `closed` | Do not train: the low-contrast choice candidate does not remain a strict candidate across shuffle seeds. |
-| 87 | extreme-quantile behavioral target gate | `closed` | Do not train: exploratory interpretable region-pair candidates do not remain strict candidates across shuffle seeds. |
-| 88 | wheel-derived target family gate | `closed` | Do not spend on the tested wheel targets; move to a prospectively supported manifest. |
-| 89 | reaction-dynamics wheel targets | `closed` | Do not spend on reaction-dynamics wheel targets; the near miss fails true-vs-shuffle and does not replicate across feature modes. |
+| 81 | lateralized family anatomy target | `closed` | Do not train: left/right family anatomy does not pass current or projected local gates. |
+| 82 | signed wheel-direction motor target | `closed` | Do not train: signed wheel-direction does not pass current or projected local gates. |
+| 83 | neutral-prior low-contrast choice target redesign | `closed` | Do not train: neutral-prior low-contrast choice fails projected-panel and seed-stability gates. |
+| 84 | recording-zscore anatomy representation | `closed` | Do not train: recording-zscore anatomy features do not pass the local gate. |
+| 85 | prior-aligned choice target redesign | `closed` | Do not train: prior-aligned choice does not pass the projected-panel local gate. |
+| 86 | correct low-contrast choice target redesign | `closed` | Do not train: correct-only low-contrast choice removes the projected-panel candidate. |
+| 87 | low-contrast choice target redesign | `closed` | Do not train: the low-contrast choice candidate does not remain a strict candidate across shuffle seeds. |
+| 88 | extreme-quantile behavioral target gate | `closed` | Do not train: exploratory interpretable region-pair candidates do not remain strict candidates across shuffle seeds. |
+| 89 | wheel-derived target family gate | `closed` | Do not spend on the tested wheel targets; move to a prospectively supported manifest. |
+| 90 | reaction-dynamics wheel targets | `closed` | Do not spend on reaction-dynamics wheel targets; the near miss fails true-vs-shuffle and does not replicate across feature modes. |
 | 90 | cell-type prior target/control gate | `closed` | Do not spend on broad ABC cell-class prior channels; they do not pass the local bidirectional gate. |
 | 90 | waveform target/control gate | `closed` | Do not spend on simple waveform-channel controls; they do not pass the local bidirectional gate. |
 | 90 | local gate meta-failure synthesis | `closed` | Use the meta-audit redesign rule: require prospectively defined same-recording target0+target1 evidence before any GPU run. |
@@ -50,6 +51,11 @@ Ranks remaining no-spend branches after the current local audits. This is the pl
 - subject-stable shuffle-seed sensitivity found 0 robust candidates; max positive seed fraction=0.4
 - recording-subset replication selected zero stable validation rows
 - GPU trigger: At least one local row on the proposed manifest must clear delta_vs_shuffle>=0, delta_vs_total>=0, target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75 before training.
+
+### lateralized family anatomy target
+- current-panel lateralized family gate found 0 candidates across 210 rows and max bidir 0.500
+- projected-panel lateralized family gate found 0 candidates across 240 rows and max bidir 0.500
+- GPU trigger: none
 
 ### signed wheel-direction motor target
 - current-panel signed wheel-direction gate found 0 candidates across 70 rows and max bidir 0.500

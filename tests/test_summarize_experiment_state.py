@@ -551,6 +551,46 @@ def test_render_markdown_includes_signed_wheel_direction_veto() -> None:
     assert "this motor target is closed" in markdown
 
 
+def test_render_markdown_includes_lateralized_family_veto() -> None:
+    gate_payload = {
+        "summary": {
+            "n_rows": 240,
+            "n_candidates": 0,
+            "n_positive_centered_delta": 127,
+            "max_bidirectional_recordings": 2,
+            "max_bidirectional_recording_fraction": 0.5,
+            "decision": "no_lateralized_family_target_candidate",
+            "top_rows": [
+                {
+                    "target_mode": "choice",
+                    "family": "broad_named_anatomy",
+                    "holdout": "SWC_043",
+                    "decision": "reject: total baseline",
+                    "centered_delta_vs_shuffle": 0.008,
+                    "centered_delta_vs_total": -0.149,
+                    "target0_improved_vs_shuffle": 0.536,
+                    "target1_improved_vs_shuffle": 0.610,
+                    "n_bidirectional_recordings": 2,
+                    "n_recordings": 4,
+                    "left_centered_auc": 0.423,
+                    "right_centered_auc": 0.604,
+                }
+            ],
+        }
+    }
+
+    markdown = render_markdown(
+        [],
+        [],
+        lateralized_family_target_gate=gate_payload,
+        lateralized_family_target_projected_gate=gate_payload,
+    )
+
+    assert "Lateralized Family Target Gate" in markdown
+    assert "Lateralized Family Projected Manifest Gate" in markdown
+    assert "hemisphere-split family counts" in markdown
+
+
 def test_render_markdown_includes_correct_low_contrast_choice_veto() -> None:
     gate_payload = {
         "summary": {

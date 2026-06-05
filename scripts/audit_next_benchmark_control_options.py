@@ -50,6 +50,8 @@ ARTIFACTS = {
     "reaction_dynamics_target_family_unit_residuals": "docs/reaction_dynamics_target_family_gate_unit_residuals.json",
     "signed_wheel_direction_family": "docs/signed_wheel_direction_family_gate.json",
     "signed_wheel_direction_projected": "docs/signed_wheel_direction_family_gate_projected_hdf5.json",
+    "lateralized_family_target": "docs/lateralized_family_target_gate.json",
+    "lateralized_family_target_projected": "docs/lateralized_family_target_gate_projected_hdf5.json",
     "cell_type_prior_target_control": "docs/cell_type_prior_target_control_gate.json",
     "waveform_target_control": "docs/waveform_target_control_gate.json",
     "local_gate_meta_failures": "docs/local_gate_meta_failure_audit.json",
@@ -184,6 +186,12 @@ def build_report() -> dict:
     signed_wheel_projected = artifacts["signed_wheel_direction_projected"]
     signed_wheel_projected_summary = (
         signed_wheel_projected.get("summary", {}) if signed_wheel_projected is not None else {}
+    )
+    lateralized = artifacts["lateralized_family_target"]
+    lateralized_summary = lateralized.get("summary", {}) if lateralized is not None else {}
+    lateralized_projected = artifacts["lateralized_family_target_projected"]
+    lateralized_projected_summary = (
+        lateralized_projected.get("summary", {}) if lateralized_projected is not None else {}
     )
     low_contrast = artifacts["low_contrast_choice_family"]
     low_contrast_summary = low_contrast.get("summary", {}) if low_contrast is not None else {}
@@ -355,7 +363,7 @@ def build_report() -> dict:
                 if not wheel_done or (wheel_candidates or 0) > 0
                 else "closed"
             ),
-            priority=2 if not behavior_ready else (1 if not wheel_done or (wheel_candidates or 0) > 0 else 88),
+            priority=2 if not behavior_ready else (1 if not wheel_done or (wheel_candidates or 0) > 0 else 89),
             evidence=[
                 (
                     f"behavior-cache preflight has wheel in {wheel_count}/{n_behavior_recordings} "
@@ -389,9 +397,42 @@ def build_report() -> dict:
             ),
         ),
         branch(
+            name="lateralized family anatomy target",
+            status="closed" if lateralized_projected is not None else "secondary_after_wheel",
+            priority=81 if lateralized_projected is not None else 3,
+            evidence=[
+                (
+                    "current-panel lateralized family gate has not been run yet"
+                    if lateralized is None
+                    else (
+                        "current-panel lateralized family gate found "
+                        f"{lateralized_summary.get('n_candidates', 'n/a')} candidates across "
+                        f"{lateralized_summary.get('n_rows', 'n/a')} rows and max bidir "
+                        f"{lateralized_summary.get('max_bidirectional_recording_fraction', 0.0):.3f}"
+                    )
+                ),
+                (
+                    "projected-panel lateralized family gate has not been run yet"
+                    if lateralized_projected is None
+                    else (
+                        "projected-panel lateralized family gate found "
+                        f"{lateralized_projected_summary.get('n_candidates', 'n/a')} candidates across "
+                        f"{lateralized_projected_summary.get('n_rows', 'n/a')} rows and max bidir "
+                        f"{lateralized_projected_summary.get('max_bidirectional_recording_fraction', 0.0):.3f}"
+                    )
+                ),
+            ],
+            next_action=(
+                "Do not train: left/right family anatomy does not pass current or projected local gates."
+                if lateralized_projected is not None
+                else "Run the lateralized family gate on current and projected manifests."
+            ),
+            gpu_trigger="none",
+        ),
+        branch(
             name="signed wheel-direction motor target",
             status="closed" if signed_wheel_projected is not None else "secondary_after_wheel",
-            priority=81 if signed_wheel_projected is not None else 3,
+            priority=82 if signed_wheel_projected is not None else 3,
             evidence=[
                 (
                     "current-panel signed wheel-direction gate has not been run yet"
@@ -428,7 +469,7 @@ def build_report() -> dict:
                 if neutral_prior_low_contrast_projected is not None and neutral_prior_low_contrast_seed is not None
                 else "secondary_after_new_target"
             ),
-            priority=82 if neutral_prior_low_contrast_projected is not None else 3,
+            priority=83 if neutral_prior_low_contrast_projected is not None else 3,
             evidence=[
                 (
                     "current-panel neutral-prior low-contrast choice gate has not been run yet"
@@ -474,7 +515,7 @@ def build_report() -> dict:
                 if artifacts["projected_support80_all_families_recording_zscore"] is not None
                 else "secondary_after_new_target"
             ),
-            priority=83 if artifacts["projected_support80_all_families_recording_zscore"] is not None else 3,
+            priority=84 if artifacts["projected_support80_all_families_recording_zscore"] is not None else 3,
             evidence=[
                 (
                     "projected support80 recording-zscore family gate has not been run yet"
@@ -499,7 +540,7 @@ def build_report() -> dict:
         branch(
             name="prior-aligned choice target redesign",
             status="closed" if prior_aligned_projected is not None else "secondary_after_new_target",
-            priority=84 if prior_aligned_projected is not None else 3,
+            priority=85 if prior_aligned_projected is not None else 3,
             evidence=[
                 (
                     "current-panel prior-aligned choice gate has not been run yet"
@@ -532,7 +573,7 @@ def build_report() -> dict:
         branch(
             name="correct low-contrast choice target redesign",
             status="closed" if correct_low_contrast_projected is not None else "secondary_after_new_target",
-            priority=85 if correct_low_contrast_projected is not None else 3,
+            priority=86 if correct_low_contrast_projected is not None else 3,
             evidence=[
                 (
                     "current-panel correct low-contrast choice gate has not been run yet"
@@ -573,7 +614,7 @@ def build_report() -> dict:
                 if low_contrast_seed is not None
                 else "secondary_after_new_target"
             ),
-            priority=86 if low_contrast_seed is not None else (1 if low_contrast_projected is not None else 3),
+            priority=87 if low_contrast_seed is not None else (1 if low_contrast_projected is not None else 3),
             evidence=[
                 (
                     "current-panel low-contrast choice gate has not been run yet"
@@ -632,7 +673,7 @@ def build_report() -> dict:
                 if extreme_seed is not None
                 else "secondary_after_cache"
             ),
-            priority=87 if extreme_seed is not None else (1 if extreme_quantile_done else 3),
+            priority=88 if extreme_seed is not None else (1 if extreme_quantile_done else 3),
             evidence=[
                 (
                     "extreme-quantile target family gate has not been run yet"
@@ -889,7 +930,7 @@ def build_report() -> dict:
         branch(
             name="reaction-dynamics wheel targets",
             status="closed" if reaction_feature_modes["n_modes"] else "recommended_next",
-            priority=89 if reaction_feature_modes["n_modes"] else 1,
+            priority=90 if reaction_feature_modes["n_modes"] else 1,
             evidence=[
                 (
                     "reaction-dynamics target family feature-mode sweep has not been run yet"

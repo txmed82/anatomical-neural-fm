@@ -19,6 +19,8 @@
     "family_alt_feedback": "docs/model_free_family_bidirectional_gate_feedback_recording_centered.json",
     "family_alt_prior": "docs/model_free_family_bidirectional_gate_prior_side_recording_centered.json",
     "iterative_manifest": "docs/shared_family_iterative_manifest_gate.json",
+    "lateralized_family_target": "docs/lateralized_family_target_gate.json",
+    "lateralized_family_target_projected": "docs/lateralized_family_target_gate_projected_hdf5.json",
     "local_cached_manifest_candidates": "docs/local_cached_manifest_candidates.json",
     "local_gate_meta_failures": "docs/local_gate_meta_failure_audit.json",
     "low_contrast_choice_family": "docs/low_contrast_choice_family_gate.json",
@@ -81,13 +83,24 @@
     },
     {
       "evidence": [
+        "current-panel lateralized family gate found 0 candidates across 210 rows and max bidir 0.500",
+        "projected-panel lateralized family gate found 0 candidates across 240 rows and max bidir 0.500"
+      ],
+      "gpu_trigger": "none",
+      "name": "lateralized family anatomy target",
+      "next_action": "Do not train: left/right family anatomy does not pass current or projected local gates.",
+      "priority": 81,
+      "status": "closed"
+    },
+    {
+      "evidence": [
         "current-panel signed wheel-direction gate found 0 candidates across 70 rows and max bidir 0.500",
         "projected-panel signed wheel-direction gate found 0 candidates across 80 rows and max bidir 0.500"
       ],
       "gpu_trigger": "none",
       "name": "signed wheel-direction motor target",
       "next_action": "Do not train: signed wheel-direction does not pass current or projected local gates.",
-      "priority": 81,
+      "priority": 82,
       "status": "closed"
     },
     {
@@ -99,7 +112,7 @@
       "gpu_trigger": "none",
       "name": "neutral-prior low-contrast choice target redesign",
       "next_action": "Do not train: neutral-prior low-contrast choice fails projected-panel and seed-stability gates.",
-      "priority": 82,
+      "priority": 83,
       "status": "closed"
     },
     {
@@ -109,7 +122,7 @@
       "gpu_trigger": "none",
       "name": "recording-zscore anatomy representation",
       "next_action": "Do not train: recording-zscore anatomy features do not pass the local gate.",
-      "priority": 83,
+      "priority": 84,
       "status": "closed"
     },
     {
@@ -120,7 +133,7 @@
       "gpu_trigger": "none",
       "name": "prior-aligned choice target redesign",
       "next_action": "Do not train: prior-aligned choice does not pass the projected-panel local gate.",
-      "priority": 84,
+      "priority": 85,
       "status": "closed"
     },
     {
@@ -131,7 +144,7 @@
       "gpu_trigger": "none",
       "name": "correct low-contrast choice target redesign",
       "next_action": "Do not train: correct-only low-contrast choice removes the projected-panel candidate.",
-      "priority": 85,
+      "priority": 86,
       "status": "closed"
     },
     {
@@ -143,7 +156,7 @@
       "gpu_trigger": "A projected-panel low-contrast choice row must pass the unchanged local gate and remain a strict candidate across shuffle seeds before training.",
       "name": "low-contrast choice target redesign",
       "next_action": "Do not train: the low-contrast choice candidate does not remain a strict candidate across shuffle seeds.",
-      "priority": 86,
+      "priority": 87,
       "status": "closed"
     },
     {
@@ -160,7 +173,7 @@
       "gpu_trigger": "A candidate must pass the unchanged local gate and remain positive across multiple within-recording shuffle seeds before training.",
       "name": "extreme-quantile behavioral target gate",
       "next_action": "Do not train: exploratory interpretable region-pair candidates do not remain strict candidates across shuffle seeds.",
-      "priority": 87,
+      "priority": 88,
       "status": "closed"
     },
     {
@@ -171,7 +184,7 @@
       "gpu_trigger": "At least one local wheel row must clear delta_vs_shuffle>=0, delta_vs_total>=0, target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75.",
       "name": "wheel-derived target family gate",
       "next_action": "Do not spend on the tested wheel targets; move to a prospectively supported manifest.",
-      "priority": 88,
+      "priority": 89,
       "status": "closed"
     },
     {
@@ -182,7 +195,7 @@
       "gpu_trigger": "none",
       "name": "reaction-dynamics wheel targets",
       "next_action": "Do not spend on reaction-dynamics wheel targets; the near miss fails true-vs-shuffle and does not replicate across feature modes.",
-      "priority": 89,
+      "priority": 90,
       "status": "closed"
     },
     {
@@ -357,7 +370,7 @@
     }
   ],
   "summary": {
-    "closed_branches": 24,
+    "closed_branches": 25,
     "decision": "no_local_training_trigger",
     "gpu_training_trigger": "At least one local row on the proposed manifest must clear delta_vs_shuffle>=0, delta_vs_total>=0, target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75 before training.",
     "recommended_next": "new manifest with prospective bidirectional support"
