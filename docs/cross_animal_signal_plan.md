@@ -341,6 +341,18 @@ held-out recordings where the candidate parent regions have:
 - aligned contrast direction across train and held-out subjects
 - an explicit within-recording shuffle negative control
 
+Current consolidated state: `docs/current_experiment_state.md` now summarizes
+the strict gates and fixed-slice attempts in one place. The decision is
+`no_paid_broadening_without_new_mechanism`: zero current strict-gate artifacts
+pass, and both fixed carrier-slice attempts let shuffled labels match or beat
+true labels. This supersedes older "try another slice" recommendations.
+
+Next mechanism task: audit the CSH success itself using saved predictions and
+region embeddings. The useful question is not which broadening subject to rent
+next; it is whether true region labels create any carrier-parent or
+recording-level target-aware shift that a within-recording shuffled control
+cannot reproduce.
+
 Conclusion: building all 48 public IBL recordings inside a throwaway A100
 container is the wrong next spend. The next attempt should either split the
 candidate manifest into smaller persisted build shards, use a persistent

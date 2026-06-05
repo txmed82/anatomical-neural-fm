@@ -1,0 +1,92 @@
+{
+  "fixed_slices": [
+    {
+      "holdout": "NYU-12",
+      "label": "NYU-12 fixed carrier slice",
+      "shuffle_delta": 0.02,
+      "shuffle_positive": "3/3",
+      "source": "docs/lso_nyu12_parent_slice_results.md",
+      "true_delta": 0.013,
+      "true_minus_shuffle": -0.007000000000000001,
+      "true_positive": "2/3"
+    },
+    {
+      "holdout": "SWC_038",
+      "label": "SWC_038 stricter carrier slice",
+      "shuffle_delta": 0.019,
+      "shuffle_positive": "2/2",
+      "source": "docs/lso_swc038_parent_slice_results.md",
+      "true_delta": -0.004,
+      "true_minus_shuffle": -0.023,
+      "true_positive": "0/2"
+    }
+  ],
+  "strict_gates": [
+    {
+      "centered_delta": 0.005902427133753441,
+      "holdout": "CSH_ZAD_019",
+      "label": "CSH centered original",
+      "paired_true_vs_shuffle": 0.5355832721936904,
+      "pass_gate": false,
+      "sign_flip_p": 0.0625,
+      "source": "docs/lso_csh_full_eval_centered_anatomy_specific_gate.json",
+      "specificity_gap": -0.01614086573734408
+    },
+    {
+      "centered_delta": 0.012214868379839594,
+      "holdout": "NR_0019",
+      "label": "NR_0019 centered replication",
+      "paired_true_vs_shuffle": 0.49257425742574257,
+      "pass_gate": false,
+      "sign_flip_p": 0.5,
+      "source": "docs/lso_nr0019_full_eval_centered_anatomy_specific_gate.json",
+      "specificity_gap": 0.0
+    },
+    {
+      "centered_delta": 0.009012518717136209,
+      "holdout": "CSH_ZAD_019",
+      "label": "CSH target-balanced",
+      "paired_true_vs_shuffle": 0.5161408657373441,
+      "pass_gate": false,
+      "sign_flip_p": 0.125,
+      "source": "docs/lso_csh_target_balanced_anatomy_specific_gate.json",
+      "specificity_gap": 0.05135730007336753
+    },
+    {
+      "centered_delta": -0.05006779520841309,
+      "holdout": "CSH_ZAD_019",
+      "label": "CSH recording-centered loss",
+      "paired_true_vs_shuffle": 0.45084372707263387,
+      "pass_gate": false,
+      "sign_flip_p": 1.0,
+      "source": "docs/lso_csh_recording_centered_loss_anatomy_specific_gate.json",
+      "specificity_gap": -0.09244314013206167
+    },
+    {
+      "centered_delta": 0.0014005205975554658,
+      "holdout": "CSH_ZAD_019",
+      "label": "CSH within-recording shuffle",
+      "paired_true_vs_shuffle": 0.4482758620689655,
+      "pass_gate": false,
+      "sign_flip_p": 0.25,
+      "source": "docs/lso_csh_within_recording_shuffle_anatomy_specific_gate.json",
+      "specificity_gap": -0.10344827586206895
+    },
+    {
+      "centered_delta": 0.0014010647003517285,
+      "holdout": "CSH_ZAD_019",
+      "label": "CSH recording-centered gate pilot",
+      "paired_true_vs_shuffle": 0.4482758620689655,
+      "pass_gate": false,
+      "sign_flip_p": 0.25,
+      "source": "docs/lso_csh_recording_centered_gate_pilot_anatomy_specific_gate.json",
+      "specificity_gap": -0.10344827586206895
+    }
+  ],
+  "summary": {
+    "decision": "no_paid_broadening_without_new_mechanism",
+    "next_mechanism": "Define a mechanism-level analysis of the CSH success itself: compare true vs within-recording-shuffled region embeddings and prediction shifts by carrier parent and recording, then implement a training objective/control that requires true anatomical labels to improve target-aware within-recording ranking.",
+    "slice_promising_count": 0,
+    "strict_pass_count": 0
+  }
+}

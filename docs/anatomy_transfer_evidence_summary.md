@@ -113,7 +113,16 @@ true-vs-shuffle is `0.448`, specificity gap is `-0.103`, and sign-flip p-value
 is `0.25`. This confirms that merely making the gate and checkpoint selection
 recording-centered is not sufficient; do not broaden this CSH variant.
 
-Next no-spend design task: change the experimental unit, not just the gate. The
-next candidate should predefine a region-family slice or contrast where
-held-out recordings have aligned stimulus-side region activity, then test that
-slice with the same recording-matched shuffle gate.
+Current experiment-state audit:
+`docs/current_experiment_state.md` consolidates the strict-gate and fixed-slice
+results after the later CSH recording-matched controls. No strict-gate artifact
+passes. The later CSH controls fail because true labels do not beat
+within-recording shuffled labels on paired target-aware trial movement, and both
+fixed carrier-slice follow-ups (`NYU-12`, `SWC_038`) let shuffled labels match
+or beat true labels.
+
+Next no-spend task: inspect the CSH success mechanism directly. Compare true vs
+within-recording-shuffled region embeddings and prediction shifts by carrier
+parent and recording, then define an objective/control that requires true
+anatomical labels to improve target-aware within-recording ranking. Do not spend
+on another broadening or fixed-slice RunPod job without that new mechanism.

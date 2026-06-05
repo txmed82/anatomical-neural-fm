@@ -2,17 +2,17 @@
 
 ## Current Claim
 
-The project has a controlled, subject-specific cross-animal anatomical transfer
-signal on the matched 28-recording IBL subset:
+The project has an earlier controlled, subject-specific cross-animal anatomical
+transfer signal on the matched 28-recording IBL subset:
 
 > For held-out `CSH_ZAD_019`, anatomical region identity improves
 > stimulus-side decoding relative to a shared null, and the lift collapses when
 > region labels are shuffled.
 
-This is not yet a general cross-animal result across IBL animals. It is a
-credible demo nucleus. The first completed broadening experiment is directionally
-consistent but too weak to claim generality, and subsequent targeted
-broadening attempts have not reproduced the CSH-sized controlled effect.
+This is not yet a general cross-animal result across IBL animals. It is a demo
+nucleus that now needs a stricter mechanism explanation before we spend on more
+broadening. Later deterministic full-trial, recording-matched, and fixed-slice
+controls materially weaken the original sampled-eval story.
 
 ## Evidence Table
 
@@ -42,6 +42,8 @@ Recovered full-trial summary source:
 `docs/lso_csh_diagnostic_outputs_results.md`.
 Full-eval launch attempt:
 `docs/lso_csh_full_eval_shared_parent_shuffle_results.md`.
+Current consolidated decision:
+`docs/current_experiment_state.md`.
 
 ## Why This Is Real Enough To Demo
 
@@ -89,14 +91,20 @@ Full-eval launch attempt:
   raw parent-level stimulus contrast.
 - The claim should not be phrased as broad anatomical transfer across IBL until
   more held-out animals reproduce the stronger CSH_ZAD_019-sized effect.
+- The current consolidated strict-gate audit reports zero strict-gate passes.
+  In the latest CSH recording-matched controls, centered true-vs-shuffle delta
+  is only about +0.001 and paired true-vs-shuffle is 0.448. Both fixed-slice
+  broadening attempts (`NYU-12`, `SWC_038`) have shuffled labels matching or
+  beating true labels.
 
 ## Next Experimental Gate
 
 Do not launch another paid broadening run unchanged. Both the initial
 fixed-slice candidate (`NYU-12`) and the stricter follow-up (`SWC_038`) failed
-the true-vs-shuffled control. The next step should be no-spend analysis of the
-actual CSH model outputs or a redesign of the anatomical objective, not another
-matched-cache A100 sweep.
+the true-vs-shuffled control, and the latest CSH recording-matched pilots also
+failed the paired true-vs-shuffle gate. The next step should be no-spend
+mechanism analysis of the actual CSH model outputs and region embeddings, or a
+redesign of the anatomical objective, not another matched-cache A100 sweep.
 
 Instrumentation is now available for that diagnostic: `scripts/train.py` can
 export held-out trial predictions, learned region embeddings, and official
@@ -122,7 +130,8 @@ reason to redesign the objective/gate, not to broaden yet.
 The executable gate is `scripts/check_lso_demo_gate.py`; the preserved CSH
 diagnostic verdict is `docs/lso_csh_diagnostic_outputs_gate.json`.
 
-For the next canonical rerun, use `BEST_METRIC=full_eval_centered_auc` so
-`best.ckpt` is selected by deterministic held-out ranking after removing
-recording-level offsets, and keep `SAVE_DIAGNOSTICS=1` so the paired-trial gate
-can be computed.
+The current consolidated decision artifact is
+`docs/current_experiment_state.md`: no paid broadening without a new mechanism.
+The next useful artifact is a CSH mechanism audit comparing true vs
+within-recording-shuffled region embeddings and prediction shifts by carrier
+parent and recording.
