@@ -17,7 +17,7 @@ Ranks remaining no-spend branches after the current local audits. This is the pl
 | 90 | local gate meta-failure synthesis | `closed` | Use the meta-audit redesign rule: require prospectively defined same-recording target0+target1 evidence before any GPU run. |
 | 90 | recording bidirectionality prospectus | `closed` | Run the unchanged local gate on manifests/ibl_bwm_recording_bidirectionality_prospect_leads.json; treat any pass as a local redesign candidate, not a training trigger. |
 | 90 | prospect-lead derived target validation | `closed` | Do not train on prospect-lead candidates; same-subject non-lead recordings do not validate them. |
-| 90 | subject-stable local gate prospectus | `closed` | Do not train yet: subject-stable near misses exist, but they fail the unchanged local gate. |
+| 90 | subject-stable local gate prospectus | `closed` | Do not train: subject-stable near misses do not robustly beat shuffled anatomy across seeds. |
 | 91 | behavior-inclusive cache rebuild | `closed` | Cache rebuild is complete; all matched recordings now expose wheel. Use the wheel-derived local target gate before any training. |
 | 92 | direct cached-field derived targets | `closed` | Do not launch GPU training from contrast_strength, response_latency, or prior_engaged. |
 | 93 | contextual cached trial-state targets | `closed` | Do not spend on contextual trial-sequence targets from the compact cache. |
@@ -40,7 +40,7 @@ Ranks remaining no-spend branches after the current local audits. This is the pl
 - local gate meta-failure audit has 0 candidates across 1924 rows; recording bidirectionality fails in 1919 rows
 - recording bidirectionality prospectus found 18 prospect recordings from 262 bidirectional observations
 - prospect-lead manifest has 18 recordings across 7 subjects with 0 missing local recordings
-- subject-stable local-gate prospectus found 0 candidates and 5 subject-stable near misses; stable holdouts=KS014
+- subject-stable shuffle-seed sensitivity found 0 robust candidates; max positive seed fraction=0.4
 - recording-subset replication selected zero stable validation rows
 - GPU trigger: At least one local row on the proposed manifest must clear delta_vs_shuffle>=0, delta_vs_total>=0, target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75 before training.
 
@@ -85,6 +85,7 @@ Ranks remaining no-spend branches after the current local audits. This is the pl
 ### subject-stable local gate prospectus
 - prospectus found 5 subject-stable rows, 0 candidates, and 1 one-failure rows
 - subject-stable failures are shuffle=5, total_baseline=4
+- shuffle-seed sensitivity found 0 robust candidates across 5 subject-stable near misses
 - GPU trigger: none
 
 ### behavior-inclusive cache rebuild

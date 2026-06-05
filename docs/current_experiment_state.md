@@ -813,6 +813,26 @@ multiple recordings in the held-out subject.
 
 Decision: the best stable local branch is now a shuffle-control problem, not just a recording-support problem. The next redesign should target anatomical information that beats within-recording shuffled anatomy while preserving KS014-like subject stability.
 
+## Subject-Stable Shuffle Seed Sensitivity
+
+`docs/subject_stable_shuffle_seed_sensitivity.md` reruns the subject-stable
+near misses across multiple within-recording shuffle seeds.
+
+- cases: `5`
+- robust shuffle-seed candidates: `0`
+- max positive shuffle-delta fraction: `0.400`
+- decision: `no_subject_stable_shuffle_seed_candidate`
+
+| source | target | feature | holdout | positive seeds | candidate seeds | mean shuffle delta | mean total delta |
+|---|---|---|---|---:|---:|---:|---:|
+| derived | response_latency | broad_named_anatomy | KS014 | 0/5 | 0/5 | -0.0026 | -0.0053 |
+| wheel | wheel_active | broad_named_anatomy | KS014 | 1/5 | 0/5 | -0.0008 | -0.0016 |
+| wheel | wheel_displacement | broad_named_anatomy | KS014 | 0/5 | 0/5 | -0.0057 | -0.0085 |
+| reaction | post_stim_speedup | broad_named_anatomy | KS014 | 0/5 | 0/5 | -0.0019 | -0.0024 |
+| reaction | wheel_reaction_latency | broad_named_anatomy | KS014 | 2/5 | 2/5 | -0.0002 | +0.0027 |
+
+Decision: the KS014 stable near misses are not robust to the within-recording shuffle seed. A future local trigger should require positive true-vs-shuffle evidence across multiple shuffle seeds before any GPU run.
+
 ## Model-Free Recording Directionality Audit
 
 `docs/model_free_recording_directionality_audit.md` classifies every

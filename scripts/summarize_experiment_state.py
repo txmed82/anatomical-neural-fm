@@ -144,6 +144,7 @@ PROSPECT_LEAD_CANDIDATE_VALIDATION_FILE = "docs/prospect_lead_candidate_validati
 PROSPECT_LEAD_FEATURE_MODE_VALIDATION_FILE = "docs/prospect_lead_feature_mode_validation.json"
 PROSPECT_LEAD_SUBJECT_STABILITY_FILE = "docs/prospect_lead_subject_stability.json"
 SUBJECT_STABLE_LOCAL_GATE_PROSPECTUS_FILE = "docs/subject_stable_local_gate_prospectus.json"
+SUBJECT_STABLE_SHUFFLE_SEED_SENSITIVITY_FILE = "docs/subject_stable_shuffle_seed_sensitivity.json"
 MODEL_FREE_RECORDING_DIRECTIONALITY_AUDIT_FILE = "docs/model_free_recording_directionality_audit.json"
 SYMMETRIC_RECORDING_SUPPORT_AUDIT_FILE = "docs/symmetric_recording_support_audit.json"
 SYMMETRIC_THRESHOLD_SENSITIVITY_AUDIT_FILE = "docs/symmetric_threshold_sensitivity_audit.json"
@@ -480,6 +481,7 @@ def render_markdown(
     prospect_lead_feature_mode_validation: dict | None = None,
     prospect_lead_subject_stability: dict | None = None,
     subject_stable_local_gate_prospectus: dict | None = None,
+    subject_stable_shuffle_seed_sensitivity: dict | None = None,
     model_free_recording_directionality_audit: dict | None = None,
     symmetric_recording_support_audit: dict | None = None,
     symmetric_threshold_sensitivity_audit: dict | None = None,
@@ -1984,6 +1986,41 @@ def render_markdown(
             ),
             "",
         ]
+    if subject_stable_shuffle_seed_sensitivity is not None:
+        summary = subject_stable_shuffle_seed_sensitivity["summary"]
+        top = subject_stable_shuffle_seed_sensitivity["rows"][:5]
+        lines += [
+            "## Subject-Stable Shuffle Seed Sensitivity",
+            "",
+            "`docs/subject_stable_shuffle_seed_sensitivity.md` reruns the subject-stable",
+            "near misses across multiple within-recording shuffle seeds.",
+            "",
+            f"- cases: `{summary['n_cases']}`",
+            f"- robust shuffle-seed candidates: `{summary['n_robust_shuffle_seed_candidates']}`",
+            f"- max positive shuffle-delta fraction: `{summary['max_positive_shuffle_delta_fraction']:.3f}`",
+            f"- decision: `{summary['decision']}`",
+            "",
+            "| source | target | feature | holdout | positive seeds | candidate seeds | mean shuffle delta | mean total delta |",
+            "|---|---|---|---|---:|---:|---:|---:|",
+        ]
+        for row in top:
+            lines.append(
+                f"| {row['source']} | {row['target_mode']} | {row['family']} | {row['holdout']} | "
+                f"{row['n_positive_shuffle_delta_seeds']}/{row['n_seeds']} | "
+                f"{row['n_candidate_seeds']}/{row['n_seeds']} | "
+                f"{row['mean_centered_delta_vs_shuffle']:+.4f} | "
+                f"{row['mean_centered_delta_vs_total']:+.4f} |"
+            )
+        lines += [
+            "",
+            (
+                "Decision: the KS014 stable near misses are not robust to the "
+                "within-recording shuffle seed. A future local trigger should require "
+                "positive true-vs-shuffle evidence across multiple shuffle seeds before "
+                "any GPU run."
+            ),
+            "",
+        ]
     if model_free_recording_directionality_audit is not None:
         summary = model_free_recording_directionality_audit["summary"]
         overall = summary["overall"]
@@ -2424,6 +2461,9 @@ def main() -> int:
     subject_stable_local_gate_prospectus = read_mechanism_audit(
         REPO_ROOT / SUBJECT_STABLE_LOCAL_GATE_PROSPECTUS_FILE
     )
+    subject_stable_shuffle_seed_sensitivity = read_mechanism_audit(
+        REPO_ROOT / SUBJECT_STABLE_SHUFFLE_SEED_SENSITIVITY_FILE
+    )
     model_free_recording_directionality_audit = read_mechanism_audit(
         REPO_ROOT / MODEL_FREE_RECORDING_DIRECTIONALITY_AUDIT_FILE
     )
@@ -2509,6 +2549,7 @@ def main() -> int:
         prospect_lead_feature_mode_validation,
         prospect_lead_subject_stability,
         subject_stable_local_gate_prospectus,
+        subject_stable_shuffle_seed_sensitivity,
         model_free_recording_directionality_audit,
         symmetric_recording_support_audit,
         symmetric_threshold_sensitivity_audit,
@@ -2611,6 +2652,7 @@ def main() -> int:
         "prospect_lead_feature_mode_validation": prospect_lead_feature_mode_validation,
         "prospect_lead_subject_stability": prospect_lead_subject_stability,
         "subject_stable_local_gate_prospectus": subject_stable_local_gate_prospectus,
+        "subject_stable_shuffle_seed_sensitivity": subject_stable_shuffle_seed_sensitivity,
         "model_free_recording_directionality_audit": model_free_recording_directionality_audit,
         "symmetric_recording_support_audit": symmetric_recording_support_audit,
         "symmetric_threshold_sensitivity_audit": symmetric_threshold_sensitivity_audit,

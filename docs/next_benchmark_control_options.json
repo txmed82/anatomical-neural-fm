@@ -30,6 +30,7 @@
     "shared_family": "docs/shared_family_target_control_gate.json",
     "source_target_families": "docs/model_free_source_target_pair_gate_families_recording_centered.json",
     "subject_stable_local_gate_prospectus": "docs/subject_stable_local_gate_prospectus.json",
+    "subject_stable_shuffle_seed_sensitivity": "docs/subject_stable_shuffle_seed_sensitivity.json",
     "symmetric_strict": "docs/symmetric_strict_failure_modes.json",
     "symmetric_threshold": "docs/symmetric_threshold_sensitivity_audit.json",
     "waveform_target_control": "docs/waveform_target_control_gate.json",
@@ -47,7 +48,7 @@
         "local gate meta-failure audit has 0 candidates across 1924 rows; recording bidirectionality fails in 1919 rows",
         "recording bidirectionality prospectus found 18 prospect recordings from 262 bidirectional observations",
         "prospect-lead manifest has 18 recordings across 7 subjects with 0 missing local recordings",
-        "subject-stable local-gate prospectus found 0 candidates and 5 subject-stable near misses; stable holdouts=KS014",
+        "subject-stable shuffle-seed sensitivity found 0 robust candidates; max positive seed fraction=0.4",
         "recording-subset replication selected zero stable validation rows"
       ],
       "gpu_trigger": "At least one local row on the proposed manifest must clear delta_vs_shuffle>=0, delta_vs_total>=0, target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75 before training.",
@@ -139,11 +140,12 @@
     {
       "evidence": [
         "prospectus found 5 subject-stable rows, 0 candidates, and 1 one-failure rows",
-        "subject-stable failures are shuffle=5, total_baseline=4"
+        "subject-stable failures are shuffle=5, total_baseline=4",
+        "shuffle-seed sensitivity found 0 robust candidates across 5 subject-stable near misses"
       ],
       "gpu_trigger": "none",
       "name": "subject-stable local gate prospectus",
-      "next_action": "Do not train yet: subject-stable near misses exist, but they fail the unchanged local gate.",
+      "next_action": "Do not train: subject-stable near misses do not robustly beat shuffled anatomy across seeds.",
       "priority": 90,
       "status": "closed"
     },
