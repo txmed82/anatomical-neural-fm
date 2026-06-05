@@ -872,6 +872,15 @@ but paired true-vs-shuffle trial improvement was inconsistent (`0.513`,
 `0.486`, `0.552` against the `0.550` threshold). Treat this as suggestive but
 insufficient evidence, not a successful cross-animal anatomical-transfer demo.
 
+Seed-ensemble diagnostic: `scripts/analyze_lso_prediction_ensemble.py` shows
+that averaging the three seeds raises region-only centered AUC to `0.519` versus
+shuffle `0.513`, but paired `region_only_vs_shuffle` improves only `0.536` of
+trials. Because `shuffle_vs_shared` improves `0.552` of trials, the paired
+true-probability statistic is not specific enough to be the primary demo
+criterion. The next paid experiment should replicate the centered-AUC delta on a
+second held-out animal or switch the gate to a recording-centered true-vs-shuffle
+AUC/permutation test before spending on broader sweeps.
+
 After cleanup, run:
 
 ```bash

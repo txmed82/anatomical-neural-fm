@@ -180,3 +180,25 @@ execution, but it does not satisfy the demo gate. The centered-AUC pattern is
 suggestive (`region_only` mean centered AUC `0.517`, delta `+0.016`; shuffle
 mean centered AUC `0.501`, delta `-0.000`), but the paired trial criterion is
 not reliable across seeds.
+
+## Seed-Ensemble Diagnostic
+
+`scripts/analyze_lso_prediction_ensemble.py` was run on the saved diagnostic
+predictions and wrote
+`docs/lso_csh_full_eval_centered_ensemble_diagnostics.json`.
+
+Seed-averaged prediction metrics:
+
+| arm | full AUC | recording-centered AUC |
+|---|---:|---:|
+| shared_baseline | 0.510 | 0.511 |
+| region_only | 0.517 | 0.519 |
+| region_shuffle | 0.511 | 0.513 |
+
+The seed ensemble still does not satisfy the paired true-vs-shuffle criterion:
+`region_only_vs_shuffle` improves `0.536` of trials, below the `0.550` gate.
+Also, `shuffle_vs_shared` improves `0.552` of trials, so the paired improvement
+statistic is not anatomy-specific enough on its own. The strongest localized
+ensemble effect is on `5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe00`
+(`region_only_vs_shuffle=0.586`), while the other CSH recordings remain near
+chance.
