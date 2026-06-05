@@ -1361,3 +1361,14 @@ is still driven by target0. Stop before GPU training. The next roadmap item is
 a no-spend redesign of the target/control representation, followed by another
 local model-free gate; only a bidirectional, recording-supported local pass
 should trigger a bounded RunPod run under the remaining budget cap.
+
+Recording-bidirectional gate:
+`docs/model_free_recording_bidirectional_gate.md` turns that lesson into a
+panel-wide promotion gate. A recording now counts as support only if target0
+and target1 both improve against the within-recording shuffle in that same
+recording. The full 7-holdout matched panel has zero candidates, a mean
+bidirectional recording fraction of `0.036`, and the two positive-delta
+holdouts (`KS014`, `NR_0019`) both have `0/4` bidirectional recordings. This
+is the current stop condition for phases 3-5: do not spend on A100 training.
+The next constructive no-spend work is to redesign the behavioral target or
+anatomical control so this gate can pass locally before a bounded cloud run.

@@ -295,3 +295,15 @@ target1-only improvement. `NR_0019` is strongly one-sided, with target0
 not promotable. The next step should be no-spend target/control redesign or a
 new local model-free gate that produces bidirectional recording-supported
 signal before any RunPod training.
+
+Recording-bidirectional panel gate:
+`docs/model_free_recording_bidirectional_gate.md` formalizes that next local
+gate across all seven HDF5-confirmed matched-panel holdouts. A held-out
+recording counts only if true labels beat the within-recording shuffle for
+target0 and target1 inside that same recording. The panel has zero candidates:
+mean bidirectional recording fraction is `0.036`, `KS014` and `NR_0019` have
+`0/4` bidirectional recordings despite positive centered deltas, and only
+`NYU-12` has even `1/4` bidirectional recordings while its centered delta is
+negative. Decision: stop before GPU training. A future target/control redesign
+must pass this same-recording bidirectional gate locally before any paid
+confirmation run.

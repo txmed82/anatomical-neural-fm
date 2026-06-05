@@ -283,3 +283,27 @@ and recording resolution.
 | NR_0019 | +0.079 | 0.776 | 0.249 | 3/4 | not bidirectional |
 
 Decision: these positive deltas are not a training trigger. `KS014` is marginal and below the bidirectional gate; `NR_0019` is strongly one-sided toward target-0 and fails target-1. Keep the next step no-spend: redesign the target/control or require a cleaner local model-free pass before any RunPod training.
+
+## Recording-Bidirectional Model-Free Gate
+
+`docs/model_free_recording_bidirectional_gate.md` applies the stricter
+same-recording rule across the full matched panel: a recording counts only
+when true labels beat the shuffled control for target0 and target1 inside
+that same recording.
+
+- candidates: `0/7`
+- positive centered-delta holdouts: `2/7`
+- mean bidirectional recording fraction: `0.036`
+- decision: `no_recording_bidirectional_model_free_signal`
+
+| holdout | centered delta | target0 | target1 | bidirectional recs | decision |
+|---|---:|---:|---:|---:|---|
+| CSH_ZAD_019 | -0.052 | 0.338 | 0.703 | 0/4 | reject: centered delta |
+| KS014 | +0.030 | 0.547 | 0.538 | 0/4 | reject: global target0 |
+| MFD_06 | -0.016 | 0.567 | 0.451 | 0/4 | reject: centered delta |
+| NR_0019 | +0.079 | 0.776 | 0.249 | 0/4 | reject: global target1 |
+| NYU-12 | -0.015 | 0.410 | 0.624 | 1/4 | reject: centered delta |
+| SWC_038 | -0.032 | 0.629 | 0.336 | 0/4 | reject: centered delta |
+| SWC_043 | -0.014 | 0.738 | 0.212 | 0/4 | reject: centered delta |
+
+Decision: this closes the weak-positive loophole for the current matched panel. Only `NYU-12` has even one bidirectional held-out recording, and it still has negative centered true-minus-shuffle AUC. Do not spend on training until a new target/control produces at least one local pass under this recording-bidirectional gate.
