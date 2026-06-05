@@ -12,6 +12,9 @@ from scripts.train import (
     center_logits_by_group,
     choose_recording_for_balanced_pair,
     choose_trial_index,
+    fit_fixed_logistic,
+    fixed_family_membership_by_unit,
+    fixed_logistic_scores,
     is_better_metric,
     manifest_recording_ids,
     metrics_from_prediction_rows,
@@ -22,6 +25,7 @@ from scripts.train import (
     recording_centered_auc_from_prediction_rows,
     select_recording_ids,
     shared_split_regions,
+    transform_fixed_family_features,
     training_loss,
     trial_indices_by_recording_target,
     trial_indices_by_target,
@@ -81,6 +85,35 @@ def test_region_label_shuffle_preserves_distribution_but_changes_assignments() -
     assert sorted(shuffled["region_acronyms"].tolist()) == sorted(f"R{i}" for i in range(20))
     assert sorted(shuffled["cell_type_region_acronyms"].tolist()) == sorted(f"F{i}" for i in range(20))
     assert shuffled["region_idx_per_unit"].tolist() != vocab["region_idx_per_unit"].tolist()
+
+
+def test_fixed_family_membership_uses_controlled_vocab_regions() -> None:
+    vocab = {
+        "all_unit_ids": ["rec/u0", "rec/u1", "rec/u2"],
+        "region_acronyms": np.array(["VISp", "fiber tracts", "CA"]),
+    }
+
+    membership = fixed_family_membership_by_unit(vocab, "broad_named_anatomy")
+
+    assert membership == {"rec/u0": True, "rec/u1": False, "rec/u2": True}
+
+
+def test_fixed_family_recording_centered_features_remove_recording_means() -> None:
+    features = np.array([[1.0], [3.0], [10.0], [14.0]])
+
+    centered = transform_fixed_family_features(features, ["a", "a", "b", "b"], "recording_centered")
+
+    np.testing.assert_allclose(centered, np.array([[-1.0], [1.0], [-2.0], [2.0]]))
+
+
+def test_fixed_logistic_scores_learn_separable_count_feature() -> None:
+    train_x = np.array([[-2.0], [-1.0], [1.0], [2.0]])
+    train_y = np.array([0, 0, 1, 1])
+
+    model = fit_fixed_logistic(train_x, train_y, seed=0, steps=500, lr=0.2, l2=0.0)
+    scores = fixed_logistic_scores(model, np.array([[-1.5], [1.5]]))
+
+    assert scores[1] > scores[0]
 
 
 def test_within_recording_region_label_shuffle_preserves_recording_distribution() -> None:

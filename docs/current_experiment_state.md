@@ -774,6 +774,24 @@ readout rather than closed-form ridge.
 
 Decision: this is a positive no-spend bridge from model-free ridge to a trainable fixed-feature readout. It still does not validate the transformer/foundation-model claim; the next code step is an exact fixed-family-count model arm before another paid GPU run.
 
+## Fixed Broad-Family Train Arm Local Panel
+
+`docs/fixed_broad_family_train_arm_local_panel.md` runs the same
+fixed broad-family feature through `train.py --arm fixed_broad_family_count`
+and compares true anatomy against within-recording shuffled anatomy.
+
+- decision: `fixed_broad_family_train_arm_local_candidate`
+- positive centered-delta cases: `2/2`
+- paid GPU trigger: `False`
+- next action: Run the bounded RunPod preflight for this exact fixed-family arm, then launch one low-cost true/shuffle panel only if cost and zero-pod checks pass.
+
+| holdout | target | true centered AUC | shuffle centered AUC | delta |
+|---|---|---:|---:|---:|
+| CSHL045 | post_error_response_extreme_25_75_le_1 | 0.8521 | 0.8388 | +0.0132 |
+| NR_0019 | post_error_response_extreme_33_67_le_1 | 0.7565 | 0.7528 | +0.0036 |
+
+Decision: the fixed broad-family feature now has a positive local training-code arm. This is still not a transformer/foundation-model result, but it is the first train-path implementation matching the successful fixed-family local signal.
+
 ## Model-Free Anatomical Transfer Demo Package
 
 `docs/model_free_anatomical_transfer_demo_package.md` is the current

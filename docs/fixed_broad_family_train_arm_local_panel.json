@@ -1,0 +1,42 @@
+{
+  "root": "runs/local_fixed_broad_family_count_panel",
+  "rows": [
+    {
+      "auc_delta_vs_shuffle": 0.010501995379121998,
+      "centered_delta_vs_shuffle": 0.013232514177693777,
+      "family": "broad_named_anatomy",
+      "feature_mode": "recording_centered",
+      "holdout": "CSHL045",
+      "n_eval": 276,
+      "shuffle_auc": 0.8387418609535812,
+      "shuffle_centered_auc": 0.8388468809073724,
+      "shuffle_path": "runs/local_fixed_broad_family_count_panel/holdout_CSHL045/fixed_broad_family_count_within_recording_shuffle_seed0/fixed_family_summary.json",
+      "target_mode": "post_error_response_extreme_25_75_le_1",
+      "true_auc": 0.8492438563327032,
+      "true_centered_auc": 0.8520793950850661,
+      "true_path": "runs/local_fixed_broad_family_count_panel/holdout_CSHL045/fixed_broad_family_count_none_seed0/fixed_family_summary.json"
+    },
+    {
+      "auc_delta_vs_shuffle": 0.006540473991997531,
+      "centered_delta_vs_shuffle": 0.003616497383810424,
+      "family": "broad_named_anatomy",
+      "feature_mode": "recording_centered",
+      "holdout": "NR_0019",
+      "n_eval": 228,
+      "shuffle_auc": 0.7503077870113881,
+      "shuffle_centered_auc": 0.7528470298553401,
+      "shuffle_path": "runs/local_fixed_broad_family_count_panel/holdout_NR_0019/fixed_broad_family_count_within_recording_shuffle_seed0/fixed_family_summary.json",
+      "target_mode": "post_error_response_extreme_33_67_le_1",
+      "true_auc": 0.7568482610033856,
+      "true_centered_auc": 0.7564635272391506,
+      "true_path": "runs/local_fixed_broad_family_count_panel/holdout_NR_0019/fixed_broad_family_count_none_seed0/fixed_family_summary.json"
+    }
+  ],
+  "summary": {
+    "decision": "fixed_broad_family_train_arm_local_candidate",
+    "n_cases": 2,
+    "n_positive_centered_delta": 2,
+    "next_action": "Run the bounded RunPod preflight for this exact fixed-family arm, then launch one low-cost true/shuffle panel only if cost and zero-pod checks pass.",
+    "paid_gpu_trigger": false
+  }
+}

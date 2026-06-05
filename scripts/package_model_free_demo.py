@@ -41,8 +41,8 @@ def build_package(readiness: dict, aligned_readout: dict, failure_audit: dict) -
             "paid_gpu_trigger": False,
             "next_action": (
                 "Use this as a narrow reproducible model-free demo, with the "
-                "trainable fixed-feature bridge as the next local check. Implement "
-                "the exact fixed broad-family-count arm before more GPU spending."
+                "trainable fixed-feature bridge and local train.py fixed-family arm "
+                "as intermediate checks. Run the bounded fixed-arm preflight before any GPU spending."
             ),
         },
         "evidence_rows": rows,
@@ -58,12 +58,13 @@ def build_package(readiness: dict, aligned_readout: dict, failure_audit: dict) -
             "uv run python scripts/audit_response_extreme_training_aligned_readout.py",
             "uv run python scripts/audit_direct_broad_family_demo_readiness.py",
             "uv run python scripts/audit_direct_broad_family_trainable_readout.py",
+            "uv run python scripts/summarize_fixed_broad_family_train_arm_panel.py",
             "uv run python scripts/package_model_free_demo.py",
         ],
         "demo_boundaries": [
             "This is a model-free ridge/count readout demo, not a trained transformer demo.",
             "The positive feature is the fixed broad_named_anatomy aggregate, not the full shared parent-region feature vector.",
-            "The local trainable bridge is positive, but no new paid GPU run is justified until the training code has an exact fixed-family model arm.",
+            "The local trainable bridge and train.py fixed-family arm are positive, but no paid GPU run is justified unless the bounded fixed-arm preflight passes.",
         ],
     }
 

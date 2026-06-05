@@ -59,6 +59,67 @@ RESPONSE_EXTREME_QUANTILES = {
     "post_error_response_extreme_25_75_le_1": (25.0, 75.0),
     "post_error_response_extreme_33_67_le_1": (33.0, 67.0),
 }
+BROAD_NAMED_ANATOMY_REGIONS = (
+    "ATN",
+    "AUDd",
+    "AUDv",
+    "BS",
+    "CA",
+    "CNU",
+    "CTXpl",
+    "CTXsp",
+    "DG",
+    "DORpm",
+    "ENTm",
+    "EPI",
+    "FRP",
+    "HB",
+    "HIP",
+    "IB",
+    "LAT",
+    "LGd",
+    "LS",
+    "LZ",
+    "MBmot",
+    "MBsen",
+    "MBsta",
+    "MED",
+    "MG",
+    "MOp",
+    "MOs",
+    "MSC",
+    "OLF",
+    "ORBm",
+    "ORBvl",
+    "PALc",
+    "PRT",
+    "PVR",
+    "RHP",
+    "RSPagl",
+    "RSPd",
+    "RSPv",
+    "SCm",
+    "SCs",
+    "SSp-bfd",
+    "SSp-ll",
+    "SSp-tr",
+    "SSp-ul",
+    "SSp-un",
+    "SSs",
+    "STRd",
+    "STRv",
+    "VENT",
+    "VISa",
+    "VISp",
+    "VISpl",
+    "VISpm",
+    "VISpor",
+    "VL",
+    "VP",
+    "VS",
+    "ZI",
+)
+FIXED_FAMILIES = {"broad_named_anatomy": BROAD_NAMED_ANATOMY_REGIONS}
 N_OUTPUT_QUERIES = 1     # single binary logit at trial-end
 
 
@@ -120,7 +181,13 @@ def parse_args():
     p.add_argument("--arm", default="baseline",
                    choices=["baseline", "shared_baseline", "region", "cell_type", "region_ctype",
                             "region_only", "cell_type_only", "pure_anatomy",
-                            "waveform", "waveform_only"])
+                            "waveform", "waveform_only", "fixed_broad_family_count"])
+    p.add_argument("--fixed-family", default="broad_named_anatomy", choices=sorted(FIXED_FAMILIES),
+                   help="Region family used by --arm=fixed_broad_family_count.")
+    p.add_argument("--fixed-family-feature-mode", default="recording_centered",
+                   choices=["counts", "recording_centered"],
+                   help="Feature transform for --arm=fixed_broad_family_count. The default "
+                        "matches the positive local broad-family audits.")
     # Optim
     p.add_argument("--batch-size", type=int, default=4)
     p.add_argument("--batch-sampling", default="uniform",
@@ -1000,6 +1067,222 @@ def write_eval_prediction_rows(rows: list[dict], path: Path) -> int:
     return len(rows)
 
 
+def fixed_family_regions(family: str) -> set[str]:
+    if family not in FIXED_FAMILIES:
+        raise ValueError(f"unknown fixed family {family!r}")
+    return set(FIXED_FAMILIES[family])
+
+
+def fixed_family_membership_by_unit(vocab: dict, family: str) -> dict[str, bool]:
+    members = fixed_family_regions(family)
+    return {
+        str(unit_id): str(region) in members
+        for unit_id, region in zip(vocab["all_unit_ids"], vocab["region_acronyms"])
+    }
+
+
+def fixed_family_count_feature_matrix(
+    ds,
+    vocab: dict,
+    trials: list[tuple[str, float, float]],
+    *,
+    family: str,
+    window_len: float,
+) -> tuple[np.ndarray, np.ndarray, list[str], list[float]]:
+    member_by_unit = fixed_family_membership_by_unit(vocab, family)
+    features = np.zeros((len(trials), 1), dtype=np.float32)
+    targets = np.zeros(len(trials), dtype=np.int64)
+    recording_ids: list[str] = []
+    starts: list[float] = []
+    for row_idx, (rid, t0, target) in enumerate(trials):
+        sample = ds[DatasetIndex(recording_id=rid, start=t0, end=t0 + window_len)]
+        prefix = f"{rid}/"
+        sample_unit_ids = [prefix + unit for unit in sample.units.id.astype(str).tolist()]
+        unit_is_member = np.asarray([member_by_unit.get(unit_id, False) for unit_id in sample_unit_ids], dtype=bool)
+        spike_units = np.asarray(sample.spikes.unit_index, dtype=np.int64)
+        if spike_units.size:
+            features[row_idx, 0] = float(np.count_nonzero(unit_is_member[spike_units]))
+        targets[row_idx] = int(target)
+        recording_ids.append(str(rid))
+        starts.append(float(t0))
+    return features, targets, recording_ids, starts
+
+
+def transform_fixed_family_features(
+    features: np.ndarray,
+    recording_ids: list[str],
+    feature_mode: str,
+) -> np.ndarray:
+    if feature_mode == "counts":
+        return features.astype(np.float64)
+    if feature_mode == "recording_centered":
+        out = features.astype(np.float64).copy()
+        for rid in sorted(set(recording_ids)):
+            mask = np.asarray([value == rid for value in recording_ids], dtype=bool)
+            if np.any(mask):
+                out[mask] -= out[mask].mean(axis=0, keepdims=True)
+        return out
+    raise ValueError(f"unknown fixed family feature mode {feature_mode!r}")
+
+
+def zscore_fixed_train_eval(train_x: np.ndarray, eval_x: np.ndarray) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+    mean = train_x.mean(axis=0, keepdims=True)
+    std = train_x.std(axis=0, keepdims=True)
+    std[std < 1e-6] = 1.0
+    return (train_x - mean) / std, (eval_x - mean) / std, mean, std
+
+
+def fit_fixed_logistic(
+    train_x: np.ndarray,
+    train_y: np.ndarray,
+    *,
+    seed: int,
+    steps: int,
+    lr: float,
+    l2: float,
+) -> dict:
+    train_z, _eval_z, mean, std = zscore_fixed_train_eval(train_x.astype(np.float64), train_x.astype(np.float64))
+    design = np.concatenate([train_z, np.ones((train_z.shape[0], 1), dtype=np.float64)], axis=1)
+    rng = np.random.default_rng(seed)
+    weights = rng.normal(0.0, 0.01, size=design.shape[1])
+    y = train_y.astype(np.float64)
+    losses: list[float] = []
+    for _ in range(steps):
+        logits = np.clip(design @ weights, -40.0, 40.0)
+        probs = 1.0 / (1.0 + np.exp(-logits))
+        bce = -float(np.mean(y * np.log(np.clip(probs, 1e-7, 1.0)) + (1.0 - y) * np.log(np.clip(1.0 - probs, 1e-7, 1.0))))
+        losses.append(bce)
+        grad = design.T @ (probs - y) / len(y)
+        grad[:-1] += l2 * weights[:-1] / len(y)
+        weights -= lr * grad
+    return {"weights": weights, "mean": mean.ravel(), "std": std.ravel(), "losses": losses}
+
+
+def fixed_logistic_scores(model_state: dict, x: np.ndarray) -> np.ndarray:
+    mean = np.asarray(model_state["mean"], dtype=np.float64).reshape(1, -1)
+    std = np.asarray(model_state["std"], dtype=np.float64).reshape(1, -1)
+    weights = np.asarray(model_state["weights"], dtype=np.float64)
+    z = (x.astype(np.float64) - mean) / std
+    design = np.concatenate([z, np.ones((z.shape[0], 1), dtype=np.float64)], axis=1)
+    return design @ weights
+
+
+def prediction_rows_from_fixed_scores(
+    scores: np.ndarray,
+    y: np.ndarray,
+    recording_ids: list[str],
+    starts: list[float],
+    subject_by_rid: dict[str, str],
+) -> list[dict]:
+    rows = []
+    for score, target, rid, t0 in zip(scores, y, recording_ids, starts):
+        logit = float(score)
+        prob = float(1.0 / (1.0 + math.exp(-max(-40.0, min(40.0, logit)))))
+        rows.append({
+            "recording_id": rid,
+            "subject": subject_by_rid.get(rid),
+            "t0": float(t0),
+            "target": int(target),
+            "logit": logit,
+            "prob": prob,
+        })
+    return rows
+
+
+def run_fixed_broad_family_count_arm(
+    *,
+    args,
+    ds,
+    vocab: dict,
+    train_trials: list[tuple[str, float, float]],
+    eval_trials: list[tuple[str, float, float]],
+    log,
+) -> int:
+    t_start = time.time()
+    if args.fixed_family != "broad_named_anatomy":
+        log({"event": "fatal", "msg": "fixed_broad_family_count currently supports broad_named_anatomy only"})
+        return 1
+    train_x_raw, train_y, train_recordings, _train_starts = fixed_family_count_feature_matrix(
+        ds,
+        vocab,
+        train_trials,
+        family=args.fixed_family,
+        window_len=args.window_len,
+    )
+    eval_x_raw, eval_y, eval_recordings, eval_starts = fixed_family_count_feature_matrix(
+        ds,
+        vocab,
+        eval_trials,
+        family=args.fixed_family,
+        window_len=args.window_len,
+    )
+    train_x = transform_fixed_family_features(train_x_raw, train_recordings, args.fixed_family_feature_mode)
+    eval_x = transform_fixed_family_features(eval_x_raw, eval_recordings, args.fixed_family_feature_mode)
+    model_state = fit_fixed_logistic(
+        train_x,
+        train_y,
+        seed=args.seed,
+        steps=args.max_steps,
+        lr=args.lr,
+        l2=args.weight_decay,
+    )
+    train_scores = fixed_logistic_scores(model_state, train_x)
+    eval_scores = fixed_logistic_scores(model_state, eval_x)
+    train_rows = prediction_rows_from_fixed_scores(train_scores, train_y, train_recordings, _train_starts, vocab["subject_by_rid"])
+    eval_rows = prediction_rows_from_fixed_scores(eval_scores, eval_y, eval_recordings, eval_starts, vocab["subject_by_rid"])
+    train_metrics = metrics_from_prediction_rows(train_rows, prefix="train")
+    eval_metrics = metrics_from_prediction_rows(eval_rows, prefix="eval")
+    full_eval_metrics = metrics_from_prediction_rows(eval_rows, prefix="full_eval")
+    best_metric_value = float({**eval_metrics, **full_eval_metrics}[args.best_metric])
+    ckpt = {
+        "step": args.max_steps,
+        "args": vars(args),
+        "state_dict": {
+            "weights": [float(value) for value in np.asarray(model_state["weights"]).ravel()],
+            "mean": [float(value) for value in np.asarray(model_state["mean"]).ravel()],
+            "std": [float(value) for value in np.asarray(model_state["std"]).ravel()],
+        },
+        "family": args.fixed_family,
+        "feature_mode": args.fixed_family_feature_mode,
+        "eval": eval_metrics,
+    }
+    torch.save(ckpt, args.out_dir / "best.ckpt")
+    torch.save(ckpt, args.out_dir / "last.ckpt")
+    write_eval_prediction_rows(eval_rows, args.out_dir / "eval_predictions.jsonl")
+    summary = {
+        "arm": args.arm,
+        "family": args.fixed_family,
+        "feature_mode": args.fixed_family_feature_mode,
+        "region_label_control": args.region_label_control,
+        "n_train": int(len(train_y)),
+        "n_eval": int(len(eval_y)),
+        "train_auc": train_metrics["train_auc"],
+        "eval_auc": eval_metrics["eval_auc"],
+        "eval_centered_auc": full_eval_metrics["full_eval_centered_auc"],
+        "best_metric": args.best_metric,
+        "best_metric_value": best_metric_value,
+    }
+    (args.out_dir / "fixed_family_summary.json").write_text(json.dumps(summary, indent=2, sort_keys=True) + "\n")
+    log({"event": "model", "arm": args.arm, "n_params": int(len(model_state["weights"])), "fixed_family": args.fixed_family})
+    if model_state["losses"]:
+        log({"event": "train", "step": args.max_steps, "loss": float(model_state["losses"][-1]), "train_auc": train_metrics["train_auc"]})
+    log({"event": "eval", "step": args.max_steps, **eval_metrics})
+    log({"event": "full_eval", "step": args.max_steps, **full_eval_metrics})
+    log({"event": "ckpt_best", "step": args.max_steps, "best_metric": args.best_metric, "best_metric_value": best_metric_value, "eval_auc": eval_metrics["eval_auc"]})
+    log({"event": "eval_predictions_saved", "step": args.max_steps, "rows": len(eval_rows), "path": str(args.out_dir / "eval_predictions.jsonl")})
+    done_record = {
+        "event": "done",
+        "wall_clock_s": time.time() - t_start,
+        "best_metric": args.best_metric,
+        "best_metric_value": best_metric_value,
+        "fixed_family_summary": str(args.out_dir / "fixed_family_summary.json"),
+    }
+    if args.best_metric == "eval_loss":
+        done_record["best_eval_loss"] = best_metric_value
+    log(done_record)
+    return 0
+
+
 def main():
     args = parse_args()
     args.out_dir.mkdir(parents=True, exist_ok=True)
@@ -1091,6 +1374,18 @@ def main():
     if not train_trials or not eval_trials:
         log({"event": "fatal", "msg": "no trials available in train or eval split"})
         return 1
+
+    if args.arm == "fixed_broad_family_count":
+        result = run_fixed_broad_family_count_arm(
+            args=args,
+            ds=ds,
+            vocab=vocab,
+            train_trials=train_trials,
+            eval_trials=eval_trials,
+            log=log,
+        )
+        log_fh.close()
+        return result
 
     flags = arm_flags(args.arm)
     priors_df = None
