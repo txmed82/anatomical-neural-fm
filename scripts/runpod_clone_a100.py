@@ -46,6 +46,7 @@ class ClonePilotConfig:
     output_root: str
     result_doc: str
     skip_verification: bool = False
+    build_mode: str = "batch"
     build_extra_args: str = ""
     s3_bucket: str = ""
     s3_prefix: str = "brainsets/ibl_bwm"
@@ -94,8 +95,21 @@ def build_start_script(config: ClonePilotConfig) -> str:
     sweep_script = shlex.quote(config.sweep_script)
     output_root = shlex.quote(config.output_root)
     result_doc = shlex.quote(config.result_doc)
+    runpod_target = (
+        f"CPU {config.cpu_flavor}"
+        if config.compute_type == "CPU"
+        else config.gpu_type
+    )
     build_extra_args = config.build_extra_args.strip()
     build_extra = f" {build_extra_args}" if build_extra_args else ""
+    incremental_sync_args = ""
+    if config.s3_bucket:
+        incremental_sync_args = (
+            f" --bucket {shlex.quote(config.s3_bucket)}"
+            f" --prefix {shlex.quote(config.s3_prefix)}"
+        )
+        if config.s3_datacenter:
+            incremental_sync_args += f" --datacenter {shlex.quote(config.s3_datacenter)}"
     sweep_env_exports = ""
     for item in config.sweep_env:
         if "=" not in item:
@@ -246,6 +260,37 @@ PY
             f"  bash {sweep_script}\n"
         )
     )
+    build_command_block = (
+        (
+            f"  {python_runner} scripts/build_ibl_brainset_incremental.py "
+            f"--manifest {manifest_path} "
+            f"--report-dir {output_root}/incremental"
+            f"{incremental_sync_args}{build_extra}\n"
+        )
+        if config.build_mode == "incremental"
+        else (
+            f"  {python_runner} scripts/build_ibl_brainset_batch.py "
+            f"--manifest {manifest_path} --report {output_root}/build_report.md{build_extra}\n"
+        )
+    )
+    post_build_cache_block = ""
+    if config.s3_bucket:
+        if config.build_mode == "incremental":
+            post_build_cache_block = (
+                '    echo "=== auditing BrainSet cache upload ==="\n'
+                f"    {python_runner} scripts/sync_brainset_s3.py audit "
+                f"--manifest {manifest_path}{sync_args} --report {output_root}/cache_audit.md\n"
+            )
+        else:
+            post_build_cache_block = (
+                '    echo "=== uploading built BrainSet data ==="\n'
+                f"    {python_runner} scripts/sync_brainset_s3.py upload "
+                f"--manifest {manifest_path}{sync_args} --skip-existing\n"
+                "    upload_log\n"
+                '    echo "=== verifying BrainSet cache upload ==="\n'
+                f"    {python_runner} scripts/sync_brainset_s3.py verify-local "
+                f"--manifest {manifest_path}{sync_args} --report {output_root}/cache_audit.md\n"
+            )
     return f"""set -uo pipefail
 LOG_PATH=/tmp/runpod_phase3_5.log
 REPO_DIR=/workspace/{repo_dir_q}
@@ -265,7 +310,7 @@ push_artifacts() {{
 
 Date: $(date -u +"%Y-%m-%dT%H:%M:%SZ")
 
-RunPod target: {config.gpu_type}.
+RunPod target: {runpod_target}.
 
 Exit status: $status
 
@@ -278,6 +323,7 @@ Configuration:
 - target mode: {config.target_mode}
 - sweep script: {config.sweep_script}
 - setup mode: {config.setup_mode}
+- build mode: {config.build_mode}
 - skip cell-type priors: {config.skip_cell_type_priors}
 - skip sweep: {config.skip_sweep}
 - startup smoke only: {config.startup_smoke_only}
@@ -304,6 +350,18 @@ EOF
 EOF
       cat {output_root}/cache_audit.md >> {result_doc} 2>/dev/null || true
       cat >> {result_doc} <<EOF
+
+EOF
+    fi
+    if [ -f {output_root}/incremental/summary.json ]; then
+      cat >> {result_doc} <<EOF
+## Incremental Build Summary
+
+\`\`\`json
+EOF
+      cat {output_root}/incremental/summary.json >> {result_doc} 2>/dev/null || true
+      cat >> {result_doc} <<EOF
+\`\`\`
 
 EOF
     fi
@@ -448,14 +506,10 @@ cat > /tmp/run_phase3_5_body.sh <<'RUNSCRIPT'
   fi
   echo "=== building BrainSet data ==="
   mkdir -p {output_root}
-  {python_runner} scripts/build_ibl_brainset_batch.py --manifest {manifest_path} --report {output_root}/build_report.md{build_extra}
+{build_command_block.rstrip()}
   upload_log
   if [ -n "{config.s3_bucket}" ]; then
-    echo "=== uploading built BrainSet data ==="
-    {python_runner} scripts/sync_brainset_s3.py upload --manifest {manifest_path}{sync_args} --skip-existing
-    upload_log
-    echo "=== verifying BrainSet cache upload ==="
-    {python_runner} scripts/sync_brainset_s3.py verify-local --manifest {manifest_path}{sync_args} --report {output_root}/cache_audit.md
+{post_build_cache_block.rstrip()}
     upload_log
   fi
 {dataset_manifest_block.rstrip()}
@@ -683,6 +737,8 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--name-prefix", default="anfm-a100-clone-pilot")
     p.add_argument("--skip-verification", action="store_true",
                    help="Skip pytest and the IBL smoke test on the pod after local verification.")
+    p.add_argument("--build-mode", choices=["batch", "incremental"], default="batch",
+                   help="BrainSet build strategy. incremental uploads/verifies each recording as it finishes.")
     p.add_argument("--build-extra-args", default="",
                    help="Additional arguments passed to build_ibl_brainset_batch.py.")
     p.add_argument("--s3-bucket", default="",
@@ -732,6 +788,7 @@ def main() -> int:
         output_root=args.output_root,
         result_doc=args.result_doc,
         skip_verification=args.skip_verification,
+        build_mode=args.build_mode,
         build_extra_args=args.build_extra_args,
         s3_bucket=args.s3_bucket,
         s3_prefix=args.s3_prefix,

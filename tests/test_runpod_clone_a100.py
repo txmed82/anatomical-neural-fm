@@ -338,6 +338,36 @@ def test_start_script_can_sync_brainset_cache() -> None:
     assert "## Cache Audit" in script
 
 
+def test_start_script_can_run_incremental_cache_build() -> None:
+    cfg = replace(
+        config(),
+        setup_mode="minimal-data",
+        skip_verification=True,
+        skip_cell_type_priors=True,
+        skip_sweep=True,
+        build_mode="incremental",
+        manifest_path="manifests/ibl_bwm_region_matched_candidates_missing_s3.json",
+        s3_bucket="brainset-cache",
+        s3_prefix="ibl/test",
+        s3_datacenter="US-IL-1",
+        output_root="runs/matched_region_missing_incremental",
+        build_extra_args="--no-wheel --trial-window-only --window-len 1.0 --clear-one-cache",
+    )
+
+    script = build_start_script(cfg)
+
+    assert "- build mode: incremental" in script
+    assert "scripts/build_ibl_brainset_incremental.py" in script
+    assert "--manifest manifests/ibl_bwm_region_matched_candidates_missing_s3.json" in script
+    assert "--bucket brainset-cache --prefix ibl/test --datacenter US-IL-1" in script
+    assert "--no-wheel --trial-window-only --window-len 1.0 --clear-one-cache" in script
+    assert "scripts/build_ibl_brainset_batch.py" not in script
+    assert "=== auditing BrainSet cache upload ===" in script
+    assert "scripts/sync_brainset_s3.py audit --manifest manifests/ibl_bwm_region_matched_candidates_missing_s3.json" in script
+    assert "verify-local --manifest manifests/ibl_bwm_region_matched_candidates_missing_s3.json" not in script
+    assert "## Incremental Build Summary" in script
+
+
 def test_s3_log_key_matches_uploaded_result_log() -> None:
     cfg = replace(
         config(),

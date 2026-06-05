@@ -198,3 +198,29 @@ python scripts/build_ibl_brainset_incremental.py \
   --per-record-timeout 900 \
   --clear-one-cache
 ```
+
+For RunPod, use the clone launcher in incremental mode and keep training
+disabled:
+
+```bash
+python scripts/runpod_clone_a100.py \
+  --compute-type CPU \
+  --datacenter ANY \
+  --setup-mode minimal-data \
+  --container-disk-gb 20 \
+  --volume-gb 20 \
+  --manifest-path manifests/ibl_bwm_region_matched_candidates_missing_s3.json \
+  --s3-bucket rppfvo6ifn \
+  --s3-datacenter US-IL-1 \
+  --skip-verification \
+  --skip-cell-type-priors \
+  --skip-sweep \
+  --build-mode incremental \
+  --build-extra-args "--no-wheel --trial-window-only --window-len 1.0 --per-record-timeout 900 --clear-one-cache" \
+  --output-root runs/matched_region_missing_incremental \
+  --result-doc docs/matched_region_missing_incremental_results.md \
+  --name-prefix anfm-matched-missing-incremental \
+  --max-runtime-seconds 14400 \
+  --max-provision-seconds 600 \
+  --poll
+```
