@@ -89,3 +89,18 @@ advantage. The next step should be no-spend analysis of prediction artifacts:
 quantify whether the model is using recording/probe-specific offsets, trial
 count imbalance, or target-correlated region-family coverage before launching
 another GPU run.
+
+Prediction failure-mode audit result:
+`docs/lso_csh_within_recording_shuffle_failure_modes.md` shows that the CSH
+failure is dominated by recording-level calibration behavior, not by missing
+parent-region coverage. Held-out parent-region support is at least `0.752`
+across the four CSH recordings. But `region_shuffle` gains `+0.014` AUC from
+raw recording offsets, while `region_only` loses `-0.011` AUC from those
+offsets. The shuffled arm's recording mean probabilities also correlate
+positively with each recording's target-1 fraction (`0.694`), while the paired
+true-vs-shuffle fraction remains `0.448`.
+
+Next design rule: any new demo attempt must make recording-centered evaluation
+and recording-matched shuffled negatives primary gates. Raw full-trial AUC is
+too easy to improve through recording/probe calibration and should not be used
+as the model-selection metric for the anatomy claim.

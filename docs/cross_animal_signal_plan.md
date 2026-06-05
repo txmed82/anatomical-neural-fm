@@ -290,6 +290,30 @@ useful work is analysis-only:
 - define a new objective or benchmark where anatomical identity is tested
   against recording-matched negative controls from the start
 
+Follow-up audit: `docs/lso_csh_within_recording_shuffle_failure_modes.md`
+completes the first two analysis-only checks for the CSH within-recording
+shuffle pilot. It found:
+
+- parent-region support is adequate in the held-out CSH recordings
+  (`0.752` minimum support), so missing parent coverage alone does not explain
+  the failure
+- `region_shuffle` gains `+0.014` AUC from recording-level offsets, while
+  `region_only` loses `-0.011`
+- shuffled-arm recording mean probabilities correlate with recording target
+  prevalence (`0.694`), consistent with a calibration shortcut
+- true labels still lose the paired true-vs-shuffle trial check (`0.448`)
+
+Next experiment shape: replace the current raw-AUC-selected training/eval loop
+with a recording-centered, recording-matched objective/gate. The minimum viable
+bounded test should use:
+
+- best checkpoint selected by recording-centered AUC only
+- recording-matched within-recording shuffle as the mandatory negative control
+- no pass condition on full raw AUC
+- a paired true-vs-shuffle gate plus recording-level sign-flip support
+- one CSH seed first, then broaden only if the centered true-vs-shuffle effect
+  clears the existing anatomy-specific gate
+
 Conclusion: building all 48 public IBL recordings inside a throwaway A100
 container is the wrong next spend. The next attempt should either split the
 candidate manifest into smaller persisted build shards, use a persistent
