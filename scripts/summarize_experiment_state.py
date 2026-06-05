@@ -134,6 +134,7 @@ RESPONSE_EXTREME_A100_RESULT_FILE = "docs/response_extreme_trigger_a100_results.
 RESPONSE_EXTREME_TRAINING_FAILURE_AUDIT_FILE = "docs/response_extreme_training_failure_audit.json"
 RESPONSE_EXTREME_TRAINING_ALIGNED_READOUT_FILE = "docs/response_extreme_training_aligned_readout.json"
 DIRECT_BROAD_FAMILY_DEMO_READINESS_FILE = "docs/direct_broad_family_demo_readiness.json"
+DIRECT_BROAD_FAMILY_TRAINABLE_READOUT_FILE = "docs/direct_broad_family_trainable_readout.json"
 MODEL_FREE_DEMO_PACKAGE_FILE = "docs/model_free_anatomical_transfer_demo_package.json"
 LOW_CONTRAST_CHOICE_FAMILY_GATE_FILE = "docs/low_contrast_choice_family_gate.json"
 LOW_CONTRAST_CHOICE_PROJECTED_GATE_FILE = "docs/low_contrast_choice_family_gate_projected_hdf5.json"
@@ -674,6 +675,7 @@ def render_markdown(
     response_extreme_training_failure_audit: dict | None = None,
     response_extreme_training_aligned_readout: dict | None = None,
     direct_broad_family_demo_readiness: dict | None = None,
+    direct_broad_family_trainable_readout: dict | None = None,
     model_free_demo_package: dict | None = None,
     low_contrast_choice_family_gate: dict | None = None,
     low_contrast_choice_projected_gate: dict | None = None,
@@ -2163,6 +2165,43 @@ def render_markdown(
                 "A trained anatomical-transfer demo still requires a direct fixed-family "
                 "model arm or a new target/control branch that passes local and trained "
                 "readout gates."
+            ),
+            "",
+        ]
+    if direct_broad_family_trainable_readout is not None:
+        summary = direct_broad_family_trainable_readout["summary"]
+        lines += [
+            "## Direct Broad-Family Trainable Readout",
+            "",
+            "`docs/direct_broad_family_trainable_readout.md` tests the same fixed",
+            "broad-family response-extreme feature with a deterministic logistic",
+            "readout rather than closed-form ridge.",
+            "",
+            f"- decision: `{summary['decision']}`",
+            f"- robust cases: `{summary['n_robust_cases']}/{summary['n_cases']}`",
+            f"- candidate rows: `{summary['n_candidates']}/{summary['n_rows']}`",
+            f"- paid GPU trigger: `{summary['paid_gpu_trigger']}`",
+            f"- next action: {summary['next_action']}",
+            "",
+            "| holdout | target | family | candidate seeds | delta shuffle | delta total | targets | bidir range |",
+            "|---|---|---|---:|---:|---:|---:|---:|",
+        ]
+        for row in summary["case_summaries"]:
+            lines.append(
+                f"| {row['holdout']} | {row['target_mode']} | {row['family']} | "
+                f"{row['n_candidate_seeds']}/{row['n_train_seeds']} | "
+                f"{row['mean_centered_delta_vs_shuffle']:+.4f} | "
+                f"{row['mean_centered_delta_vs_total']:+.4f} | "
+                f"{row['mean_target0']:.3f}/{row['mean_target1']:.3f} | "
+                f"{row['min_bidirectional_recordings']}-{row['max_bidirectional_recordings']} |"
+            )
+        lines += [
+            "",
+            (
+                "Decision: this is a positive no-spend bridge from model-free ridge "
+                "to a trainable fixed-feature readout. It still does not validate "
+                "the transformer/foundation-model claim; the next code step is an "
+                "exact fixed-family-count model arm before another paid GPU run."
             ),
             "",
         ]
@@ -4135,6 +4174,9 @@ def main() -> int:
     direct_broad_family_demo_readiness = read_mechanism_audit(
         REPO_ROOT / DIRECT_BROAD_FAMILY_DEMO_READINESS_FILE
     )
+    direct_broad_family_trainable_readout = read_mechanism_audit(
+        REPO_ROOT / DIRECT_BROAD_FAMILY_TRAINABLE_READOUT_FILE
+    )
     model_free_demo_package = read_mechanism_audit(REPO_ROOT / MODEL_FREE_DEMO_PACKAGE_FILE)
     low_contrast_choice_family_gate = read_mechanism_audit(REPO_ROOT / LOW_CONTRAST_CHOICE_FAMILY_GATE_FILE)
     low_contrast_choice_projected_gate = read_mechanism_audit(REPO_ROOT / LOW_CONTRAST_CHOICE_PROJECTED_GATE_FILE)
@@ -4315,6 +4357,7 @@ def main() -> int:
         response_extreme_training_failure_audit,
         response_extreme_training_aligned_readout,
         direct_broad_family_demo_readiness,
+        direct_broad_family_trainable_readout,
         model_free_demo_package,
         low_contrast_choice_family_gate,
         low_contrast_choice_projected_gate,
@@ -4465,6 +4508,7 @@ def main() -> int:
         "response_extreme_training_failure_audit": response_extreme_training_failure_audit,
         "response_extreme_training_aligned_readout": response_extreme_training_aligned_readout,
         "direct_broad_family_demo_readiness": direct_broad_family_demo_readiness,
+        "direct_broad_family_trainable_readout": direct_broad_family_trainable_readout,
         "model_free_demo_package": model_free_demo_package,
         "low_contrast_choice_family_gate": low_contrast_choice_family_gate,
         "low_contrast_choice_projected_gate": low_contrast_choice_projected_gate,

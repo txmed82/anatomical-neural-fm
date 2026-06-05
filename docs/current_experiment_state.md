@@ -755,6 +755,25 @@ cloud-aligned readout checks.
 
 Decision: this branch can support only a narrow model-free demo today. A trained anatomical-transfer demo still requires a direct fixed-family model arm or a new target/control branch that passes local and trained readout gates.
 
+## Direct Broad-Family Trainable Readout
+
+`docs/direct_broad_family_trainable_readout.md` tests the same fixed
+broad-family response-extreme feature with a deterministic logistic
+readout rather than closed-form ridge.
+
+- decision: `direct_broad_family_trainable_candidate`
+- robust cases: `2/2`
+- candidate rows: `6/6`
+- paid GPU trigger: `False`
+- next action: Implement this exact fixed-family-count arm in the training code before any new GPU run.
+
+| holdout | target | family | candidate seeds | delta shuffle | delta total | targets | bidir range |
+|---|---|---|---:|---:|---:|---:|---:|
+| CSHL045 | post_error_response_extreme_25_75_le_1 | broad_named_anatomy | 3/3 | +0.0655 | +0.0366 | 0.775/0.884 | 3-3 |
+| NR_0019 | post_error_response_extreme_33_67_le_1 | broad_named_anatomy | 3/3 | +0.0061 | +0.0042 | 0.675/0.702 | 3-3 |
+
+Decision: this is a positive no-spend bridge from model-free ridge to a trainable fixed-feature readout. It still does not validate the transformer/foundation-model claim; the next code step is an exact fixed-family-count model arm before another paid GPU run.
+
 ## Model-Free Anatomical Transfer Demo Package
 
 `docs/model_free_anatomical_transfer_demo_package.md` is the current
