@@ -18,6 +18,7 @@ from scripts.train import (
     parse_region_include,
     region_acronym_at_granularity,
     region_index_lookup,
+    recording_pairwise_rank_loss,
     recording_centered_auc_from_prediction_rows,
     select_recording_ids,
     shared_split_regions,
@@ -252,6 +253,39 @@ def test_recording_centered_training_loss_ignores_recording_offsets() -> None:
     shifted_loss = training_loss(shifted_logits, target, "recording_centered_bce", meta)
 
     assert torch.allclose(loss, shifted_loss)
+
+
+def test_recording_pairwise_rank_loss_ignores_recording_offsets() -> None:
+    logits = torch.tensor([[1.0], [3.0], [10.0], [13.0]])
+    shifted_logits = torch.tensor([[101.0], [103.0], [-30.0], [-27.0]])
+    target = torch.tensor([[0.0], [1.0], [0.0], [1.0]])
+    recording_ids = ["a", "a", "b", "b"]
+
+    loss = recording_pairwise_rank_loss(logits, target, recording_ids)
+    shifted_loss = recording_pairwise_rank_loss(shifted_logits, target, recording_ids)
+
+    assert torch.allclose(loss, shifted_loss)
+
+
+def test_recording_pairwise_rank_loss_prefers_positive_above_negative() -> None:
+    good = torch.tensor([[0.0], [2.0]])
+    bad = torch.tensor([[2.0], [0.0]])
+    target = torch.tensor([[0.0], [1.0]])
+
+    good_loss = recording_pairwise_rank_loss(good, target, ["a", "a"])
+    bad_loss = recording_pairwise_rank_loss(bad, target, ["a", "a"])
+
+    assert good_loss < bad_loss
+
+
+def test_training_loss_supports_recording_pairwise_rank_mode() -> None:
+    logits = torch.tensor([[0.0], [2.0]])
+    target = torch.tensor([[0.0], [1.0]])
+    meta = {"recording_ids": ["a", "a"]}
+
+    loss = training_loss(logits, target, "recording_pairwise_rank", meta)
+
+    assert torch.isfinite(loss)
 
 
 def test_shared_split_regions_uses_train_eval_intersection() -> None:

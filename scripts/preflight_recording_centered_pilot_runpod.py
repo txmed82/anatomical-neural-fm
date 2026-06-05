@@ -59,6 +59,18 @@ def recording_centered_pilot_config() -> PreflightConfig:
     )
 
 
+def post_run_output_paths(config: PreflightConfig) -> dict[str, str]:
+    doc_path = Path(config.result_doc)
+    stem = doc_path.stem
+    if stem.endswith("_results"):
+        stem = stem.removesuffix("_results")
+    return {
+        "gate_json": str(doc_path.with_name(f"{stem}_anatomy_specific_gate.json")),
+        "failure_json": str(doc_path.with_name(f"{stem}_failure_modes.json")),
+        "failure_md": str(doc_path.with_name(f"{stem}_failure_modes.md")),
+    }
+
+
 def print_preflight(config: PreflightConfig, *, repo_root: Path = REPO_ROOT) -> int:
     branch, git_ready = git_branch_status()
     env = load_dotenv(repo_root / ".env")
@@ -70,6 +82,7 @@ def print_preflight(config: PreflightConfig, *, repo_root: Path = REPO_ROOT) -> 
         config.max_provision_seconds,
     )
     command = build_launch_command(config)
+    post_run_paths = post_run_output_paths(config)
 
     print("# Recording-centered anatomy pilot RunPod preflight")
     print(f"branch: {branch}")
@@ -94,15 +107,15 @@ def print_preflight(config: PreflightConfig, *, repo_root: Path = REPO_ROOT) -> 
     print(
         "uv run python scripts/analyze_anatomy_specific_permutation.py "
         f"{config.output_root} --holdout CSH_ZAD_019 "
-        "--out docs/lso_csh_recording_centered_gate_pilot_anatomy_specific_gate.json"
+        f"--out {post_run_paths['gate_json']}"
     )
     print("")
     print("Required post-run failure-mode audit:")
     print(
         "uv run python scripts/audit_prediction_failure_modes.py "
         f"{config.output_root} --holdout CSH_ZAD_019 "
-        "--out docs/lso_csh_recording_centered_gate_pilot_failure_modes.json "
-        "--md-out docs/lso_csh_recording_centered_gate_pilot_failure_modes.md"
+        f"--out {post_run_paths['failure_json']} "
+        f"--md-out {post_run_paths['failure_md']}"
     )
 
     if not git_ready:

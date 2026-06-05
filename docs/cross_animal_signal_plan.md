@@ -371,6 +371,22 @@ the training objective or model comparison so that true anatomical labels must
 beat a within-recording shuffled-label arm on target-aware within-recording
 ranking, preferably as a contrastive or paired auxiliary criterion.
 
+Implemented objective candidate: `--loss-mode recording_pairwise_rank` optimizes
+same-recording target-1 logits above target-0 logits with a logistic pairwise
+ranking loss. It should be used with `BATCH_SAMPLING=recording_target_balanced`
+so batches contain left/right pairs from the same recording. This directly
+targets the failure mode found in `docs/csh_mechanism_audit.md`: true labels
+must improve target-aware within-recording ordering rather than recording-level
+calibration.
+
+Bounded preflight for the next paid test:
+`uv run python scripts/preflight_pairwise_rank_pilot_runpod.py`. It is a
+one-seed CSH_ZAD_019 L4 pilot with
+`REGION_SHUFFLE_CONTROL=within_recording_shuffle`,
+`BEST_METRIC=full_eval_centered_auc`, and diagnostics enabled. Broaden only if
+the strict anatomy-specific gate and CSH mechanism audit improve over the
+current paired true-vs-shuffle `0.448` baseline.
+
 Conclusion: building all 48 public IBL recordings inside a throwaway A100
 container is the wrong next spend. The next attempt should either split the
 candidate manifest into smaller persisted build shards, use a persistent

@@ -135,3 +135,11 @@ every CSH held-out recording has true-vs-shuffle paired target movement below
 therefore objective redesign: train/evaluate against an explicit
 within-recording true-vs-shuffle separation target, rather than choosing another
 holdout subject or parent-region slice.
+
+Objective redesign implemented: `scripts/train.py` now supports
+`--loss-mode recording_pairwise_rank`, a same-recording logistic ranking loss
+that pushes target-1 logits above target-0 logits within each recording and is
+invariant to recording-level offsets. The intended pilot uses
+`BATCH_SAMPLING=recording_target_balanced` plus the existing
+within-recording-shuffle negative control. Preflight:
+`uv run python scripts/preflight_pairwise_rank_pilot_runpod.py`.

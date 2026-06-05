@@ -116,10 +116,13 @@ def parse_args():
                         "leakage. 'recording_target_balanced' draws left/right pairs from the same "
                         "recording, which is intended for recording-centered training losses. "
                         "Sampled eval remains uniform.")
-    p.add_argument("--loss-mode", default="bce", choices=["bce", "recording_centered_bce"],
+    p.add_argument("--loss-mode", default="bce",
+                   choices=["bce", "recording_centered_bce", "recording_pairwise_rank"],
                    help="'bce' trains on raw logits. 'recording_centered_bce' subtracts each "
                         "recording's mean logit within the accepted batch before BCE, reducing "
-                        "recording-offset shortcuts.")
+                        "recording-offset shortcuts. 'recording_pairwise_rank' optimizes "
+                        "same-recording target-1 logits above target-0 logits with a logistic "
+                        "pairwise ranking loss.")
     p.add_argument("--lr", type=float, default=3e-4)
     p.add_argument("--weight-decay", type=float, default=1e-4)
     p.add_argument("--max-steps", type=int, default=500)
@@ -684,13 +687,48 @@ def training_loss(
 ) -> torch.Tensor:
     if loss_mode == "bce":
         return F.binary_cross_entropy_with_logits(logits, target)
-    if loss_mode == "recording_centered_bce":
+    if loss_mode in {"recording_centered_bce", "recording_pairwise_rank"}:
         recording_ids = [] if batch_meta is None else list(batch_meta.get("recording_ids", []))
         if len(recording_ids) != logits.shape[0]:
-            raise ValueError("recording_centered_bce requires one recording id per batch row")
+            raise ValueError(f"{loss_mode} requires one recording id per batch row")
+        if loss_mode == "recording_pairwise_rank":
+            return recording_pairwise_rank_loss(logits, target, recording_ids)
         centered_logits = center_logits_by_group(logits, recording_ids)
         return F.binary_cross_entropy_with_logits(centered_logits, target)
     raise ValueError(f"unknown loss_mode {loss_mode!r}")
+
+
+def recording_pairwise_rank_loss(
+    logits: torch.Tensor,
+    target: torch.Tensor,
+    recording_ids: list[str],
+) -> torch.Tensor:
+    """Same-recording pairwise logistic ranking loss.
+
+    For each recording represented in the batch, every target-1 logit is paired
+    against every target-0 logit. The loss is invariant to adding a constant
+    offset to all logits from the same recording, and directly matches the
+    recording-centered ranking failure mode exposed by the strict gates.
+    """
+    flat_logits = logits.reshape(-1)
+    flat_target = target.reshape(-1)
+    losses = []
+    for recording_id in sorted(set(recording_ids)):
+        indices = [idx for idx, value in enumerate(recording_ids) if value == recording_id]
+        if not indices:
+            continue
+        group_index = torch.as_tensor(indices, dtype=torch.long, device=logits.device)
+        group_logits = flat_logits.index_select(0, group_index)
+        group_target = flat_target.index_select(0, group_index)
+        pos = group_logits[group_target > 0.5]
+        neg = group_logits[group_target <= 0.5]
+        if pos.numel() == 0 or neg.numel() == 0:
+            continue
+        margins = pos[:, None] - neg[None, :]
+        losses.append(F.softplus(-margins).mean())
+    if not losses:
+        return F.binary_cross_entropy_with_logits(center_logits_by_group(logits, recording_ids), target)
+    return torch.stack(losses).mean()
 
 
 def _auc(scores: np.ndarray, labels: np.ndarray) -> float:
