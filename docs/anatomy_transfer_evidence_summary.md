@@ -423,6 +423,15 @@ Decision: do not promote this to neural training; a model run would likely
 learn the same target1-local artifact rather than bidirectional anatomical
 transfer.
 
+Recording directionality audit:
+`docs/model_free_recording_directionality_audit.md` checks whether this
+one-sided behavior is isolated. It is not. Across 1120 per-recording
+observations from the current model-free artifacts, only 80 are bidirectional;
+302 are target0-only, 311 are target1-only, and 427 are neither. One-sided
+observations make up `0.547` of all observations. Decision: every future local
+promotion gate must report target-direction classes before global centered
+deltas are treated as evidence.
+
 Recording-centered feature check:
 `docs/model_free_recording_bidirectional_gate_recording_centered.md` subtracts
 each recording's own mean parent-region feature vector before ridge fitting.

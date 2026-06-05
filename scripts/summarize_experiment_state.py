@@ -129,6 +129,7 @@ MODEL_FREE_SOURCE_TARGET_PAIR_FAMILIES_RECORDING_CENTERED_FILE = (
 )
 MODEL_FREE_GATE_BLOCKER_AUDIT_FILE = "docs/model_free_gate_blocker_audit.json"
 MODEL_FREE_RECORDING_SUPPORT_AUDIT_FILE = "docs/model_free_recording_support_audit.json"
+MODEL_FREE_RECORDING_DIRECTIONALITY_AUDIT_FILE = "docs/model_free_recording_directionality_audit.json"
 MODEL_FREE_RECORDING_REPLICATION_AUDIT_FILE = "docs/model_free_recording_replication_audit.json"
 MODEL_FREE_FAMILY_BIDIRECTIONAL_RECORDING_CENTERED_FILE = (
     "docs/model_free_family_bidirectional_gate_recording_centered.json"
@@ -446,6 +447,7 @@ def render_markdown(
     model_free_source_target_pair_families_recording_centered: dict | None = None,
     model_free_gate_blocker_audit: dict | None = None,
     model_free_recording_support_audit: dict | None = None,
+    model_free_recording_directionality_audit: dict | None = None,
     model_free_recording_replication_audit: dict | None = None,
     model_free_family_bidirectional_recording_centered: dict | None = None,
     model_free_family_bidirectional_recording_centered_l2_1: dict | None = None,
@@ -1387,6 +1389,32 @@ def render_markdown(
             ),
             "",
         ]
+    if model_free_recording_directionality_audit is not None:
+        summary = model_free_recording_directionality_audit["summary"]
+        overall = summary["overall"]
+        counts = overall["class_counts"]
+        lines += [
+            "## Model-Free Recording Directionality Audit",
+            "",
+            "`docs/model_free_recording_directionality_audit.md` classifies every",
+            "per-recording target-support observation as bidirectional, target0-only,",
+            "target1-only, or neither across current model-free artifacts.",
+            "",
+            f"- observations: `{overall['n_observations']}`",
+            f"- bidirectional: `{counts['bidirectional']}`",
+            f"- target0-only: `{counts['target0_only']}`",
+            f"- target1-only: `{counts['target1_only']}`",
+            f"- neither: `{counts['neither']}`",
+            f"- one-sided fraction: `{overall['one_sided_fraction']:.3f}`",
+            f"- decision: `{summary['decision']}`",
+            "",
+            (
+                "Decision: one-sided recording effects are common enough that future "
+                "candidate screens must report target-direction classes before any "
+                "global delta can be considered a training trigger."
+            ),
+            "",
+        ]
     if model_free_recording_replication_audit is not None:
         summary = model_free_recording_replication_audit["summary"]
         top = model_free_recording_replication_audit["rows"][:4]
@@ -1663,6 +1691,9 @@ def main() -> int:
     )
     model_free_gate_blocker_audit = read_mechanism_audit(REPO_ROOT / MODEL_FREE_GATE_BLOCKER_AUDIT_FILE)
     model_free_recording_support_audit = read_mechanism_audit(REPO_ROOT / MODEL_FREE_RECORDING_SUPPORT_AUDIT_FILE)
+    model_free_recording_directionality_audit = read_mechanism_audit(
+        REPO_ROOT / MODEL_FREE_RECORDING_DIRECTIONALITY_AUDIT_FILE
+    )
     model_free_recording_replication_audit = read_mechanism_audit(
         REPO_ROOT / MODEL_FREE_RECORDING_REPLICATION_AUDIT_FILE
     )
@@ -1725,6 +1756,7 @@ def main() -> int:
         model_free_source_target_pair_families_recording_centered,
         model_free_gate_blocker_audit,
         model_free_recording_support_audit,
+        model_free_recording_directionality_audit,
         model_free_recording_replication_audit,
         model_free_family_bidirectional_recording_centered,
         model_free_family_bidirectional_recording_centered_l2_1,
@@ -1808,6 +1840,7 @@ def main() -> int:
         ),
         "model_free_gate_blocker_audit": model_free_gate_blocker_audit,
         "model_free_recording_support_audit": model_free_recording_support_audit,
+        "model_free_recording_directionality_audit": model_free_recording_directionality_audit,
         "model_free_recording_replication_audit": model_free_recording_replication_audit,
         "model_free_family_bidirectional_recording_centered": (
             model_free_family_bidirectional_recording_centered

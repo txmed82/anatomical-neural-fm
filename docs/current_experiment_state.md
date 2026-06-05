@@ -488,6 +488,22 @@ source-target gate artifacts.
 
 Decision: rare same-recording bidirectional observations are not concentrated enough to define a stable demo subset from the current cache. The next benchmark redesign should prospectively create target0+target1 evidence inside recordings, then rerun the same model-free local gate before GPU training.
 
+## Model-Free Recording Directionality Audit
+
+`docs/model_free_recording_directionality_audit.md` classifies every
+per-recording target-support observation as bidirectional, target0-only,
+target1-only, or neither across current model-free artifacts.
+
+- observations: `1120`
+- bidirectional: `80`
+- target0-only: `302`
+- target1-only: `311`
+- neither: `427`
+- one-sided fraction: `0.547`
+- decision: `one_sided_recording_effects_are_common`
+
+Decision: one-sided recording effects are common enough that future candidate screens must report target-direction classes before any global delta can be considered a training trigger.
+
 ## Model-Free Recording Replication Audit
 
 `docs/model_free_recording_replication_audit.md` tests whether a

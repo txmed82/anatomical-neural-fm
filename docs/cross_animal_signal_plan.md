@@ -1493,6 +1493,16 @@ for example by scoring sign-symmetric recording-level effects or by requiring a
 family/control to improve target0 and target1 in each recording before any
 global delta is considered.
 
+Recording directionality audit:
+`scripts/audit_model_free_recording_directionality.py` generalizes that
+mechanistic clue across all current artifacts. One-sided observations dominate
+bidirectional ones (`613` one-sided vs `80` bidirectional). The skew is not
+always toward the same target, which means the issue is not simply "target1 is
+easier"; the broader problem is that global deltas can be assembled from
+different one-sided recording effects. Next local screens should optimize or
+select on symmetric recording-level target support first, then inspect global
+AUC only as a secondary metric.
+
 Recording-centered feature check:
 The gate also supports `--feature-mode recording_centered`, which subtracts
 each recording's mean parent-region feature vector before fitting. This reduces
