@@ -1,0 +1,41 @@
+{
+  "decision": "redesign_before_more_spend",
+  "demo_ready": false,
+  "holdouts": [
+    {
+      "centered_auc_delta_vs_shuffle": 0.005902427133753441,
+      "centered_auc_region_only": 0.5188988665250548,
+      "centered_auc_region_shuffle": 0.5129964393913014,
+      "full_auc_delta_vs_shuffle": 0.005486732597416166,
+      "full_auc_region_only": 0.5168753482257896,
+      "full_auc_region_shuffle": 0.5113886156283735,
+      "gate_pass": false,
+      "holdout": "CSH_ZAD_019",
+      "n_recordings": 4,
+      "n_seeds": 3,
+      "paired_shuffle_vs_shared": 0.5517241379310345,
+      "paired_specificity_gap": -0.01614086573734408,
+      "paired_true_vs_shuffle": 0.5355832721936904,
+      "passing_seeds": 1,
+      "recordings_true_beats_shuffle": 4
+    },
+    {
+      "centered_auc_delta_vs_shuffle": 0.012214868379839594,
+      "centered_auc_region_only": 0.5050414675001021,
+      "centered_auc_region_shuffle": 0.49282659912026255,
+      "full_auc_delta_vs_shuffle": 0.014280753360297382,
+      "full_auc_region_only": 0.5081927251433318,
+      "full_auc_region_shuffle": 0.4939119717830344,
+      "gate_pass": false,
+      "holdout": "NR_0019",
+      "n_recordings": 4,
+      "n_seeds": 3,
+      "paired_shuffle_vs_shared": 0.49257425742574257,
+      "paired_specificity_gap": 0.0,
+      "paired_true_vs_shuffle": 0.49257425742574257,
+      "passing_seeds": 0,
+      "recordings_true_beats_shuffle": 1
+    }
+  ],
+  "next_action": "Do not run more same-setup GPU sweeps. Redesign the anatomy-specific objective or gate, then rerun a bounded two-holdout confirmation."
+}

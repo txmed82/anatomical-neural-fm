@@ -892,6 +892,20 @@ replicate the CSH centered-AUC pattern strongly enough for a demo. Do not spend
 on more same-setup held-out sweeps until the objective/gate is redesigned around
 a statistically defensible anatomy-specific contrast.
 
+Cross-holdout evidence summary:
+`scripts/summarize_anatomy_transfer_evidence.py` writes
+`docs/anatomy_transfer_evidence_summary.{json,md}` from the CSH and NR_0019 gate
+plus ensemble diagnostics. Current decision is
+`redesign_before_more_spend`. CSH has broad recording-level AUC support
+(`4/4` recordings true > shuffle), but its paired true-vs-shuffle ensemble
+fraction is `0.536`, below both the `0.550` gate and the shuffle-vs-shared
+fraction `0.552`. NR_0019 has positive ensemble AUC deltas but only `1/4`
+recordings true > shuffle and paired true-vs-shuffle is `0.493`. This means the
+existing run setup has not demonstrated a general cross-animal anatomical
+transfer signal. The next milestone should be an offline gate/objective redesign
+that produces an anatomy-specific statistic on these saved predictions before
+any additional GPU spend.
+
 After cleanup, run:
 
 ```bash
