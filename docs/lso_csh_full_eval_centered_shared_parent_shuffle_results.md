@@ -1,6 +1,6 @@
 # Cloud Phase 3-5 Results
 
-Date: 2026-06-05T01:44:38Z
+Date: 2026-06-05T02:01:28Z
 
 RunPod target: A100 pilot.
 
@@ -116,39 +116,51 @@ none
 | `e1931de1-cf7b-49af-af33-2ade15e8abe7_probe00.h5` |
 | `edd22318-216c-44ff-bc24-49ce8be78374_probe00.h5` |
 
-## Missing Sweep Summary
+## Summary
 
-No `runs/lso_csh_full_eval_centered_shared_parent_shuffle/summary.md`, `within_summary.md`, or
-`cross_summary.md` file was present when cleanup pushed artifacts. Treat this
-cloud result as incomplete/non-canonical even if the pod exit status is 0.
+# Leave-subject-out analysis
 
-## Local Artifact Analysis
+root: `runs/lso_csh_full_eval_centered_shared_parent_shuffle`
 
-The pod pushed partial diagnostics before cleanup. Seed 0 completed all three
-arms; seed 1 completed only `shared_baseline`. Local analysis with
-`scripts/analyze_leave_subject_out.py` produced:
+## Per-Holdout AUC and Delta vs Shared Null
 
-### Full Held-Out-Trial AUC and Delta vs Shared Null
+| holdout | arm | n_seeds | mean_AUC | mean_delta_vs_shared | seed_deltas |
+|---|---|---|---|---|---|
+| CSH_ZAD_019 | region_only | 3 | 0.546 | +0.043 | +0.027,+0.050,+0.051 |
+| CSH_ZAD_019 | region_shuffle | 3 | 0.490 | -0.013 | +0.007,-0.027,-0.019 |
+
+## Aggregate Delta vs Shared Null
+
+| arm | n_pairs | mean_delta | positive_pairs |
+|---|---|---|---|
+| region_only | 3 | +0.043 | 3/3 |
+| region_shuffle | 3 | -0.013 | 1/3 |
+
+## Full Held-Out-Trial AUC and Delta vs Shared Null
 
 | holdout | arm | n_seeds | mean_full_AUC | mean_full_delta_vs_shared | seed_full_deltas |
-|---|---|---:|---:|---:|---|
-| CSH_ZAD_019 | region_only | 1 | 0.505 | -0.006 | -0.006 |
-| CSH_ZAD_019 | region_shuffle | 1 | 0.513 | +0.002 | +0.002 |
+|---|---|---|---|---|---|
+| CSH_ZAD_019 | region_only | 3 | 0.502 | +0.002 | -0.006,-0.004,+0.017 |
+| CSH_ZAD_019 | region_shuffle | 3 | 0.500 | +0.001 | +0.002,+0.008,-0.007 |
 
-### Recording-Centered Full-Trial AUC and Delta vs Shared Null
+## Full Held-Out-Trial Aggregate Delta vs Shared Null
+
+| arm | n_pairs | mean_full_delta | positive_pairs |
+|---|---|---|---|
+| region_only | 3 | +0.002 | 1/3 |
+| region_shuffle | 3 | +0.001 | 2/3 |
+
+## Recording-Centered Full-Trial AUC and Delta vs Shared Null
 
 | holdout | arm | n_seeds | mean_centered_AUC | mean_centered_delta_vs_shared | seed_centered_deltas |
-|---|---|---:|---:|---:|---|
-| CSH_ZAD_019 | region_only | 1 | 0.517 | +0.005 | +0.005 |
-| CSH_ZAD_019 | region_shuffle | 1 | 0.514 | +0.003 | +0.003 |
+|---|---|---|---|---|---|
+| CSH_ZAD_019 | region_only | 3 | 0.517 | +0.016 | +0.005,+0.009,+0.033 |
+| CSH_ZAD_019 | region_shuffle | 3 | 0.501 | -0.000 | +0.003,-0.006,+0.002 |
 
-### Paired True-vs-Shuffle Trial Gate
+## Paired True-vs-Shuffle Trial Gate
 
 | holdout | seed | paired_trials | true_prob_improved | threshold | verdict |
 |---|---:|---:|---:|---:|---|
 | CSH_ZAD_019 | 0 | 2726 | 0.513 | 0.550 | fail |
-
-Executable gate output was written to
-`docs/lso_csh_full_eval_centered_shared_parent_shuffle_gate.json` with
-`pass: false`. Treat this as weak negative partial evidence, not a successful
-cross-animal anatomical-transfer demo.
+| CSH_ZAD_019 | 1 | 2726 | 0.486 | 0.550 | fail |
+| CSH_ZAD_019 | 2 | 2726 | 0.552 | 0.550 | pass |
