@@ -1271,10 +1271,11 @@ def render_markdown(
         else:
             lines += [
                 (
-                    "Decision: the current cached target, contextual target, and "
-                    "wheel-derived target branches are closed as GPU triggers. The "
-                    "next aligned work is a prospectively supported benchmark/control "
-                    "redesign, still gated locally before any paid training."
+                    "Decision: the current cached target, contextual target, "
+                    "wheel-derived target, and reaction-dynamics target branches are "
+                    "closed as GPU triggers. The next aligned work is a prospectively "
+                    "supported benchmark/control redesign, still gated locally before "
+                    "any paid training."
                 ),
                 "",
             ]

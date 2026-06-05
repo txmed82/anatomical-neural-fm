@@ -3,7 +3,7 @@
 Ranks remaining no-spend branches after the current local audits. This is the planning gate before any new RunPod training.
 
 - recommended next: `new manifest with prospective bidirectional support`
-- closed branches: `10`
+- closed branches: `11`
 - decision: `no_local_training_trigger`
 - GPU trigger: At least one local row on the proposed manifest must clear delta_vs_shuffle>=0, delta_vs_total>=0, target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75 before training.
 
@@ -11,15 +11,16 @@ Ranks remaining no-spend branches after the current local audits. This is the pl
 |---:|---|---|---|
 | 1 | new manifest with prospective bidirectional support | `recommended_next` | Do not launch GPU training from the projected support80 panel; its model-free family and feature-mode gates have no candidates. Redesign the target/control locally. |
 | 86 | wheel-derived target family gate | `closed` | Do not spend on the tested wheel targets; move to a prospectively supported manifest. |
-| 87 | behavior-inclusive cache rebuild | `closed` | Cache rebuild is complete; all matched recordings now expose wheel. Use the wheel-derived local target gate before any training. |
-| 88 | direct cached-field derived targets | `closed` | Do not launch GPU training from contrast_strength, response_latency, or prior_engaged. |
-| 89 | contextual cached trial-state targets | `closed` | Do not spend on contextual trial-sequence targets from the compact cache. |
-| 90 | more feature-mode or l2 sweeps on shared broad anatomy | `closed` | Do not spend more local or GPU time on simple broad-anatomy feature/regularization repair. |
-| 91 | narrow existing manifest further | `closed` | Do not keep shrinking the existing cache as the primary rescue path. |
-| 92 | recording-subset selection from current artifacts | `closed` | Do not train on selected current recordings unless a new target/control first passes locally. |
-| 93 | current shared-family target/control grid | `closed` | Do not rerun the same target/family grid without a new target/control definition. |
-| 94 | alternative cached targets plus family aggregation | `closed` | Do not expect prior_side or feedback alone to rescue the signal under current controls. |
-| 95 | source-target pair narrowing | `closed` | Do not run a paid source-target pair sweep without a new local gate pass. |
+| 87 | reaction-dynamics wheel targets | `closed` | Do not spend on reaction-dynamics wheel targets; the near miss fails true-vs-shuffle and does not replicate across feature modes. |
+| 88 | behavior-inclusive cache rebuild | `closed` | Cache rebuild is complete; all matched recordings now expose wheel. Use the wheel-derived local target gate before any training. |
+| 89 | direct cached-field derived targets | `closed` | Do not launch GPU training from contrast_strength, response_latency, or prior_engaged. |
+| 90 | contextual cached trial-state targets | `closed` | Do not spend on contextual trial-sequence targets from the compact cache. |
+| 91 | more feature-mode or l2 sweeps on shared broad anatomy | `closed` | Do not spend more local or GPU time on simple broad-anatomy feature/regularization repair. |
+| 92 | narrow existing manifest further | `closed` | Do not keep shrinking the existing cache as the primary rescue path. |
+| 93 | recording-subset selection from current artifacts | `closed` | Do not train on selected current recordings unless a new target/control first passes locally. |
+| 94 | current shared-family target/control grid | `closed` | Do not rerun the same target/family grid without a new target/control definition. |
+| 95 | alternative cached targets plus family aggregation | `closed` | Do not expect prior_side or feedback alone to rescue the signal under current controls. |
+| 96 | source-target pair narrowing | `closed` | Do not run a paid source-target pair sweep without a new local gate pass. |
 
 ## Evidence
 
@@ -37,6 +38,11 @@ Ranks remaining no-spend branches after the current local audits. This is the pl
 - behavior-cache preflight has wheel in 28/28 matched recordings
 - wheel target family gate has 0 candidates across 84 rows and max bidir 0.750
 - GPU trigger: At least one local wheel row must clear delta_vs_shuffle>=0, delta_vs_total>=0, target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75.
+
+### reaction-dynamics wheel targets
+- reaction-dynamics target family feature-mode sweep has 0 candidates across 336 rows, 4 feature modes, and max bidir 0.750
+- best recording-centered near miss is wheel_reaction_latency/broad_named_anatomy/KS014: target0=0.667, target1=0.715, bidir=3/4, total delta +0.003, but shuffle delta -0.001
+- GPU trigger: none
 
 ### behavior-inclusive cache rebuild
 - current cached trial targets and shared-family controls all fail strict same-recording bidirectionality

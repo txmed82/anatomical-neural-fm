@@ -1,4 +1,9 @@
-from scripts.audit_next_benchmark_control_options import build_report, projected_feature_mode_summary, render_markdown
+from scripts.audit_next_benchmark_control_options import (
+    build_report,
+    projected_feature_mode_summary,
+    reaction_feature_mode_summary,
+    render_markdown,
+)
 
 
 def test_build_report_tracks_current_no_spend_state() -> None:
@@ -51,12 +56,30 @@ def test_projected_feature_mode_summary_aggregates_artifacts() -> None:
     assert summary["max_bidirectional_recording_fraction"] == 0.5
 
 
+def test_reaction_feature_mode_summary_aggregates_artifacts() -> None:
+    payload = {"summary": {"n_rows": 84, "n_candidates": 0, "max_bidirectional_recording_fraction": 0.75}}
+    summary = reaction_feature_mode_summary({
+        "reaction_dynamics_target_family_recording_centered": payload,
+        "reaction_dynamics_target_family_counts": {
+            "summary": {"n_rows": 84, "n_candidates": 0, "max_bidirectional_recording_fraction": 0.25}
+        },
+        "reaction_dynamics_target_family_fractions": None,
+        "reaction_dynamics_target_family_unit_residuals": None,
+    })
+
+    assert summary["n_modes"] == 2
+    assert summary["n_rows"] == 168
+    assert summary["n_candidates"] == 0
+    assert summary["max_bidirectional_recording_fraction"] == 0.75
+
+
 def test_render_markdown_lists_closed_branches() -> None:
     markdown = render_markdown(build_report())
 
     assert "# Next Benchmark/Control Options Audit" in markdown
     assert "behavior-inclusive cache rebuild" in markdown
     assert "wheel-derived target family gate" in markdown
+    assert "reaction-dynamics wheel targets" in markdown
     assert "wheel in" in markdown
     assert "contextual cached trial-state targets" in markdown
     assert "narrow existing manifest further" in markdown

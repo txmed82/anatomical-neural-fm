@@ -18,6 +18,10 @@ ARTIFACTS = {
     "derived_target_family": "docs/derived_target_family_gate.json",
     "contextual_target_family": "docs/contextual_target_family_gate.json",
     "wheel_target_family": "docs/wheel_target_family_gate.json",
+    "reaction_dynamics_target_family_recording_centered": "docs/reaction_dynamics_target_family_gate.json",
+    "reaction_dynamics_target_family_counts": "docs/reaction_dynamics_target_family_gate_counts.json",
+    "reaction_dynamics_target_family_fractions": "docs/reaction_dynamics_target_family_gate_fractions.json",
+    "reaction_dynamics_target_family_unit_residuals": "docs/reaction_dynamics_target_family_gate_unit_residuals.json",
     "local_cached_manifest_candidates": "docs/local_cached_manifest_candidates.json",
     "projected_support80_shared_family": "docs/shared_family_target_control_gate_projected_support80.json",
     "projected_support80_all_families_recording_centered": (
@@ -52,13 +56,7 @@ def summary_value(payload: dict | None, key: str, default=None):
     return payload.get("summary", {}).get(key, default)
 
 
-def projected_feature_mode_summary(artifacts: dict[str, dict | None]) -> dict:
-    keys = [
-        "projected_support80_all_families_recording_centered",
-        "projected_support80_all_families_fractions",
-        "projected_support80_all_families_counts",
-        "projected_support80_all_families_unit_residuals",
-    ]
+def feature_mode_summary(artifacts: dict[str, dict | None], keys: list[str]) -> dict:
     payloads = [(key, artifacts[key]) for key in keys if artifacts.get(key) is not None]
     return {
         "n_modes": len(payloads),
@@ -69,6 +67,30 @@ def projected_feature_mode_summary(artifacts: dict[str, dict | None]) -> dict:
             default=0.0,
         ),
     }
+
+
+def projected_feature_mode_summary(artifacts: dict[str, dict | None]) -> dict:
+    return feature_mode_summary(
+        artifacts,
+        [
+            "projected_support80_all_families_recording_centered",
+            "projected_support80_all_families_fractions",
+            "projected_support80_all_families_counts",
+            "projected_support80_all_families_unit_residuals",
+        ],
+    )
+
+
+def reaction_feature_mode_summary(artifacts: dict[str, dict | None]) -> dict:
+    return feature_mode_summary(
+        artifacts,
+        [
+            "reaction_dynamics_target_family_recording_centered",
+            "reaction_dynamics_target_family_counts",
+            "reaction_dynamics_target_family_fractions",
+            "reaction_dynamics_target_family_unit_residuals",
+        ],
+    )
 
 
 def branch(
@@ -111,6 +133,7 @@ def build_report() -> dict:
     behavior_ready = behavior_summary.get("decision") == "behavior_cache_ready"
     wheel_candidates = summary_value(wheel, "n_candidates", None)
     wheel_done = wheel is not None
+    reaction_feature_modes = reaction_feature_mode_summary(artifacts)
     local_manifest_summary = local_manifest_candidates.get("summary", {}) if local_manifest_candidates is not None else {}
     local_manifest_decision = local_manifest_summary.get("decision")
     local_projected_panel_ready = local_manifest_decision == "local_expanded_candidate_ready_for_model_free_gate"
@@ -127,7 +150,7 @@ def build_report() -> dict:
         branch(
             name="behavior-inclusive cache rebuild",
             status="closed" if behavior_ready else "recommended_next",
-            priority=87 if behavior_ready else 1,
+            priority=88 if behavior_ready else 1,
             evidence=[
                 "current cached trial targets and shared-family controls all fail strict same-recording bidirectionality",
                 (
@@ -216,8 +239,8 @@ def build_report() -> dict:
         ),
         branch(
             name="new manifest with prospective bidirectional support",
-            status="recommended_next" if behavior_ready and wheel_done and not (wheel_candidates or 0) else "secondary_after_new_target",
-            priority=1 if behavior_ready and wheel_done and not (wheel_candidates or 0) else 2,
+            status="recommended_next" if behavior_ready and wheel_done and reaction_feature_modes["n_modes"] and not (wheel_candidates or 0) else "secondary_after_new_target",
+            priority=1 if behavior_ready and wheel_done and reaction_feature_modes["n_modes"] and not (wheel_candidates or 0) else 2,
             evidence=[
                 "current 28-recording manifest is feasible but not clean enough to pass the local gate",
                 (
@@ -307,7 +330,7 @@ def build_report() -> dict:
         branch(
             name="direct cached-field derived targets",
             status="closed",
-            priority=88,
+            priority=89,
             evidence=[
                 (
                     "derived target family gate has "
@@ -320,9 +343,45 @@ def build_report() -> dict:
             gpu_trigger="none",
         ),
         branch(
+            name="reaction-dynamics wheel targets",
+            status="closed" if reaction_feature_modes["n_modes"] else "recommended_next",
+            priority=87 if reaction_feature_modes["n_modes"] else 1,
+            evidence=[
+                (
+                    "reaction-dynamics target family feature-mode sweep has not been run yet"
+                    if reaction_feature_modes["n_modes"] == 0
+                    else (
+                        "reaction-dynamics target family feature-mode sweep has "
+                        f"{reaction_feature_modes['n_candidates']} candidates across "
+                        f"{reaction_feature_modes['n_rows']} rows, "
+                        f"{reaction_feature_modes['n_modes']} feature modes, and max bidir "
+                        f"{reaction_feature_modes['max_bidirectional_recording_fraction']:.3f}"
+                    )
+                ),
+                (
+                    "best recording-centered near miss is wheel_reaction_latency/broad_named_anatomy/KS014: "
+                    "target0=0.667, target1=0.715, bidir=3/4, total delta +0.003, but shuffle delta -0.001"
+                    if reaction_feature_modes["n_modes"]
+                    else "reaction dynamics should test pre-stim quiescence, post-stim speed-up, and first movement latency"
+                ),
+            ],
+            next_action=(
+                "Do not spend on reaction-dynamics wheel targets; the near miss fails true-vs-shuffle and does not replicate across feature modes."
+                if reaction_feature_modes["n_modes"]
+                else "Run scripts/audit_reaction_dynamics_target_family_gate.py across reaction target definitions before any training."
+            ),
+            gpu_trigger=(
+                "At least one local reaction-dynamics row must clear delta_vs_shuffle>=0, "
+                "delta_vs_total>=0, target0>=0.55, target1>=0.55, and "
+                "bidirectional_recording_fraction>=0.75."
+                if not reaction_feature_modes["n_modes"]
+                else "none"
+            ),
+        ),
+        branch(
             name="contextual cached trial-state targets",
             status="closed",
-            priority=89,
+            priority=90,
             evidence=[
                 (
                     "contextual target family gate has "
@@ -338,7 +397,7 @@ def build_report() -> dict:
         branch(
             name="more feature-mode or l2 sweeps on shared broad anatomy",
             status="closed",
-            priority=90,
+            priority=91,
             evidence=[
                 (
                     "shared broad-anatomy repair sweep has "
@@ -353,7 +412,7 @@ def build_report() -> dict:
         branch(
             name="narrow existing manifest further",
             status="closed",
-            priority=91,
+            priority=92,
             evidence=[
                 (
                     "iterative manifest gate has "
@@ -368,7 +427,7 @@ def build_report() -> dict:
         branch(
             name="recording-subset selection from current artifacts",
             status="closed",
-            priority=92,
+            priority=93,
             evidence=[
                 (
                     "recording replication audit selected "
@@ -382,7 +441,7 @@ def build_report() -> dict:
         branch(
             name="current shared-family target/control grid",
             status="closed",
-            priority=93,
+            priority=94,
             evidence=[
                 (
                     "shared-family gate has "
@@ -397,7 +456,7 @@ def build_report() -> dict:
         branch(
             name="alternative cached targets plus family aggregation",
             status="closed",
-            priority=94,
+            priority=95,
             evidence=[
                 (
                     "prior_side family gate candidates="
@@ -412,7 +471,7 @@ def build_report() -> dict:
         branch(
             name="source-target pair narrowing",
             status="closed",
-            priority=95,
+            priority=96,
             evidence=[
                 (
                     "family source-target pair gate candidates="
