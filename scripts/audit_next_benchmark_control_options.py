@@ -20,6 +20,7 @@ ARTIFACTS = {
     "wheel_target_family": "docs/wheel_target_family_gate.json",
     "extreme_quantile_target_family": "docs/extreme_quantile_target_family_gate.json",
     "extreme_quantile_seed_sensitivity": "docs/extreme_quantile_seed_sensitivity.json",
+    "extreme_quantile_cutoff_sensitivity": "docs/extreme_quantile_cutoff_sensitivity.json",
     "reaction_dynamics_target_family_recording_centered": "docs/reaction_dynamics_target_family_gate.json",
     "reaction_dynamics_target_family_counts": "docs/reaction_dynamics_target_family_gate_counts.json",
     "reaction_dynamics_target_family_fractions": "docs/reaction_dynamics_target_family_gate_fractions.json",
@@ -155,6 +156,8 @@ def build_report() -> dict:
     extreme_seed = artifacts["extreme_quantile_seed_sensitivity"]
     extreme_seed_summary = extreme_seed.get("summary", {}) if extreme_seed is not None else {}
     extreme_seed_robust = int(extreme_seed_summary.get("n_robust_shuffle_seed_candidates", 0) or 0)
+    extreme_cutoff = artifacts["extreme_quantile_cutoff_sensitivity"]
+    extreme_cutoff_summary = extreme_cutoff.get("summary", {}) if extreme_cutoff is not None else {}
     reaction_feature_modes = reaction_feature_mode_summary(artifacts)
     cell_type_prior = artifacts["cell_type_prior_target_control"]
     cell_type_prior_done = cell_type_prior is not None
@@ -320,10 +323,24 @@ def build_report() -> dict:
                         f"max positive seed fraction={extreme_seed_summary.get('max_positive_shuffle_delta_fraction', 0.0):.3f}"
                     )
                 ),
+                (
+                    "cutoff sensitivity has not been run yet"
+                    if extreme_cutoff is None
+                    else (
+                        "cutoff sensitivity found "
+                        f"{extreme_cutoff_summary.get('n_robust_cutoff_candidates', 'n/a')} robust cutoffs; "
+                        f"best cutoff={extreme_cutoff_summary.get('best_cutoff', 'n/a')} with "
+                        f"{extreme_cutoff_summary.get('best_candidate_seeds', 'n/a')}/5 candidate seeds"
+                    )
+                ),
             ],
             next_action=(
                 "Run scripts/audit_extreme_quantile_seed_sensitivity.py before any GPU training."
                 if extreme_quantile_done and (extreme_quantile_candidates or 0) > 0 and extreme_seed is None
+                else "Run scripts/audit_extreme_quantile_cutoff_sensitivity.py before any GPU training."
+                if extreme_seed is not None and extreme_cutoff is None
+                else extreme_cutoff_summary.get("next_action", "Keep extreme-quantile cutoff redesign local.")
+                if extreme_cutoff is not None
                 else extreme_seed_summary.get("next_action", "Keep extreme-quantile redesign local.")
                 if extreme_seed is not None
                 else "Run scripts/audit_extreme_quantile_target_family_gate.py as a local target/control redesign."

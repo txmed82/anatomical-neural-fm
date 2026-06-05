@@ -10,7 +10,7 @@ Ranks remaining no-spend branches after the current local audits. This is the pl
 | priority | branch | status | next action |
 |---:|---|---|---|
 | 1 | new manifest with prospective bidirectional support | `recommended_next` | Do not launch GPU training from the projected support80 panel; its model-free family and feature-mode gates have no candidates. Redesign the target/control locally. |
-| 85 | extreme-quantile behavioral target gate | `closed` | Do not train: the extreme-quantile candidate does not robustly beat within-recording shuffled anatomy across seeds. |
+| 85 | extreme-quantile behavioral target gate | `closed` | Do not train: cutoff changes do not make the extreme response-latency candidate robust to within-recording shuffled anatomy. |
 | 86 | wheel-derived target family gate | `closed` | Do not spend on the tested wheel targets; move to a prospectively supported manifest. |
 | 87 | reaction-dynamics wheel targets | `closed` | Do not spend on reaction-dynamics wheel targets; the near miss fails true-vs-shuffle and does not replicate across feature modes. |
 | 88 | cell-type prior target/control gate | `closed` | Do not spend on broad ABC cell-class prior channels; they do not pass the local bidirectional gate. |
@@ -48,6 +48,7 @@ Ranks remaining no-spend branches after the current local audits. This is the pl
 ### extreme-quantile behavioral target gate
 - extreme-quantile target family gate found 1 candidates across 175 rows and max bidir 1.000
 - seed sensitivity found 0 robust candidates; max positive seed fraction=0.400
+- cutoff sensitivity found 0 robust cutoffs; best cutoff=20/80 with 2/5 candidate seeds
 - GPU trigger: A candidate must pass the unchanged local gate and remain positive across multiple within-recording shuffle seeds before training.
 
 ### wheel-derived target family gate

@@ -147,10 +147,34 @@ def test_render_markdown_includes_extreme_quantile_seed_veto() -> None:
                 }
             ],
         },
+        extreme_quantile_cutoff_sensitivity={
+            "summary": {
+                "n_cutoffs": 1,
+                "n_robust_cutoff_candidates": 0,
+                "best_cutoff": "20/80",
+                "best_candidate_seeds": 2,
+                "decision": "no_extreme_quantile_cutoff_candidate",
+            },
+            "rows": [
+                {
+                    "label": "20/80",
+                    "n_positive_shuffle_delta_seeds": 2,
+                    "n_candidate_seeds": 2,
+                    "n_seeds": 5,
+                    "mean_centered_delta_vs_shuffle": 0.0002,
+                    "mean_centered_delta_vs_total": 0.0003,
+                    "mean_target0": 0.68,
+                    "mean_target1": 0.71,
+                    "min_bidirectional_recordings": 4,
+                    "max_bidirectional_recordings": 4,
+                }
+            ],
+        },
     )
 
     assert "Extreme-Quantile Target Family Gate" in markdown
     assert "Extreme-Quantile Shuffle Seed Sensitivity" in markdown
+    assert "Extreme-Quantile Cutoff Sensitivity" in markdown
     assert "do not train from the extreme-quantile candidate" in markdown
 
 

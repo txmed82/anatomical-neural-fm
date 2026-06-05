@@ -81,6 +81,7 @@ def test_render_markdown_lists_closed_branches() -> None:
     assert "behavior-inclusive cache rebuild" in markdown
     assert "wheel-derived target family gate" in markdown
     assert "extreme-quantile behavioral target gate" in markdown
+    assert "cutoff sensitivity" in markdown
     assert "reaction-dynamics wheel targets" in markdown
     assert "cell-type prior target/control gate" in markdown
     assert "waveform target/control gate" in markdown

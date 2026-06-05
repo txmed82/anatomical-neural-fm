@@ -403,16 +403,16 @@ Decision: stricter manifest support alone does not rescue the signal. The clean 
 branches after the current local negative audits.
 
 - recommended next: `new manifest with prospective bidirectional support`
-- closed branches: `17`
+- closed branches: `18`
 - decision: `no_local_training_trigger`
 - GPU trigger: At least one local row on the proposed manifest must clear delta_vs_shuffle>=0, delta_vs_total>=0, target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75 before training.
 
 | priority | branch | status | next action |
 |---:|---|---|---|
 | 1 | new manifest with prospective bidirectional support | `recommended_next` | Do not launch GPU training from the projected support80 panel; its model-free family and feature-mode gates have no candidates. Redesign the target/control locally. |
+| 85 | extreme-quantile behavioral target gate | `closed` | Do not train: the extreme-quantile candidate does not robustly beat within-recording shuffled anatomy across seeds. |
 | 86 | wheel-derived target family gate | `closed` | Do not spend on the tested wheel targets; move to a prospectively supported manifest. |
 | 87 | reaction-dynamics wheel targets | `closed` | Do not spend on reaction-dynamics wheel targets; the near miss fails true-vs-shuffle and does not replicate across feature modes. |
-| 88 | cell-type prior target/control gate | `closed` | Do not spend on broad ABC cell-class prior channels; they do not pass the local bidirectional gate. |
 
 Decision: the current cached target, contextual target, wheel-derived target, reaction-dynamics target, cell-type prior target/control, waveform target/control, and meta-failure synthesis branches are closed as GPU triggers. The next aligned work is a prospectively supported benchmark/control redesign, still gated locally before any paid training.
 
@@ -559,6 +559,26 @@ extreme-quantile candidate across multiple within-recording shuffle seeds.
 | response_latency_extreme | broad_named_anatomy | NR_0019 | 2/5 | 2/5 | -0.0001 | +0.0004 | 0.638/0.676 | 4-4 |
 
 Decision: do not train from the extreme-quantile candidate. It keeps 4/4 bidirectional recording support, but true-vs-shuffle is positive in only 2/5 seeds and the mean shuffle delta is slightly negative.
+
+## Extreme-Quantile Cutoff Sensitivity
+
+`docs/extreme_quantile_cutoff_sensitivity.md` tests whether changing
+the response-latency extreme cutoff rescues the single-seed candidate
+across multiple within-recording shuffle seeds.
+
+- cutoffs: `3`
+- robust cutoff candidates: `0`
+- best cutoff: `20/80`
+- best candidate seeds: `2/5`
+- decision: `no_extreme_quantile_cutoff_candidate`
+
+| cutoff | positive seeds | candidate seeds | mean shuffle delta | mean total delta | mean targets | bidir range |
+|---|---:|---:|---:|---:|---:|---:|
+| 20/80 | 2/5 | 2/5 | +0.0002 | +0.0003 | 0.678/0.709 | 4-4 |
+| 25/75 | 2/5 | 2/5 | -0.0001 | +0.0004 | 0.638/0.676 | 4-4 |
+| 30/70 | 1/5 | 0/5 | -0.0002 | -0.0001 | 0.598/0.638 | 1-3 |
+
+Decision: changing the cutoff does not rescue the extreme response-latency candidate. The best setting is still only 2/5 candidate seeds, so the next redesign should increase true-vs-shuffle anatomical specificity rather than tune quantile thresholds.
 
 ## Matched-Region Model-Free Panel
 

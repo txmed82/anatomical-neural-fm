@@ -114,6 +114,7 @@ CONTEXTUAL_TARGET_FAMILY_GATE_FILE = "docs/contextual_target_family_gate.json"
 WHEEL_TARGET_FAMILY_GATE_FILE = "docs/wheel_target_family_gate.json"
 EXTREME_QUANTILE_TARGET_FAMILY_GATE_FILE = "docs/extreme_quantile_target_family_gate.json"
 EXTREME_QUANTILE_SEED_SENSITIVITY_FILE = "docs/extreme_quantile_seed_sensitivity.json"
+EXTREME_QUANTILE_CUTOFF_SENSITIVITY_FILE = "docs/extreme_quantile_cutoff_sensitivity.json"
 LOCAL_CACHED_MANIFEST_CANDIDATES_FILE = "docs/local_cached_manifest_candidates.json"
 EXTERNAL_MANIFEST_ACQUISITION_GAP_FILE = "docs/external_manifest_acquisition_gap.json"
 BEHAVIOR_CACHE_PREFLIGHT_FILE = "docs/behavior_cache_preflight.json"
@@ -464,6 +465,7 @@ def render_markdown(
     wheel_target_family_gate: dict | None = None,
     extreme_quantile_target_family_gate: dict | None = None,
     extreme_quantile_seed_sensitivity: dict | None = None,
+    extreme_quantile_cutoff_sensitivity: dict | None = None,
     local_cached_manifest_candidates: dict | None = None,
     external_manifest_acquisition_gap: dict | None = None,
     behavior_cache_preflight: dict | None = None,
@@ -1562,6 +1564,45 @@ def render_markdown(
             ),
             "",
         ]
+    if extreme_quantile_cutoff_sensitivity is not None:
+        summary = extreme_quantile_cutoff_sensitivity["summary"]
+        rows = extreme_quantile_cutoff_sensitivity["rows"]
+        lines += [
+            "## Extreme-Quantile Cutoff Sensitivity",
+            "",
+            "`docs/extreme_quantile_cutoff_sensitivity.md` tests whether changing",
+            "the response-latency extreme cutoff rescues the single-seed candidate",
+            "across multiple within-recording shuffle seeds.",
+            "",
+            f"- cutoffs: `{summary['n_cutoffs']}`",
+            f"- robust cutoff candidates: `{summary['n_robust_cutoff_candidates']}`",
+            f"- best cutoff: `{summary['best_cutoff']}`",
+            f"- best candidate seeds: `{summary['best_candidate_seeds']}/5`",
+            f"- decision: `{summary['decision']}`",
+            "",
+            "| cutoff | positive seeds | candidate seeds | mean shuffle delta | mean total delta | mean targets | bidir range |",
+            "|---|---:|---:|---:|---:|---:|---:|",
+        ]
+        for row in rows:
+            lines.append(
+                f"| {row['label']} | "
+                f"{row['n_positive_shuffle_delta_seeds']}/{row['n_seeds']} | "
+                f"{row['n_candidate_seeds']}/{row['n_seeds']} | "
+                f"{row['mean_centered_delta_vs_shuffle']:+.4f} | "
+                f"{row['mean_centered_delta_vs_total']:+.4f} | "
+                f"{row['mean_target0']:.3f}/{row['mean_target1']:.3f} | "
+                f"{row['min_bidirectional_recordings']}-{row['max_bidirectional_recordings']} |"
+            )
+        lines += [
+            "",
+            (
+                "Decision: changing the cutoff does not rescue the extreme response-latency "
+                "candidate. The best setting is still only 2/5 candidate seeds, so the "
+                "next redesign should increase true-vs-shuffle anatomical specificity "
+                "rather than tune quantile thresholds."
+            ),
+            "",
+        ]
     if model_free_matched_panel is not None:
         summary = model_free_matched_panel["summary"]
         lines += [
@@ -2522,6 +2563,9 @@ def main() -> int:
     wheel_target_family_gate = read_mechanism_audit(REPO_ROOT / WHEEL_TARGET_FAMILY_GATE_FILE)
     extreme_quantile_target_family_gate = read_mechanism_audit(REPO_ROOT / EXTREME_QUANTILE_TARGET_FAMILY_GATE_FILE)
     extreme_quantile_seed_sensitivity = read_mechanism_audit(REPO_ROOT / EXTREME_QUANTILE_SEED_SENSITIVITY_FILE)
+    extreme_quantile_cutoff_sensitivity = read_mechanism_audit(
+        REPO_ROOT / EXTREME_QUANTILE_CUTOFF_SENSITIVITY_FILE
+    )
     local_cached_manifest_candidates = read_mechanism_audit(REPO_ROOT / LOCAL_CACHED_MANIFEST_CANDIDATES_FILE)
     external_manifest_acquisition_gap = read_mechanism_audit(REPO_ROOT / EXTERNAL_MANIFEST_ACQUISITION_GAP_FILE)
     behavior_cache_preflight = read_mechanism_audit(REPO_ROOT / BEHAVIOR_CACHE_PREFLIGHT_FILE)
@@ -2645,6 +2689,7 @@ def main() -> int:
         wheel_target_family_gate,
         extreme_quantile_target_family_gate,
         extreme_quantile_seed_sensitivity,
+        extreme_quantile_cutoff_sensitivity,
         local_cached_manifest_candidates,
         external_manifest_acquisition_gap,
         behavior_cache_preflight,
@@ -2745,6 +2790,7 @@ def main() -> int:
         "wheel_target_family_gate": wheel_target_family_gate,
         "extreme_quantile_target_family_gate": extreme_quantile_target_family_gate,
         "extreme_quantile_seed_sensitivity": extreme_quantile_seed_sensitivity,
+        "extreme_quantile_cutoff_sensitivity": extreme_quantile_cutoff_sensitivity,
         "local_cached_manifest_candidates": local_cached_manifest_candidates,
         "external_manifest_acquisition_gap": external_manifest_acquisition_gap,
         "behavior_cache_preflight": behavior_cache_preflight,
