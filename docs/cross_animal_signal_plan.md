@@ -1512,6 +1512,15 @@ promotion table for future local experiments. A row with strong global delta
 but weak symmetric recording support should remain a diagnostic, not a training
 trigger.
 
+Symmetric threshold sensitivity audit:
+`scripts/audit_symmetric_threshold_sensitivity.py` now sweeps the target and
+bidirectional-recording floors around that symmetric screen. The strict
+target>=`0.55`, bidirectional fraction>=`0.75` setting still has zero
+candidates, and the default target floor only yields candidates when recording
+support is relaxed to `0.25` (`1/4` recordings). Treat that as threshold
+relaxation, not evidence. The next no-spend branch should improve symmetric
+recording support locally before any cloud run.
+
 Recording-centered feature check:
 The gate also supports `--feature-mode recording_centered`, which subtracts
 each recording's mean parent-region feature vector before fitting. This reduces

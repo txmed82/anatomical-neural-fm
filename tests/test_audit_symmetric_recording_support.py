@@ -1,4 +1,16 @@
-from scripts.audit_symmetric_recording_support import summarize, summarize_gate_row
+from scripts.audit_symmetric_recording_support import row_global_metrics, summarize, summarize_gate_row
+
+
+def test_row_global_metrics_reads_shared_family_row_fields() -> None:
+    centered, target0, target1 = row_global_metrics({
+        "centered_delta_vs_shuffle": 0.02,
+        "target0_improved_vs_shuffle": 0.56,
+        "target1_improved_vs_shuffle": 0.61,
+    })
+
+    assert centered == 0.02
+    assert target0 == 0.56
+    assert target1 == 0.61
 
 
 def test_summarize_gate_row_uses_min_target_per_recording() -> None:

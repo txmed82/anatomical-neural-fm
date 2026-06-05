@@ -442,6 +442,16 @@ mean symmetric support `0.543` but only `1/4` bidirectional recordings and
 three one-sided recordings. Decision: this symmetric ranking should be the
 first local promotion screen before any future GPU trigger.
 
+Symmetric threshold sensitivity audit:
+`docs/symmetric_threshold_sensitivity_audit.md` sweeps the target-improvement
+and bidirectional-recording thresholds to check whether the miss is just a
+hard threshold artifact. It is not a credible GPU trigger: strict
+target>=`0.55` and bidirectional fraction>=`0.75` produces zero candidates,
+and at the default target threshold candidates appear only when the recording
+support floor is relaxed to `0.25` (`1/4` recordings). Decision: do not spend
+on training until a local row clears symmetric recording support without that
+relaxation.
+
 Recording-centered feature check:
 `docs/model_free_recording_bidirectional_gate_recording_centered.md` subtracts
 each recording's own mean parent-region feature vector before ridge fitting.

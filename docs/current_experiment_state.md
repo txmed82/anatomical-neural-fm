@@ -526,6 +526,22 @@ effects cannot dominate the promotion order.
 
 Decision: use this symmetric ranking before any future GPU trigger. It currently finds no candidate; even the best rows top out at `2/4` bidirectional recordings.
 
+## Symmetric Threshold Sensitivity Audit
+
+`docs/symmetric_threshold_sensitivity_audit.md` sweeps the target-improvement
+and bidirectional-recording thresholds for the symmetric recording-support
+gate.
+
+- threshold settings: `20`
+- settings with candidates: `8`
+- strict candidates at target>=0.55 and bidir>=0.75: `0`
+- strict max bidirectional recordings: `2`
+- decision: `threshold_relaxation_needed_for_candidates`
+
+At the default target threshold (`0.55`), candidates only appear when recording support is relaxed to `0.25` (`3` candidates).
+
+Decision: the current failure is not a tiny threshold miss. A candidate at the default target floor requires accepting only `1/4` bidirectional recordings, which is too weak for a cross-animal demo trigger.
+
 ## Model-Free Recording Replication Audit
 
 `docs/model_free_recording_replication_audit.md` tests whether a

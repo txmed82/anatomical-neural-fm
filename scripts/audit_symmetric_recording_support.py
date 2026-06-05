@@ -41,10 +41,16 @@ def row_global_metrics(row: dict) -> tuple[float | None, float | None, float | N
     centered = summary.get("delta_centered_auc")
     if centered is None:
         centered = row.get("centered_delta_vs_shuffle")
+    target0 = paired.get("target0_improved_fraction")
+    target1 = paired.get("target1_improved_fraction")
+    if target0 is None:
+        target0 = row.get("target0_improved_vs_shuffle")
+    if target1 is None:
+        target1 = row.get("target1_improved_vs_shuffle")
     return (
         None if centered is None else float(centered),
-        None if paired.get("target0_improved_fraction") is None else float(paired["target0_improved_fraction"]),
-        None if paired.get("target1_improved_fraction") is None else float(paired["target1_improved_fraction"]),
+        None if target0 is None else float(target0),
+        None if target1 is None else float(target1),
     )
 
 
