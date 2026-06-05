@@ -825,3 +825,9 @@ Minimum demo gate before another broadening run:
   at least 55% of paired held-out trials
 - learned region embeddings should show more separation than near-identical
   true-vs-shuffle cosines
+
+Implementation update: `scripts/analyze_leave_subject_out.py` now emits
+recording-centered full-trial AUC and the paired true-vs-shuffle gate whenever
+`eval_predictions.jsonl` artifacts are present. The recovered CSH diagnostic
+result doc has been refreshed with these standard sections. This makes the gate
+available for future canonical reruns without hand-auditing the JSONL files.

@@ -152,3 +152,16 @@ root: `runs/lso_csh_diagnostic_outputs`
 |---|---|---|---|
 | region_only | 1 | +0.008 | 1/1 |
 | region_shuffle | 1 | +0.009 | 1/1 |
+
+## Recording-Centered Full-Trial AUC and Delta vs Shared Null
+
+| holdout | arm | n_seeds | mean_centered_AUC | mean_centered_delta_vs_shared | seed_centered_deltas |
+|---|---|---|---|---|---|
+| CSH_ZAD_019 | region_only | 1 | 0.521 | +0.020 | +0.020 |
+| CSH_ZAD_019 | region_shuffle | 1 | 0.510 | +0.010 | +0.010 |
+
+## Paired True-vs-Shuffle Trial Gate
+
+| holdout | seed | paired_trials | true_prob_improved | threshold | verdict |
+|---|---:|---:|---:|---:|---|
+| CSH_ZAD_019 | 0 | 2726 | 0.506 | 0.550 | fail |
