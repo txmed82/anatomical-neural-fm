@@ -372,6 +372,17 @@ bidirectionality gate, while target0 and target1 are also missing in 130 and
 benchmark/control definition enough to create target0+target1 evidence inside
 the same recordings before any GPU run.
 
+Recording support audit:
+`docs/model_free_recording_support_audit.md` aggregates the per-recording
+target0/target1 rows behind those gates. Across 672 observations, 53 are
+bidirectional and 19 of 28 recordings have at least one bidirectional
+observation, but the support is not stable: the strongest recording has only
+12/24 bidirectional observations and mean target1 below gate (`0.524`), while
+the next strongest recordings remain class-imbalanced. Decision: do not define
+a demo by cherry-picking current recordings. The next benchmark must
+prospectively select or construct recordings with bidirectional target evidence
+and then rerun the same true-vs-shuffled local gate before GPU training.
+
 Recording-centered feature check:
 `docs/model_free_recording_bidirectional_gate_recording_centered.md` subtracts
 each recording's own mean parent-region feature vector before ridge fitting.

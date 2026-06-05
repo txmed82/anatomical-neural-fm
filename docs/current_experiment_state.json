@@ -23966,6 +23966,778 @@
       "min_target_improvement": 0.55
     }
   },
+  "model_free_recording_support_audit": {
+    "sources": [
+      "docs/model_free_recording_bidirectional_gate.json",
+      "docs/model_free_recording_bidirectional_gate_fractions.json",
+      "docs/model_free_recording_bidirectional_gate_recording_centered.json",
+      "docs/model_free_recording_bidirectional_gate_grandparent_recording_centered.json",
+      "docs/model_free_recording_bidirectional_gate_unit_residuals.json",
+      "docs/model_free_recording_bidirectional_gate_prior_side.json",
+      "docs/model_free_recording_bidirectional_gate_feedback.json",
+      "docs/model_free_family_bidirectional_gate_recording_centered.json",
+      "docs/model_free_family_bidirectional_gate_recording_centered_l2_1.json",
+      "docs/model_free_family_bidirectional_gate_recording_centered_l2_100.json",
+      "docs/model_free_family_bidirectional_gate_prior_side_recording_centered.json",
+      "docs/model_free_family_bidirectional_gate_feedback_recording_centered.json",
+      "docs/model_free_source_target_pair_gate_recording_centered.json",
+      "docs/model_free_source_target_pair_gate_families_recording_centered.json"
+    ],
+    "summary": {
+      "max_bidirectional_observations_per_recording": 12,
+      "n_bidirectional_observations": 53,
+      "n_observations": 672,
+      "n_recordings": 28,
+      "recordings_with_any_bidirectional_support": 19,
+      "subject_rows": [
+        {
+          "max_bidirectional_observations": 1,
+          "n_recordings": 4,
+          "recordings_with_bidirectional_support": 4,
+          "subject": "NR_0019",
+          "total_bidirectional_observations": 4
+        },
+        {
+          "max_bidirectional_observations": 8,
+          "n_recordings": 4,
+          "recordings_with_bidirectional_support": 3,
+          "subject": "KS014",
+          "total_bidirectional_observations": 13
+        },
+        {
+          "max_bidirectional_observations": 8,
+          "n_recordings": 4,
+          "recordings_with_bidirectional_support": 3,
+          "subject": "SWC_038",
+          "total_bidirectional_observations": 10
+        },
+        {
+          "max_bidirectional_observations": 2,
+          "n_recordings": 4,
+          "recordings_with_bidirectional_support": 3,
+          "subject": "SWC_043",
+          "total_bidirectional_observations": 4
+        },
+        {
+          "max_bidirectional_observations": 12,
+          "n_recordings": 4,
+          "recordings_with_bidirectional_support": 2,
+          "subject": "MFD_06",
+          "total_bidirectional_observations": 13
+        },
+        {
+          "max_bidirectional_observations": 4,
+          "n_recordings": 4,
+          "recordings_with_bidirectional_support": 2,
+          "subject": "CSH_ZAD_019",
+          "total_bidirectional_observations": 6
+        },
+        {
+          "max_bidirectional_observations": 2,
+          "n_recordings": 4,
+          "recordings_with_bidirectional_support": 2,
+          "subject": "NYU-12",
+          "total_bidirectional_observations": 3
+        }
+      ],
+      "top_recordings": [
+        {
+          "bidirectional_observation_fraction": 0.5,
+          "mean_improved_fraction": 0.5371109767098574,
+          "mean_target0": 0.5664339980728984,
+          "mean_target1": 0.5241801069006952,
+          "mean_true_class_delta": 0.04519018168915534,
+          "n_bidirectional_observations": 12,
+          "n_observations": 24,
+          "recording": "6899a67d-2e53-4215-a52a-c7021b5da5d4_probe00",
+          "target_subjects": [
+            "MFD_06"
+          ],
+          "top_bidirectional_contexts": [
+            {
+              "context": "MFD_06",
+              "improved_fraction": 0.657051282051282,
+              "mean_true_class_delta": 0.026623406744376278,
+              "report": "family prior side",
+              "target0": 0.6646341463414634,
+              "target1": 0.6486486486486487
+            },
+            {
+              "context": "MFD_06",
+              "improved_fraction": 0.6456043956043956,
+              "mean_true_class_delta": 0.014021159706759576,
+              "report": "family centered l2=100",
+              "target0": 0.6288659793814433,
+              "target1": 0.6647058823529411
+            },
+            {
+              "context": "MFD_06",
+              "improved_fraction": 0.6428571428571429,
+              "mean_true_class_delta": 0.015108467779738788,
+              "report": "family centered",
+              "target0": 0.6237113402061856,
+              "target1": 0.6647058823529411
+            },
+            {
+              "context": "MFD_06",
+              "improved_fraction": 0.6428571428571429,
+              "mean_true_class_delta": 0.01529343942694757,
+              "report": "family centered l2=1",
+              "target0": 0.6237113402061856,
+              "target1": 0.6647058823529411
+            },
+            {
+              "context": "CSH_ZAD_019 -> MFD_06",
+              "improved_fraction": 0.6263736263736264,
+              "mean_true_class_delta": 0.62566142794435,
+              "report": "source-target centered",
+              "target0": 0.6185567010309279,
+              "target1": 0.6352941176470588
+            },
+            {
+              "context": "NR_0019 -> MFD_06",
+              "improved_fraction": 0.6401098901098901,
+              "mean_true_class_delta": 0.14789230542058446,
+              "report": "source-target centered",
+              "target0": 0.6134020618556701,
+              "target1": 0.6705882352941176
+            },
+            {
+              "context": "NR_0019 -> MFD_06",
+              "improved_fraction": 0.6236263736263736,
+              "mean_true_class_delta": 0.38441465057864116,
+              "report": "source-target families",
+              "target0": 0.6134020618556701,
+              "target1": 0.6352941176470588
+            },
+            {
+              "context": "MFD_06",
+              "improved_fraction": 0.6343283582089553,
+              "mean_true_class_delta": 0.010737671814224938,
+              "report": "family feedback",
+              "target0": 0.6821705426356589,
+              "target1": 0.6117216117216118
+            }
+          ]
+        },
+        {
+          "bidirectional_observation_fraction": 0.3333333333333333,
+          "mean_improved_fraction": 0.5339967978586856,
+          "mean_target0": 0.47416471150503997,
+          "mean_target1": 0.573527016870155,
+          "mean_true_class_delta": 0.03998064268849496,
+          "n_bidirectional_observations": 8,
+          "n_observations": 24,
+          "recording": "03063955-2523-47bd-ae57-f7489dd40f15_probe01",
+          "target_subjects": [
+            "SWC_038"
+          ],
+          "top_bidirectional_contexts": [
+            {
+              "context": "CSH_ZAD_019 -> SWC_038",
+              "improved_fraction": 0.5855263157894737,
+              "mean_true_class_delta": 0.04458724090203008,
+              "report": "source-target families",
+              "target0": 0.5863746958637469,
+              "target1": 0.5845272206303725
+            },
+            {
+              "context": "SWC_038",
+              "improved_fraction": 0.5960526315789474,
+              "mean_true_class_delta": 0.017011147409425907,
+              "report": "family centered l2=100",
+              "target0": 0.610705596107056,
+              "target1": 0.5787965616045845
+            },
+            {
+              "context": "SWC_038",
+              "improved_fraction": 0.593421052631579,
+              "mean_true_class_delta": 0.017117031239464554,
+              "report": "family centered",
+              "target0": 0.6082725060827251,
+              "target1": 0.5759312320916905
+            },
+            {
+              "context": "SWC_038",
+              "improved_fraction": 0.593421052631579,
+              "mean_true_class_delta": 0.01712462251270467,
+              "report": "family centered l2=1",
+              "target0": 0.6082725060827251,
+              "target1": 0.5759312320916905
+            },
+            {
+              "context": "MFD_06 -> SWC_038",
+              "improved_fraction": 0.6092105263157894,
+              "mean_true_class_delta": 1.5700858460597698,
+              "report": "source-target centered",
+              "target0": 0.6423357664233577,
+              "target1": 0.5702005730659025
+            },
+            {
+              "context": "SWC_038",
+              "improved_fraction": 0.5855855855855856,
+              "mean_true_class_delta": 0.01321833394570532,
+              "report": "family prior side",
+              "target0": 0.6071428571428571,
+              "target1": 0.5602240896358543
+            },
+            {
+              "context": "KS014 -> SWC_038",
+              "improved_fraction": 0.6171052631578947,
+              "mean_true_class_delta": 0.030546150142054394,
+              "report": "source-target families",
+              "target0": 0.6690997566909975,
+              "target1": 0.5558739255014327
+            },
+            {
+              "context": "SWC_043 -> SWC_038",
+              "improved_fraction": 0.5736842105263158,
+              "mean_true_class_delta": 0.0385305490849888,
+              "report": "source-target families",
+              "target0": 0.5936739659367397,
+              "target1": 0.5501432664756447
+            }
+          ]
+        },
+        {
+          "bidirectional_observation_fraction": 0.3333333333333333,
+          "mean_improved_fraction": 0.5181669789061324,
+          "mean_target0": 0.5918358479576115,
+          "mean_target1": 0.44379097442946797,
+          "mean_true_class_delta": 0.10463314707474548,
+          "n_bidirectional_observations": 8,
+          "n_observations": 24,
+          "recording": "e1931de1-cf7b-49af-af33-2ade15e8abe7_probe00",
+          "target_subjects": [
+            "KS014"
+          ],
+          "top_bidirectional_contexts": [
+            {
+              "context": "KS014",
+              "improved_fraction": 0.6264462809917355,
+              "mean_true_class_delta": 0.04458945298250054,
+              "report": "panel grandparent centered",
+              "target0": 0.6292134831460674,
+              "target1": 0.6224899598393574
+            },
+            {
+              "context": "KS014",
+              "improved_fraction": 0.6727272727272727,
+              "mean_true_class_delta": 0.19097593172896615,
+              "report": "panel recording centered",
+              "target0": 0.7219101123595506,
+              "target1": 0.6024096385542169
+            },
+            {
+              "context": "KS014",
+              "improved_fraction": 0.5903010033444817,
+              "mean_true_class_delta": 0.017902972590828285,
+              "report": "family prior side",
+              "target0": 0.5769230769230769,
+              "target1": 0.6153846153846154
+            },
+            {
+              "context": "KS014",
+              "improved_fraction": 0.5768595041322314,
+              "mean_true_class_delta": 0.008300734949090774,
+              "report": "family centered l2=100",
+              "target0": 0.5786516853932584,
+              "target1": 0.5742971887550201
+            },
+            {
+              "context": "MFD_06 -> KS014",
+              "improved_fraction": 0.5834710743801653,
+              "mean_true_class_delta": 0.09687082136528873,
+              "report": "source-target families",
+              "target0": 0.598314606741573,
+              "target1": 0.5622489959839357
+            },
+            {
+              "context": "KS014",
+              "improved_fraction": 0.5702479338842975,
+              "mean_true_class_delta": 0.009551073786349625,
+              "report": "family centered l2=1",
+              "target0": 0.5786516853932584,
+              "target1": 0.5582329317269076
+            },
+            {
+              "context": "KS014",
+              "improved_fraction": 0.5685950413223141,
+              "mean_true_class_delta": 0.009394327831826529,
+              "report": "family centered",
+              "target0": 0.5786516853932584,
+              "target1": 0.5542168674698795
+            },
+            {
+              "context": "NYU-12 -> KS014",
+              "improved_fraction": 0.6264462809917355,
+              "mean_true_class_delta": 0.32171836623505057,
+              "report": "source-target centered",
+              "target0": 0.6769662921348315,
+              "target1": 0.5542168674698795
+            }
+          ]
+        },
+        {
+          "bidirectional_observation_fraction": 0.16666666666666666,
+          "mean_improved_fraction": 0.5077417691715245,
+          "mean_target0": 0.4617728745373387,
+          "mean_target1": 0.5854096141029311,
+          "mean_true_class_delta": -0.1487419684743031,
+          "n_bidirectional_observations": 4,
+          "n_observations": 24,
+          "recording": "edd22318-216c-44ff-bc24-49ce8be78374_probe00",
+          "target_subjects": [
+            "CSH_ZAD_019"
+          ],
+          "top_bidirectional_contexts": [
+            {
+              "context": "CSH_ZAD_019",
+              "improved_fraction": 0.5929778933680104,
+              "mean_true_class_delta": 0.028016145706468747,
+              "report": "family centered l2=100",
+              "target0": 0.5954773869346733,
+              "target1": 0.5902964959568733
+            },
+            {
+              "context": "CSH_ZAD_019",
+              "improved_fraction": 0.5942782834850455,
+              "mean_true_class_delta": 0.0290322225855036,
+              "report": "family centered",
+              "target0": 0.6030150753768844,
+              "target1": 0.5849056603773585
+            },
+            {
+              "context": "CSH_ZAD_019",
+              "improved_fraction": 0.5942782834850455,
+              "mean_true_class_delta": 0.029151669422682578,
+              "report": "family centered l2=1",
+              "target0": 0.6030150753768844,
+              "target1": 0.5849056603773585
+            },
+            {
+              "context": "KS014 -> CSH_ZAD_019",
+              "improved_fraction": 0.5591677503250976,
+              "mean_true_class_delta": 0.07164743412692491,
+              "report": "source-target families",
+              "target0": 0.5653266331658291,
+              "target1": 0.5525606469002695
+            }
+          ]
+        },
+        {
+          "bidirectional_observation_fraction": 0.16666666666666666,
+          "mean_improved_fraction": 0.5092107063605184,
+          "mean_target0": 0.6070787458776575,
+          "mean_target1": 0.43861225159865574,
+          "mean_true_class_delta": -0.04201922804956678,
+          "n_bidirectional_observations": 4,
+          "n_observations": 24,
+          "recording": "16693458-0801-4d35-a3f1-9115c7e5acfd_probe01",
+          "target_subjects": [
+            "KS014"
+          ],
+          "top_bidirectional_contexts": [
+            {
+              "context": "NYU-12 -> KS014",
+              "improved_fraction": 0.5765957446808511,
+              "mean_true_class_delta": 0.0677801602944358,
+              "report": "source-target families",
+              "target0": 0.5859030837004405,
+              "target1": 0.5679012345679012
+            },
+            {
+              "context": "KS014",
+              "improved_fraction": 0.5893617021276596,
+              "mean_true_class_delta": 0.07075601715737143,
+              "report": "family centered",
+              "target0": 0.6211453744493393,
+              "target1": 0.5596707818930041
+            },
+            {
+              "context": "KS014",
+              "improved_fraction": 0.5893617021276596,
+              "mean_true_class_delta": 0.07088115965704905,
+              "report": "family centered l2=1",
+              "target0": 0.6211453744493393,
+              "target1": 0.5596707818930041
+            },
+            {
+              "context": "KS014",
+              "improved_fraction": 0.5829787234042553,
+              "mean_true_class_delta": 0.06932674787110599,
+              "report": "family centered l2=100",
+              "target0": 0.6079295154185022,
+              "target1": 0.5596707818930041
+            }
+          ]
+        },
+        {
+          "bidirectional_observation_fraction": 0.08333333333333333,
+          "mean_improved_fraction": 0.4932271496432598,
+          "mean_target0": 0.5050691187806285,
+          "mean_target1": 0.5159339508248669,
+          "mean_true_class_delta": -0.09132486396151789,
+          "n_bidirectional_observations": 2,
+          "n_observations": 24,
+          "recording": "032ffcdf-7692-40b3-b9ff-8def1fc18b2e_probe00",
+          "target_subjects": [
+            "NYU-12"
+          ],
+          "top_bidirectional_contexts": [
+            {
+              "context": "NYU-12",
+              "improved_fraction": 0.5803921568627451,
+              "mean_true_class_delta": 0.018835814273618343,
+              "report": "panel grandparent centered",
+              "target0": 0.570446735395189,
+              "target1": 0.593607305936073
+            },
+            {
+              "context": "SWC_038 -> NYU-12",
+              "improved_fraction": 0.5705882352941176,
+              "mean_true_class_delta": 0.03896806637510092,
+              "report": "source-target families",
+              "target0": 0.5601374570446735,
+              "target1": 0.5844748858447488
+            }
+          ]
+        },
+        {
+          "bidirectional_observation_fraction": 0.08333333333333333,
+          "mean_improved_fraction": 0.505460777757632,
+          "mean_target0": 0.5206496915774915,
+          "mean_target1": 0.459348634169699,
+          "mean_true_class_delta": 0.01644356745820552,
+          "n_bidirectional_observations": 2,
+          "n_observations": 24,
+          "recording": "4ecb5d24-f5cc-402c-be28-9d0f7cb14b3a_probe00",
+          "target_subjects": [
+            "SWC_043"
+          ],
+          "top_bidirectional_contexts": [
+            {
+              "context": "SWC_038 -> SWC_043",
+              "improved_fraction": 0.6319148936170212,
+              "mean_true_class_delta": 0.03339132684655377,
+              "report": "source-target families",
+              "target0": 0.6234309623430963,
+              "target1": 0.6406926406926406
+            },
+            {
+              "context": "NYU-12 -> SWC_043",
+              "improved_fraction": 0.5702127659574469,
+              "mean_true_class_delta": 0.01956771230746959,
+              "report": "source-target families",
+              "target0": 0.5774058577405857,
+              "target1": 0.5627705627705628
+            }
+          ]
+        },
+        {
+          "bidirectional_observation_fraction": 0.08333333333333333,
+          "mean_improved_fraction": 0.47119969961779856,
+          "mean_target0": 0.42696401840997683,
+          "mean_target1": 0.5578909600640505,
+          "mean_true_class_delta": -0.06685466454337576,
+          "n_bidirectional_observations": 2,
+          "n_observations": 24,
+          "recording": "49e0ab27-827a-4c91-bcaa-97eea27a1b8d_probe01",
+          "target_subjects": [
+            "CSH_ZAD_019"
+          ],
+          "top_bidirectional_contexts": [
+            {
+              "context": "SWC_038 -> CSH_ZAD_019",
+              "improved_fraction": 0.583011583011583,
+              "mean_true_class_delta": 0.08419904211995943,
+              "report": "source-target families",
+              "target0": 0.5893719806763285,
+              "target1": 0.5757575757575758
+            },
+            {
+              "context": "SWC_038 -> CSH_ZAD_019",
+              "improved_fraction": 0.574002574002574,
+              "mean_true_class_delta": 0.33290836214407166,
+              "report": "source-target centered",
+              "target0": 0.5772946859903382,
+              "target1": 0.5702479338842975
+            }
+          ]
+        },
+        {
+          "bidirectional_observation_fraction": 0.041666666666666664,
+          "mean_improved_fraction": 0.5150110043235921,
+          "mean_target0": 0.5171789354725705,
+          "mean_target1": 0.5021579291392617,
+          "mean_true_class_delta": 0.02375317690334404,
+          "n_bidirectional_observations": 1,
+          "n_observations": 24,
+          "recording": "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe00",
+          "target_subjects": [
+            "NR_0019"
+          ],
+          "top_bidirectional_contexts": [
+            {
+              "context": "NR_0019",
+              "improved_fraction": 0.6188888888888889,
+              "mean_true_class_delta": 0.01555962532847882,
+              "report": "family feedback",
+              "target0": 0.7391304347826086,
+              "target1": 0.6012738853503184
+            }
+          ]
+        },
+        {
+          "bidirectional_observation_fraction": 0.041666666666666664,
+          "mean_improved_fraction": 0.5117838962750029,
+          "mean_target0": 0.5017621979024168,
+          "mean_target1": 0.4970983308832868,
+          "mean_true_class_delta": 0.006575161198734681,
+          "n_bidirectional_observations": 1,
+          "n_observations": 24,
+          "recording": "a8a8af78-16de-4841-ab07-fde4b5281a03_probe01",
+          "target_subjects": [
+            "NYU-12"
+          ],
+          "top_bidirectional_contexts": [
+            {
+              "context": "NYU-12",
+              "improved_fraction": 0.5785123966942148,
+              "mean_true_class_delta": 0.011990519991002474,
+              "report": "panel counts",
+              "target0": 0.596,
+              "target1": 0.5598290598290598
+            }
+          ]
+        },
+        {
+          "bidirectional_observation_fraction": 0.041666666666666664,
+          "mean_improved_fraction": 0.5089293900088555,
+          "mean_target0": 0.49831865949732085,
+          "mean_target1": 0.49090145835862814,
+          "mean_true_class_delta": -0.04318508294764173,
+          "n_bidirectional_observations": 1,
+          "n_observations": 24,
+          "recording": "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe01",
+          "target_subjects": [
+            "NR_0019"
+          ],
+          "top_bidirectional_contexts": [
+            {
+              "context": "SWC_038 -> NR_0019",
+              "improved_fraction": 0.5822784810126582,
+              "mean_true_class_delta": 0.0462430976249489,
+              "report": "source-target families",
+              "target0": 0.5569620253164557,
+              "target1": 0.6075949367088608
+            }
+          ]
+        },
+        {
+          "bidirectional_observation_fraction": 0.041666666666666664,
+          "mean_improved_fraction": 0.5057773026135057,
+          "mean_target0": 0.5391446208112874,
+          "mean_target1": 0.4598910115397464,
+          "mean_true_class_delta": 0.8108730295434166,
+          "n_bidirectional_observations": 1,
+          "n_observations": 24,
+          "recording": "1e45d992-c356-40e1-9be1-a506d944896f_probe01",
+          "target_subjects": [
+            "SWC_038"
+          ],
+          "top_bidirectional_contexts": [
+            {
+              "context": "MFD_06 -> SWC_038",
+              "improved_fraction": 0.5828779599271403,
+              "mean_true_class_delta": 0.016408939502790997,
+              "report": "source-target families",
+              "target0": 0.6111111111111112,
+              "target1": 0.5555555555555556
+            }
+          ]
+        },
+        {
+          "bidirectional_observation_fraction": 0.041666666666666664,
+          "mean_improved_fraction": 0.49106267855288666,
+          "mean_target0": 0.4597588696117516,
+          "mean_target1": 0.5055386787320585,
+          "mean_true_class_delta": 0.5845244256884224,
+          "n_bidirectional_observations": 1,
+          "n_observations": 24,
+          "recording": "6fb1e12c-883b-46d1-a745-473cde3232c8_probe00",
+          "target_subjects": [
+            "SWC_043"
+          ],
+          "top_bidirectional_contexts": [
+            {
+              "context": "KS014 -> SWC_043",
+              "improved_fraction": 0.5898004434589801,
+              "mean_true_class_delta": 0.012527676871992811,
+              "report": "source-target centered",
+              "target0": 0.5580357142857143,
+              "target1": 0.6211453744493393
+            }
+          ]
+        },
+        {
+          "bidirectional_observation_fraction": 0.041666666666666664,
+          "mean_improved_fraction": 0.5174843707894188,
+          "mean_target0": 0.4541604125806032,
+          "mean_target1": 0.5658985147617027,
+          "mean_true_class_delta": 0.011639535326436232,
+          "n_bidirectional_observations": 1,
+          "n_observations": 24,
+          "recording": "6f09ba7e-e3ce-44b0-932b-c003fb44fb89_probe01",
+          "target_subjects": [
+            "SWC_043"
+          ],
+          "top_bidirectional_contexts": [
+            {
+              "context": "NYU-12 -> SWC_043",
+              "improved_fraction": 0.5938144329896907,
+              "mean_true_class_delta": 0.07512697019723512,
+              "report": "source-target centered",
+              "target0": 0.5787545787545788,
+              "target1": 0.6132075471698113
+            }
+          ]
+        },
+        {
+          "bidirectional_observation_fraction": 0.041666666666666664,
+          "mean_improved_fraction": 0.5171237398243348,
+          "mean_target0": 0.5669731225525042,
+          "mean_target1": 0.44661356597332214,
+          "mean_true_class_delta": 0.048624264999112606,
+          "n_bidirectional_observations": 1,
+          "n_observations": 24,
+          "recording": "b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe00",
+          "target_subjects": [
+            "NR_0019"
+          ],
+          "top_bidirectional_contexts": [
+            {
+              "context": "NR_0019",
+              "improved_fraction": 0.6234309623430963,
+              "mean_true_class_delta": 0.01232083833587226,
+              "report": "family feedback",
+              "target0": 0.7241379310344828,
+              "target1": 0.6095238095238096
+            }
+          ]
+        },
+        {
+          "bidirectional_observation_fraction": 0.041666666666666664,
+          "mean_improved_fraction": 0.5142494051566058,
+          "mean_target0": 0.5619349136525346,
+          "mean_target1": 0.4416327041327041,
+          "mean_true_class_delta": 1.1044308043672728,
+          "n_bidirectional_observations": 1,
+          "n_observations": 24,
+          "recording": "4d8c7767-981c-4347-8e5e-5d5fffe38534_probe01",
+          "target_subjects": [
+            "SWC_038"
+          ],
+          "top_bidirectional_contexts": [
+            {
+              "context": "SWC_038",
+              "improved_fraction": 0.5572065378900446,
+              "mean_true_class_delta": 0.07387219246776448,
+              "report": "panel recording centered",
+              "target0": 0.553072625698324,
+              "target1": 0.5619047619047619
+            }
+          ]
+        },
+        {
+          "bidirectional_observation_fraction": 0.041666666666666664,
+          "mean_improved_fraction": 0.48914153121202886,
+          "mean_target0": 0.43227980231601454,
+          "mean_target1": 0.5062922341885757,
+          "mean_true_class_delta": -0.006524584050232995,
+          "n_bidirectional_observations": 1,
+          "n_observations": 24,
+          "recording": "b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe01",
+          "target_subjects": [
+            "NR_0019"
+          ],
+          "top_bidirectional_contexts": [
+            {
+              "context": "MFD_06 -> NR_0019",
+              "improved_fraction": 0.6208530805687204,
+              "mean_true_class_delta": 0.041260381903638746,
+              "report": "source-target families",
+              "target0": 0.693069306930693,
+              "target1": 0.5545454545454546
+            }
+          ]
+        },
+        {
+          "bidirectional_observation_fraction": 0.041666666666666664,
+          "mean_improved_fraction": 0.49830816702633335,
+          "mean_target0": 0.4094917273158904,
+          "mean_target1": 0.5646626179454618,
+          "mean_true_class_delta": 0.046615359142985334,
+          "n_bidirectional_observations": 1,
+          "n_observations": 24,
+          "recording": "a1782f4f-86b0-480c-a7f2-3d8f1ab482ab_probe00",
+          "target_subjects": [
+            "MFD_06"
+          ],
+          "top_bidirectional_contexts": [
+            {
+              "context": "KS014 -> MFD_06",
+              "improved_fraction": 0.6052227342549923,
+              "mean_true_class_delta": 0.13556133973031045,
+              "report": "source-target centered",
+              "target0": 0.5818713450292398,
+              "target1": 0.6310679611650486
+            }
+          ]
+        },
+        {
+          "bidirectional_observation_fraction": 0.041666666666666664,
+          "mean_improved_fraction": 0.48738216607458323,
+          "mean_target0": 0.3147062819799041,
+          "mean_target1": 0.5901043654829697,
+          "mean_true_class_delta": -0.006057487890678719,
+          "n_bidirectional_observations": 1,
+          "n_observations": 24,
+          "recording": "b9c205c3-feac-485b-a89d-afc96d9cb280_probe00",
+          "target_subjects": [
+            "KS014"
+          ],
+          "top_bidirectional_contexts": [
+            {
+              "context": "SWC_043 -> KS014",
+              "improved_fraction": 0.6924398625429553,
+              "mean_true_class_delta": 0.07183477086338402,
+              "report": "source-target centered",
+              "target0": 0.6771653543307087,
+              "target1": 0.7042682926829268
+            }
+          ]
+        },
+        {
+          "bidirectional_observation_fraction": 0.0,
+          "mean_improved_fraction": 0.5060034754178455,
+          "mean_target0": 0.5137176504607516,
+          "mean_target1": 0.48798599593114617,
+          "mean_true_class_delta": 0.014433253576389986,
+          "n_bidirectional_observations": 0,
+          "n_observations": 24,
+          "recording": "35eeb752-8f4f-4040-9714-ba0f5b7ccdfe_probe00",
+          "target_subjects": [
+            "MFD_06"
+          ],
+          "top_bidirectional_contexts": []
+        }
+      ]
+    },
+    "thresholds": {
+      "min_target_improvement": 0.55
+    }
+  },
   "model_free_region_candidate_scan": {
     "all_regions": [
       {

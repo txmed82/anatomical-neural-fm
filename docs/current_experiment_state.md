@@ -414,6 +414,27 @@ checks actually block the anatomy-transfer claim.
 
 Decision: the next useful experiment should not be another small feature or regularization variant. The universal blocker is same-recording bidirectionality, so any new benchmark/control proposal must first create target0+target1 evidence inside the same recordings before GPU training.
 
+## Model-Free Recording Support Audit
+
+`docs/model_free_recording_support_audit.md` aggregates per-recording
+target0/target1 support across all current model-free holdout and
+source-target gate artifacts.
+
+- observations: `672`
+- recordings: `28`
+- bidirectional observations: `53`
+- recordings with any bidirectional support: `19`
+- max bidirectional observations/recording: `12`
+
+| recording | subjects | observations | bidir obs | mean target0 | mean target1 |
+|---|---|---:|---:|---:|---:|
+| 6899a67d-2e53-4215-a52a-c7021b5da5d4_probe00 | MFD_06 | 24 | 12 | 0.566 | 0.524 |
+| 03063955-2523-47bd-ae57-f7489dd40f15_probe01 | SWC_038 | 24 | 8 | 0.474 | 0.574 |
+| e1931de1-cf7b-49af-af33-2ade15e8abe7_probe00 | KS014 | 24 | 8 | 0.592 | 0.444 |
+| edd22318-216c-44ff-bc24-49ce8be78374_probe00 | CSH_ZAD_019 | 24 | 4 | 0.462 | 0.585 |
+
+Decision: rare same-recording bidirectional observations are not concentrated enough to define a stable demo subset from the current cache. The next benchmark redesign should prospectively create target0+target1 evidence inside recordings, then rerun the same model-free local gate before GPU training.
+
 ## Family-Aggregate Recording-Centered Gate
 
 `docs/model_free_family_bidirectional_gate_recording_centered.md` combines

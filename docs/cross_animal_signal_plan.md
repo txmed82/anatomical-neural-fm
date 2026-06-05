@@ -1442,6 +1442,18 @@ This makes the next milestone concrete: a redesigned benchmark/control must
 first pass same-recording target0+target1 evidence locally. Without that, no
 A100 training run should be launched.
 
+Recording support audit:
+`scripts/audit_model_free_recording_support.py` aggregates the underlying
+recording rows across the same current artifacts. There are 53 bidirectional
+recording observations out of 672, spread across 19 of 28 recordings. That
+sounds nonzero, but it is not a stable demo subset: the best single recording
+has 12/24 bidirectional observations and mean target1 `0.524`, still below the
+gate. Treat this as evidence that the current cache contains sporadic
+same-recording support, not a reliable cross-animal anatomical transfer
+benchmark. The next no-spend milestone is a prospective benchmark/control
+redesign that creates same-recording target0+target1 evidence before GPU
+training.
+
 Recording-centered feature check:
 The gate also supports `--feature-mode recording_centered`, which subtracts
 each recording's mean parent-region feature vector before fitting. This reduces
