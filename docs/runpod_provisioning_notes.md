@@ -164,7 +164,8 @@ improvement `0.513` against the `0.550` threshold.
    `active_pods: 0` preflight. Keep `--max-provision-seconds 300`, one pod at a
    time, and `BEST_METRIC=full_eval_centered_auc`. Because the status API was
    misleading on this attempt, use S3 log progress as the source of truth before
-   terminating a rented pod that has started uploading logs.
+   terminating a rented pod that has started uploading logs; the launcher now
+   preserves such pods until a completion marker or the runtime guard fires.
 2. If RunPod continues renting without usable runtime details, move the same
    pushed-branch command to another provider with a hard runtime cap and enough
    disk for the cached HDF5 download.

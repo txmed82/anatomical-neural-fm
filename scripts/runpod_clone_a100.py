@@ -598,6 +598,54 @@ def remote_log_contains(
     return marker in body.decode("utf-8", errors="replace")
 
 
+def remote_log_touched(
+    config: ClonePilotConfig,
+    env: dict[str, str],
+    *,
+    modified_after: datetime | None = None,
+) -> bool:
+    if not config.s3_bucket:
+        return False
+    try:
+        import boto3
+    except Exception:
+        return False
+    access_key = (
+        os.environ.get("BRAINSET_S3_ACCESS_KEY")
+        or os.environ.get("RUNPOD_S3_ACCESS_KEY")
+        or env.get("BRAINSET_S3_ACCESS_KEY")
+        or env.get("RUNPOD_S3_ACCESS_KEY")
+        or ""
+    )
+    secret_key = (
+        os.environ.get("BRAINSET_S3_SECRET_KEY")
+        or os.environ.get("RUNPOD_S3_SECRET_KEY")
+        or env.get("BRAINSET_S3_SECRET_KEY")
+        or env.get("RUNPOD_S3_SECRET_KEY")
+        or ""
+    )
+    endpoint_url = config.s3_endpoint_url
+    if not endpoint_url and config.s3_datacenter:
+        endpoint_url = S3_ENDPOINTS.get(config.s3_datacenter, "")
+    if not access_key or not secret_key or not endpoint_url:
+        return False
+    client = boto3.client(
+        "s3",
+        aws_access_key_id=access_key,
+        aws_secret_access_key=secret_key,
+        endpoint_url=endpoint_url,
+        region_name=config.s3_datacenter.lower() if config.s3_datacenter else "auto",
+    )
+    try:
+        obj = client.head_object(Bucket=config.s3_bucket, Key=s3_log_key(config))
+    except Exception:
+        return False
+    last_modified = obj.get("LastModified")
+    if modified_after is not None and last_modified is not None:
+        return last_modified >= modified_after
+    return bool(last_modified)
+
+
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser()
     p.add_argument("--branch", default=current_branch())
@@ -756,6 +804,14 @@ def main() -> int:
                 and time.time() > provision_deadline
                 and not pod_is_provisioned(current)
             ):
+                if remote_log_touched(config, env, modified_after=poll_started_at):
+                    print(
+                        "Remote S3 log updated despite missing runtime details; "
+                        "continuing until completion marker or runtime guard.",
+                        flush=True,
+                    )
+                    provision_deadline = time.time() + args.max_provision_seconds
+                    continue
                 print(
                     f"Pod stayed unprovisioned for {args.max_provision_seconds}s; terminating.",
                     flush=True,
