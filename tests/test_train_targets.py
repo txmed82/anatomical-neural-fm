@@ -179,6 +179,50 @@ def test_build_trial_samples_prior_side_skips_neutral_blocks() -> None:
     assert samples == [("rec", 0.1, 0.0), ("rec", 0.2, 1.0)]
 
 
+def test_build_trial_samples_post_error_response_extreme_25_75_drops_middle_trials() -> None:
+    rec = Obj(
+        trials=Obj(
+            stim_on_times=np.array([0.0, 1.0, 2.0, 3.0, 4.0]),
+            response_times=np.array([0.2, 1.2, 2.5, 3.8, 5.4]),
+            feedback_type=np.array([-1, -1, -1, -1, -1]),
+            contrast_left=np.array([0.0, 0.0, 0.0, 0.0, 0.0]),
+            contrast_right=np.array([0.0, 0.0, 0.0, 0.0, 0.0]),
+        ),
+        domain=Obj(end=np.array([10.0])),
+    )
+
+    samples = build_trial_samples(
+        {"rec": rec},
+        ["rec"],
+        window_len=1.0,
+        target_mode="post_error_response_extreme_25_75_le_1",
+    )
+
+    assert samples == [("rec", 1.0, 1.0), ("rec", 4.0, 0.0)]
+
+
+def test_build_trial_samples_post_error_response_extreme_33_67_requires_valid_previous_error() -> None:
+    rec = Obj(
+        trials=Obj(
+            stim_on_times=np.array([0.0, 1.0, 2.0, 3.0, 4.0]),
+            response_times=np.array([0.2, 1.2, 2.5, 3.8, 5.4]),
+            feedback_type=np.array([-1, 1, -1, -1, -1]),
+            contrast_left=np.array([0.0, 0.0, 0.0, 0.0, 0.0]),
+            contrast_right=np.array([0.0, 0.0, 0.0, 0.0, 0.0]),
+        ),
+        domain=Obj(end=np.array([10.0])),
+    )
+
+    samples = build_trial_samples(
+        {"rec": rec},
+        ["rec"],
+        window_len=1.0,
+        target_mode="post_error_response_extreme_33_67_le_1",
+    )
+
+    assert samples == [("rec", 1.0, 1.0), ("rec", 4.0, 0.0)]
+
+
 def test_trial_indices_by_target_groups_binary_targets() -> None:
     trials = [
         ("a", 0.1, 0.0),

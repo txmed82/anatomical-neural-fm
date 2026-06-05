@@ -120,6 +120,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--s3-bucket", default="rppfvo6ifn")
     parser.add_argument("--s3-datacenter", default="US-IL-1")
     parser.add_argument("--name-prefix", default="anfm-nr0019-parent-compact")
+    parser.add_argument("--manifest-path", default="manifests/ibl_bwm_region_matched_support80_best6.json")
+    parser.add_argument("--sweep-script", default="scripts/run_lso_two_holdout_shared_parent_shuffle_a100.sh")
     parser.add_argument("--output-root", default="runs/lso_nr0019_shared_parent_shuffle")
     parser.add_argument("--result-doc", default="docs/lso_nr0019_shared_parent_shuffle_results.md")
     parser.add_argument("--seeds", default="0 1 2")
@@ -144,6 +146,8 @@ def main() -> int:
         s3_bucket=args.s3_bucket,
         s3_datacenter=args.s3_datacenter,
         name_prefix=args.name_prefix,
+        manifest_path=args.manifest_path,
+        sweep_script=args.sweep_script,
         output_root=args.output_root,
         result_doc=args.result_doc,
         seeds=args.seeds,

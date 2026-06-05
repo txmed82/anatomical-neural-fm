@@ -730,7 +730,18 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--eval-batches", type=int, default=50)
     p.add_argument("--manifest-path", default="manifests/ibl_bwm_phase4.json")
     p.add_argument("--seeds", default="0 1 2")
-    p.add_argument("--target-mode", default="choice", choices=["choice", "stimulus_side", "feedback", "prior_side"])
+    p.add_argument(
+        "--target-mode",
+        default="choice",
+        choices=[
+            "choice",
+            "stimulus_side",
+            "feedback",
+            "prior_side",
+            "post_error_response_extreme_25_75_le_1",
+            "post_error_response_extreme_33_67_le_1",
+        ],
+    )
     p.add_argument("--sweep-script", default="scripts/run_phase2_cloud_a100.sh")
     p.add_argument("--output-root", default="runs/phase2_cloud_a100")
     p.add_argument("--result-doc", default="docs/cloud_phase3_5_results.md")

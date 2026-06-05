@@ -50,6 +50,15 @@ from torch_brain.utils import create_linspace_latent_tokens  # noqa: E402
 
 # Binary trial decoding targets available to local audits and training wrappers.
 TARGET_MODES = ("choice", "stimulus_side", "feedback", "prior_side")
+RESPONSE_EXTREME_TARGET_MODES = (
+    "post_error_response_extreme_25_75_le_1",
+    "post_error_response_extreme_33_67_le_1",
+)
+TRAIN_TARGET_MODES = TARGET_MODES + RESPONSE_EXTREME_TARGET_MODES
+RESPONSE_EXTREME_QUANTILES = {
+    "post_error_response_extreme_25_75_le_1": (25.0, 75.0),
+    "post_error_response_extreme_33_67_le_1": (33.0, 67.0),
+}
 N_OUTPUT_QUERIES = 1     # single binary logit at trial-end
 
 
@@ -76,11 +85,13 @@ def parse_args():
                    help="'shared' uses one trainable task query for all recordings, which is "
                         "the primary cross-animal setting. 'session' preserves the original "
                         "per-recording query for diagnostics.")
-    p.add_argument("--target-mode", default="choice", choices=TARGET_MODES,
+    p.add_argument("--target-mode", default="choice", choices=TRAIN_TARGET_MODES,
                    help="'choice' decodes animal L/R choice. 'stimulus_side' decodes whether "
                         "the visual stimulus contrast was stronger on the right than left. "
                         "'feedback' decodes correct vs error feedback. 'prior_side' decodes "
-                        "the IBL block prior side from probability_left.")
+                        "the IBL block prior side from probability_left. "
+                        "'post_error_response_extreme_*' decodes fast vs slow post-error "
+                        "response-latency extremes within each recording.")
     p.add_argument("--region-filter", default="none", choices=["none", "shared_regions", "include_regions"],
                    help="'shared_regions' keeps only units whose region acronym appears in both "
                         "the train and held-out recordings for the current split. "
@@ -377,6 +388,56 @@ def _target_from_trial(rec, idx: int, target_mode: str) -> float | None:
     raise ValueError(f"unknown target_mode {target_mode!r}")
 
 
+def _optional_trial_array(rec, name: str, n: int) -> np.ndarray:
+    if not hasattr(rec.trials, name):
+        return np.full(n, np.nan, dtype=np.float64)
+    values = np.asarray(getattr(rec.trials, name), dtype=np.float64)
+    if len(values) != n:
+        return np.full(n, np.nan, dtype=np.float64)
+    return values
+
+
+def _contrast_strength(rec, n: int) -> np.ndarray:
+    left = _optional_trial_array(rec, "contrast_left", n)
+    right = _optional_trial_array(rec, "contrast_right", n)
+    left = np.where(np.isfinite(left), left, 0.0)
+    right = np.where(np.isfinite(right), right, 0.0)
+    return np.maximum(np.abs(left), np.abs(right))
+
+
+def _response_extreme_labels(rec, target_mode: str) -> np.ndarray:
+    if target_mode not in RESPONSE_EXTREME_QUANTILES:
+        raise ValueError(f"unknown response-extreme target_mode {target_mode!r}")
+    stim_on = np.asarray(rec.trials.stim_on_times, dtype=np.float64)
+    n = len(stim_on)
+    labels = np.full(n, np.nan, dtype=np.float64)
+    response = _optional_trial_array(rec, "response_times", n)
+    feedback = _optional_trial_array(rec, "feedback_type", n)
+    strength = _contrast_strength(rec, n)
+    latency = response - stim_on
+
+    prev_feedback = np.roll(feedback, 1)
+    valid = (
+        np.isfinite(stim_on)
+        & np.isfinite(latency)
+        & (latency > 0.0)
+        & np.isfinite(prev_feedback)
+        & (prev_feedback < 0.0)
+        & np.isfinite(strength)
+        & (strength <= 1.0)
+    )
+    if n:
+        valid[0] = False
+    values = latency[valid]
+    if len(values) == 0:
+        return labels
+
+    lo, hi = np.percentile(values, RESPONSE_EXTREME_QUANTILES[target_mode])
+    labels[valid & (latency <= lo)] = 1.0
+    labels[valid & (latency >= hi)] = 0.0
+    return labels
+
+
 def build_trial_samples(
     recs,
     rids: list[str],
@@ -397,12 +458,21 @@ def build_trial_samples(
             continue
         stim_on = np.asarray(rec.trials.stim_on_times, dtype=np.float64)
         domain_hi = float(rec.domain.end[-1])
+        response_extreme_labels = (
+            _response_extreme_labels(rec, target_mode)
+            if target_mode in RESPONSE_EXTREME_TARGET_MODES
+            else None
+        )
         for idx, t0 in enumerate(stim_on):
             if not np.isfinite(t0):
                 continue
             if t0 + window_len > domain_hi:
                 continue
-            target = _target_from_trial(rec, idx, target_mode)
+            if response_extreme_labels is None:
+                target = _target_from_trial(rec, idx, target_mode)
+            else:
+                target_value = response_extreme_labels[idx]
+                target = float(target_value) if np.isfinite(target_value) else None
             if target is None:
                 continue
             out.append((rid, float(t0), target))
