@@ -403,7 +403,7 @@ Decision: stricter manifest support alone does not rescue the signal. The clean 
 branches after the current local negative audits.
 
 - recommended next: `new manifest with prospective bidirectional support`
-- closed branches: `12`
+- closed branches: `13`
 - decision: `no_local_training_trigger`
 - GPU trigger: At least one local row on the proposed manifest must clear delta_vs_shuffle>=0, delta_vs_total>=0, target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75 before training.
 
@@ -414,7 +414,7 @@ branches after the current local negative audits.
 | 87 | reaction-dynamics wheel targets | `closed` | Do not spend on reaction-dynamics wheel targets; the near miss fails true-vs-shuffle and does not replicate across feature modes. |
 | 88 | cell-type prior target/control gate | `closed` | Do not spend on broad ABC cell-class prior channels; they do not pass the local bidirectional gate. |
 
-Decision: the current cached target, contextual target, wheel-derived target, reaction-dynamics target, and cell-type prior target/control branches are closed as GPU triggers. The next aligned work is a prospectively supported benchmark/control redesign, still gated locally before any paid training.
+Decision: the current cached target, contextual target, wheel-derived target, reaction-dynamics target, cell-type prior target/control, and waveform target/control branches are closed as GPU triggers. The next aligned work is a prospectively supported benchmark/control redesign, still gated locally before any paid training.
 
 ## Behavior Cache Preflight
 

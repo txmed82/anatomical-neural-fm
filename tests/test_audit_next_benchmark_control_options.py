@@ -81,6 +81,7 @@ def test_render_markdown_lists_closed_branches() -> None:
     assert "wheel-derived target family gate" in markdown
     assert "reaction-dynamics wheel targets" in markdown
     assert "cell-type prior target/control gate" in markdown
+    assert "waveform target/control gate" in markdown
     assert "wheel in" in markdown
     assert "contextual cached trial-state targets" in markdown
     assert "narrow existing manifest further" in markdown
