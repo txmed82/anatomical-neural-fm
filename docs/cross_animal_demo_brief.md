@@ -37,6 +37,7 @@ Failure-mode audit: `docs/cross_holdout_failure_mode_audit.md`.
 Parent-region slice plan: `docs/parent_region_slice_plan.md`.
 Fixed-slice run: `docs/lso_nyu12_parent_slice_results.md`.
 Success-mode audit: `docs/transfer_success_mode_audit.md`.
+CSH diagnostic output audit: `docs/csh_diagnostic_output_audit.md`.
 
 ## Why This Is Real Enough To Demo
 
@@ -69,6 +70,11 @@ Success-mode audit: `docs/transfer_success_mode_audit.md`.
 - The stricter `SWC_038` fixed-slice run also failed: true labels were below
   the shared null in both completed seeds, while shuffled labels were positive
   in both.
+- A partial CSH diagnostic rerun exported full held-out predictions for seed 0.
+  On those full-trial artifacts, `region_only` and `region_shuffle` were nearly
+  indistinguishable relative to the exported baseline (+0.008 vs +0.009 AUC).
+  This weakens confidence that sampled eval summaries alone are sufficient for
+  a demo-grade claim.
 - The failure-mode audit rules out several simple gates on their own:
   parent-region support, CSH-like composition, trial count, class balance, and
   raw parent-level stimulus contrast.
@@ -85,6 +91,7 @@ matched-cache A100 sweep.
 
 Instrumentation is now available for that diagnostic: `scripts/train.py` can
 export held-out trial predictions and learned region embeddings, and the RunPod
-launcher will preserve those JSONL artifacts. The next bounded run should be
-the canonical `CSH_ZAD_019` control with diagnostics enabled, followed by an
-artifact audit before any more broadening attempts.
+launcher will preserve those JSONL artifacts. The next work should move the
+claim onto deterministic full held-out-trial metrics, then rerun the canonical
+`CSH_ZAD_019` control only if the result doc reports those full-trial metrics
+directly.

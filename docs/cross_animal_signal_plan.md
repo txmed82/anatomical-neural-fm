@@ -725,3 +725,32 @@ new diagnostic result doc. The goal is not another broadening claim; it is to
 answer whether the CSH lift is distributed across recordings/trials and whether
 the learned region embeddings show true-vs-shuffled structure. Do not launch
 another candidate-subject run until those exported artifacts have been audited.
+
+Completed partial CSH diagnostic run:
+`docs/lso_csh_diagnostic_outputs_results.md` is incomplete as a sweep because
+the pod hit the 300-second unprovisioned guard before writing `summary.md`, but
+it did preserve diagnostic artifacts under `runs/lso_csh_diagnostic_outputs`.
+`docs/csh_diagnostic_output_audit.md` analyzes those artifacts.
+
+Available artifacts:
+
+- seed 0 `shared_baseline`: full held-out predictions for 2,726 trials
+- seed 0 `region_only`: full held-out predictions and 79 region embeddings
+- seed 0 `region_shuffle`: full held-out predictions and 79 region embeddings
+- seed 1 `shared_baseline`: full held-out predictions
+
+Artifact-level finding:
+
+- seed 0 full held-out AUC: `shared_baseline` 0.500, `region_only` 0.508,
+  `region_shuffle` 0.509
+- seed 0 full held-out deltas: true `region_only` +0.008, shuffled +0.009
+- carrier-region embedding norms are nearly identical between true and shuffled
+  seed-0 runs; same-region true-vs-shuffle cosines are 0.990-0.997
+
+Interpretation: this partial diagnostic materially weakens the current CSH demo
+claim. The earlier CSH summaries were based on sampled eval batches, while the
+new exported seed-0 full-trial predictions show no true-vs-shuffled separation.
+The next engineering step should be to promote deterministic full held-out-trial
+evaluation into the official sweep summary, then rerun only the canonical CSH
+control under that metric. Do not spend on any additional held-out animal until
+the canonical CSH result survives full-trial evaluation.
