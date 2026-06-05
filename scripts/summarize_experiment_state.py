@@ -103,6 +103,7 @@ MATCHED_REGION_S3_PRESENT_SUPPORT80_HDF5_FILE = (
 MATCHED_REGION_S3_PRESENT_SUPPORT80_HDF5_ITERATIVE_FILE = (
     "manifests/ibl_bwm_region_matched_candidates_s3_present_support80_hdf5_iterative_pass.json"
 )
+MODEL_FREE_MATCHED_SUPPORT80_PANEL_FILE = "docs/model_free_matched_support80_hdf5_panel.json"
 LOCAL_PROBE_FILES = (
     (
         "local AUC surrogate",
@@ -387,6 +388,7 @@ def render_markdown(
     matched_support80: dict | None = None,
     matched_support80_hdf5: dict | None = None,
     matched_support80_hdf5_iterative: dict | None = None,
+    model_free_matched_panel: dict | None = None,
 ) -> str:
     summary = summarize(strict_rows, slice_rows)
     lines = [
@@ -892,6 +894,40 @@ def render_markdown(
             ),
             "",
         ]
+    if model_free_matched_panel is not None:
+        summary = model_free_matched_panel["summary"]
+        lines += [
+            "## Matched-Region Model-Free Panel",
+            "",
+            "`docs/model_free_matched_support80_hdf5_panel.md` runs the closed-form",
+            "parent-region ridge audit leave-subject-out across the HDF5-confirmed",
+            "28-recording matched support80 panel.",
+            "",
+            f"- holdouts: `{summary['n_holdouts']}`",
+            f"- model-free candidates: `{summary['n_candidates']}`",
+            f"- positive centered-delta holdouts: `{summary['n_positive_delta_holdouts']}/{summary['n_holdouts']}`",
+            f"- mean true-minus-shuffle centered AUC: `{summary['mean_delta_centered_auc']:+.3f}`",
+            f"- decision: `{summary['decision']}`",
+            "",
+            "| holdout | decision | centered delta | target0 | target1 | rec support |",
+            "|---|---|---:|---:|---:|---:|",
+        ]
+        for row in model_free_matched_panel["rows"]:
+            lines.append(
+                f"| {row['holdout']} | {row['decision']} | "
+                f"{row['delta_centered_auc']:+.3f} | {row['target0_improved']:.3f} | "
+                f"{row['target1_improved']:.3f} | {row['positive_recordings']}/{row['n_recordings']} |"
+            )
+        lines += [
+            "",
+            (
+                "Decision: do not promote this panel to a broad training sweep. "
+                "The model-free anatomical feature screen has zero passing holdouts; "
+                "`KS014` and `NR_0019` have positive centered deltas, but fail "
+                "bidirectional target-class and/or recording-support gates."
+            ),
+            "",
+        ]
     return "\n".join(lines)
 
 
@@ -940,6 +976,7 @@ def main() -> int:
     matched_support80_hdf5_iterative = read_support_manifest_summary(
         REPO_ROOT / MATCHED_REGION_S3_PRESENT_SUPPORT80_HDF5_ITERATIVE_FILE
     )
+    model_free_matched_panel = read_mechanism_audit(REPO_ROOT / MODEL_FREE_MATCHED_SUPPORT80_PANEL_FILE)
     args.out_md.parent.mkdir(parents=True, exist_ok=True)
     args.out_md.write_text(render_markdown(
         strict_rows,
@@ -965,6 +1002,7 @@ def main() -> int:
         matched_support80,
         matched_support80_hdf5,
         matched_support80_hdf5_iterative,
+        model_free_matched_panel,
     ))
     args.out_json.parent.mkdir(parents=True, exist_ok=True)
     args.out_json.write_text(json.dumps({
@@ -1019,6 +1057,7 @@ def main() -> int:
                 "source": display_path(matched_support80_hdf5_iterative["source"])
             }
         ),
+        "model_free_matched_support80_panel": model_free_matched_panel,
     }, indent=2, sort_keys=True) + "\n")
     print(f"wrote {args.out_md}")
     print(f"wrote {args.out_json}")

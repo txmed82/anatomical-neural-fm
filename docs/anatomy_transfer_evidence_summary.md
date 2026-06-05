@@ -274,3 +274,13 @@ to only 2 subjects (`MFD_06`, `NYU-12`). Do not call this a clean broad
 benchmark. Any paid next step should either be a no-spend/model-free screen on
 the 28-recording panel or a bounded training gate that treats `SWC_043` as a
 predeclared weak-support holdout.
+
+Matched-panel model-free screen:
+`docs/model_free_matched_support80_hdf5_panel.md` runs the closed-form
+parent-region ridge audit leave-subject-out across the HDF5-confirmed
+28-recording panel. It finds zero model-free anatomy candidates. `KS014`
+(`+0.030` centered true-minus-shuffle AUC) and `NR_0019` (`+0.079`) are the
+only positive-delta holdouts, but both miss the bidirectional target-class and
+recording-support gates. Mean centered true-minus-shuffle delta across the
+seven holdouts is `-0.003`. Decision: do not spend on a broad matched-panel
+training sweep from this evidence.

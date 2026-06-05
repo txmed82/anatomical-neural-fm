@@ -208,6 +208,10 @@ too narrow for the intended cross-animal claim. Do not launch broad training
 from this as if the support gate fully passed; use it for a no-spend/model-free
 screen or a bounded run with `SWC_043` predeclared as weak-support.
 
+The no-spend model-free screen is complete and negative:
+`docs/model_free_matched_support80_hdf5_panel.md` has zero passing holdouts.
+Do not launch matched-panel training from this state.
+
 Use the missing-only manifest with the incremental builder for the next cache
 completion attempt, so each successful recording uploads immediately:
 

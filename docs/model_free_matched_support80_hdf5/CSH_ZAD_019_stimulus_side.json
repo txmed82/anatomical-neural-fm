@@ -1,0 +1,169 @@
+{
+  "holdout": [
+    "CSH_ZAD_019"
+  ],
+  "l2": 10.0,
+  "n_eval_recordings": 4,
+  "n_eval_trials": 2726,
+  "n_regions": 79,
+  "n_train_recordings": 24,
+  "n_train_trials": 13015,
+  "region_granularity": "parent",
+  "regions": [
+    "ATN",
+    "AUDd",
+    "AUDv",
+    "BS",
+    "CA",
+    "CNU",
+    "CTXpl",
+    "CTXsp",
+    "DG",
+    "DORpm",
+    "ENTm",
+    "EPI",
+    "FRP",
+    "HB",
+    "HIP",
+    "IB",
+    "IIIn",
+    "IIn",
+    "In",
+    "LAT",
+    "LGd",
+    "LS",
+    "LZ",
+    "MBmot",
+    "MBsen",
+    "MBsta",
+    "MED",
+    "MG",
+    "MOp",
+    "MOs",
+    "MSC",
+    "OLF",
+    "ORBm",
+    "ORBvl",
+    "P-mot",
+    "P-sen",
+    "PALc",
+    "PRT",
+    "PVR",
+    "RHP",
+    "RSPagl",
+    "RSPd",
+    "RSPv",
+    "SCm",
+    "SCs",
+    "SSp-bfd",
+    "SSp-ll",
+    "SSp-tr",
+    "SSp-ul",
+    "SSp-un",
+    "SSs",
+    "STRd",
+    "STRv",
+    "VENT",
+    "VISa",
+    "VISp",
+    "VISpl",
+    "VISpm",
+    "VISpor",
+    "VL",
+    "VP",
+    "VS",
+    "Vn",
+    "ZI",
+    "cVIIIn",
+    "cc",
+    "cett",
+    "eps",
+    "epsc",
+    "fa",
+    "fiber tracts",
+    "fxs",
+    "hc",
+    "lfbst",
+    "mfbc",
+    "mfbse",
+    "root",
+    "scp",
+    "void"
+  ],
+  "seed": 0,
+  "summary": {
+    "decision": "no_model_free_true_region_advantage",
+    "deltas": {
+      "true_minus_shuffle_auc": 0.019852678726886508,
+      "true_minus_shuffle_centered_auc": -0.05178063081101786,
+      "true_minus_total_auc": -0.056046396733642145,
+      "true_minus_total_centered_auc": -0.06630545495699419
+    },
+    "metrics": {
+      "region_shuffle": {
+        "eval_auc": 0.4794846040672772,
+        "eval_centered_auc": 0.538480037956611,
+        "per_recording_auc": {
+          "49e0ab27-827a-4c91-bcaa-97eea27a1b8d_probe01": 0.5823651535113986,
+          "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe00": 0.4436060835781294,
+          "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe01": 0.516192078082062,
+          "edd22318-216c-44ff-bc24-49ce8be78374_probe00": 0.5714827506806268
+        },
+        "train_auc": 0.601494090413758
+      },
+      "region_true": {
+        "eval_auc": 0.49933728279416373,
+        "eval_centered_auc": 0.4866994071455932,
+        "per_recording_auc": {
+          "49e0ab27-827a-4c91-bcaa-97eea27a1b8d_probe01": 0.427443073688133,
+          "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe00": 0.5341727470861366,
+          "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe01": 0.5005685587036861,
+          "edd22318-216c-44ff-bc24-49ce8be78374_probe00": 0.49947852469896653
+        },
+        "train_auc": 0.596748536499229
+      },
+      "total_spikes": {
+        "eval_auc": 0.5553836795278059,
+        "eval_centered_auc": 0.5530048621025874,
+        "per_recording_auc": {
+          "49e0ab27-827a-4c91-bcaa-97eea27a1b8d_probe01": 0.5918872519663033,
+          "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe00": 0.5533616033355444,
+          "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe01": 0.4972045863735431,
+          "edd22318-216c-44ff-bc24-49ce8be78374_probe00": 0.5691259532162158
+        },
+        "train_auc": 0.5027061104796562
+      }
+    },
+    "n_recordings": 4,
+    "paired_true_vs_shuffle": {
+      "improved_fraction": 0.5018341892883346,
+      "mean_true_class_delta": -0.2840834662095769,
+      "target0_improved_fraction": 0.3384308510638298,
+      "target1_improved_fraction": 0.7029459901800328
+    },
+    "paired_true_vs_total": {
+      "improved_fraction": 0.5172413793103449,
+      "mean_true_class_delta": 0.001762047774380828,
+      "target0_improved_fraction": 0.5897606382978723,
+      "target1_improved_fraction": 0.427986906710311
+    },
+    "recording_deltas_true_minus_shuffle": {
+      "49e0ab27-827a-4c91-bcaa-97eea27a1b8d_probe01": -0.1549220798232656,
+      "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe00": 0.09056666350800718,
+      "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe01": -0.015623519378375916,
+      "edd22318-216c-44ff-bc24-49ce8be78374_probe00": -0.07200422598166029
+    },
+    "recording_support_fraction": 0.25,
+    "recordings_positive_true_minus_shuffle": 1
+  },
+  "target_mode": "stimulus_side",
+  "train_subjects": [
+    "KS014",
+    "MFD_06",
+    "NR_0019",
+    "NYU-12",
+    "SWC_038",
+    "SWC_043"
+  ],
+  "window_len": 1.0
+}

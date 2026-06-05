@@ -1338,3 +1338,14 @@ too narrow for the open computational neuroscience claim. Do not present the
 no-spend/model-free screen across the 28-recording panel, or a tightly bounded
 training gate that predeclares `SWC_043` as weak-support and requires the other
 six subjects to carry the signal.
+
+Completed no-spend/model-free screen:
+`docs/model_free_matched_support80_hdf5_panel.md` evaluates the HDF5-confirmed
+28-recording panel with a closed-form parent-region ridge classifier and
+within-recording shuffled-region control. It finds zero promotable holdouts.
+Only `KS014` and `NR_0019` have positive centered true-minus-shuffle AUC deltas,
+and both fail bidirectional target-class improvement and/or recording-support
+gates. This argues against spending on a broad matched-panel neural training
+sweep. The next constructive path is target/control redesign or a much narrower
+bounded gate focused on explaining why the positive-delta holdouts are
+one-sided.

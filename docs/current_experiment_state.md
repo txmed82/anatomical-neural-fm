@@ -246,3 +246,27 @@ scoring is a planning gate; HDF5 scoring is the stronger pre-training check.
 | `manifests/ibl_bwm_region_matched_candidates_s3_present_support80_hdf5_iterative_pass.json` | 8 | 2 | 2/2 | 88.5% |
 
 Decision: the HDF5-confirmed 28-recording panel is close but not clean at `6/7` support80 subjects, while the strict iterative all-pass filter collapses to 2 subjects. Do not claim a clean broad benchmark from this panel. Treat `SWC_043` as a known weak-support holdout in any bounded training gate, or run another no-spend/model-free screen before spending.
+
+## Matched-Region Model-Free Panel
+
+`docs/model_free_matched_support80_hdf5_panel.md` runs the closed-form
+parent-region ridge audit leave-subject-out across the HDF5-confirmed
+28-recording matched support80 panel.
+
+- holdouts: `7`
+- model-free candidates: `0`
+- positive centered-delta holdouts: `2/7`
+- mean true-minus-shuffle centered AUC: `-0.003`
+- decision: `no_model_free_panel_signal`
+
+| holdout | decision | centered delta | target0 | target1 | rec support |
+|---|---|---:|---:|---:|---:|
+| CSH_ZAD_019 | no_model_free_true_region_advantage | -0.052 | 0.338 | 0.703 | 1/4 |
+| KS014 | weak_model_free_true_region_advantage | +0.030 | 0.547 | 0.538 | 2/4 |
+| MFD_06 | no_model_free_true_region_advantage | -0.016 | 0.567 | 0.451 | 2/4 |
+| NR_0019 | weak_model_free_true_region_advantage | +0.079 | 0.776 | 0.249 | 3/4 |
+| NYU-12 | no_model_free_true_region_advantage | -0.015 | 0.410 | 0.624 | 2/4 |
+| SWC_038 | no_model_free_true_region_advantage | -0.032 | 0.629 | 0.336 | 0/4 |
+| SWC_043 | no_model_free_true_region_advantage | -0.014 | 0.738 | 0.212 | 2/4 |
+
+Decision: do not promote this panel to a broad training sweep. The model-free anatomical feature screen has zero passing holdouts; `KS014` and `NR_0019` have positive centered deltas, but fail bidirectional target-class and/or recording-support gates.
