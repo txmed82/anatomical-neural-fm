@@ -68,6 +68,8 @@ def post_run_output_paths(config: PreflightConfig) -> dict[str, str]:
         "gate_json": str(doc_path.with_name(f"{stem}_anatomy_specific_gate.json")),
         "failure_json": str(doc_path.with_name(f"{stem}_failure_modes.json")),
         "failure_md": str(doc_path.with_name(f"{stem}_failure_modes.md")),
+        "mechanism_json": str(doc_path.with_name(f"{stem}_mechanism.json")),
+        "mechanism_md": str(doc_path.with_name(f"{stem}_mechanism.md")),
     }
 
 
@@ -84,7 +86,7 @@ def print_preflight(config: PreflightConfig, *, repo_root: Path = REPO_ROOT) -> 
     command = build_launch_command(config)
     post_run_paths = post_run_output_paths(config)
 
-    print("# Recording-centered anatomy pilot RunPod preflight")
+    print(f"# {config.name_prefix} RunPod preflight")
     print(f"branch: {branch}")
     print(f"git_ready: {git_ready}")
     print(f"active_pods: {len(pods)}")
@@ -116,6 +118,14 @@ def print_preflight(config: PreflightConfig, *, repo_root: Path = REPO_ROOT) -> 
         f"{config.output_root} --holdout CSH_ZAD_019 "
         f"--out {post_run_paths['failure_json']} "
         f"--md-out {post_run_paths['failure_md']}"
+    )
+    print("")
+    print("Required post-run mechanism audit:")
+    print(
+        "uv run python scripts/audit_csh_mechanism.py "
+        f"--root {config.output_root} --holdout CSH_ZAD_019 "
+        f"--out-json {post_run_paths['mechanism_json']} "
+        f"--out-md {post_run_paths['mechanism_md']}"
     )
 
     if not git_ready:

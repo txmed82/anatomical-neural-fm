@@ -27,4 +27,6 @@ def test_pairwise_rank_preflight_uses_pairwise_post_run_paths() -> None:
         "gate_json": "docs/lso_csh_pairwise_rank_pilot_anatomy_specific_gate.json",
         "failure_json": "docs/lso_csh_pairwise_rank_pilot_failure_modes.json",
         "failure_md": "docs/lso_csh_pairwise_rank_pilot_failure_modes.md",
+        "mechanism_json": "docs/lso_csh_pairwise_rank_pilot_mechanism.json",
+        "mechanism_md": "docs/lso_csh_pairwise_rank_pilot_mechanism.md",
     }
