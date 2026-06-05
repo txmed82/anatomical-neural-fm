@@ -55,3 +55,10 @@ the same recording and removes each recording's mean logit inside the training
 loss. This directly targets the recording-offset failure mode that centered AUC
 penalizes. Run only a one-seed CSH pilot first; broaden only if centered-AUC and
 specificity improve.
+
+Recording-centered BCE pilot result: the one-seed CSH pilot failed strongly.
+`region_only` centered AUC was `0.480`, below shared `0.501` and shuffled
+regions `0.530`; paired true-vs-shuffle was `0.451`; recording support was
+`0/4`. This rules out broadening the recording-centered-loss variant. The next
+no-spend analysis should explain why shuffled parent labels win under this
+objective before another training run.

@@ -1006,6 +1006,20 @@ uv run python scripts/runpod_clone_a100.py --poll \
   --sweep-env SAVE_DIAGNOSTICS=1
 ```
 
+Recording-centered loss pilot result: the one-seed CSH_ZAD_019 run completed
+under `runs/lso_csh_recording_centered_loss_pilot` and is a strong negative.
+The standard gate fails with `n_passing_seeds=0/1`. True region labels are worse
+than both shared and shuffled controls: full AUC `0.479` vs shared `0.501` and
+shuffle `0.512`; centered AUC `0.480` vs shared `0.501` and shuffle `0.530`;
+paired true-vs-shuffle is only `0.451`. The anatomy-specific gate fails every
+check, with centered delta vs shuffle `-0.050`, specificity gap `-0.092`, and
+`0/4` recordings positive. Do not broaden or repeat this exact
+recording-centered-loss variant. The next useful implementation step should
+focus on why shuffled parent labels can outperform true labels, likely by
+auditing region-label distribution, per-region trial contrast, and whether the
+current `region_shuffle` control is creating an easier nuisance partition under
+the centered objective.
+
 After cleanup, run:
 
 ```bash
