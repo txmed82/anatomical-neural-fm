@@ -493,14 +493,16 @@ and same-recording bidirectional fraction >=`0.75`.
 Behavior-cache preflight:
 `docs/behavior_cache_preflight.md` inspects the active matched cache for richer
 behavior streams. The HDF5 files are present for all 28 manifest recordings,
-but only `3/28` currently contain `wheel`; `25/28` need a behavior-inclusive
-rebuild. The build plan is to rerun `scripts/build_ibl_brainset_batch.py` on
-the matched manifest without `--no-wheel`, preserving `--trial-window-only
---window-len 1.0`, and with `--rebuild-missing-stream wheel` so existing
-compact HDF5s are actually replaced only when the behavior stream is missing.
-Decision: this is the next no-spend step before any A100 training. After
-rebuild, define wheel movement/quiescence, high/low absolute velocity, or
-signed action velocity targets and rerun the same local gate.
+and shard 0 of the behavior rebuild completed cleanly
+(`docs/behavior_cache_build_shard00.md`: 7/7 available, 4 rebuilt, 0 failed).
+Current coverage is `wheel=7/28`; `21/28` still need a behavior-inclusive
+rebuild. Continue the generated shard commands for shards 1-3 without
+`--no-wheel`, preserving `--trial-window-only --window-len 1.0`, and with
+`--rebuild-missing-stream wheel` so existing compact HDF5s are replaced only
+when the behavior stream is missing. Decision: finish the local cache rebuild
+before any A100 training. After rebuild, define wheel movement/quiescence,
+high/low absolute velocity, or signed action velocity targets and rerun the
+same local gate.
 
 Derived target family gate:
 `docs/derived_target_family_gate.md` tests the first concrete version of that

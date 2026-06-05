@@ -1568,9 +1568,11 @@ target1>=`0.55`, and bidirectional_recording_fraction>=`0.75`.
 Behavior-cache preflight:
 `scripts/audit_behavior_cache_preflight.py` makes that next branch concrete.
 It inspects the active matched HDF5 cache and confirms all 28 manifest files
-are present, but only `3/28` contain the `wheel` stream. The remaining `25/28`
-need a behavior-inclusive rebuild. The generated shard commands rerun
-`scripts/build_ibl_brainset_batch.py` without `--no-wheel`, while keeping
+are present. Shard 0 of the behavior-inclusive rebuild completed locally in
+`294s` with `7/7` available recordings, `4` rebuilt missing-wheel files, and
+`0` failures (`docs/behavior_cache_build_shard00.md`). The cache now has
+`wheel=7/28`; the remaining `21/28` still need the same local rebuild. Continue
+the generated shard commands for shards 1-3 without `--no-wheel`, while keeping
 `--trial-window-only --window-len 1.0`, and add
 `--rebuild-missing-stream wheel` so existing compact HDF5s are rebuilt only
 when the behavior stream is absent. After rebuild, the first local target

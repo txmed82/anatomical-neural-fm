@@ -19,7 +19,7 @@
         "current cached trial targets and shared-family controls all fail strict same-recording bidirectionality",
         "direct derived cached-field target gate has 0 candidates and max bidir 0.750",
         "contextual trial-state target gate has 0 candidates and max bidir 0.500",
-        "behavior-cache preflight has wheel in 3/28 matched recordings",
+        "behavior-cache preflight has wheel in 7/28 matched recordings",
         "strict symmetric gate has 0 candidates and 0 one-recording-short global-clear rows",
         "threshold sensitivity only finds default-target candidates when bidirectional support is relaxed to 0.25 (3 candidates)"
       ],

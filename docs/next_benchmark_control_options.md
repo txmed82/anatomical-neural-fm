@@ -26,7 +26,7 @@ Ranks remaining no-spend branches after the current local audits. This is the pl
 - current cached trial targets and shared-family controls all fail strict same-recording bidirectionality
 - direct derived cached-field target gate has 0 candidates and max bidir 0.750
 - contextual trial-state target gate has 0 candidates and max bidir 0.500
-- behavior-cache preflight has wheel in 3/28 matched recordings
+- behavior-cache preflight has wheel in 7/28 matched recordings
 - strict symmetric gate has 0 candidates and 0 one-recording-short global-clear rows
 - threshold sensitivity only finds default-target candidates when bidirectional support is relaxed to 0.25 (3 candidates)
 - GPU trigger: At least one local row must clear delta_vs_shuffle>=0, delta_vs_total>=0, target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75.
