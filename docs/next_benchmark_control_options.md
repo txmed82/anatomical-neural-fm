@@ -10,7 +10,7 @@ Ranks remaining no-spend branches after the current local audits. This is the pl
 | priority | branch | status | next action |
 |---:|---|---|---|
 | 1 | new manifest with prospective bidirectional support | `recommended_next` | Do not launch GPU training from the projected support80 panel; its model-free family and feature-mode gates have no candidates. Redesign the target/control locally. |
-| 85 | extreme-quantile behavioral target gate | `closed` | Do not train: no interpretable parent region passes the strict local gate. |
+| 85 | extreme-quantile behavioral target gate | `closed` | Do not train: exploratory interpretable region-pair candidates do not remain strict candidates across shuffle seeds. |
 | 86 | wheel-derived target family gate | `closed` | Do not spend on the tested wheel targets; move to a prospectively supported manifest. |
 | 87 | reaction-dynamics wheel targets | `closed` | Do not spend on reaction-dynamics wheel targets; the near miss fails true-vs-shuffle and does not replicate across feature modes. |
 | 88 | cell-type prior target/control gate | `closed` | Do not spend on broad ABC cell-class prior channels; they do not pass the local bidirectional gate. |
@@ -52,6 +52,8 @@ Ranks remaining no-spend branches after the current local audits. This is the pl
 - region specificity scan found 1 strict parent-region candidates across 79 regions
 - region seed sensitivity found 0 robust candidates; max positive seed fraction=1.000
 - interpretable-region filter retained 0 candidates and excluded 1 non-specific candidates
+- interpretable region-pair scan found 2 exploratory candidates across 66 pairs
+- region-pair seed sensitivity found 0 robust candidates; max positive seed fraction=1.000
 - GPU trigger: A candidate must pass the unchanged local gate and remain positive across multiple within-recording shuffle seeds before training.
 
 ### wheel-derived target family gate

@@ -84,6 +84,8 @@ def test_render_markdown_lists_closed_branches() -> None:
     assert "cutoff sensitivity" in markdown
     assert "region specificity scan" in markdown
     assert "interpretable-region filter" in markdown
+    assert "region-pair scan" in markdown
+    assert "region-pair seed sensitivity" in markdown
     assert "reaction-dynamics wheel targets" in markdown
     assert "cell-type prior target/control gate" in markdown
     assert "waveform target/control gate" in markdown

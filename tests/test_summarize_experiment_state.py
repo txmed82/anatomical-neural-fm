@@ -240,6 +240,55 @@ def test_render_markdown_includes_extreme_quantile_seed_veto() -> None:
                 ],
             }
         },
+        extreme_quantile_interpretable_region_pair_scan={
+            "selected_regions": ["PRT", "VP", "cc"],
+            "summary": {
+                "n_region_pairs": 3,
+                "n_candidates": 2,
+                "n_positive_centered_delta": 4,
+                "decision": "extreme_quantile_interpretable_region_pair_candidate",
+                "gpu_training_ready": False,
+                "top_rows": [
+                    {
+                        "region_pair": "PRT+VP",
+                        "holdout": "CSH_ZAD_019",
+                        "decision": "candidate",
+                        "centered_delta_vs_shuffle": 0.099,
+                        "centered_delta_vs_total": 0.083,
+                        "target0_improved_vs_shuffle": 0.56,
+                        "target1_improved_vs_shuffle": 0.75,
+                        "n_bidirectional_recordings": 3,
+                        "n_recordings": 4,
+                        "eval_nonzero_fraction": 0.37,
+                    }
+                ],
+            },
+        },
+        extreme_quantile_region_pair_seed_sensitivity={
+            "summary": {
+                "n_cases": 2,
+                "n_robust_region_pair_seed_candidates": 0,
+                "max_positive_shuffle_delta_fraction": 1.0,
+                "decision": "no_extreme_quantile_region_pair_seed_candidate",
+                "gpu_training_ready": False,
+            },
+            "rows": [
+                {
+                    "target_mode": "response_latency_extreme",
+                    "region_pair": "PRT+VP",
+                    "holdout": "CSH_ZAD_019",
+                    "n_positive_shuffle_delta_seeds": 5,
+                    "n_candidate_seeds": 2,
+                    "n_seeds": 5,
+                    "mean_centered_delta_vs_shuffle": 0.069,
+                    "mean_centered_delta_vs_total": 0.084,
+                    "mean_target0": 0.67,
+                    "mean_target1": 0.59,
+                    "min_bidirectional_recordings": 2,
+                    "max_bidirectional_recordings": 3,
+                }
+            ],
+        },
     )
 
     assert "Extreme-Quantile Target Family Gate" in markdown
@@ -248,7 +297,10 @@ def test_render_markdown_includes_extreme_quantile_seed_veto() -> None:
     assert "Extreme-Quantile Region Specificity" in markdown
     assert "Extreme-Quantile Region Seed Sensitivity" in markdown
     assert "Extreme-Quantile Interpretable Region Filter" in markdown
+    assert "Extreme-Quantile Interpretable Region Pair Scan" in markdown
+    assert "Extreme-Quantile Region Pair Seed Sensitivity" in markdown
     assert "do not train from the extreme-quantile candidate" in markdown
+    assert "do not train from the exploratory region-pair rows" in markdown
 
 
 def test_local_probe_matrix_rejects_failed_target_class(tmp_path: Path) -> None:

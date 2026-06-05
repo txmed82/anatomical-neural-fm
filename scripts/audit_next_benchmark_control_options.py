@@ -24,6 +24,12 @@ ARTIFACTS = {
     "extreme_quantile_region_specificity": "docs/extreme_quantile_region_specificity.json",
     "extreme_quantile_region_seed_sensitivity": "docs/extreme_quantile_region_seed_sensitivity.json",
     "extreme_quantile_interpretable_region_filter": "docs/extreme_quantile_interpretable_region_filter.json",
+    "extreme_quantile_interpretable_region_pair_scan": (
+        "docs/extreme_quantile_interpretable_region_pair_scan.json"
+    ),
+    "extreme_quantile_region_pair_seed_sensitivity": (
+        "docs/extreme_quantile_region_pair_seed_sensitivity.json"
+    ),
     "reaction_dynamics_target_family_recording_centered": "docs/reaction_dynamics_target_family_gate.json",
     "reaction_dynamics_target_family_counts": "docs/reaction_dynamics_target_family_gate_counts.json",
     "reaction_dynamics_target_family_fractions": "docs/reaction_dynamics_target_family_gate_fractions.json",
@@ -169,6 +175,10 @@ def build_report() -> dict:
     extreme_interpretable_summary = (
         extreme_interpretable.get("summary", {}) if extreme_interpretable is not None else {}
     )
+    extreme_pair = artifacts["extreme_quantile_interpretable_region_pair_scan"]
+    extreme_pair_summary = extreme_pair.get("summary", {}) if extreme_pair is not None else {}
+    extreme_pair_seed = artifacts["extreme_quantile_region_pair_seed_sensitivity"]
+    extreme_pair_seed_summary = extreme_pair_seed.get("summary", {}) if extreme_pair_seed is not None else {}
     reaction_feature_modes = reaction_feature_mode_summary(artifacts)
     cell_type_prior = artifacts["cell_type_prior_target_control"]
     cell_type_prior_done = cell_type_prior is not None
@@ -372,6 +382,25 @@ def build_report() -> dict:
                         f"{extreme_interpretable_summary.get('n_excluded_candidates', 'n/a')} non-specific candidates"
                     )
                 ),
+                (
+                    "interpretable region-pair scan has not been run yet"
+                    if extreme_pair is None
+                    else (
+                        "interpretable region-pair scan found "
+                        f"{extreme_pair_summary.get('n_candidates', 'n/a')} exploratory candidates "
+                        f"across {extreme_pair_summary.get('n_region_pairs', 'n/a')} pairs"
+                    )
+                ),
+                (
+                    "region-pair seed sensitivity has not been run yet"
+                    if extreme_pair_seed is None
+                    else (
+                        "region-pair seed sensitivity found "
+                        f"{extreme_pair_seed_summary.get('n_robust_region_pair_seed_candidates', 'n/a')} "
+                        "robust candidates; max positive seed fraction="
+                        f"{extreme_pair_seed_summary.get('max_positive_shuffle_delta_fraction', 0.0):.3f}"
+                    )
+                ),
             ],
             next_action=(
                 "Run scripts/audit_extreme_quantile_seed_sensitivity.py before any GPU training."
@@ -380,6 +409,12 @@ def build_report() -> dict:
                 if extreme_seed is not None and extreme_cutoff is None
                 else "Run scripts/audit_extreme_quantile_region_seed_sensitivity.py before any GPU training."
                 if extreme_region is not None and extreme_region_seed is None
+                else "Run scripts/audit_extreme_quantile_region_pair_seed_sensitivity.py before any GPU training."
+                if extreme_pair is not None and extreme_pair_seed is None and (extreme_pair_summary.get("n_candidates", 0) or 0) > 0
+                else extreme_pair_seed_summary.get("next_action", "Keep interpretable region-pair redesign local.")
+                if extreme_pair_seed is not None
+                else extreme_pair_summary.get("next_action", "Keep interpretable region-pair scan local.")
+                if extreme_pair is not None
                 else extreme_interpretable_summary.get(
                     "next_action",
                     "Do not train: no interpretable parent region passes the strict local gate.",

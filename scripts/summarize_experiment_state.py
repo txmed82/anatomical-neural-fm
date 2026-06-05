@@ -118,6 +118,12 @@ EXTREME_QUANTILE_CUTOFF_SENSITIVITY_FILE = "docs/extreme_quantile_cutoff_sensiti
 EXTREME_QUANTILE_REGION_SPECIFICITY_FILE = "docs/extreme_quantile_region_specificity.json"
 EXTREME_QUANTILE_REGION_SEED_SENSITIVITY_FILE = "docs/extreme_quantile_region_seed_sensitivity.json"
 EXTREME_QUANTILE_INTERPRETABLE_REGION_FILTER_FILE = "docs/extreme_quantile_interpretable_region_filter.json"
+EXTREME_QUANTILE_INTERPRETABLE_REGION_PAIR_SCAN_FILE = (
+    "docs/extreme_quantile_interpretable_region_pair_scan.json"
+)
+EXTREME_QUANTILE_REGION_PAIR_SEED_SENSITIVITY_FILE = (
+    "docs/extreme_quantile_region_pair_seed_sensitivity.json"
+)
 LOCAL_CACHED_MANIFEST_CANDIDATES_FILE = "docs/local_cached_manifest_candidates.json"
 EXTERNAL_MANIFEST_ACQUISITION_GAP_FILE = "docs/external_manifest_acquisition_gap.json"
 BEHAVIOR_CACHE_PREFLIGHT_FILE = "docs/behavior_cache_preflight.json"
@@ -240,6 +246,41 @@ def _positive_seed_count(seed_deltas: tuple[float, ...]) -> str:
     if not seed_deltas:
         return "0/0"
     return f"{sum(delta > 0 for delta in seed_deltas)}/{len(seed_deltas)}"
+
+
+def compact_pair_scan_payload(payload: dict | None) -> dict | None:
+    if payload is None:
+        return None
+    return {
+        "manifest": payload.get("manifest"),
+        "source_json": payload.get("source_json"),
+        "target_mode": payload.get("target_mode"),
+        "feature_mode": payload.get("feature_mode"),
+        "region_granularity": payload.get("region_granularity"),
+        "selected_regions": payload.get("selected_regions"),
+        "quantiles": payload.get("quantiles"),
+        "thresholds": payload.get("thresholds"),
+        "summary": payload.get("summary"),
+    }
+
+
+def compact_pair_seed_payload(payload: dict | None) -> dict | None:
+    if payload is None:
+        return None
+    rows = []
+    for row in payload.get("rows", []):
+        rows.append({
+            key: value
+            for key, value in row.items()
+            if key != "seed_rows"
+        })
+    return {
+        "cases": payload.get("cases"),
+        "thresholds": payload.get("thresholds"),
+        "summary": payload.get("summary"),
+        "rows": rows,
+        "robust_region_pair_seed_candidates": payload.get("robust_region_pair_seed_candidates", []),
+    }
 
 
 def read_slice_result(label: str, path: Path, holdout: str) -> SliceRow | None:
@@ -472,6 +513,8 @@ def render_markdown(
     extreme_quantile_region_specificity: dict | None = None,
     extreme_quantile_region_seed_sensitivity: dict | None = None,
     extreme_quantile_interpretable_region_filter: dict | None = None,
+    extreme_quantile_interpretable_region_pair_scan: dict | None = None,
+    extreme_quantile_region_pair_seed_sensitivity: dict | None = None,
     local_cached_manifest_candidates: dict | None = None,
     external_manifest_acquisition_gap: dict | None = None,
     behavior_cache_preflight: dict | None = None,
@@ -1718,6 +1761,82 @@ def render_markdown(
             ),
             "",
         ]
+    if extreme_quantile_interpretable_region_pair_scan is not None:
+        summary = extreme_quantile_interpretable_region_pair_scan["summary"]
+        top = summary["top_rows"][:8]
+        lines += [
+            "## Extreme-Quantile Interpretable Region Pair Scan",
+            "",
+            "`docs/extreme_quantile_interpretable_region_pair_scan.md` tests",
+            "conservative two-region summed composites from the top interpretable",
+            "single-region rows. This is exploratory and cannot trigger paid",
+            "training without seed validation.",
+            "",
+            f"- selected regions: `{', '.join(extreme_quantile_interpretable_region_pair_scan['selected_regions'])}`",
+            f"- region pairs: `{summary['n_region_pairs']}`",
+            f"- candidates: `{summary['n_candidates']}`",
+            f"- positive centered-delta rows: `{summary['n_positive_centered_delta']}`",
+            f"- decision: `{summary['decision']}`",
+            f"- gpu training ready: `{summary['gpu_training_ready']}`",
+            "",
+            "| pair | holdout | decision | delta shuffle | delta total | targets | bidir recs | eval nonzero |",
+            "|---|---|---|---:|---:|---:|---:|---:|",
+        ]
+        for row in top:
+            lines.append(
+                f"| {row['region_pair']} | {row['holdout']} | {row['decision']} | "
+                f"{row['centered_delta_vs_shuffle']:+.3f} | {row['centered_delta_vs_total']:+.3f} | "
+                f"{row['target0_improved_vs_shuffle']:.3f}/{row['target1_improved_vs_shuffle']:.3f} | "
+                f"{row['n_bidirectional_recordings']}/{row['n_recordings']} | "
+                f"{row['eval_nonzero_fraction']:.3f} |"
+            )
+        lines += [
+            "",
+            (
+                "Decision before seed validation: pair composites can recover two "
+                "interpretable seed-0 candidates, but this branch remains no-spend "
+                "until the same rows survive shuffle-seed sensitivity."
+            ),
+            "",
+        ]
+    if extreme_quantile_region_pair_seed_sensitivity is not None:
+        summary = extreme_quantile_region_pair_seed_sensitivity["summary"]
+        top = extreme_quantile_region_pair_seed_sensitivity["rows"][:5]
+        lines += [
+            "## Extreme-Quantile Region Pair Seed Sensitivity",
+            "",
+            "`docs/extreme_quantile_region_pair_seed_sensitivity.md` reruns the",
+            "exploratory interpretable two-region candidates across multiple",
+            "within-recording shuffle seeds.",
+            "",
+            f"- cases: `{summary['n_cases']}`",
+            f"- robust region-pair seed candidates: `{summary['n_robust_region_pair_seed_candidates']}`",
+            f"- max positive shuffle-delta fraction: `{summary['max_positive_shuffle_delta_fraction']:.3f}`",
+            f"- decision: `{summary['decision']}`",
+            f"- gpu training ready: `{summary['gpu_training_ready']}`",
+            "",
+            "| target | pair | holdout | positive seeds | candidate seeds | mean shuffle delta | mean total delta | mean targets | bidir range |",
+            "|---|---|---|---:|---:|---:|---:|---:|---:|",
+        ]
+        for row in top:
+            lines.append(
+                f"| {row['target_mode']} | {row['region_pair']} | {row['holdout']} | "
+                f"{row['n_positive_shuffle_delta_seeds']}/{row['n_seeds']} | "
+                f"{row['n_candidate_seeds']}/{row['n_seeds']} | "
+                f"{row['mean_centered_delta_vs_shuffle']:+.4f} | "
+                f"{row['mean_centered_delta_vs_total']:+.4f} | "
+                f"{row['mean_target0']:.3f}/{row['mean_target1']:.3f} | "
+                f"{row['min_bidirectional_recordings']}-{row['max_bidirectional_recordings']} |"
+            )
+        lines += [
+            "",
+            (
+                "Decision: do not train from the exploratory region-pair rows. The "
+                "pairs preserve positive average true-vs-shuffle signal, but neither "
+                "remains a strict candidate across all shuffle seeds."
+            ),
+            "",
+        ]
     if model_free_matched_panel is not None:
         summary = model_free_matched_panel["summary"]
         lines += [
@@ -2688,6 +2807,12 @@ def main() -> int:
     extreme_quantile_interpretable_region_filter = read_mechanism_audit(
         REPO_ROOT / EXTREME_QUANTILE_INTERPRETABLE_REGION_FILTER_FILE
     )
+    extreme_quantile_interpretable_region_pair_scan = read_mechanism_audit(
+        REPO_ROOT / EXTREME_QUANTILE_INTERPRETABLE_REGION_PAIR_SCAN_FILE
+    )
+    extreme_quantile_region_pair_seed_sensitivity = read_mechanism_audit(
+        REPO_ROOT / EXTREME_QUANTILE_REGION_PAIR_SEED_SENSITIVITY_FILE
+    )
     local_cached_manifest_candidates = read_mechanism_audit(REPO_ROOT / LOCAL_CACHED_MANIFEST_CANDIDATES_FILE)
     external_manifest_acquisition_gap = read_mechanism_audit(REPO_ROOT / EXTERNAL_MANIFEST_ACQUISITION_GAP_FILE)
     behavior_cache_preflight = read_mechanism_audit(REPO_ROOT / BEHAVIOR_CACHE_PREFLIGHT_FILE)
@@ -2815,6 +2940,8 @@ def main() -> int:
         extreme_quantile_region_specificity,
         extreme_quantile_region_seed_sensitivity,
         extreme_quantile_interpretable_region_filter,
+        extreme_quantile_interpretable_region_pair_scan,
+        extreme_quantile_region_pair_seed_sensitivity,
         local_cached_manifest_candidates,
         external_manifest_acquisition_gap,
         behavior_cache_preflight,
@@ -2919,6 +3046,12 @@ def main() -> int:
         "extreme_quantile_region_specificity": extreme_quantile_region_specificity,
         "extreme_quantile_region_seed_sensitivity": extreme_quantile_region_seed_sensitivity,
         "extreme_quantile_interpretable_region_filter": extreme_quantile_interpretable_region_filter,
+        "extreme_quantile_interpretable_region_pair_scan": compact_pair_scan_payload(
+            extreme_quantile_interpretable_region_pair_scan
+        ),
+        "extreme_quantile_region_pair_seed_sensitivity": compact_pair_seed_payload(
+            extreme_quantile_region_pair_seed_sensitivity
+        ),
         "local_cached_manifest_candidates": local_cached_manifest_candidates,
         "external_manifest_acquisition_gap": external_manifest_acquisition_gap,
         "behavior_cache_preflight": behavior_cache_preflight,

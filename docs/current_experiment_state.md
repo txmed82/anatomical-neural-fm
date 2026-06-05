@@ -410,7 +410,7 @@ branches after the current local negative audits.
 | priority | branch | status | next action |
 |---:|---|---|---|
 | 1 | new manifest with prospective bidirectional support | `recommended_next` | Do not launch GPU training from the projected support80 panel; its model-free family and feature-mode gates have no candidates. Redesign the target/control locally. |
-| 85 | extreme-quantile behavioral target gate | `closed` | Do not train: the coarse root-region row beats shuffle across seeds, but target and recording bidirectionality do not remain stable. |
+| 85 | extreme-quantile behavioral target gate | `closed` | Do not train: exploratory interpretable region-pair candidates do not remain strict candidates across shuffle seeds. |
 | 86 | wheel-derived target family gate | `closed` | Do not spend on the tested wheel targets; move to a prospectively supported manifest. |
 | 87 | reaction-dynamics wheel targets | `closed` | Do not spend on reaction-dynamics wheel targets; the near miss fails true-vs-shuffle and does not replicate across feature modes. |
 
@@ -645,6 +645,52 @@ scan before treating a row as anatomically interpretable.
 | LGd | MFD_06 | reject: target0 | +0.316 | +0.292 | 0.122/0.956 | 1/4 | 0.080 |
 
 Decision: the only strict parent-region pass is a non-specific `root` label. After removing `root` and `void`, no interpretable parent region passes the strict local gate.
+
+## Extreme-Quantile Interpretable Region Pair Scan
+
+`docs/extreme_quantile_interpretable_region_pair_scan.md` tests
+conservative two-region summed composites from the top interpretable
+single-region rows. This is exploratory and cannot trigger paid
+training without seed validation.
+
+- selected regions: `cVIIIn, BS, PRT, cc, MOs, LZ, IIn, LGd, CA, VP, VENT, IB`
+- region pairs: `66`
+- candidates: `2`
+- positive centered-delta rows: `221`
+- decision: `extreme_quantile_interpretable_region_pair_candidate`
+- gpu training ready: `False`
+
+| pair | holdout | decision | delta shuffle | delta total | targets | bidir recs | eval nonzero |
+|---|---|---|---:|---:|---:|---:|---:|
+| PRT+VP | CSH_ZAD_019 | candidate | +0.099 | +0.083 | 0.562/0.749 | 3/4 | 0.368 |
+| cc+VP | CSH_ZAD_019 | candidate | +0.041 | +0.044 | 0.556/0.617 | 3/4 | 0.489 |
+| cVIIIn+LZ | NYU-12 | reject: target0 | +0.249 | +0.195 | 0.526/0.768 | 3/4 | 0.372 |
+| cVIIIn+BS | KS014 | reject: total baseline | +0.104 | -0.106 | 0.520/0.723 | 3/4 | 0.387 |
+| PRT+LZ | CSH_ZAD_019 | reject: target0 | +0.082 | +0.064 | 0.546/0.701 | 3/4 | 0.371 |
+| PRT+VENT | CSH_ZAD_019 | reject: target1 | +0.081 | +0.066 | 0.757/0.486 | 3/4 | 0.371 |
+| PRT+cc | SWC_038 | reject: target1 | +0.044 | +0.032 | 0.721/0.478 | 3/4 | 0.385 |
+| BS+PRT | KS014 | reject: total baseline | +0.031 | -0.025 | 0.822/0.600 | 3/4 | 0.404 |
+
+Decision before seed validation: pair composites can recover two interpretable seed-0 candidates, but this branch remains no-spend until the same rows survive shuffle-seed sensitivity.
+
+## Extreme-Quantile Region Pair Seed Sensitivity
+
+`docs/extreme_quantile_region_pair_seed_sensitivity.md` reruns the
+exploratory interpretable two-region candidates across multiple
+within-recording shuffle seeds.
+
+- cases: `2`
+- robust region-pair seed candidates: `0`
+- max positive shuffle-delta fraction: `1.000`
+- decision: `no_extreme_quantile_region_pair_seed_candidate`
+- gpu training ready: `False`
+
+| target | pair | holdout | positive seeds | candidate seeds | mean shuffle delta | mean total delta | mean targets | bidir range |
+|---|---|---|---:|---:|---:|---:|---:|---:|
+| response_latency_extreme | PRT+VP | CSH_ZAD_019 | 5/5 | 2/5 | +0.0689 | +0.0835 | 0.673/0.585 | 2-3 |
+| response_latency_extreme | cc+VP | CSH_ZAD_019 | 4/5 | 2/5 | +0.0401 | +0.0443 | 0.570/0.586 | 2-4 |
+
+Decision: do not train from the exploratory region-pair rows. The pairs preserve positive average true-vs-shuffle signal, but neither remains a strict candidate across all shuffle seeds.
 
 ## Matched-Region Model-Free Panel
 
