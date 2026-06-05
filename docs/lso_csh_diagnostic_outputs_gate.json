@@ -1,0 +1,54 @@
+{
+  "holdout": "CSH_ZAD_019",
+  "n_passing_seeds": 0,
+  "n_seeds": 2,
+  "paired_threshold": 0.55,
+  "pass": false,
+  "root": "runs/lso_csh_diagnostic_outputs",
+  "seed_results": [
+    {
+      "checks": {
+        "centered_auc_true_beats_shared": true,
+        "centered_auc_true_beats_shuffle": true,
+        "full_auc_true_beats_shared": true,
+        "full_auc_true_beats_shuffle": false,
+        "paired_true_beats_shuffle_threshold": false
+      },
+      "metrics": {
+        "centered_auc_region_only": 0.5205366159417767,
+        "centered_auc_region_shuffle": 0.5099510960406728,
+        "centered_auc_shared": 0.5004216796670962,
+        "full_auc_region_only": 0.5075423529616604,
+        "full_auc_region_shuffle": 0.5092600854894314,
+        "full_auc_shared": 0.5000391754013302,
+        "paired_threshold": 0.55,
+        "paired_trials": 2726,
+        "paired_true_prob_improved": 0.5058694057226706
+      },
+      "pass": false,
+      "seed": 0
+    },
+    {
+      "checks": {
+        "centered_auc_true_beats_shared": false,
+        "centered_auc_true_beats_shuffle": false,
+        "full_auc_true_beats_shared": false,
+        "full_auc_true_beats_shuffle": false,
+        "paired_true_beats_shuffle_threshold": false
+      },
+      "metrics": {
+        "centered_auc_region_only": null,
+        "centered_auc_region_shuffle": null,
+        "centered_auc_shared": 0.5152865680607306,
+        "full_auc_region_only": null,
+        "full_auc_region_shuffle": null,
+        "full_auc_shared": 0.515360566041021,
+        "paired_threshold": 0.55,
+        "paired_trials": null,
+        "paired_true_prob_improved": null
+      },
+      "pass": false,
+      "seed": 1
+    }
+  ]
+}

@@ -831,3 +831,11 @@ recording-centered full-trial AUC and the paired true-vs-shuffle gate whenever
 `eval_predictions.jsonl` artifacts are present. The recovered CSH diagnostic
 result doc has been refreshed with these standard sections. This makes the gate
 available for future canonical reruns without hand-auditing the JSONL files.
+
+Executable gate update: `scripts/check_lso_demo_gate.py` writes a JSON pass/fail
+artifact for an LSO root and holdout. Running it on the preserved CSH diagnostic
+artifacts produced `docs/lso_csh_diagnostic_outputs_gate.json` with overall
+`pass: false`. Seed 0 passes centered-AUC checks but fails both full true-vs-
+shuffle AUC and the paired 55% threshold; seed 1 is incomplete because only the
+shared baseline artifact exists. Future canonical runs should publish this JSON
+next to the result doc and must pass before any broadening spend.

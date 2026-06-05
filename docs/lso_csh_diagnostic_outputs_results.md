@@ -165,3 +165,5 @@ root: `runs/lso_csh_diagnostic_outputs`
 | holdout | seed | paired_trials | true_prob_improved | threshold | verdict |
 |---|---:|---:|---:|---:|---|
 | CSH_ZAD_019 | 0 | 2726 | 0.506 | 0.550 | fail |
+
+Machine-readable gate verdict: `docs/lso_csh_diagnostic_outputs_gate.json`.

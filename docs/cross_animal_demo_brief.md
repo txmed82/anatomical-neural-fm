@@ -118,3 +118,6 @@ is mildly positive for true labels (`0.521` vs shared `0.500` and shuffled
 `0.510`), but the direct true-vs-shuffle paired-trial gate fails (`50.6%`
 target-direction improvement, below the `55.0%` demo threshold). That is a
 reason to redesign the objective/gate, not to broaden yet.
+
+The executable gate is `scripts/check_lso_demo_gate.py`; the preserved CSH
+diagnostic verdict is `docs/lso_csh_diagnostic_outputs_gate.json`.
