@@ -133,6 +133,7 @@ COMPOSITE_BEHAVIOR_RESPONSE_EXTREME_SEED_SENSITIVITY_FILE = (
 RESPONSE_EXTREME_A100_RESULT_FILE = "docs/response_extreme_trigger_a100_results.md"
 RESPONSE_EXTREME_TRAINING_FAILURE_AUDIT_FILE = "docs/response_extreme_training_failure_audit.json"
 RESPONSE_EXTREME_TRAINING_ALIGNED_READOUT_FILE = "docs/response_extreme_training_aligned_readout.json"
+DIRECT_BROAD_FAMILY_DEMO_READINESS_FILE = "docs/direct_broad_family_demo_readiness.json"
 LOW_CONTRAST_CHOICE_FAMILY_GATE_FILE = "docs/low_contrast_choice_family_gate.json"
 LOW_CONTRAST_CHOICE_PROJECTED_GATE_FILE = "docs/low_contrast_choice_family_gate_projected_hdf5.json"
 LOW_CONTRAST_CHOICE_SEED_SENSITIVITY_FILE = "docs/low_contrast_choice_seed_sensitivity.json"
@@ -671,6 +672,7 @@ def render_markdown(
     composite_behavior_response_extreme_seed_sensitivity: dict | None = None,
     response_extreme_training_failure_audit: dict | None = None,
     response_extreme_training_aligned_readout: dict | None = None,
+    direct_broad_family_demo_readiness: dict | None = None,
     low_contrast_choice_family_gate: dict | None = None,
     low_contrast_choice_projected_gate: dict | None = None,
     low_contrast_choice_seed_sensitivity: dict | None = None,
@@ -2123,6 +2125,42 @@ def render_markdown(
                 "The next branch should either add a direct fixed broad-family-count "
                 "readout that matches the original local trigger, or abandon this "
                 "response-extreme branch and redesign the target/control."
+            ),
+            "",
+        ]
+    if direct_broad_family_demo_readiness is not None:
+        summary = direct_broad_family_demo_readiness["summary"]
+        lines += [
+            "## Direct Broad-Family Demo Readiness",
+            "",
+            "`docs/direct_broad_family_demo_readiness.md` synthesizes the fixed",
+            "broad-family local trigger after the negative trained-model and",
+            "cloud-aligned readout checks.",
+            "",
+            f"- decision: `{summary['decision']}`",
+            f"- model-free demo ready: `{summary['model_free_demo_ready']}`",
+            f"- trained-model demo ready: `{summary['trained_model_demo_ready']}`",
+            f"- model-free demo rows: `{summary['n_model_free_demo_rows']}`",
+            f"- next action: {summary['next_action']}",
+            "",
+            "| holdout | target | family | candidate seeds | delta shuffle | delta total | targets | bidir range |",
+            "|---|---|---|---:|---:|---:|---:|---:|",
+        ]
+        for row in direct_broad_family_demo_readiness["local_model_free_rows"]:
+            lines.append(
+                f"| {row['holdout']} | {row['target_mode']} | {row['family']} | "
+                f"{row['candidate_seeds']}/{row['n_seeds']} | "
+                f"{row['mean_delta_vs_shuffle']:+.4f} | {row['mean_delta_vs_total']:+.4f} | "
+                f"{row['mean_target0']:.3f}/{row['mean_target1']:.3f} | "
+                f"{row['min_bidirectional_recordings']}-{row['max_bidirectional_recordings']} |"
+            )
+        lines += [
+            "",
+            (
+                "Decision: this branch can support only a narrow model-free demo today. "
+                "A trained anatomical-transfer demo still requires a direct fixed-family "
+                "model arm or a new target/control branch that passes local and trained "
+                "readout gates."
             ),
             "",
         ]
@@ -4072,6 +4110,9 @@ def main() -> int:
     response_extreme_training_aligned_readout = read_mechanism_audit(
         REPO_ROOT / RESPONSE_EXTREME_TRAINING_ALIGNED_READOUT_FILE
     )
+    direct_broad_family_demo_readiness = read_mechanism_audit(
+        REPO_ROOT / DIRECT_BROAD_FAMILY_DEMO_READINESS_FILE
+    )
     low_contrast_choice_family_gate = read_mechanism_audit(REPO_ROOT / LOW_CONTRAST_CHOICE_FAMILY_GATE_FILE)
     low_contrast_choice_projected_gate = read_mechanism_audit(REPO_ROOT / LOW_CONTRAST_CHOICE_PROJECTED_GATE_FILE)
     low_contrast_choice_seed_sensitivity = read_mechanism_audit(
@@ -4250,6 +4291,7 @@ def main() -> int:
         composite_behavior_response_extreme_seed_sensitivity,
         response_extreme_training_failure_audit,
         response_extreme_training_aligned_readout,
+        direct_broad_family_demo_readiness,
         low_contrast_choice_family_gate,
         low_contrast_choice_projected_gate,
         low_contrast_choice_seed_sensitivity,
@@ -4398,6 +4440,7 @@ def main() -> int:
         ),
         "response_extreme_training_failure_audit": response_extreme_training_failure_audit,
         "response_extreme_training_aligned_readout": response_extreme_training_aligned_readout,
+        "direct_broad_family_demo_readiness": direct_broad_family_demo_readiness,
         "low_contrast_choice_family_gate": low_contrast_choice_family_gate,
         "low_contrast_choice_projected_gate": low_contrast_choice_projected_gate,
         "low_contrast_choice_seed_sensitivity": low_contrast_choice_seed_sensitivity,

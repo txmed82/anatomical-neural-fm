@@ -736,6 +736,25 @@ ridge readout.
 
 Decision: the cloud-aligned feature space is locally negative. The next branch should either add a direct fixed broad-family-count readout that matches the original local trigger, or abandon this response-extreme branch and redesign the target/control.
 
+## Direct Broad-Family Demo Readiness
+
+`docs/direct_broad_family_demo_readiness.md` synthesizes the fixed
+broad-family local trigger after the negative trained-model and
+cloud-aligned readout checks.
+
+- decision: `model_free_demo_only`
+- model-free demo ready: `True`
+- trained-model demo ready: `False`
+- model-free demo rows: `2`
+- next action: Package the result as a narrow model-free cross-animal anatomical readout, or implement a direct fixed broad-family-count model arm before any new GPU run.
+
+| holdout | target | family | candidate seeds | delta shuffle | delta total | targets | bidir range |
+|---|---|---|---:|---:|---:|---:|---:|
+| CSHL045 | post_error_response_extreme_25_75_le_1 | broad_named_anatomy | 5/5 | +0.0507 | +0.0366 | 0.700/0.800 | 3-3 |
+| NR_0019 | post_error_response_extreme_33_67_le_1 | broad_named_anatomy | 5/5 | +0.0051 | +0.0042 | 0.656/0.684 | 3-4 |
+
+Decision: this branch can support only a narrow model-free demo today. A trained anatomical-transfer demo still requires a direct fixed-family model arm or a new target/control branch that passes local and trained readout gates.
+
 ## Composite Behavior Target Gate
 
 `docs/composite_behavior_target_family_gate.md` runs a bounded local
