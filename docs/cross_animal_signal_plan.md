@@ -406,6 +406,14 @@ objective candidate is `recording_pairwise_rank_centered_bce`; its bounded
 preflight is
 `uv run python scripts/preflight_pairwise_rank_centered_bce_pilot_runpod.py`.
 
+Centered-BCE pilot outcome: the bounded L4 run completed and failed the strict
+gate. It removed the pure downward-shift artifact from the pairwise-rank run,
+but true labels still lost to the shuffled control on centered AUC (`0.485` vs
+`0.500`) and on every held-out recording (`0/4` positive recording deltas).
+Paired true-vs-shuffle fell to `0.486`. Stop paid one-off variants here. The
+next implementable step should be no-spend design/code for a direct
+recording-local AUC surrogate plus a bidirectional target-class success gate.
+
 Conclusion: building all 48 public IBL recordings inside a throwaway A100
 container is the wrong next spend. The next attempt should either split the
 candidate manifest into smaller persisted build shards, use a persistent

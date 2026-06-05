@@ -161,3 +161,14 @@ recording-centered AUC still failed. The next candidate objective is
 `recording_pairwise_rank_centered_bce`, tested first with no-spend CPU smoke and
 only then with the bounded L4 preflight
 `uv run python scripts/preflight_pairwise_rank_centered_bce_pilot_runpod.py`.
+
+Pairwise-rank centered-BCE pilot result:
+`docs/lso_csh_pairwise_rank_centered_bce_pilot_results.md` completed on the
+same bounded L4 setup. The added centered-BCE anchor removed the all-trial
+downward-shift artifact, but it did not create anatomical transfer. The strict
+gate still failed with centered AUC `0.485` true vs `0.500` shuffle,
+paired true-vs-shuffle `0.486`, and `0/4` positive recordings. The mechanism
+audit decision is `no_mechanism_found`; the mismatch audit decision is
+`paired_metric_not_recording_rank_stable`. Do not spend on another one-off
+objective variant until a direct recording-local AUC/ranking surrogate and
+bidirectional target-class gate are implemented and locally checked.

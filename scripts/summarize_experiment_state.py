@@ -51,6 +51,10 @@ STRICT_GATE_FILES = (
     ("CSH within-recording shuffle", "docs/lso_csh_within_recording_shuffle_anatomy_specific_gate.json"),
     ("CSH recording-centered gate pilot", "docs/lso_csh_recording_centered_gate_pilot_anatomy_specific_gate.json"),
     ("CSH pairwise-rank objective pilot", "docs/lso_csh_pairwise_rank_pilot_anatomy_specific_gate.json"),
+    (
+        "CSH pairwise-rank centered-BCE pilot",
+        "docs/lso_csh_pairwise_rank_centered_bce_pilot_anatomy_specific_gate.json",
+    ),
 )
 
 SLICE_RESULT_FILES = (
@@ -60,6 +64,8 @@ SLICE_RESULT_FILES = (
 MECHANISM_AUDIT_FILE = "docs/csh_mechanism_audit.json"
 PAIRWISE_MECHANISM_AUDIT_FILE = "docs/lso_csh_pairwise_rank_pilot_mechanism.json"
 PAIRWISE_MISMATCH_AUDIT_FILE = "docs/lso_csh_pairwise_rank_pilot_mismatch.json"
+CENTERED_BCE_MISMATCH_AUDIT_FILE = "docs/lso_csh_pairwise_rank_centered_bce_pilot_mismatch.json"
+CENTERED_BCE_MECHANISM_AUDIT_FILE = "docs/lso_csh_pairwise_rank_centered_bce_pilot_mechanism.json"
 
 
 def display_path(path: Path) -> str:
@@ -187,6 +193,8 @@ def render_markdown(
     mechanism: dict | None = None,
     pairwise_mechanism: dict | None = None,
     pairwise_mismatch: dict | None = None,
+    centered_bce_mechanism: dict | None = None,
+    centered_bce_mismatch: dict | None = None,
 ) -> str:
     summary = summarize(strict_rows, slice_rows)
     lines = [
@@ -323,6 +331,40 @@ def render_markdown(
                 ),
                 "",
             ]
+    if centered_bce_mechanism is not None and centered_bce_mismatch is not None:
+        centered_gate = next((row for row in strict_rows if "centered-BCE" in row.label), None)
+        mismatch_summary = centered_bce_mismatch.get("summary", {})
+        mechanism_global = centered_bce_mechanism.get("global", {})
+        true_vs_shuffle = mechanism_global.get("paired_true_vs_shuffle", {})
+        lines += [
+            "## Pairwise-Rank Centered-BCE Pilot",
+            "",
+            "`docs/lso_csh_pairwise_rank_centered_bce_pilot_results.md` tested the",
+            "`recording_pairwise_rank_centered_bce` objective. It removed the previous",
+            "all-trial downward probability shift but did not produce anatomical transfer.",
+            "",
+        ]
+        if centered_gate is not None:
+            lines += [
+                f"- centered true-minus-shuffle delta: `{fmt_signed(centered_gate.centered_delta)}`",
+                f"- paired true-vs-shuffle: `{fmt_float(centered_gate.paired_true_vs_shuffle)}`",
+                f"- specificity gap: `{fmt_signed(centered_gate.specificity_gap)}`",
+                f"- recording sign-flip p-value: `{fmt_float(centered_gate.sign_flip_p)}`",
+            ]
+        lines += [
+            f"- mechanism decision: `{centered_bce_mechanism.get('interpretation', {}).get('decision')}`",
+            f"- mismatch decision: `{centered_bce_mismatch.get('decision')}`",
+            f"- target0 true-class improved: `{fmt_float(mismatch_summary.get('target0_true_class_improved_fraction'))}`",
+            f"- target1 true-class improved: `{fmt_float(mismatch_summary.get('target1_true_class_improved_fraction'))}`",
+            f"- mechanism paired true-vs-shuffle: `{fmt_float(true_vs_shuffle.get('improved_fraction'))}`",
+            "",
+            (
+                "Updated decision: stop paid one-off objective variants for now. The next "
+                "implementation should be a direct recording-local AUC/ranking surrogate and "
+                "a bidirectional target-class gate, then tested locally before another RunPod job."
+            ),
+            "",
+        ]
     return "\n".join(lines)
 
 
@@ -346,6 +388,8 @@ def main() -> int:
     mechanism = read_mechanism_audit(REPO_ROOT / MECHANISM_AUDIT_FILE)
     pairwise_mechanism = read_mechanism_audit(REPO_ROOT / PAIRWISE_MECHANISM_AUDIT_FILE)
     pairwise_mismatch = read_mechanism_audit(REPO_ROOT / PAIRWISE_MISMATCH_AUDIT_FILE)
+    centered_bce_mechanism = read_mechanism_audit(REPO_ROOT / CENTERED_BCE_MECHANISM_AUDIT_FILE)
+    centered_bce_mismatch = read_mechanism_audit(REPO_ROOT / CENTERED_BCE_MISMATCH_AUDIT_FILE)
     args.out_md.parent.mkdir(parents=True, exist_ok=True)
     args.out_md.write_text(render_markdown(
         strict_rows,
@@ -353,6 +397,8 @@ def main() -> int:
         mechanism,
         pairwise_mechanism,
         pairwise_mismatch,
+        centered_bce_mechanism,
+        centered_bce_mismatch,
     ))
     args.out_json.parent.mkdir(parents=True, exist_ok=True)
     args.out_json.write_text(json.dumps({
@@ -362,6 +408,8 @@ def main() -> int:
         "mechanism": mechanism,
         "pairwise_mechanism": pairwise_mechanism,
         "pairwise_mismatch": pairwise_mismatch,
+        "centered_bce_mechanism": centered_bce_mechanism,
+        "centered_bce_mismatch": centered_bce_mismatch,
     }, indent=2, sort_keys=True) + "\n")
     print(f"wrote {args.out_md}")
     print(f"wrote {args.out_json}")

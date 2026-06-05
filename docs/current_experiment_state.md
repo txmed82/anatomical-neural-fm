@@ -13,6 +13,7 @@ Decision: `no_paid_broadening_without_new_mechanism`
 | CSH within-recording shuffle | CSH_ZAD_019 | False | +0.001 | 0.448 | -0.103 | 0.250 | fail: small centered delta, paired gate, specificity, sign-flip | `docs/lso_csh_within_recording_shuffle_anatomy_specific_gate.json` |
 | CSH recording-centered gate pilot | CSH_ZAD_019 | False | +0.001 | 0.448 | -0.103 | 0.250 | fail: small centered delta, paired gate, specificity, sign-flip | `docs/lso_csh_recording_centered_gate_pilot_anatomy_specific_gate.json` |
 | CSH pairwise-rank objective pilot | CSH_ZAD_019 | False | -0.014 | 0.552 | +0.103 | 0.562 | fail: small centered delta, sign-flip | `docs/lso_csh_pairwise_rank_pilot_anatomy_specific_gate.json` |
+| CSH pairwise-rank centered-BCE pilot | CSH_ZAD_019 | False | -0.016 | 0.486 | +0.013 | 1.000 | fail: small centered delta, paired gate, sign-flip | `docs/lso_csh_pairwise_rank_centered_bce_pilot_anatomy_specific_gate.json` |
 
 ## Fixed-Slice Runs
 
@@ -68,3 +69,21 @@ of trials while target-1 improved on
 Next candidate objective: `recording_pairwise_rank_centered_bce`, which keeps the recording-local pairwise rank term but adds recording-centered BCE so a one-direction probability shift is not mistaken for anatomical ranking evidence.
 
 Updated decision after mismatch audit: the scalar paired metric should not be used as a success gate. Require bidirectional target-class improvement and positive recording-local AUC against the shuffled control.
+
+## Pairwise-Rank Centered-BCE Pilot
+
+`docs/lso_csh_pairwise_rank_centered_bce_pilot_results.md` tested the
+`recording_pairwise_rank_centered_bce` objective. It removed the previous
+all-trial downward probability shift but did not produce anatomical transfer.
+
+- centered true-minus-shuffle delta: `-0.016`
+- paired true-vs-shuffle: `0.486`
+- specificity gap: `+0.013`
+- recording sign-flip p-value: `1.000`
+- mechanism decision: `no_mechanism_found`
+- mismatch decision: `paired_metric_not_recording_rank_stable`
+- target0 true-class improved: `0.354`
+- target1 true-class improved: `0.650`
+- mechanism paired true-vs-shuffle: `0.486`
+
+Updated decision: stop paid one-off objective variants for now. The next implementation should be a direct recording-local AUC/ranking surrogate and a bidirectional target-class gate, then tested locally before another RunPod job.
