@@ -698,6 +698,25 @@ region labels and shuffled-region controls.
 
 Decision: the A100 run does not support the anatomy-transfer claim. The local response-extreme signal remains useful as a diagnostic, but the next work is a no-spend local failure analysis of model objective, evaluation metric, and anatomy-control alignment.
 
+## Response-Extreme Training Failure Audit
+
+`docs/response_extreme_training_failure_audit.md` compares the local
+response-extreme trigger with the completed A100 pilot and identifies
+which assumptions transferred.
+
+- cases: `2`
+- decision: `local_to_training_readout_mismatch`
+- paid GPU trigger: `False`
+- next recommended action: `local_training_aligned_readout_diagnostic`
+- blockers: `no_full_eval_or_prediction_diagnostics, shuffled_region_outperformed_true, trained_true_region_lost_to_shared`
+
+| holdout | target | target alignment | local delta shuffle | cloud true delta | cloud shuffle delta | failure modes |
+|---|---|---|---:|---:|---:|---|
+| CSHL045 | post_error_response_extreme_25_75_le_1 | matched | +0.0507 | -0.065 | +0.041 | trained_true_region_lost_to_shared, shuffled_region_outperformed_true, sampled_eval_loss_selection, no_full_eval_or_prediction_diagnostics, local_feature_not_training_arm |
+| NR_0019 | post_error_response_extreme_33_67_le_1 | matched | +0.0051 | -0.037 | +0.004 | trained_true_region_lost_to_shared, shuffled_region_outperformed_true, sampled_eval_loss_selection, no_full_eval_or_prediction_diagnostics, local_feature_not_training_arm |
+
+Decision: target construction matched between local and cloud, but the trained readout did not match the successful local feature/control definition. The next experiment is local and training-aligned: test the exact cloud feature space and require full-eval diagnostics before any future GPU run.
+
 ## Composite Behavior Target Gate
 
 `docs/composite_behavior_target_family_gate.md` runs a bounded local

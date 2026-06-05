@@ -131,6 +131,7 @@ COMPOSITE_BEHAVIOR_RESPONSE_EXTREME_SEED_SENSITIVITY_FILE = (
     "docs/composite_behavior_response_extreme_seed_sensitivity.json"
 )
 RESPONSE_EXTREME_A100_RESULT_FILE = "docs/response_extreme_trigger_a100_results.md"
+RESPONSE_EXTREME_TRAINING_FAILURE_AUDIT_FILE = "docs/response_extreme_training_failure_audit.json"
 LOW_CONTRAST_CHOICE_FAMILY_GATE_FILE = "docs/low_contrast_choice_family_gate.json"
 LOW_CONTRAST_CHOICE_PROJECTED_GATE_FILE = "docs/low_contrast_choice_family_gate_projected_hdf5.json"
 LOW_CONTRAST_CHOICE_SEED_SENSITIVITY_FILE = "docs/low_contrast_choice_seed_sensitivity.json"
@@ -667,6 +668,7 @@ def render_markdown(
     composite_behavior_response_extreme_gate: dict | None = None,
     composite_behavior_response_extreme_projected_gate: dict | None = None,
     composite_behavior_response_extreme_seed_sensitivity: dict | None = None,
+    response_extreme_training_failure_audit: dict | None = None,
     low_contrast_choice_family_gate: dict | None = None,
     low_contrast_choice_projected_gate: dict | None = None,
     low_contrast_choice_seed_sensitivity: dict | None = None,
@@ -2037,6 +2039,43 @@ def render_markdown(
                 "The local response-extreme signal remains useful as a diagnostic, but "
                 "the next work is a no-spend local failure analysis of model objective, "
                 "evaluation metric, and anatomy-control alignment."
+            ),
+            "",
+        ]
+    if response_extreme_training_failure_audit is not None:
+        summary = response_extreme_training_failure_audit["summary"]
+        lines += [
+            "## Response-Extreme Training Failure Audit",
+            "",
+            "`docs/response_extreme_training_failure_audit.md` compares the local",
+            "response-extreme trigger with the completed A100 pilot and identifies",
+            "which assumptions transferred.",
+            "",
+            f"- cases: `{summary['n_cases']}`",
+            f"- decision: `{summary['decision']}`",
+            f"- paid GPU trigger: `{summary['paid_gpu_trigger']}`",
+            f"- next recommended action: `{summary['next_recommended_action']}`",
+            f"- blockers: `{', '.join(summary['blockers'])}`",
+            "",
+            "| holdout | target | target alignment | local delta shuffle | cloud true delta | cloud shuffle delta | failure modes |",
+            "|---|---|---|---:|---:|---:|---|",
+        ]
+        for row in response_extreme_training_failure_audit["cases"]:
+            lines.append(
+                f"| {row['holdout']} | {row['target_mode']} | {row['target_alignment']} | "
+                f"{row['local_mean_delta_vs_shuffle']:+.4f} | "
+                f"{row['cloud_region_delta_vs_shared']:+.3f} | "
+                f"{row['cloud_shuffle_delta_vs_shared']:+.3f} | "
+                f"{', '.join(row['failure_modes'])} |"
+            )
+        lines += [
+            "",
+            (
+                "Decision: target construction matched between local and cloud, but "
+                "the trained readout did not match the successful local feature/control "
+                "definition. The next experiment is local and training-aligned: test "
+                "the exact cloud feature space and require full-eval diagnostics before "
+                "any future GPU run."
             ),
             "",
         ]
@@ -3980,6 +4019,9 @@ def main() -> int:
     composite_behavior_response_extreme_seed_sensitivity = read_mechanism_audit(
         REPO_ROOT / COMPOSITE_BEHAVIOR_RESPONSE_EXTREME_SEED_SENSITIVITY_FILE
     )
+    response_extreme_training_failure_audit = read_mechanism_audit(
+        REPO_ROOT / RESPONSE_EXTREME_TRAINING_FAILURE_AUDIT_FILE
+    )
     low_contrast_choice_family_gate = read_mechanism_audit(REPO_ROOT / LOW_CONTRAST_CHOICE_FAMILY_GATE_FILE)
     low_contrast_choice_projected_gate = read_mechanism_audit(REPO_ROOT / LOW_CONTRAST_CHOICE_PROJECTED_GATE_FILE)
     low_contrast_choice_seed_sensitivity = read_mechanism_audit(
@@ -4156,6 +4198,7 @@ def main() -> int:
         composite_behavior_response_extreme_gate,
         composite_behavior_response_extreme_projected_gate,
         composite_behavior_response_extreme_seed_sensitivity,
+        response_extreme_training_failure_audit,
         low_contrast_choice_family_gate,
         low_contrast_choice_projected_gate,
         low_contrast_choice_seed_sensitivity,
@@ -4302,6 +4345,7 @@ def main() -> int:
             composite_behavior_response_extreme_seed_sensitivity,
             "robust_response_extreme_seed_candidates",
         ),
+        "response_extreme_training_failure_audit": response_extreme_training_failure_audit,
         "low_contrast_choice_family_gate": low_contrast_choice_family_gate,
         "low_contrast_choice_projected_gate": low_contrast_choice_projected_gate,
         "low_contrast_choice_seed_sensitivity": low_contrast_choice_seed_sensitivity,
