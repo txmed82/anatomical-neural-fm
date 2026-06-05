@@ -29,6 +29,7 @@
     "projected_support80_all_families_counts": "docs/shared_family_target_control_gate_projected_support80_all_families_counts.json",
     "projected_support80_all_families_fractions": "docs/shared_family_target_control_gate_projected_support80_all_families_fractions.json",
     "projected_support80_all_families_recording_centered": "docs/shared_family_target_control_gate_projected_support80_all_families.json",
+    "projected_support80_all_families_recording_zscore": "docs/shared_family_target_control_gate_projected_support80_all_families_recording_zscore.json",
     "projected_support80_all_families_unit_residuals": "docs/shared_family_target_control_gate_projected_support80_all_families_unit_residuals.json",
     "projected_support80_shared_family": "docs/shared_family_target_control_gate_projected_support80.json",
     "prospect_lead_candidate_validation": "docs/prospect_lead_candidate_validation.json",
@@ -60,7 +61,7 @@
         "external acquisition gap audit identifies 7 missing HDF5 recordings for 2 support-qualified subjects, projecting 31 recordings across 8 subjects",
         "strict iterative 8-recording manifest has 0 candidates and max bidir 0.250",
         "projected support80 shared-family gate has 0 candidates across 128 rows and max bidir 0.500",
-        "projected support80 all-family feature-mode sweep has 0 candidates across 1280 rows, 4 feature modes, and max bidir 0.500",
+        "projected support80 all-family feature-mode sweep has 0 candidates across 1600 rows, 5 feature modes, and max bidir 0.500",
         "local gate meta-failure audit has 0 candidates across 1924 rows; recording bidirectionality fails in 1919 rows",
         "recording bidirectionality prospectus found 18 prospect recordings from 262 bidirectional observations",
         "prospect-lead manifest has 18 recordings across 7 subjects with 0 missing local recordings",
@@ -72,6 +73,16 @@
       "next_action": "Do not launch GPU training from the projected support80 panel; its model-free family and feature-mode gates have no candidates. Redesign the target/control locally.",
       "priority": 1,
       "status": "recommended_next"
+    },
+    {
+      "evidence": [
+        "projected support80 recording-zscore family gate has 0 candidates across 320 rows and max bidir 0.500"
+      ],
+      "gpu_trigger": "none",
+      "name": "recording-zscore anatomy representation",
+      "next_action": "Do not train: recording-zscore anatomy features do not pass the local gate.",
+      "priority": 81,
+      "status": "closed"
     },
     {
       "evidence": [
@@ -318,7 +329,7 @@
     }
   ],
   "summary": {
-    "closed_branches": 21,
+    "closed_branches": 22,
     "decision": "no_local_training_trigger",
     "gpu_training_trigger": "At least one local row on the proposed manifest must clear delta_vs_shuffle>=0, delta_vs_total>=0, target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75 before training.",
     "recommended_next": "new manifest with prospective bidirectional support"

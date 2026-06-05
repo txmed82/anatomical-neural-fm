@@ -147,6 +147,18 @@ def transform_region_features(
             if np.any(mask):
                 out[mask] -= out[mask].mean(axis=0, keepdims=True)
         return out
+    if feature_mode == "recording_zscore":
+        if recording_ids is None:
+            raise ValueError("recording_zscore requires recording_ids")
+        out = region_features.astype(np.float32).copy()
+        for rid in sorted(set(recording_ids)):
+            mask = np.asarray([value == rid for value in recording_ids], dtype=bool)
+            if np.any(mask):
+                mean = out[mask].mean(axis=0, keepdims=True)
+                std = out[mask].std(axis=0, keepdims=True)
+                std[std < 1e-6] = 1.0
+                out[mask] = (out[mask] - mean) / std
+        return out
     if feature_mode == "unit_residuals":
         if recording_ids is None or unit_region_fractions is None:
             raise ValueError("unit_residuals requires recording_ids and unit_region_fractions")

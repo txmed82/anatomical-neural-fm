@@ -403,16 +403,16 @@ Decision: stricter manifest support alone does not rescue the signal. The clean 
 branches after the current local negative audits.
 
 - recommended next: `new manifest with prospective bidirectional support`
-- closed branches: `20`
+- closed branches: `21`
 - decision: `no_local_training_trigger`
 - GPU trigger: At least one local row on the proposed manifest must clear delta_vs_shuffle>=0, delta_vs_total>=0, target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75 before training.
 
 | priority | branch | status | next action |
 |---:|---|---|---|
 | 1 | new manifest with prospective bidirectional support | `recommended_next` | Do not launch GPU training from the projected support80 panel; its model-free family and feature-mode gates have no candidates. Redesign the target/control locally. |
+| 82 | prior-aligned choice target redesign | `closed` | Do not train: prior-aligned choice does not pass the projected-panel local gate. |
 | 83 | correct low-contrast choice target redesign | `closed` | Do not train: correct-only low-contrast choice removes the projected-panel candidate. |
 | 84 | low-contrast choice target redesign | `closed` | Do not train: the low-contrast choice candidate does not remain a strict candidate across shuffle seeds. |
-| 85 | extreme-quantile behavioral target gate | `closed` | Do not train: exploratory interpretable region-pair candidates do not remain strict candidates across shuffle seeds. |
 
 Decision: the current cached target, contextual target, wheel-derived target, reaction-dynamics target, cell-type prior target/control, waveform target/control, and meta-failure synthesis branches are closed as GPU triggers. The next aligned work is a prospectively supported benchmark/control redesign, still gated locally before any paid training.
 
@@ -907,6 +907,31 @@ parent-region ridge audit leave-subject-out across the HDF5-confirmed
 | SWC_043 | no_model_free_true_region_advantage | -0.014 | 0.738 | 0.212 | 2/4 |
 
 Decision: do not promote this panel to a broad training sweep. The model-free anatomical feature screen has zero passing holdouts; `KS014` and `NR_0019` have positive centered deltas, but fail bidirectional target-class and/or recording-support gates.
+
+## Projected Support80 Recording-Zscore Gate
+
+`docs/shared_family_target_control_gate_projected_support80_all_families_recording_zscore.md`
+reruns the projected support80 shared-family gate after z-scoring
+region features within each recording before the cross-subject ridge audit.
+
+- rows: `320`
+- candidates: `0`
+- positive centered-delta rows: `154`
+- max bidirectional recording fraction: `0.500`
+- decision: `no_shared_family_target_candidate`
+
+| target | family | holdout | decision | delta shuffle | delta total | targets | bidir recs |
+|---|---|---|---|---:|---:|---:|---:|
+| choice | brainstem_interbrain | NR_0019 | reject: target1 | +0.134 | +0.305 | 0.721/0.416 | 2/4 |
+| choice | hippocampal_formation | CSH_ZAD_019 | reject: shuffle | -0.024 | +0.217 | 0.461/0.617 | 2/4 |
+| prior_side | hippocampal_formation | ZFM-01577 | reject: target1 | +0.041 | +0.102 | 0.648/0.408 | 1/3 |
+| choice | hippocampal_formation | ZFM-01577 | reject: target0 | +0.036 | +0.146 | 0.429/0.697 | 1/3 |
+| stimulus_side | hippocampal_formation | ZFM-01577 | reject: target0 | +0.032 | +0.069 | 0.444/0.669 | 1/3 |
+| prior_side | broad_named_anatomy | ZFM-01577 | reject: shuffle | +0.007 | +0.038 | 0.536/0.568 | 1/3 |
+| feedback | broad_named_anatomy | ZFM-01577 | reject: shuffle | -0.001 | +0.036 | 0.563/0.521 | 1/3 |
+| feedback | brainstem_interbrain | NYU-12 | reject: target0 | +0.070 | +0.082 | 0.460/0.644 | 1/4 |
+
+Decision: do not train. Recording-level feature normalization improves some centered true-vs-shuffle rows, but it still produces zero strict candidates and does not clear the bidirectional recording-support gate.
 
 ## Positive-Holdout Mechanism Audit
 

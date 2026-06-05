@@ -137,6 +137,9 @@ LOCAL_CACHED_MANIFEST_CANDIDATES_FILE = "docs/local_cached_manifest_candidates.j
 EXTERNAL_MANIFEST_ACQUISITION_GAP_FILE = "docs/external_manifest_acquisition_gap.json"
 BEHAVIOR_CACHE_PREFLIGHT_FILE = "docs/behavior_cache_preflight.json"
 MODEL_FREE_MATCHED_SUPPORT80_PANEL_FILE = "docs/model_free_matched_support80_hdf5_panel.json"
+PROJECTED_SUPPORT80_RECORDING_ZSCORE_FILE = (
+    "docs/shared_family_target_control_gate_projected_support80_all_families_recording_zscore.json"
+)
 MODEL_FREE_POSITIVE_HOLDOUTS_MECHANISM_FILE = "docs/model_free_positive_holdouts_mechanism.json"
 MODEL_FREE_RECORDING_BIDIRECTIONAL_GATE_FILE = "docs/model_free_recording_bidirectional_gate.json"
 MODEL_FREE_RECORDING_BIDIRECTIONAL_FRACTIONS_FILE = "docs/model_free_recording_bidirectional_gate_fractions.json"
@@ -535,6 +538,7 @@ def render_markdown(
     external_manifest_acquisition_gap: dict | None = None,
     behavior_cache_preflight: dict | None = None,
     model_free_matched_panel: dict | None = None,
+    projected_support80_recording_zscore: dict | None = None,
     model_free_positive_holdouts: dict | None = None,
     model_free_recording_bidirectional_gate: dict | None = None,
     model_free_recording_bidirectional_fractions: dict | None = None,
@@ -2173,6 +2177,42 @@ def render_markdown(
             ),
             "",
         ]
+    if projected_support80_recording_zscore is not None:
+        summary = projected_support80_recording_zscore["summary"]
+        top = summary.get("top_rows", [])[:8]
+        lines += [
+            "## Projected Support80 Recording-Zscore Gate",
+            "",
+            "`docs/shared_family_target_control_gate_projected_support80_all_families_recording_zscore.md`",
+            "reruns the projected support80 shared-family gate after z-scoring",
+            "region features within each recording before the cross-subject ridge audit.",
+            "",
+            f"- rows: `{summary['n_rows']}`",
+            f"- candidates: `{summary['n_candidates']}`",
+            f"- positive centered-delta rows: `{summary['n_positive_centered_delta']}`",
+            f"- max bidirectional recording fraction: `{summary['max_bidirectional_recording_fraction']:.3f}`",
+            f"- decision: `{summary['decision']}`",
+            "",
+            "| target | family | holdout | decision | delta shuffle | delta total | targets | bidir recs |",
+            "|---|---|---|---|---:|---:|---:|---:|",
+        ]
+        for row in top:
+            lines.append(
+                f"| {row['target_mode']} | {row['family']} | {row['holdout']} | {row['decision']} | "
+                f"{row['centered_delta_vs_shuffle']:+.3f} | "
+                f"{row['centered_delta_vs_total']:+.3f} | "
+                f"{row['target0_improved_vs_shuffle']:.3f}/{row['target1_improved_vs_shuffle']:.3f} | "
+                f"{row['n_bidirectional_recordings']}/{row['n_recordings']} |"
+            )
+        lines += [
+            "",
+            (
+                "Decision: do not train. Recording-level feature normalization improves "
+                "some centered true-vs-shuffle rows, but it still produces zero strict "
+                "candidates and does not clear the bidirectional recording-support gate."
+            ),
+            "",
+        ]
     if model_free_positive_holdouts is not None:
         lines += [
             "## Positive-Holdout Mechanism Audit",
@@ -3132,6 +3172,9 @@ def main() -> int:
     external_manifest_acquisition_gap = read_mechanism_audit(REPO_ROOT / EXTERNAL_MANIFEST_ACQUISITION_GAP_FILE)
     behavior_cache_preflight = read_mechanism_audit(REPO_ROOT / BEHAVIOR_CACHE_PREFLIGHT_FILE)
     model_free_matched_panel = read_mechanism_audit(REPO_ROOT / MODEL_FREE_MATCHED_SUPPORT80_PANEL_FILE)
+    projected_support80_recording_zscore = read_mechanism_audit(
+        REPO_ROOT / PROJECTED_SUPPORT80_RECORDING_ZSCORE_FILE
+    )
     model_free_positive_holdouts = read_mechanism_audit(REPO_ROOT / MODEL_FREE_POSITIVE_HOLDOUTS_MECHANISM_FILE)
     model_free_recording_bidirectional_gate = read_mechanism_audit(
         REPO_ROOT / MODEL_FREE_RECORDING_BIDIRECTIONAL_GATE_FILE
@@ -3268,6 +3311,7 @@ def main() -> int:
         external_manifest_acquisition_gap,
         behavior_cache_preflight,
         model_free_matched_panel,
+        projected_support80_recording_zscore,
         model_free_positive_holdouts,
         model_free_recording_bidirectional_gate,
         model_free_recording_bidirectional_fractions,
@@ -3385,6 +3429,7 @@ def main() -> int:
         "external_manifest_acquisition_gap": external_manifest_acquisition_gap,
         "behavior_cache_preflight": behavior_cache_preflight,
         "model_free_matched_support80_panel": model_free_matched_panel,
+        "projected_support80_recording_zscore": projected_support80_recording_zscore,
         "model_free_positive_holdouts_mechanism": model_free_positive_holdouts,
         "model_free_recording_bidirectional_gate": model_free_recording_bidirectional_gate,
         "model_free_recording_bidirectional_fractions": model_free_recording_bidirectional_fractions,

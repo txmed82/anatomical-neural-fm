@@ -69,6 +69,9 @@ ARTIFACTS = {
     "projected_support80_all_families_unit_residuals": (
         "docs/shared_family_target_control_gate_projected_support80_all_families_unit_residuals.json"
     ),
+    "projected_support80_all_families_recording_zscore": (
+        "docs/shared_family_target_control_gate_projected_support80_all_families_recording_zscore.json"
+    ),
     "external_manifest_acquisition_gap": "docs/external_manifest_acquisition_gap.json",
     "behavior_cache_preflight": "docs/behavior_cache_preflight.json",
     "family_alt_prior": "docs/model_free_family_bidirectional_gate_prior_side_recording_centered.json",
@@ -110,6 +113,7 @@ def projected_feature_mode_summary(artifacts: dict[str, dict | None]) -> dict:
             "projected_support80_all_families_fractions",
             "projected_support80_all_families_counts",
             "projected_support80_all_families_unit_residuals",
+            "projected_support80_all_families_recording_zscore",
         ],
     )
 
@@ -347,6 +351,35 @@ def build_report() -> dict:
                 "At least one local wheel row must clear delta_vs_shuffle>=0, delta_vs_total>=0, "
                 "target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75."
             ),
+        ),
+        branch(
+            name="recording-zscore anatomy representation",
+            status=(
+                "closed"
+                if artifacts["projected_support80_all_families_recording_zscore"] is not None
+                else "secondary_after_new_target"
+            ),
+            priority=81 if artifacts["projected_support80_all_families_recording_zscore"] is not None else 3,
+            evidence=[
+                (
+                    "projected support80 recording-zscore family gate has not been run yet"
+                    if artifacts["projected_support80_all_families_recording_zscore"] is None
+                    else (
+                        "projected support80 recording-zscore family gate has "
+                        f"{summary_value(artifacts['projected_support80_all_families_recording_zscore'], 'n_candidates', 'n/a')} "
+                        "candidates across "
+                        f"{summary_value(artifacts['projected_support80_all_families_recording_zscore'], 'n_rows', 'n/a')} "
+                        "rows and max bidir "
+                        f"{summary_value(artifacts['projected_support80_all_families_recording_zscore'], 'max_bidirectional_recording_fraction', 0.0):.3f}"
+                    )
+                ),
+            ],
+            next_action=(
+                "Do not train: recording-zscore anatomy features do not pass the local gate."
+                if artifacts["projected_support80_all_families_recording_zscore"] is not None
+                else "Run the shared-family projected support80 gate with --feature-mode recording_zscore."
+            ),
+            gpu_trigger="none",
         ),
         branch(
             name="prior-aligned choice target redesign",

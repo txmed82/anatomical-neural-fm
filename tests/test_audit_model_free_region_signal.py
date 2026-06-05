@@ -89,6 +89,24 @@ def test_transform_region_features_can_center_within_recording() -> None:
     assert np.allclose(centered[2], [0.0, 0.0])
 
 
+def test_transform_region_features_can_zscore_within_recording() -> None:
+    features = np.asarray([
+        [1.0, 3.0],
+        [3.0, 7.0],
+        [10.0, 2.0],
+    ], dtype=np.float32)
+
+    zscored = transform_region_features(
+        features,
+        "recording_zscore",
+        recording_ids=["a", "a", "b"],
+    )
+
+    assert np.allclose(zscored[0], [-1.0, -1.0])
+    assert np.allclose(zscored[1], [1.0, 1.0])
+    assert np.allclose(zscored[2], [0.0, 0.0])
+
+
 def test_transform_region_features_can_residualize_unit_distribution() -> None:
     features = np.asarray([
         [8.0, 2.0],

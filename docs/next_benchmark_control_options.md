@@ -3,13 +3,14 @@
 Ranks remaining no-spend branches after the current local audits. This is the planning gate before any new RunPod training.
 
 - recommended next: `new manifest with prospective bidirectional support`
-- closed branches: `21`
+- closed branches: `22`
 - decision: `no_local_training_trigger`
 - GPU trigger: At least one local row on the proposed manifest must clear delta_vs_shuffle>=0, delta_vs_total>=0, target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75 before training.
 
 | priority | branch | status | next action |
 |---:|---|---|---|
 | 1 | new manifest with prospective bidirectional support | `recommended_next` | Do not launch GPU training from the projected support80 panel; its model-free family and feature-mode gates have no candidates. Redesign the target/control locally. |
+| 81 | recording-zscore anatomy representation | `closed` | Do not train: recording-zscore anatomy features do not pass the local gate. |
 | 82 | prior-aligned choice target redesign | `closed` | Do not train: prior-aligned choice does not pass the projected-panel local gate. |
 | 83 | correct low-contrast choice target redesign | `closed` | Do not train: correct-only low-contrast choice removes the projected-panel candidate. |
 | 84 | low-contrast choice target redesign | `closed` | Do not train: the low-contrast choice candidate does not remain a strict candidate across shuffle seeds. |
@@ -40,13 +41,17 @@ Ranks remaining no-spend branches after the current local audits. This is the pl
 - external acquisition gap audit identifies 7 missing HDF5 recordings for 2 support-qualified subjects, projecting 31 recordings across 8 subjects
 - strict iterative 8-recording manifest has 0 candidates and max bidir 0.250
 - projected support80 shared-family gate has 0 candidates across 128 rows and max bidir 0.500
-- projected support80 all-family feature-mode sweep has 0 candidates across 1280 rows, 4 feature modes, and max bidir 0.500
+- projected support80 all-family feature-mode sweep has 0 candidates across 1600 rows, 5 feature modes, and max bidir 0.500
 - local gate meta-failure audit has 0 candidates across 1924 rows; recording bidirectionality fails in 1919 rows
 - recording bidirectionality prospectus found 18 prospect recordings from 262 bidirectional observations
 - prospect-lead manifest has 18 recordings across 7 subjects with 0 missing local recordings
 - subject-stable shuffle-seed sensitivity found 0 robust candidates; max positive seed fraction=0.4
 - recording-subset replication selected zero stable validation rows
 - GPU trigger: At least one local row on the proposed manifest must clear delta_vs_shuffle>=0, delta_vs_total>=0, target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75 before training.
+
+### recording-zscore anatomy representation
+- projected support80 recording-zscore family gate has 0 candidates across 320 rows and max bidir 0.500
+- GPU trigger: none
 
 ### prior-aligned choice target redesign
 - current-panel prior-aligned choice gate found 0 candidates across 112 rows and max bidir 0.500

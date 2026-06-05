@@ -303,6 +303,40 @@ def test_render_markdown_includes_extreme_quantile_seed_veto() -> None:
     assert "do not train from the exploratory region-pair rows" in markdown
 
 
+def test_render_markdown_includes_projected_recording_zscore_gate() -> None:
+    markdown = render_markdown(
+        [],
+        [],
+        projected_support80_recording_zscore={
+            "summary": {
+                "n_rows": 2,
+                "n_candidates": 0,
+                "n_positive_centered_delta": 1,
+                "max_bidirectional_recording_fraction": 0.5,
+                "decision": "no_shared_family_target_candidate",
+                "top_rows": [
+                    {
+                        "target_mode": "choice",
+                        "family": "brainstem_interbrain",
+                        "holdout": "NR_0019",
+                        "decision": "reject_target1",
+                        "centered_delta_vs_shuffle": 0.134,
+                        "centered_delta_vs_total": 0.305,
+                        "target0_improved_vs_shuffle": 0.721,
+                        "target1_improved_vs_shuffle": 0.416,
+                        "n_bidirectional_recordings": 2,
+                        "n_recordings": 4,
+                    }
+                ],
+            }
+        },
+    )
+
+    assert "Projected Support80 Recording-Zscore Gate" in markdown
+    assert "candidates: `0`" in markdown
+    assert "do not train" in markdown
+
+
 def test_render_markdown_includes_low_contrast_choice_seed_veto() -> None:
     markdown = render_markdown(
         [],
