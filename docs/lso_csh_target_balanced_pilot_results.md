@@ -1,6 +1,6 @@
 # Cloud Phase 3-5 Results
 
-Date: 2026-06-05T02:37:43Z
+Date: 2026-06-05T02:45:39Z
 
 RunPod target: A100 pilot.
 
@@ -19,7 +19,7 @@ Configuration:
 - skip sweep: False
 - startup smoke only: False
 - dependency diagnostic: False
-- max runtime seconds: 5400
+- max runtime seconds: 3600
 - output root: `runs/lso_csh_target_balanced_pilot`
 - sweep env: `SUBJECTS=CSH_ZAD_019, BATCH_SAMPLING=target_balanced, BEST_METRIC=full_eval_centered_auc, FULL_EVAL_ON_BEST=1, SAVE_DIAGNOSTICS=1`
 
@@ -126,39 +126,36 @@ root: `runs/lso_csh_target_balanced_pilot`
 
 | holdout | arm | n_seeds | mean_AUC | mean_delta_vs_shared | seed_deltas |
 |---|---|---|---|---|---|
-| CSH_ZAD_019 | region_only | 1 | 0.523 | +0.070 | +0.070 |
-| CSH_ZAD_019 | region_shuffle | 1 | 0.425 | -0.027 | -0.027 |
 
 ## Aggregate Delta vs Shared Null
 
 | arm | n_pairs | mean_delta | positive_pairs |
 |---|---|---|---|
-| region_only | 1 | +0.070 | 1/1 |
-| region_shuffle | 1 | -0.027 | 0/1 |
 
 ## Full Held-Out-Trial AUC and Delta vs Shared Null
 
 | holdout | arm | n_seeds | mean_full_AUC | mean_full_delta_vs_shared | seed_full_deltas |
 |---|---|---|---|---|---|
-| CSH_ZAD_019 | region_only | 1 | 0.496 | +0.020 | +0.020 |
-| CSH_ZAD_019 | region_shuffle | 1 | 0.458 | -0.019 | -0.019 |
+| CSH_ZAD_019 | region_only | 2 | 0.498 | +0.012 | +0.012,+0.012 |
+| CSH_ZAD_019 | region_shuffle | 2 | 0.482 | -0.004 | -0.007,-0.002 |
 
 ## Full Held-Out-Trial Aggregate Delta vs Shared Null
 
 | arm | n_pairs | mean_full_delta | positive_pairs |
 |---|---|---|---|
-| region_only | 1 | +0.020 | 1/1 |
-| region_shuffle | 1 | -0.019 | 0/1 |
+| region_only | 2 | +0.012 | 2/2 |
+| region_shuffle | 2 | -0.004 | 0/2 |
 
 ## Recording-Centered Full-Trial AUC and Delta vs Shared Null
 
 | holdout | arm | n_seeds | mean_centered_AUC | mean_centered_delta_vs_shared | seed_centered_deltas |
 |---|---|---|---|---|---|
-| CSH_ZAD_019 | region_only | 1 | 0.473 | -0.005 | -0.005 |
-| CSH_ZAD_019 | region_shuffle | 1 | 0.474 | -0.004 | -0.004 |
+| CSH_ZAD_019 | region_only | 2 | 0.483 | -0.004 | -0.005,-0.002 |
+| CSH_ZAD_019 | region_shuffle | 2 | 0.480 | -0.007 | -0.004,-0.010 |
 
 ## Paired True-vs-Shuffle Trial Gate
 
 | holdout | seed | paired_trials | true_prob_improved | threshold | verdict |
 |---|---:|---:|---:|---:|---|
 | CSH_ZAD_019 | 0 | 2726 | 0.557 | 0.550 | pass |
+| CSH_ZAD_019 | 1 | 2726 | 0.508 | 0.550 | fail |
