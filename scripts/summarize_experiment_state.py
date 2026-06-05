@@ -104,6 +104,7 @@ MATCHED_REGION_S3_PRESENT_SUPPORT80_HDF5_ITERATIVE_FILE = (
     "manifests/ibl_bwm_region_matched_candidates_s3_present_support80_hdf5_iterative_pass.json"
 )
 MODEL_FREE_MATCHED_SUPPORT80_PANEL_FILE = "docs/model_free_matched_support80_hdf5_panel.json"
+MODEL_FREE_POSITIVE_HOLDOUTS_MECHANISM_FILE = "docs/model_free_positive_holdouts_mechanism.json"
 LOCAL_PROBE_FILES = (
     (
         "local AUC surrogate",
@@ -389,6 +390,7 @@ def render_markdown(
     matched_support80_hdf5: dict | None = None,
     matched_support80_hdf5_iterative: dict | None = None,
     model_free_matched_panel: dict | None = None,
+    model_free_positive_holdouts: dict | None = None,
 ) -> str:
     summary = summarize(strict_rows, slice_rows)
     lines = [
@@ -928,6 +930,43 @@ def render_markdown(
             ),
             "",
         ]
+    if model_free_positive_holdouts is not None:
+        lines += [
+            "## Positive-Holdout Mechanism Audit",
+            "",
+            "`docs/model_free_positive_holdouts_mechanism.md` inspects the two weak",
+            "positive centered-delta holdouts from the matched-region panel at target-class",
+            "and recording resolution.",
+            "",
+            "| holdout | centered delta | target0 | target1 | positive recordings | interpretation |",
+            "|---|---:|---:|---:|---:|---|",
+        ]
+        for row in model_free_positive_holdouts.get("holdouts", []):
+            summary = row["summary"]
+            paired = summary["paired_true_vs_shuffle"]
+            interpretation = (
+                "not bidirectional"
+                if min(paired["target0_improved_fraction"], paired["target1_improved_fraction"]) < 0.55
+                else "low recording support"
+            )
+            lines.append(
+                f"| {row['holdout']} | {summary['delta_centered_auc']:+.3f} | "
+                f"{paired['target0_improved_fraction']:.3f} | "
+                f"{paired['target1_improved_fraction']:.3f} | "
+                f"{summary['recordings_positive_true_minus_shuffle']}/{summary['n_recordings']} | "
+                f"{interpretation} |"
+            )
+        lines += [
+            "",
+            (
+                "Decision: these positive deltas are not a training trigger. `KS014` is "
+                "marginal and below the bidirectional gate; `NR_0019` is strongly one-sided "
+                "toward target-0 and fails target-1. Keep the next step no-spend: redesign "
+                "the target/control or require a cleaner local model-free pass before any "
+                "RunPod training."
+            ),
+            "",
+        ]
     return "\n".join(lines)
 
 
@@ -977,6 +1016,7 @@ def main() -> int:
         REPO_ROOT / MATCHED_REGION_S3_PRESENT_SUPPORT80_HDF5_ITERATIVE_FILE
     )
     model_free_matched_panel = read_mechanism_audit(REPO_ROOT / MODEL_FREE_MATCHED_SUPPORT80_PANEL_FILE)
+    model_free_positive_holdouts = read_mechanism_audit(REPO_ROOT / MODEL_FREE_POSITIVE_HOLDOUTS_MECHANISM_FILE)
     args.out_md.parent.mkdir(parents=True, exist_ok=True)
     args.out_md.write_text(render_markdown(
         strict_rows,
@@ -1003,6 +1043,7 @@ def main() -> int:
         matched_support80_hdf5,
         matched_support80_hdf5_iterative,
         model_free_matched_panel,
+        model_free_positive_holdouts,
     ))
     args.out_json.parent.mkdir(parents=True, exist_ok=True)
     args.out_json.write_text(json.dumps({
@@ -1058,6 +1099,7 @@ def main() -> int:
             }
         ),
         "model_free_matched_support80_panel": model_free_matched_panel,
+        "model_free_positive_holdouts_mechanism": model_free_positive_holdouts,
     }, indent=2, sort_keys=True) + "\n")
     print(f"wrote {args.out_md}")
     print(f"wrote {args.out_json}")

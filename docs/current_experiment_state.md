@@ -270,3 +270,16 @@ parent-region ridge audit leave-subject-out across the HDF5-confirmed
 | SWC_043 | no_model_free_true_region_advantage | -0.014 | 0.738 | 0.212 | 2/4 |
 
 Decision: do not promote this panel to a broad training sweep. The model-free anatomical feature screen has zero passing holdouts; `KS014` and `NR_0019` have positive centered deltas, but fail bidirectional target-class and/or recording-support gates.
+
+## Positive-Holdout Mechanism Audit
+
+`docs/model_free_positive_holdouts_mechanism.md` inspects the two weak
+positive centered-delta holdouts from the matched-region panel at target-class
+and recording resolution.
+
+| holdout | centered delta | target0 | target1 | positive recordings | interpretation |
+|---|---:|---:|---:|---:|---|
+| KS014 | +0.030 | 0.547 | 0.538 | 2/4 | not bidirectional |
+| NR_0019 | +0.079 | 0.776 | 0.249 | 3/4 | not bidirectional |
+
+Decision: these positive deltas are not a training trigger. `KS014` is marginal and below the bidirectional gate; `NR_0019` is strongly one-sided toward target-0 and fails target-1. Keep the next step no-spend: redesign the target/control or require a cleaner local model-free pass before any RunPod training.

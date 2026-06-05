@@ -1349,3 +1349,15 @@ gates. This argues against spending on a broad matched-panel neural training
 sweep. The next constructive path is target/control redesign or a much narrower
 bounded gate focused on explaining why the positive-delta holdouts are
 one-sided.
+
+Positive-holdout mechanism audit:
+`docs/model_free_positive_holdouts_mechanism.md` completes that explanation for
+the two weak positive matched-panel holdouts. `KS014` is marginal and unstable:
+target0 improvement is `0.547`, target1 improvement is `0.538`, recording
+support is `2/4`, and the per-recording rows alternate between target0-only
+and target1-only wins. `NR_0019` is not bidirectional: target0 improvement is
+`0.776`, target1 improvement is `0.249`, and one nominally positive recording
+is still driven by target0. Stop before GPU training. The next roadmap item is
+a no-spend redesign of the target/control representation, followed by another
+local model-free gate; only a bidirectional, recording-supported local pass
+should trigger a bounded RunPod run under the remaining budget cap.

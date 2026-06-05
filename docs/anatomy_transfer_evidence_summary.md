@@ -284,3 +284,14 @@ only positive-delta holdouts, but both miss the bidirectional target-class and
 recording-support gates. Mean centered true-minus-shuffle delta across the
 seven holdouts is `-0.003`. Decision: do not spend on a broad matched-panel
 training sweep from this evidence.
+
+Positive-holdout mechanism audit:
+`docs/model_free_positive_holdouts_mechanism.md` breaks those two weak
+positive holdouts down by target class and recording. `KS014` remains below
+the bidirectional gate with target0 `0.547`, target1 `0.538`, and only `2/4`
+positive recordings; individual probes flip between target0-only and
+target1-only improvement. `NR_0019` is strongly one-sided, with target0
+`0.776` but target1 only `0.249`. Decision: these positive centered deltas are
+not promotable. The next step should be no-spend target/control redesign or a
+new local model-free gate that produces bidirectional recording-supported
+signal before any RunPod training.

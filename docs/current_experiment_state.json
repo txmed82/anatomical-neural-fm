@@ -5189,6 +5189,371 @@
       ]
     }
   },
+  "model_free_positive_holdouts_mechanism": {
+    "holdouts": [
+      {
+        "holdout": "KS014",
+        "n_eval_trials": 2127,
+        "n_regions": 79,
+        "n_train_trials": 13614,
+        "recording_target_rows": [
+          {
+            "improved_fraction": 0.5170212765957447,
+            "mean_true_class_delta": 0.23114292981323598,
+            "n_trials": 470,
+            "recording": "16693458-0801-4d35-a3f1-9115c7e5acfd_probe00",
+            "target0_improved": 0.0,
+            "target1_fraction": 0.5170212765957447,
+            "target1_improved": 1.0
+          },
+          {
+            "improved_fraction": 0.4829787234042553,
+            "mean_true_class_delta": -0.36470104938102016,
+            "n_trials": 470,
+            "recording": "16693458-0801-4d35-a3f1-9115c7e5acfd_probe01",
+            "target0_improved": 1.0,
+            "target1_fraction": 0.5170212765957447,
+            "target1_improved": 0.0
+          },
+          {
+            "improved_fraction": 0.563573883161512,
+            "mean_true_class_delta": 0.26580946057845445,
+            "n_trials": 582,
+            "recording": "b9c205c3-feac-485b-a89d-afc96d9cb280_probe00",
+            "target0_improved": 0.0,
+            "target1_fraction": 0.563573883161512,
+            "target1_improved": 1.0
+          },
+          {
+            "improved_fraction": 0.5884297520661157,
+            "mean_true_class_delta": 0.3166418148847789,
+            "n_trials": 605,
+            "recording": "e1931de1-cf7b-49af-af33-2ade15e8abe7_probe00",
+            "target0_improved": 0.9971910112359551,
+            "target1_fraction": 0.4115702479338843,
+            "target1_improved": 0.004016064257028112
+          }
+        ],
+        "region_granularity": "parent",
+        "summary": {
+          "decision": "weak_model_free_true_region_advantage",
+          "delta_centered_auc": 0.029768388515974853,
+          "n_recordings": 4,
+          "paired_true_vs_shuffle": {
+            "improved_fraction": 0.5425481899388811,
+            "mean_true_class_delta": 0.13328494963097937,
+            "target0_improved_fraction": 0.5469924812030075,
+            "target1_improved_fraction": 0.5380997177798683
+          },
+          "recordings_positive_true_minus_shuffle": 2
+        },
+        "target_delta_summary": {
+          "target0": {
+            "improved_fraction": 0.5469924812030075,
+            "mean_true_class_delta": -0.31991682589371684,
+            "n_trials": 1064
+          },
+          "target1": {
+            "improved_fraction": 0.5380997177798683,
+            "mean_true_class_delta": 0.5869130673715972,
+            "n_trials": 1063
+          }
+        },
+        "target_mode": "stimulus_side",
+        "top_region_weights": {
+          "negative": [
+            {
+              "region": "PALc",
+              "weight": -0.5083566458909533
+            },
+            {
+              "region": "EPI",
+              "weight": -0.3158793226746893
+            },
+            {
+              "region": "CNU",
+              "weight": -0.2986928107078875
+            },
+            {
+              "region": "LZ",
+              "weight": -0.2849829650032821
+            },
+            {
+              "region": "IIIn",
+              "weight": -0.25660262527363226
+            },
+            {
+              "region": "mfbc",
+              "weight": -0.2395485005718864
+            },
+            {
+              "region": "SSp-ll",
+              "weight": -0.23114270630094116
+            },
+            {
+              "region": "LGd",
+              "weight": -0.22372741193111004
+            },
+            {
+              "region": "root",
+              "weight": -0.22002817753630594
+            },
+            {
+              "region": "OLF",
+              "weight": -0.1882725146197219
+            },
+            {
+              "region": "BS",
+              "weight": -0.17226207653746564
+            },
+            {
+              "region": "DG",
+              "weight": -0.1665186022060278
+            }
+          ],
+          "positive": [
+            {
+              "region": "MSC",
+              "weight": 0.4530239193515524
+            },
+            {
+              "region": "RSPv",
+              "weight": 0.3784543634041599
+            },
+            {
+              "region": "MED",
+              "weight": 0.3301186994635015
+            },
+            {
+              "region": "LS",
+              "weight": 0.30112698507688096
+            },
+            {
+              "region": "CTXpl",
+              "weight": 0.25771789279061413
+            },
+            {
+              "region": "LAT",
+              "weight": 0.22932756525670223
+            },
+            {
+              "region": "lfbst",
+              "weight": 0.2124968224581612
+            },
+            {
+              "region": "ZI",
+              "weight": 0.18363023081945745
+            },
+            {
+              "region": "VP",
+              "weight": 0.1742903068856363
+            },
+            {
+              "region": "PVR",
+              "weight": 0.16932460906533753
+            },
+            {
+              "region": "VS",
+              "weight": 0.1620310166846666
+            },
+            {
+              "region": "MBsen",
+              "weight": 0.14318687619304865
+            }
+          ]
+        },
+        "train_subjects": [
+          "CSH_ZAD_019",
+          "MFD_06",
+          "NR_0019",
+          "NYU-12",
+          "SWC_038",
+          "SWC_043"
+        ]
+      },
+      {
+        "holdout": "NR_0019",
+        "n_eval_trials": 2424,
+        "n_regions": 79,
+        "n_train_trials": 13317,
+        "recording_target_rows": [
+          {
+            "improved_fraction": 0.5126582278481012,
+            "mean_true_class_delta": 0.04227003876976691,
+            "n_trials": 790,
+            "recording": "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe00",
+            "target0_improved": 0.810126582278481,
+            "target1_fraction": 0.5,
+            "target1_improved": 0.21518987341772153
+          },
+          {
+            "improved_fraction": 0.5354430379746835,
+            "mean_true_class_delta": 0.016849095182345182,
+            "n_trials": 790,
+            "recording": "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe01",
+            "target0_improved": 0.9113924050632911,
+            "target1_fraction": 0.5,
+            "target1_improved": 0.15949367088607594
+          },
+          {
+            "improved_fraction": 0.4786729857819905,
+            "mean_true_class_delta": -0.16446450158834994,
+            "n_trials": 422,
+            "recording": "b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe00",
+            "target0_improved": 1.0,
+            "target1_fraction": 0.5213270142180095,
+            "target1_improved": 0.0
+          },
+          {
+            "improved_fraction": 0.4786729857819905,
+            "mean_true_class_delta": -0.005757817147872477,
+            "n_trials": 422,
+            "recording": "b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe01",
+            "target0_improved": 0.21782178217821782,
+            "target1_fraction": 0.5213270142180095,
+            "target1_improved": 0.7181818181818181
+          }
+        ],
+        "region_granularity": "parent",
+        "summary": {
+          "decision": "weak_model_free_true_region_advantage",
+          "delta_centered_auc": 0.07898639539159208,
+          "n_recordings": 4,
+          "paired_true_vs_shuffle": {
+            "improved_fraction": 0.5082508250825083,
+            "mean_true_class_delta": -0.01036703906126952,
+            "target0_improved_fraction": 0.7755443886097152,
+            "target1_improved_fraction": 0.24878048780487805
+          },
+          "recordings_positive_true_minus_shuffle": 3
+        },
+        "target_delta_summary": {
+          "target0": {
+            "improved_fraction": 0.7755443886097152,
+            "mean_true_class_delta": 0.8341242172595691,
+            "n_trials": 1194
+          },
+          "target1": {
+            "improved_fraction": 0.24878048780487805,
+            "mean_true_class_delta": -0.8301414781239373,
+            "n_trials": 1230
+          }
+        },
+        "target_mode": "stimulus_side",
+        "top_region_weights": {
+          "negative": [
+            {
+              "region": "PALc",
+              "weight": -0.5535858294844554
+            },
+            {
+              "region": "EPI",
+              "weight": -0.3562333089725139
+            },
+            {
+              "region": "CNU",
+              "weight": -0.3313145993410722
+            },
+            {
+              "region": "IIIn",
+              "weight": -0.255891813465594
+            },
+            {
+              "region": "LGd",
+              "weight": -0.20013503820946096
+            },
+            {
+              "region": "OLF",
+              "weight": -0.19432019572752285
+            },
+            {
+              "region": "mfbc",
+              "weight": -0.17078896036647298
+            },
+            {
+              "region": "VENT",
+              "weight": -0.14797255974169574
+            },
+            {
+              "region": "root",
+              "weight": -0.1442215345514088
+            },
+            {
+              "region": "MOp",
+              "weight": -0.13947614361227065
+            },
+            {
+              "region": "ENTm",
+              "weight": -0.12947384563644876
+            },
+            {
+              "region": "SSs",
+              "weight": -0.11793158501148153
+            }
+          ],
+          "positive": [
+            {
+              "region": "MSC",
+              "weight": 0.4275359714890607
+            },
+            {
+              "region": "MED",
+              "weight": 0.3962274552598466
+            },
+            {
+              "region": "LS",
+              "weight": 0.2924410109999632
+            },
+            {
+              "region": "CTXpl",
+              "weight": 0.22747559041833532
+            },
+            {
+              "region": "VP",
+              "weight": 0.1855659629068966
+            },
+            {
+              "region": "lfbst",
+              "weight": 0.18039119191038575
+            },
+            {
+              "region": "PVR",
+              "weight": 0.1473507283906182
+            },
+            {
+              "region": "VS",
+              "weight": 0.14307659607423687
+            },
+            {
+              "region": "ZI",
+              "weight": 0.14281302531339213
+            },
+            {
+              "region": "AUDv",
+              "weight": 0.13790822883883164
+            },
+            {
+              "region": "ORBm",
+              "weight": 0.12020881662978739
+            },
+            {
+              "region": "LAT",
+              "weight": 0.10745866945901435
+            }
+          ]
+        },
+        "train_subjects": [
+          "CSH_ZAD_019",
+          "KS014",
+          "MFD_06",
+          "NYU-12",
+          "SWC_038",
+          "SWC_043"
+        ]
+      }
+    ],
+    "manifest": "/Users/colin/Desktop/Projects/anatomical-neural-fm/manifests/ibl_bwm_region_matched_candidates_s3_present_support80_hdf5_scored.json"
+  },
   "model_free_region_candidate_scan": {
     "all_regions": [
       {
