@@ -630,6 +630,33 @@ Current-cache candidates:
 
 Implementation gate completed: `scripts/train.py` and the shared-parent wrapper
 now support an explicit include list via `--region-filter include_regions` and
-`--region-include`. The next paid run, if launched, should therefore be a
-preflighted fixed carrier-parent true-vs-shuffled control rather than another
-shared-region sweep.
+`--region-include`.
+
+Completed paid fixed-slice gate:
+`docs/lso_nyu12_parent_slice_results.md` ran the top passing candidate
+(`NYU-12`) with the fixed carrier-parent include list
+`PRT,CA,VP,MOp,DG,mfbc` under the same true-vs-shuffled control. The run used
+the existing 28/28 matched-cache files, finished successfully, and active
+RunPod pods were zero after completion.
+
+Result:
+
+- `NYU-12` `region_only`: +0.013 mean delta, positive in 2/3 seeds
+- `NYU-12` `region_shuffle`: +0.020 mean delta, positive in 3/3 seeds
+- true seed deltas: +0.067, +0.021, -0.048
+- shuffled seed deltas: +0.038, +0.015, +0.007
+- preflight worst-case cost envelope: $6.00; actual usage was well below the
+  $100 cap because the pod ran briefly at $1.49/hr
+
+Interpretation: the fixed carrier-parent slice did not pass the controlled
+demo gate. The true-label arm is weakly positive, but the shuffled-label arm is
+larger and more consistent, so this result does not support a generalizable
+anatomical-transfer claim beyond the CSH_ZAD_019 nucleus. This also means the
+no-spend support/alignment gate is insufficient on its own.
+
+Next decision: pause paid GPU broadening. The next useful work is no-spend
+analysis of the CSH-specific success mode: compare region-pair interactions,
+session/probe contributions, and trial-conditioned behavior across CSH_ZAD_019
+versus the failed follow-ups. Only launch another GPU run after defining a
+stricter falsifiable slice that predicts true labels should beat shuffled
+labels, not merely clear support and contrast-alignment thresholds.

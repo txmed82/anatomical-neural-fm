@@ -61,8 +61,10 @@ Candidate inclusion gate:
 
 ## Decision
 
-The current matched cache contains subject-level slice candidates: NYU-12, SWC_038. The cleanest next paid test is not a broad matched-cache sweep; it is a fixed carrier-parent true-vs-shuffled control on the top passing subject using the explicit parent-region include filter.
+The current matched cache contains subject-level slice candidates: NYU-12, SWC_038. The first paid test was a fixed carrier-parent true-vs-shuffled control on the top passing subject using the explicit parent-region include filter.
 
 At recording level, the strongest slice candidate is `a8a8af78-16de-4841-ab07-fde4b5281a03_probe01` from `NYU-12`. This supports using the slice as an inclusion rule, but a subject-level cross-animal claim still needs whole-subject held-out evaluation.
 
-Next implementation gate before GPU spend: run local/preflight checks for the fixed carrier-parent include list using `--region-filter include_regions` and `--region-include "PRT, CA, VP, MOp, DG, mfbc"`, then launch only if the RunPod cost guard remains below the $100 cap.
+Completed paid result: `docs/lso_nyu12_parent_slice_results.md` ran `NYU-12` with `--region-filter include_regions`, `--region-granularity parent`, and `--region-include "PRT,CA,VP,MOp,DG,mfbc"`. The true-label arm was weakly positive (`region_only` +0.013 mean delta, 2/3 positive seeds), but the shuffled-label arm was larger and more consistent (`region_shuffle` +0.020 mean delta, 3/3 positive seeds).
+
+Conclusion: this carrier-parent gate is not sufficient for a demo-grade cross-animal anatomical transfer claim. Do not spend on the same fixed-slice run again. The next step should be a no-spend diagnostic that explains why the CSH_ZAD_019 carrier parents transfer under true labels while `NYU-12` does not separate true labels from shuffled labels.
