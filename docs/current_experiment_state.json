@@ -10900,6 +10900,1351 @@
       "min_target_improvement": 0.55
     }
   },
+  "model_free_recording_bidirectional_recording_centered": {
+    "feature_mode": "recording_centered",
+    "holdouts": [
+      {
+        "feature_mode": "recording_centered",
+        "holdout": "CSH_ZAD_019",
+        "n_eval_trials": 2726,
+        "n_regions": 79,
+        "n_train_trials": 13015,
+        "recording_bidirectional": {
+          "bidirectional_recording_fraction": 0.0,
+          "bidirectional_recordings": [],
+          "n_bidirectional_recordings": 0,
+          "n_evaluable_recordings": 4
+        },
+        "recording_bidirectional_decision": "reject: centered delta",
+        "recording_target_rows": [
+          {
+            "improved_fraction": 0.44144144144144143,
+            "mean_true_class_delta": -0.11557237897123585,
+            "n_trials": 777,
+            "recording": "49e0ab27-827a-4c91-bcaa-97eea27a1b8d_probe01",
+            "target0_improved": 0.3502415458937198,
+            "target1_fraction": 0.4671814671814672,
+            "target1_improved": 0.5454545454545454
+          },
+          {
+            "improved_fraction": 0.5169491525423728,
+            "mean_true_class_delta": 0.04039672252144529,
+            "n_trials": 590,
+            "recording": "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe00",
+            "target0_improved": 0.5144508670520231,
+            "target1_fraction": 0.4135593220338983,
+            "target1_improved": 0.5204918032786885
+          },
+          {
+            "improved_fraction": 0.4694915254237288,
+            "mean_true_class_delta": -0.003925203553520124,
+            "n_trials": 590,
+            "recording": "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe01",
+            "target0_improved": 0.42485549132947975,
+            "target1_fraction": 0.4135593220338983,
+            "target1_improved": 0.5327868852459017
+          },
+          {
+            "improved_fraction": 0.4577373211963589,
+            "mean_true_class_delta": -0.27749636810421874,
+            "n_trials": 769,
+            "recording": "edd22318-216c-44ff-bc24-49ce8be78374_probe00",
+            "target0_improved": 0.38944723618090454,
+            "target1_fraction": 0.48244473342002603,
+            "target1_improved": 0.5309973045822103
+          }
+        ],
+        "region_granularity": "parent",
+        "summary": {
+          "decision": "no_model_free_true_region_advantage",
+          "delta_centered_auc": -0.04266527666538983,
+          "n_recordings": 4,
+          "paired_true_vs_shuffle": {
+            "improved_fraction": 0.4684519442406456,
+            "mean_true_class_delta": -0.10332951186416675,
+            "target0_improved_fraction": 0.41555851063829785,
+            "target1_improved_fraction": 0.5335515548281505
+          },
+          "recordings_positive_true_minus_shuffle": 1
+        },
+        "target_delta_summary": {
+          "target0": {
+            "improved_fraction": 0.41555851063829785,
+            "mean_true_class_delta": -0.09364241717000334,
+            "n_trials": 1504
+          },
+          "target1": {
+            "improved_fraction": 0.5335515548281505,
+            "mean_true_class_delta": -0.11525208994929109,
+            "n_trials": 1222
+          }
+        },
+        "target_mode": "stimulus_side",
+        "top_region_weights": {
+          "negative": [
+            {
+              "region": "IIn",
+              "weight": -0.0895022584438862
+            },
+            {
+              "region": "SSp-ll",
+              "weight": -0.08724245244299603
+            },
+            {
+              "region": "hc",
+              "weight": -0.0692337280934252
+            },
+            {
+              "region": "MOp",
+              "weight": -0.05493217023944256
+            },
+            {
+              "region": "OLF",
+              "weight": -0.05452770164042578
+            },
+            {
+              "region": "PALc",
+              "weight": -0.047344800179904195
+            },
+            {
+              "region": "SSp-bfd",
+              "weight": -0.04729907341062949
+            },
+            {
+              "region": "fa",
+              "weight": -0.0463997376481316
+            },
+            {
+              "region": "MBmot",
+              "weight": -0.04619554618770735
+            },
+            {
+              "region": "SSp-ul",
+              "weight": -0.04569348548251759
+            },
+            {
+              "region": "DORpm",
+              "weight": -0.04470479522357482
+            },
+            {
+              "region": "DG",
+              "weight": -0.03915645705243043
+            }
+          ],
+          "positive": [
+            {
+              "region": "SSp-tr",
+              "weight": 0.07844807037230152
+            },
+            {
+              "region": "AUDv",
+              "weight": 0.07462369547073323
+            },
+            {
+              "region": "lfbst",
+              "weight": 0.06775444485221509
+            },
+            {
+              "region": "VISp",
+              "weight": 0.05693788054721838
+            },
+            {
+              "region": "cett",
+              "weight": 0.054189625658328945
+            },
+            {
+              "region": "SCs",
+              "weight": 0.05240878668469095
+            },
+            {
+              "region": "LAT",
+              "weight": 0.04692730755844328
+            },
+            {
+              "region": "MSC",
+              "weight": 0.046279252592604195
+            },
+            {
+              "region": "SSp-un",
+              "weight": 0.04612300020420113
+            },
+            {
+              "region": "VISpor",
+              "weight": 0.04116835095898006
+            },
+            {
+              "region": "VP",
+              "weight": 0.039514248252842867
+            },
+            {
+              "region": "LS",
+              "weight": 0.03344306679124641
+            }
+          ]
+        },
+        "train_subjects": [
+          "KS014",
+          "MFD_06",
+          "NR_0019",
+          "NYU-12",
+          "SWC_038",
+          "SWC_043"
+        ]
+      },
+      {
+        "feature_mode": "recording_centered",
+        "holdout": "KS014",
+        "n_eval_trials": 2127,
+        "n_regions": 79,
+        "n_train_trials": 13614,
+        "recording_bidirectional": {
+          "bidirectional_recording_fraction": 0.25,
+          "bidirectional_recordings": [
+            "e1931de1-cf7b-49af-af33-2ade15e8abe7_probe00"
+          ],
+          "n_bidirectional_recordings": 1,
+          "n_evaluable_recordings": 4
+        },
+        "recording_bidirectional_decision": "reject: global target0",
+        "recording_target_rows": [
+          {
+            "improved_fraction": 0.5382978723404256,
+            "mean_true_class_delta": 0.07585963307128514,
+            "n_trials": 470,
+            "recording": "16693458-0801-4d35-a3f1-9115c7e5acfd_probe00",
+            "target0_improved": 0.5198237885462555,
+            "target1_fraction": 0.5170212765957447,
+            "target1_improved": 0.5555555555555556
+          },
+          {
+            "improved_fraction": 0.4765957446808511,
+            "mean_true_class_delta": -0.1496525067779725,
+            "n_trials": 470,
+            "recording": "16693458-0801-4d35-a3f1-9115c7e5acfd_probe01",
+            "target0_improved": 0.4185022026431718,
+            "target1_fraction": 0.5170212765957447,
+            "target1_improved": 0.5308641975308642
+          },
+          {
+            "improved_fraction": 0.4175257731958763,
+            "mean_true_class_delta": -0.20302904380493128,
+            "n_trials": 582,
+            "recording": "b9c205c3-feac-485b-a89d-afc96d9cb280_probe00",
+            "target0_improved": 0.32677165354330706,
+            "target1_fraction": 0.563573883161512,
+            "target1_improved": 0.4878048780487805
+          },
+          {
+            "improved_fraction": 0.6727272727272727,
+            "mean_true_class_delta": 0.19097593172896615,
+            "n_trials": 605,
+            "recording": "e1931de1-cf7b-49af-af33-2ade15e8abe7_probe00",
+            "target0_improved": 0.7219101123595506,
+            "target1_fraction": 0.4115702479338843,
+            "target1_improved": 0.6024096385542169
+          }
+        ],
+        "region_granularity": "parent",
+        "summary": {
+          "decision": "weak_model_free_true_region_advantage",
+          "delta_centered_auc": 0.042036830080846466,
+          "n_recordings": 4,
+          "paired_true_vs_shuffle": {
+            "improved_fraction": 0.5298542548189938,
+            "mean_true_class_delta": -0.017538841297878967,
+            "target0_improved_fraction": 0.5197368421052632,
+            "target1_improved_fraction": 0.5399811853245532
+          },
+          "recordings_positive_true_minus_shuffle": 2
+        },
+        "target_delta_summary": {
+          "target0": {
+            "improved_fraction": 0.5197368421052632,
+            "mean_true_class_delta": -0.01753039952400995,
+            "n_trials": 1064
+          },
+          "target1": {
+            "improved_fraction": 0.5399811853245532,
+            "mean_true_class_delta": -0.01754729101320974,
+            "n_trials": 1063
+          }
+        },
+        "target_mode": "stimulus_side",
+        "top_region_weights": {
+          "negative": [
+            {
+              "region": "SSp-ll",
+              "weight": -0.08602911064604014
+            },
+            {
+              "region": "IIIn",
+              "weight": -0.08481740984838212
+            },
+            {
+              "region": "mfbc",
+              "weight": -0.07249576491251868
+            },
+            {
+              "region": "MOp",
+              "weight": -0.06367971259914398
+            },
+            {
+              "region": "root",
+              "weight": -0.05580108227296765
+            },
+            {
+              "region": "OLF",
+              "weight": -0.05296817227652083
+            },
+            {
+              "region": "EPI",
+              "weight": -0.0529129955450993
+            },
+            {
+              "region": "RSPagl",
+              "weight": -0.046336122093907584
+            },
+            {
+              "region": "fa",
+              "weight": -0.04599967100406715
+            },
+            {
+              "region": "SSp-bfd",
+              "weight": -0.045997422455762785
+            },
+            {
+              "region": "PALc",
+              "weight": -0.04521132643077146
+            },
+            {
+              "region": "SSp-ul",
+              "weight": -0.04438562245179972
+            }
+          ],
+          "positive": [
+            {
+              "region": "SSp-tr",
+              "weight": 0.07747310080712791
+            },
+            {
+              "region": "AUDv",
+              "weight": 0.07270133262121252
+            },
+            {
+              "region": "MED",
+              "weight": 0.07128076007797766
+            },
+            {
+              "region": "lfbst",
+              "weight": 0.0672959808710767
+            },
+            {
+              "region": "CTXpl",
+              "weight": 0.05448392514948024
+            },
+            {
+              "region": "RSPv",
+              "weight": 0.054353350672690245
+            },
+            {
+              "region": "LAT",
+              "weight": 0.048933811191043966
+            },
+            {
+              "region": "MSC",
+              "weight": 0.0466861664202098
+            },
+            {
+              "region": "ZI",
+              "weight": 0.04609542784363482
+            },
+            {
+              "region": "SSp-un",
+              "weight": 0.04577272410293502
+            },
+            {
+              "region": "VISpor",
+              "weight": 0.03972915835613303
+            },
+            {
+              "region": "VS",
+              "weight": 0.03702436725686245
+            }
+          ]
+        },
+        "train_subjects": [
+          "CSH_ZAD_019",
+          "MFD_06",
+          "NR_0019",
+          "NYU-12",
+          "SWC_038",
+          "SWC_043"
+        ]
+      },
+      {
+        "feature_mode": "recording_centered",
+        "holdout": "MFD_06",
+        "n_eval_trials": 2265,
+        "n_regions": 79,
+        "n_train_trials": 13476,
+        "recording_bidirectional": {
+          "bidirectional_recording_fraction": 0.0,
+          "bidirectional_recordings": [],
+          "n_bidirectional_recordings": 0,
+          "n_evaluable_recordings": 4
+        },
+        "recording_bidirectional_decision": "reject: centered delta",
+        "recording_target_rows": [
+          {
+            "improved_fraction": 0.5,
+            "mean_true_class_delta": 0.024737196424178102,
+            "n_trials": 660,
+            "recording": "35eeb752-8f4f-4040-9714-ba0f5b7ccdfe_probe00",
+            "target0_improved": 0.3893805309734513,
+            "target1_fraction": 0.4863636363636364,
+            "target1_improved": 0.616822429906542
+          },
+          {
+            "improved_fraction": 0.49322033898305084,
+            "mean_true_class_delta": 0.010735981211286761,
+            "n_trials": 590,
+            "recording": "3f71aa98-08c6-4e79-b4c8-00eae4f03eff_probe00",
+            "target0_improved": 0.476878612716763,
+            "target1_fraction": 0.4135593220338983,
+            "target1_improved": 0.5163934426229508
+          },
+          {
+            "improved_fraction": 0.510989010989011,
+            "mean_true_class_delta": 0.009542880811691907,
+            "n_trials": 364,
+            "recording": "6899a67d-2e53-4215-a52a-c7021b5da5d4_probe00",
+            "target0_improved": 0.5257731958762887,
+            "target1_fraction": 0.46703296703296704,
+            "target1_improved": 0.49411764705882355
+          },
+          {
+            "improved_fraction": 0.4608294930875576,
+            "mean_true_class_delta": -0.0660741550593674,
+            "n_trials": 651,
+            "recording": "a1782f4f-86b0-480c-a7f2-3d8f1ab482ab_probe00",
+            "target0_improved": 0.5146198830409356,
+            "target1_fraction": 0.47465437788018433,
+            "target1_improved": 0.40129449838187703
+          }
+        ],
+        "region_granularity": "parent",
+        "summary": {
+          "decision": "no_model_free_true_region_advantage",
+          "delta_centered_auc": -0.023555687348790766,
+          "n_recordings": 4,
+          "paired_true_vs_shuffle": {
+            "improved_fraction": 0.48874172185430464,
+            "mean_true_class_delta": -0.007452489083256304,
+            "target0_improved_fraction": 0.47092547092547093,
+            "target1_improved_fraction": 0.5095785440613027
+          },
+          "recordings_positive_true_minus_shuffle": 2
+        },
+        "target_delta_summary": {
+          "target0": {
+            "improved_fraction": 0.47092547092547093,
+            "mean_true_class_delta": -0.006912621623456435,
+            "n_trials": 1221
+          },
+          "target1": {
+            "improved_fraction": 0.5095785440613027,
+            "mean_true_class_delta": -0.00808388579629815,
+            "n_trials": 1044
+          }
+        },
+        "target_mode": "stimulus_side",
+        "top_region_weights": {
+          "negative": [
+            {
+              "region": "SSp-ll",
+              "weight": -0.08193049020230048
+            },
+            {
+              "region": "IIIn",
+              "weight": -0.08150394287262601
+            },
+            {
+              "region": "mfbc",
+              "weight": -0.06610121204112637
+            },
+            {
+              "region": "SSp-ul",
+              "weight": -0.06456945412854348
+            },
+            {
+              "region": "cVIIIn",
+              "weight": -0.06335977856162076
+            },
+            {
+              "region": "MOp",
+              "weight": -0.06254217462541883
+            },
+            {
+              "region": "DG",
+              "weight": -0.059383021691756646
+            },
+            {
+              "region": "hc",
+              "weight": -0.05832370460665898
+            },
+            {
+              "region": "IIn",
+              "weight": -0.0579815171840119
+            },
+            {
+              "region": "EPI",
+              "weight": -0.055257644830581584
+            },
+            {
+              "region": "MBmot",
+              "weight": -0.05511951829405426
+            },
+            {
+              "region": "OLF",
+              "weight": -0.05437546032571154
+            }
+          ],
+          "positive": [
+            {
+              "region": "MED",
+              "weight": 0.08067111473360648
+            },
+            {
+              "region": "AUDv",
+              "weight": 0.0737435540878241
+            },
+            {
+              "region": "lfbst",
+              "weight": 0.0659322872948113
+            },
+            {
+              "region": "HB",
+              "weight": 0.06157001050313226
+            },
+            {
+              "region": "cett",
+              "weight": 0.058889325716335816
+            },
+            {
+              "region": "SSp-tr",
+              "weight": 0.05560620139693787
+            },
+            {
+              "region": "void",
+              "weight": 0.053510985053273855
+            },
+            {
+              "region": "SCs",
+              "weight": 0.05328915187878328
+            },
+            {
+              "region": "CTXpl",
+              "weight": 0.053105661113527367
+            },
+            {
+              "region": "VISp",
+              "weight": 0.050803529760178004
+            },
+            {
+              "region": "MSC",
+              "weight": 0.04716831901741631
+            },
+            {
+              "region": "ZI",
+              "weight": 0.0453462324768467
+            }
+          ]
+        },
+        "train_subjects": [
+          "CSH_ZAD_019",
+          "KS014",
+          "NR_0019",
+          "NYU-12",
+          "SWC_038",
+          "SWC_043"
+        ]
+      },
+      {
+        "feature_mode": "recording_centered",
+        "holdout": "NR_0019",
+        "n_eval_trials": 2424,
+        "n_regions": 79,
+        "n_train_trials": 13317,
+        "recording_bidirectional": {
+          "bidirectional_recording_fraction": 0.0,
+          "bidirectional_recordings": [],
+          "n_bidirectional_recordings": 0,
+          "n_evaluable_recordings": 4
+        },
+        "recording_bidirectional_decision": "reject: global target0",
+        "recording_target_rows": [
+          {
+            "improved_fraction": 0.5151898734177215,
+            "mean_true_class_delta": 0.04111700064352567,
+            "n_trials": 790,
+            "recording": "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe00",
+            "target0_improved": 0.49873417721518987,
+            "target1_fraction": 0.5,
+            "target1_improved": 0.5316455696202531
+          },
+          {
+            "improved_fraction": 0.579746835443038,
+            "mean_true_class_delta": 0.018329652255119736,
+            "n_trials": 790,
+            "recording": "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe01",
+            "target0_improved": 0.529113924050633,
+            "target1_fraction": 0.5,
+            "target1_improved": 0.6303797468354431
+          },
+          {
+            "improved_fraction": 0.48104265402843605,
+            "mean_true_class_delta": 0.019259494542549268,
+            "n_trials": 422,
+            "recording": "b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe00",
+            "target0_improved": 0.5198019801980198,
+            "target1_fraction": 0.5213270142180095,
+            "target1_improved": 0.44545454545454544
+          },
+          {
+            "improved_fraction": 0.43601895734597157,
+            "mean_true_class_delta": -0.060887792704878964,
+            "n_trials": 422,
+            "recording": "b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe01",
+            "target0_improved": 0.31683168316831684,
+            "target1_fraction": 0.5213270142180095,
+            "target1_improved": 0.5454545454545454
+          }
+        ],
+        "region_granularity": "parent",
+        "summary": {
+          "decision": "weak_model_free_true_region_advantage",
+          "delta_centered_auc": 0.046989010091105954,
+          "n_recordings": 4,
+          "paired_true_vs_shuffle": {
+            "improved_fraction": 0.5165016501650165,
+            "mean_true_class_delta": 0.01212694470520905,
+            "target0_improved_fraction": 0.4815745393634841,
+            "target1_improved_fraction": 0.5504065040650407
+          },
+          "recordings_positive_true_minus_shuffle": 3
+        },
+        "target_delta_summary": {
+          "target0": {
+            "improved_fraction": 0.4815745393634841,
+            "mean_true_class_delta": 0.012309790734302928,
+            "n_trials": 1194
+          },
+          "target1": {
+            "improved_fraction": 0.5504065040650407,
+            "mean_true_class_delta": 0.011949450267210603,
+            "n_trials": 1230
+          }
+        },
+        "target_mode": "stimulus_side",
+        "top_region_weights": {
+          "negative": [
+            {
+              "region": "IIIn",
+              "weight": -0.08375730139608538
+            },
+            {
+              "region": "EPI",
+              "weight": -0.07298847003160375
+            },
+            {
+              "region": "IIn",
+              "weight": -0.058875962300228984
+            },
+            {
+              "region": "MOp",
+              "weight": -0.05799841279650344
+            },
+            {
+              "region": "mfbc",
+              "weight": -0.05474158866803351
+            },
+            {
+              "region": "OLF",
+              "weight": -0.05250961996819088
+            },
+            {
+              "region": "hc",
+              "weight": -0.05025295428291961
+            },
+            {
+              "region": "PALc",
+              "weight": -0.049151006114185575
+            },
+            {
+              "region": "fa",
+              "weight": -0.041763259057332004
+            },
+            {
+              "region": "CNU",
+              "weight": -0.03645001865769321
+            },
+            {
+              "region": "MBmot",
+              "weight": -0.03414992110511069
+            },
+            {
+              "region": "VENT",
+              "weight": -0.030649310653400177
+            }
+          ],
+          "positive": [
+            {
+              "region": "MED",
+              "weight": 0.0736273243971006
+            },
+            {
+              "region": "AUDv",
+              "weight": 0.07112473788791449
+            },
+            {
+              "region": "lfbst",
+              "weight": 0.06570401722980555
+            },
+            {
+              "region": "LAT",
+              "weight": 0.0503713336704037
+            },
+            {
+              "region": "SCs",
+              "weight": 0.04990458867183874
+            },
+            {
+              "region": "cett",
+              "weight": 0.048935150447657755
+            },
+            {
+              "region": "CTXpl",
+              "weight": 0.046534606574441
+            },
+            {
+              "region": "VISp",
+              "weight": 0.04489165687802349
+            },
+            {
+              "region": "MSC",
+              "weight": 0.04263458875917162
+            },
+            {
+              "region": "VISpor",
+              "weight": 0.03937868087380059
+            },
+            {
+              "region": "VS",
+              "weight": 0.03517886223647171
+            },
+            {
+              "region": "LS",
+              "weight": 0.03506571164861491
+            }
+          ]
+        },
+        "train_subjects": [
+          "CSH_ZAD_019",
+          "KS014",
+          "MFD_06",
+          "NYU-12",
+          "SWC_038",
+          "SWC_043"
+        ]
+      },
+      {
+        "feature_mode": "recording_centered",
+        "holdout": "NYU-12",
+        "n_eval_trials": 1875,
+        "n_regions": 79,
+        "n_train_trials": 13866,
+        "recording_bidirectional": {
+          "bidirectional_recording_fraction": 0.0,
+          "bidirectional_recordings": [],
+          "n_bidirectional_recordings": 0,
+          "n_evaluable_recordings": 4
+        },
+        "recording_bidirectional_decision": "reject: centered delta",
+        "recording_target_rows": [
+          {
+            "improved_fraction": 0.503921568627451,
+            "mean_true_class_delta": 0.007847498941341055,
+            "n_trials": 510,
+            "recording": "032ffcdf-7692-40b3-b9ff-8def1fc18b2e_probe00",
+            "target0_improved": 0.49140893470790376,
+            "target1_fraction": 0.4294117647058823,
+            "target1_improved": 0.5205479452054794
+          },
+          {
+            "improved_fraction": 0.45454545454545453,
+            "mean_true_class_delta": -0.01939249316266597,
+            "n_trials": 484,
+            "recording": "a8a8af78-16de-4841-ab07-fde4b5281a03_probe00",
+            "target0_improved": 0.52,
+            "target1_fraction": 0.4834710743801653,
+            "target1_improved": 0.38461538461538464
+          },
+          {
+            "improved_fraction": 0.4834710743801653,
+            "mean_true_class_delta": -0.0020671666184533337,
+            "n_trials": 484,
+            "recording": "a8a8af78-16de-4841-ab07-fde4b5281a03_probe01",
+            "target0_improved": 0.576,
+            "target1_fraction": 0.4834710743801653,
+            "target1_improved": 0.38461538461538464
+          },
+          {
+            "improved_fraction": 0.491183879093199,
+            "mean_true_class_delta": -0.02482408941296797,
+            "n_trials": 397,
+            "recording": "b182b754-3c3e-4942-8144-6ee790926b58_probe01",
+            "target0_improved": 0.45604395604395603,
+            "target1_fraction": 0.5415617128463476,
+            "target1_improved": 0.5209302325581395
+          }
+        ],
+        "region_granularity": "parent",
+        "summary": {
+          "decision": "no_model_free_true_region_advantage",
+          "delta_centered_auc": -0.011037479803930106,
+          "n_recordings": 4,
+          "paired_true_vs_shuffle": {
+            "improved_fraction": 0.4832,
+            "mean_true_class_delta": -0.008661020997827246,
+            "target0_improved_fraction": 0.513874614594039,
+            "target1_improved_fraction": 0.4501108647450111
+          },
+          "recordings_positive_true_minus_shuffle": 2
+        },
+        "target_delta_summary": {
+          "target0": {
+            "improved_fraction": 0.513874614594039,
+            "mean_true_class_delta": -0.008345036435252084,
+            "n_trials": 973
+          },
+          "target1": {
+            "improved_fraction": 0.4501108647450111,
+            "mean_true_class_delta": -0.009001877959452115,
+            "n_trials": 902
+          }
+        },
+        "target_mode": "stimulus_side",
+        "top_region_weights": {
+          "negative": [
+            {
+              "region": "IIn",
+              "weight": -0.09822363979783584
+            },
+            {
+              "region": "SSp-ll",
+              "weight": -0.08554761125678927
+            },
+            {
+              "region": "IIIn",
+              "weight": -0.08246633471713595
+            },
+            {
+              "region": "MOp",
+              "weight": -0.06066723817064831
+            },
+            {
+              "region": "mfbc",
+              "weight": -0.05551403813713465
+            },
+            {
+              "region": "MBmot",
+              "weight": -0.05493147471594686
+            },
+            {
+              "region": "OLF",
+              "weight": -0.05477484727895871
+            },
+            {
+              "region": "EPI",
+              "weight": -0.05170015079662563
+            },
+            {
+              "region": "fa",
+              "weight": -0.04634793044583959
+            },
+            {
+              "region": "SSp-bfd",
+              "weight": -0.045788142944528716
+            },
+            {
+              "region": "PALc",
+              "weight": -0.04350189034967878
+            },
+            {
+              "region": "SSp-ul",
+              "weight": -0.043012429437932743
+            }
+          ],
+          "positive": [
+            {
+              "region": "SSp-tr",
+              "weight": 0.07652970214137017
+            },
+            {
+              "region": "MED",
+              "weight": 0.07465726698203042
+            },
+            {
+              "region": "AUDv",
+              "weight": 0.07143097120539466
+            },
+            {
+              "region": "lfbst",
+              "weight": 0.06760060598231439
+            },
+            {
+              "region": "cett",
+              "weight": 0.0563863230997424
+            },
+            {
+              "region": "SCs",
+              "weight": 0.05113143367723462
+            },
+            {
+              "region": "MSC",
+              "weight": 0.047972449958581236
+            },
+            {
+              "region": "MBsta",
+              "weight": 0.047658269269198285
+            },
+            {
+              "region": "VISp",
+              "weight": 0.04511731494523379
+            },
+            {
+              "region": "SSp-un",
+              "weight": 0.04422869222517754
+            },
+            {
+              "region": "CTXpl",
+              "weight": 0.04313795877006967
+            },
+            {
+              "region": "VISpor",
+              "weight": 0.04086657956478976
+            }
+          ]
+        },
+        "train_subjects": [
+          "CSH_ZAD_019",
+          "KS014",
+          "MFD_06",
+          "NR_0019",
+          "SWC_038",
+          "SWC_043"
+        ]
+      },
+      {
+        "feature_mode": "recording_centered",
+        "holdout": "SWC_038",
+        "n_eval_trials": 2436,
+        "n_regions": 79,
+        "n_train_trials": 13305,
+        "recording_bidirectional": {
+          "bidirectional_recording_fraction": 0.25,
+          "bidirectional_recordings": [
+            "4d8c7767-981c-4347-8e5e-5d5fffe38534_probe01"
+          ],
+          "n_bidirectional_recordings": 1,
+          "n_evaluable_recordings": 4
+        },
+        "recording_bidirectional_decision": "reject: centered delta",
+        "recording_target_rows": [
+          {
+            "improved_fraction": 0.45789473684210524,
+            "mean_true_class_delta": -0.019179613444867905,
+            "n_trials": 760,
+            "recording": "03063955-2523-47bd-ae57-f7489dd40f15_probe01",
+            "target0_improved": 0.5085158150851582,
+            "target1_fraction": 0.45921052631578946,
+            "target1_improved": 0.3982808022922636
+          },
+          {
+            "improved_fraction": 0.5191256830601093,
+            "mean_true_class_delta": 0.017479009852216624,
+            "n_trials": 549,
+            "recording": "1e45d992-c356-40e1-9be1-a506d944896f_probe01",
+            "target0_improved": 0.5222222222222223,
+            "target1_fraction": 0.5081967213114754,
+            "target1_improved": 0.5161290322580645
+          },
+          {
+            "improved_fraction": 0.47577092511013214,
+            "mean_true_class_delta": -0.003654427493809328,
+            "n_trials": 454,
+            "recording": "41872d7f-75cb-4445-bb1a-132b354c44f0_probe01",
+            "target0_improved": 0.4272300469483568,
+            "target1_fraction": 0.5308370044052864,
+            "target1_improved": 0.5186721991701245
+          },
+          {
+            "improved_fraction": 0.5572065378900446,
+            "mean_true_class_delta": 0.07387219246776448,
+            "n_trials": 673,
+            "recording": "4d8c7767-981c-4347-8e5e-5d5fffe38534_probe01",
+            "target0_improved": 0.553072625698324,
+            "target1_fraction": 0.46805349182763745,
+            "target1_improved": 0.5619047619047619
+          }
+        ],
+        "region_granularity": "parent",
+        "summary": {
+          "decision": "no_model_free_true_region_advantage",
+          "delta_centered_auc": -0.006996238450911019,
+          "n_recordings": 4,
+          "paired_true_vs_shuffle": {
+            "improved_fraction": 0.5024630541871922,
+            "mean_true_class_delta": 0.01768322891600302,
+            "target0_improved_fraction": 0.5103833865814696,
+            "target1_improved_fraction": 0.49408783783783783
+          },
+          "recordings_positive_true_minus_shuffle": 2
+        },
+        "target_delta_summary": {
+          "target0": {
+            "improved_fraction": 0.5103833865814696,
+            "mean_true_class_delta": 0.017202976811976457,
+            "n_trials": 1252
+          },
+          "target1": {
+            "improved_fraction": 0.49408783783783783,
+            "mean_true_class_delta": 0.018191063066544638,
+            "n_trials": 1184
+          }
+        },
+        "target_mode": "stimulus_side",
+        "top_region_weights": {
+          "negative": [
+            {
+              "region": "SSp-ll",
+              "weight": -0.08561719456940031
+            },
+            {
+              "region": "IIIn",
+              "weight": -0.08100153072036784
+            },
+            {
+              "region": "IIn",
+              "weight": -0.07986459792026608
+            },
+            {
+              "region": "mfbc",
+              "weight": -0.07356903904302996
+            },
+            {
+              "region": "hc",
+              "weight": -0.06406128646815909
+            },
+            {
+              "region": "EPI",
+              "weight": -0.05585926826685092
+            },
+            {
+              "region": "SSp-bfd",
+              "weight": -0.04903528668266189
+            },
+            {
+              "region": "SCm",
+              "weight": -0.04871302035104236
+            },
+            {
+              "region": "PALc",
+              "weight": -0.04555608320536365
+            },
+            {
+              "region": "fa",
+              "weight": -0.04487817747840026
+            },
+            {
+              "region": "MOp",
+              "weight": -0.042927363410014206
+            },
+            {
+              "region": "SSp-ul",
+              "weight": -0.03931214196512792
+            }
+          ],
+          "positive": [
+            {
+              "region": "SSp-tr",
+              "weight": 0.07231705325444525
+            },
+            {
+              "region": "AUDv",
+              "weight": 0.0711194526783197
+            },
+            {
+              "region": "MED",
+              "weight": 0.06909393525008556
+            },
+            {
+              "region": "lfbst",
+              "weight": 0.06304054796044037
+            },
+            {
+              "region": "CTXpl",
+              "weight": 0.05257209609431026
+            },
+            {
+              "region": "LAT",
+              "weight": 0.04845910557239507
+            },
+            {
+              "region": "SCs",
+              "weight": 0.047951310036193684
+            },
+            {
+              "region": "MSC",
+              "weight": 0.047426745044111845
+            },
+            {
+              "region": "cett",
+              "weight": 0.04665849301004463
+            },
+            {
+              "region": "fiber tracts",
+              "weight": 0.045274680923922186
+            },
+            {
+              "region": "VISp",
+              "weight": 0.04253416467937834
+            },
+            {
+              "region": "ZI",
+              "weight": 0.04086393392818971
+            }
+          ]
+        },
+        "train_subjects": [
+          "CSH_ZAD_019",
+          "KS014",
+          "MFD_06",
+          "NR_0019",
+          "NYU-12",
+          "SWC_043"
+        ]
+      },
+      {
+        "feature_mode": "recording_centered",
+        "holdout": "SWC_043",
+        "n_eval_trials": 1888,
+        "n_regions": 79,
+        "n_train_trials": 13853,
+        "recording_bidirectional": {
+          "bidirectional_recording_fraction": 0.0,
+          "bidirectional_recordings": [],
+          "n_bidirectional_recordings": 0,
+          "n_evaluable_recordings": 4
+        },
+        "recording_bidirectional_decision": "reject: centered delta",
+        "recording_target_rows": [
+          {
+            "improved_fraction": 0.4808510638297872,
+            "mean_true_class_delta": -0.006977116714214555,
+            "n_trials": 470,
+            "recording": "4ecb5d24-f5cc-402c-be28-9d0f7cb14b3a_probe00",
+            "target0_improved": 0.5062761506276151,
+            "target1_fraction": 0.49148936170212765,
+            "target1_improved": 0.45454545454545453
+          },
+          {
+            "improved_fraction": 0.511340206185567,
+            "mean_true_class_delta": 0.0025566283572189476,
+            "n_trials": 485,
+            "recording": "6f09ba7e-e3ce-44b0-932b-c003fb44fb89_probe01",
+            "target0_improved": 0.5128205128205128,
+            "target1_fraction": 0.43711340206185567,
+            "target1_improved": 0.5094339622641509
+          },
+          {
+            "improved_fraction": 0.458980044345898,
+            "mean_true_class_delta": -0.22183167199449297,
+            "n_trials": 451,
+            "recording": "6fb1e12c-883b-46d1-a745-473cde3232c8_probe00",
+            "target0_improved": 0.44642857142857145,
+            "target1_fraction": 0.5033259423503326,
+            "target1_improved": 0.4713656387665198
+          },
+          {
+            "improved_fraction": 0.4854771784232365,
+            "mean_true_class_delta": -0.03704127724810897,
+            "n_trials": 482,
+            "recording": "88d24c31-52e4-49cc-9f32-6adbeb9eba87_probe00",
+            "target0_improved": 0.4798387096774194,
+            "target1_fraction": 0.4854771784232365,
+            "target1_improved": 0.49145299145299143
+          }
+        ],
+        "region_granularity": "parent",
+        "summary": {
+          "decision": "no_model_free_true_region_advantage",
+          "delta_centered_auc": -0.011718468954601047,
+          "n_recordings": 4,
+          "paired_true_vs_shuffle": {
+            "improved_fraction": 0.4846398305084746,
+            "mean_true_class_delta": -0.06352715032072802,
+            "target0_improved_fraction": 0.4878048780487805,
+            "target1_improved_fraction": 0.4811946902654867
+          },
+          "recordings_positive_true_minus_shuffle": 1
+        },
+        "target_delta_summary": {
+          "target0": {
+            "improved_fraction": 0.4878048780487805,
+            "mean_true_class_delta": -0.060944736389749,
+            "n_trials": 984
+          },
+          "target1": {
+            "improved_fraction": 0.4811946902654867,
+            "mean_true_class_delta": -0.06633809645798834,
+            "n_trials": 904
+          }
+        },
+        "target_mode": "stimulus_side",
+        "top_region_weights": {
+          "negative": [
+            {
+              "region": "SSp-ll",
+              "weight": -0.10036107288474415
+            },
+            {
+              "region": "IIIn",
+              "weight": -0.08483360925969197
+            },
+            {
+              "region": "SSp-bfd",
+              "weight": -0.07502880466841251
+            },
+            {
+              "region": "OLF",
+              "weight": -0.06722936365632567
+            },
+            {
+              "region": "IIn",
+              "weight": -0.06265231980082574
+            },
+            {
+              "region": "fxs",
+              "weight": -0.060286873421881375
+            },
+            {
+              "region": "STRv",
+              "weight": -0.053569196357152626
+            },
+            {
+              "region": "LGd",
+              "weight": -0.05346412327852896
+            },
+            {
+              "region": "cc",
+              "weight": -0.04890087684400756
+            },
+            {
+              "region": "mfbc",
+              "weight": -0.048314651949384786
+            },
+            {
+              "region": "EPI",
+              "weight": -0.04687057660265732
+            },
+            {
+              "region": "LZ",
+              "weight": -0.04441749722134858
+            }
+          ],
+          "positive": [
+            {
+              "region": "LAT",
+              "weight": 0.1334216577862839
+            },
+            {
+              "region": "SSp-tr",
+              "weight": 0.09708957104923821
+            },
+            {
+              "region": "MED",
+              "weight": 0.08514828374988478
+            },
+            {
+              "region": "SSp-un",
+              "weight": 0.06984042737366186
+            },
+            {
+              "region": "ZI",
+              "weight": 0.05595821626805271
+            },
+            {
+              "region": "CTXpl",
+              "weight": 0.04901707050978353
+            },
+            {
+              "region": "SCs",
+              "weight": 0.048362054973638956
+            },
+            {
+              "region": "cett",
+              "weight": 0.04810602018800172
+            },
+            {
+              "region": "RSPd",
+              "weight": 0.044712552975617596
+            },
+            {
+              "region": "VISp",
+              "weight": 0.04258611958990459
+            },
+            {
+              "region": "VS",
+              "weight": 0.03987219850343311
+            },
+            {
+              "region": "VISpor",
+              "weight": 0.038663437283728515
+            }
+          ]
+        },
+        "train_subjects": [
+          "CSH_ZAD_019",
+          "KS014",
+          "MFD_06",
+          "NR_0019",
+          "NYU-12",
+          "SWC_038"
+        ]
+      }
+    ],
+    "manifest": "/Users/colin/Desktop/Projects/anatomical-neural-fm/manifests/ibl_bwm_region_matched_candidates_s3_present_support80_hdf5_scored.json",
+    "region_granularity": "parent",
+    "summary": {
+      "candidate_holdouts": [],
+      "decision": "no_recording_bidirectional_model_free_signal",
+      "mean_bidirectional_recording_fraction": 0.07142857142857142,
+      "n_candidates": 0,
+      "n_holdouts": 7,
+      "n_positive_delta_holdouts": 2,
+      "positive_delta_holdouts": [
+        "KS014",
+        "NR_0019"
+      ]
+    },
+    "target_mode": "stimulus_side",
+    "thresholds": {
+      "min_bidirectional_recording_fraction": 0.75,
+      "min_centered_delta": 0.01,
+      "min_target_improvement": 0.55
+    }
+  },
   "model_free_recording_bidirectional_unit_residuals": {
     "feature_mode": "unit_residuals",
     "holdouts": [

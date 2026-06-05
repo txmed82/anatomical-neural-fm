@@ -321,6 +321,18 @@ spike counts to fractions of that trial's total spikes.
 
 Decision: simple region-composition normalization does not rescue the anatomical feature branch. It creates three positive centered-delta holdouts, but all are one-sided and have `0/4` bidirectional recordings.
 
+## Recording-Centered Feature Gate
+
+`docs/model_free_recording_bidirectional_gate_recording_centered.md` subtracts
+each recording's own mean parent-region feature vector before ridge fitting.
+
+- candidates: `0/7`
+- positive centered-delta holdouts: `2/7`
+- mean bidirectional recording fraction: `0.071`
+- decision: `no_recording_bidirectional_model_free_signal`
+
+Decision: feature-level recording centering is the least one-sided normalization so far, but it remains below the gate. `KS014` has only `1/4` bidirectional recordings and both positive-delta holdouts still miss global target0.
+
 ## Unit-Residual Feature Gate
 
 `docs/model_free_recording_bidirectional_gate_unit_residuals.md` subtracts

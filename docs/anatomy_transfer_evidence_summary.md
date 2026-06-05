@@ -342,3 +342,13 @@ target-direction artifacts: `CSH_ZAD_019` has target0 `0.120` and target1
 `0.903`, while `NYU-12` flips to target0 `0.694` and target1 `0.341`.
 Decision: residualized region deviations are not enough to trigger GPU
 training.
+
+Recording-centered feature check:
+`docs/model_free_recording_bidirectional_gate_recording_centered.md` subtracts
+each recording's own mean parent-region feature vector before ridge fitting.
+This is the least one-sided feature normalization so far, but it still does not
+pass: zero candidates, two positive centered-delta holdouts, and mean
+bidirectional recording fraction `0.071`. `KS014` has centered delta `+0.042`
+but target0 `0.520`, target1 `0.540`, and only `1/4` bidirectional recordings;
+`NR_0019` has centered delta `+0.047` but target0 `0.482`. Decision: keep this
+as a near-miss diagnostic, not a GPU trigger.

@@ -138,6 +138,15 @@ def transform_region_features(
         out = np.zeros_like(region_features, dtype=np.float32)
         np.divide(region_features, totals, out=out, where=totals > 0.0)
         return out
+    if feature_mode == "recording_centered":
+        if recording_ids is None:
+            raise ValueError("recording_centered requires recording_ids")
+        out = region_features.astype(np.float32).copy()
+        for rid in sorted(set(recording_ids)):
+            mask = np.asarray([value == rid for value in recording_ids], dtype=bool)
+            if np.any(mask):
+                out[mask] -= out[mask].mean(axis=0, keepdims=True)
+        return out
     if feature_mode == "unit_residuals":
         if recording_ids is None or unit_region_fractions is None:
             raise ValueError("unit_residuals requires recording_ids and unit_region_fractions")
@@ -327,7 +336,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--manifest", type=Path, default=REPO_ROOT / "manifests/ibl_bwm_region_matched_support80_best6.json")
     parser.add_argument("--holdout", nargs="*", default=["CSH_ZAD_019"])
     parser.add_argument("--target-mode", default="stimulus_side", choices=["choice", "stimulus_side", "feedback", "prior_side"])
-    parser.add_argument("--feature-mode", default="counts", choices=["counts", "fractions", "unit_residuals"])
+    parser.add_argument(
+        "--feature-mode",
+        default="counts",
+        choices=["counts", "fractions", "recording_centered", "unit_residuals"],
+    )
     parser.add_argument("--region-granularity", default="parent", choices=["fine", "parent", "grandparent"])
     parser.add_argument("--window-len", type=float, default=1.0)
     parser.add_argument("--seed", type=int, default=0)

@@ -1410,3 +1410,14 @@ holdout remains one-sided. This suggests there may be a weak region-deviation
 signal, but not one that supports the cross-animal anatomical transfer claim
 under the current target/control gates. Do not launch GPU training from this
 result.
+
+Recording-centered feature check:
+The gate also supports `--feature-mode recording_centered`, which subtracts
+each recording's mean parent-region feature vector before fitting. This reduces
+the target-class asymmetry more than fractions or unit residuals, but still
+does not clear the local promotion gate: zero candidates, mean bidirectional
+recording fraction `0.071`, and only `KS014`/`NR_0019` with positive centered
+deltas. Treat this as the best near-miss feature transform so far. The next
+local branch should combine recording-centered features with structured
+anatomical families or predefined region groups, then require the same
+recording-bidirectional gate before any cloud run.
