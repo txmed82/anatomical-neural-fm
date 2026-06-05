@@ -24,9 +24,18 @@ Configuration:
 - output root: `runs/fixed_broad_family_train_arm_panel_runpod`
 - sweep env: `MANIFEST_PATH=manifests/ibl_bwm_local_cached_external_support80_projected_hdf5.json, SEEDS=0, DEVICE=cpu, MAX_STEPS=1000, BEST_METRIC=full_eval_centered_auc`
 
-## Missing Sweep Summary
+## Summary
 
-No `runs/fixed_broad_family_train_arm_panel_runpod/summary.md`, `within_summary.md`, or
-`cross_summary.md` file was present when cleanup pushed artifacts. Treat this
-cloud result as incomplete/non-evidence even if the pod exit status is 0.
+The wrapper completed and wrote held-out prediction files for all four arms.
+The generic artifact collector did not commit the wrapper `summary.md`, so the
+panel was re-summarized from committed `eval_predictions.jsonl` files in
+`docs/fixed_broad_family_train_arm_runpod_panel.md`.
 
+| holdout | target | true centered AUC | shuffle centered AUC | delta |
+|---|---|---:|---:|---:|
+| CSHL045 | post_error_response_extreme_25_75_le_1 | 0.8521 | 0.8388 | +0.0132 |
+| NR_0019 | post_error_response_extreme_33_67_le_1 | 0.7565 | 0.7528 | +0.0036 |
+
+Decision: bounded cloud replication of the fixed broad-family count arm is
+positive on both response-extreme cases. This is fixed-feature train-path
+evidence, not a transformer/foundation-model result.

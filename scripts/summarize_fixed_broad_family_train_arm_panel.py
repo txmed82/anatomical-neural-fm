@@ -5,6 +5,8 @@ import argparse
 import json
 from pathlib import Path
 
+import numpy as np
+
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 DEFAULT_CASES = (
@@ -21,10 +23,50 @@ def repo_relative(path: Path) -> str:
 
 
 def load_summary(root: Path, holdout: str, control: str) -> dict:
-    path = root / f"holdout_{holdout}" / f"fixed_broad_family_count_{control}_seed0" / "fixed_family_summary.json"
-    payload = json.loads(path.read_text())
-    payload["path"] = repo_relative(path)
-    return payload
+    run_dir = root / f"holdout_{holdout}" / f"fixed_broad_family_count_{control}_seed0"
+    summary_path = run_dir / "fixed_family_summary.json"
+    if summary_path.exists():
+        payload = json.loads(summary_path.read_text())
+        payload["path"] = repo_relative(summary_path)
+        return payload
+    prediction_path = run_dir / "eval_predictions.jsonl"
+    rows = [json.loads(line) for line in prediction_path.read_text().splitlines() if line.strip()]
+    metrics = metrics_from_prediction_rows(rows)
+    return {
+        "family": "broad_named_anatomy",
+        "feature_mode": "recording_centered",
+        "n_eval": metrics["n"],
+        "eval_auc": metrics["auc"],
+        "eval_centered_auc": metrics["centered_auc"],
+        "path": repo_relative(prediction_path),
+    }
+
+
+def auc(scores: np.ndarray, labels: np.ndarray) -> float:
+    pos = scores[labels == 1]
+    neg = scores[labels == 0]
+    if len(pos) == 0 or len(neg) == 0:
+        return float("nan")
+    n_pos, n_neg = len(pos), len(neg)
+    all_scores = np.concatenate([pos, neg])
+    ranks = np.argsort(np.argsort(all_scores)) + 1
+    sum_pos_ranks = ranks[:n_pos].sum()
+    return float((sum_pos_ranks - n_pos * (n_pos + 1) / 2) / (n_pos * n_neg))
+
+
+def metrics_from_prediction_rows(rows: list[dict]) -> dict:
+    probs = np.asarray([float(row["prob"]) for row in rows], dtype=np.float64)
+    labels = np.asarray([int(row["target"]) for row in rows], dtype=np.int64)
+    centered = probs.copy()
+    recording_ids = [str(row["recording_id"]) for row in rows]
+    for recording_id in sorted(set(recording_ids)):
+        mask = np.asarray([value == recording_id for value in recording_ids], dtype=bool)
+        centered[mask] -= centered[mask].mean()
+    return {
+        "n": len(rows),
+        "auc": auc(probs, labels),
+        "centered_auc": auc(centered, labels),
+    }
 
 
 def build_report(root: Path, cases: tuple[tuple[str, str], ...] = DEFAULT_CASES) -> dict:
@@ -48,11 +90,16 @@ def build_report(root: Path, cases: tuple[tuple[str, str], ...] = DEFAULT_CASES)
             "shuffle_path": shuffle["path"],
         })
     positive = [row for row in rows if row["centered_delta_vs_shuffle"] > 0.0]
+    is_runpod = "runpod" in str(root).lower()
     return {
         "root": repo_relative(root),
         "summary": {
             "decision": (
-                "fixed_broad_family_train_arm_local_candidate"
+                (
+                    "fixed_broad_family_train_arm_runpod_candidate"
+                    if is_runpod
+                    else "fixed_broad_family_train_arm_local_candidate"
+                )
                 if len(positive) == len(rows) and rows
                 else "no_fixed_broad_family_train_arm_local_candidate"
             ),
@@ -60,7 +107,11 @@ def build_report(root: Path, cases: tuple[tuple[str, str], ...] = DEFAULT_CASES)
             "n_positive_centered_delta": len(positive),
             "paid_gpu_trigger": False,
             "next_action": (
-                "Run the bounded RunPod preflight for this exact fixed-family arm, then launch one low-cost true/shuffle panel only if cost and zero-pod checks pass."
+                (
+                    "Package this as bounded cloud fixed-feature train-path evidence, then decide whether the remaining goal requires a transformer/foundation-model mechanism."
+                    if is_runpod
+                    else "Run the bounded RunPod preflight for this exact fixed-family arm, then launch one low-cost true/shuffle panel only if cost and zero-pod checks pass."
+                )
                 if len(positive) == len(rows) and rows
                 else "Do not launch a fixed-family GPU panel; inspect local train-arm mismatch first."
             ),
@@ -71,10 +122,11 @@ def build_report(root: Path, cases: tuple[tuple[str, str], ...] = DEFAULT_CASES)
 
 def render_markdown(report: dict) -> str:
     summary = report["summary"]
+    panel_label = "RunPod" if "runpod" in str(report["root"]).lower() else "Local"
     lines = [
-        "# Fixed Broad-Family Train Arm Local Panel",
+        f"# Fixed Broad-Family Train Arm {panel_label} Panel",
         "",
-        "Local `train.py --arm fixed_broad_family_count` panel for the two response-extreme demo cases.",
+        f"{panel_label} `train.py --arm fixed_broad_family_count` panel for the two response-extreme demo cases.",
         "",
         f"- decision: `{summary['decision']}`",
         f"- positive centered-delta cases: `{summary['n_positive_centered_delta']}/{summary['n_cases']}`",

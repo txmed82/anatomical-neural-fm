@@ -41,8 +41,9 @@ def build_package(readiness: dict, aligned_readout: dict, failure_audit: dict) -
             "paid_gpu_trigger": False,
             "next_action": (
                 "Use this as a narrow reproducible model-free demo, with the "
-                "trainable fixed-feature bridge and local train.py fixed-family arm "
-                "as intermediate checks. Run the bounded fixed-arm preflight before any GPU spending."
+                "trainable fixed-feature bridge plus local/cloud train.py fixed-family "
+                "arms as intermediate checks. Treat the remaining gap as the stronger "
+                "transformer/foundation-model mechanism."
             ),
         },
         "evidence_rows": rows,
@@ -64,7 +65,7 @@ def build_package(readiness: dict, aligned_readout: dict, failure_audit: dict) -
         "demo_boundaries": [
             "This is a model-free ridge/count readout demo, not a trained transformer demo.",
             "The positive feature is the fixed broad_named_anatomy aggregate, not the full shared parent-region feature vector.",
-            "The local trainable bridge and train.py fixed-family arm are positive, but no paid GPU run is justified unless the bounded fixed-arm preflight passes.",
+            "The local and cloud train.py fixed-family arms are positive, but this still does not establish a transformer/foundation-model anatomical mechanism.",
         ],
     }
 

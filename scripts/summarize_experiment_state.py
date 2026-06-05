@@ -136,6 +136,7 @@ RESPONSE_EXTREME_TRAINING_ALIGNED_READOUT_FILE = "docs/response_extreme_training
 DIRECT_BROAD_FAMILY_DEMO_READINESS_FILE = "docs/direct_broad_family_demo_readiness.json"
 DIRECT_BROAD_FAMILY_TRAINABLE_READOUT_FILE = "docs/direct_broad_family_trainable_readout.json"
 FIXED_BROAD_FAMILY_TRAIN_ARM_LOCAL_PANEL_FILE = "docs/fixed_broad_family_train_arm_local_panel.json"
+FIXED_BROAD_FAMILY_TRAIN_ARM_RUNPOD_PANEL_FILE = "docs/fixed_broad_family_train_arm_runpod_panel.json"
 MODEL_FREE_DEMO_PACKAGE_FILE = "docs/model_free_anatomical_transfer_demo_package.json"
 LOW_CONTRAST_CHOICE_FAMILY_GATE_FILE = "docs/low_contrast_choice_family_gate.json"
 LOW_CONTRAST_CHOICE_PROJECTED_GATE_FILE = "docs/low_contrast_choice_family_gate_projected_hdf5.json"
@@ -678,6 +679,7 @@ def render_markdown(
     direct_broad_family_demo_readiness: dict | None = None,
     direct_broad_family_trainable_readout: dict | None = None,
     fixed_broad_family_train_arm_local_panel: dict | None = None,
+    fixed_broad_family_train_arm_runpod_panel: dict | None = None,
     model_free_demo_package: dict | None = None,
     low_contrast_choice_family_gate: dict | None = None,
     low_contrast_choice_projected_gate: dict | None = None,
@@ -2237,6 +2239,39 @@ def render_markdown(
                 "training-code arm. This is still not a transformer/foundation-model "
                 "result, but it is the first train-path implementation matching the "
                 "successful fixed-family local signal."
+            ),
+            "",
+        ]
+    if fixed_broad_family_train_arm_runpod_panel is not None:
+        summary = fixed_broad_family_train_arm_runpod_panel["summary"]
+        lines += [
+            "## Fixed Broad-Family Train Arm RunPod Panel",
+            "",
+            "`docs/fixed_broad_family_train_arm_runpod_panel.md` summarizes the",
+            "bounded L4 RunPod execution of the fixed broad-family train.py arm from",
+            "committed held-out prediction files.",
+            "",
+            f"- decision: `{summary['decision']}`",
+            f"- positive centered-delta cases: `{summary['n_positive_centered_delta']}/{summary['n_cases']}`",
+            f"- paid GPU trigger: `{summary['paid_gpu_trigger']}`",
+            f"- next action: {summary['next_action']}",
+            "",
+            "| holdout | target | true centered AUC | shuffle centered AUC | delta |",
+            "|---|---|---:|---:|---:|",
+        ]
+        for row in fixed_broad_family_train_arm_runpod_panel["rows"]:
+            lines.append(
+                f"| {row['holdout']} | {row['target_mode']} | "
+                f"{row['true_centered_auc']:.4f} | {row['shuffle_centered_auc']:.4f} | "
+                f"{row['centered_delta_vs_shuffle']:+.4f} |"
+            )
+        lines += [
+            "",
+            (
+                "Decision: the fixed broad-family count arm now has a bounded cloud "
+                "replication on the two response-extreme cases. This strengthens the "
+                "narrow anatomical-transfer demo but remains a fixed-feature readout, "
+                "not a transformer/foundation-model result."
             ),
             "",
         ]
@@ -4215,6 +4250,9 @@ def main() -> int:
     fixed_broad_family_train_arm_local_panel = read_mechanism_audit(
         REPO_ROOT / FIXED_BROAD_FAMILY_TRAIN_ARM_LOCAL_PANEL_FILE
     )
+    fixed_broad_family_train_arm_runpod_panel = read_mechanism_audit(
+        REPO_ROOT / FIXED_BROAD_FAMILY_TRAIN_ARM_RUNPOD_PANEL_FILE
+    )
     model_free_demo_package = read_mechanism_audit(REPO_ROOT / MODEL_FREE_DEMO_PACKAGE_FILE)
     low_contrast_choice_family_gate = read_mechanism_audit(REPO_ROOT / LOW_CONTRAST_CHOICE_FAMILY_GATE_FILE)
     low_contrast_choice_projected_gate = read_mechanism_audit(REPO_ROOT / LOW_CONTRAST_CHOICE_PROJECTED_GATE_FILE)
@@ -4397,6 +4435,7 @@ def main() -> int:
         direct_broad_family_demo_readiness,
         direct_broad_family_trainable_readout,
         fixed_broad_family_train_arm_local_panel,
+        fixed_broad_family_train_arm_runpod_panel,
         model_free_demo_package,
         low_contrast_choice_family_gate,
         low_contrast_choice_projected_gate,
@@ -4549,6 +4588,7 @@ def main() -> int:
         "direct_broad_family_demo_readiness": direct_broad_family_demo_readiness,
         "direct_broad_family_trainable_readout": direct_broad_family_trainable_readout,
         "fixed_broad_family_train_arm_local_panel": fixed_broad_family_train_arm_local_panel,
+        "fixed_broad_family_train_arm_runpod_panel": fixed_broad_family_train_arm_runpod_panel,
         "model_free_demo_package": model_free_demo_package,
         "low_contrast_choice_family_gate": low_contrast_choice_family_gate,
         "low_contrast_choice_projected_gate": low_contrast_choice_projected_gate,

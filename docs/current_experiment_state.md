@@ -792,6 +792,24 @@ and compares true anatomy against within-recording shuffled anatomy.
 
 Decision: the fixed broad-family feature now has a positive local training-code arm. This is still not a transformer/foundation-model result, but it is the first train-path implementation matching the successful fixed-family local signal.
 
+## Fixed Broad-Family Train Arm RunPod Panel
+
+`docs/fixed_broad_family_train_arm_runpod_panel.md` summarizes the
+bounded L4 RunPod execution of the fixed broad-family train.py arm from
+committed held-out prediction files.
+
+- decision: `fixed_broad_family_train_arm_runpod_candidate`
+- positive centered-delta cases: `2/2`
+- paid GPU trigger: `False`
+- next action: Package this as bounded cloud fixed-feature train-path evidence, then decide whether the remaining goal requires a transformer/foundation-model mechanism.
+
+| holdout | target | true centered AUC | shuffle centered AUC | delta |
+|---|---|---:|---:|---:|
+| CSHL045 | post_error_response_extreme_25_75_le_1 | 0.8521 | 0.8388 | +0.0132 |
+| NR_0019 | post_error_response_extreme_33_67_le_1 | 0.7565 | 0.7528 | +0.0036 |
+
+Decision: the fixed broad-family count arm now has a bounded cloud replication on the two response-extreme cases. This strengthens the narrow anatomical-transfer demo but remains a fixed-feature readout, not a transformer/foundation-model result.
+
 ## Model-Free Anatomical Transfer Demo Package
 
 `docs/model_free_anatomical_transfer_demo_package.md` is the current

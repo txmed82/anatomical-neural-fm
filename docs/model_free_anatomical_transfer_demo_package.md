@@ -12,7 +12,7 @@ Not supported yet: A trained neural foundation-model anatomical transfer signal 
 - model-free demo ready: `True`
 - trained-model demo ready: `False`
 - paid GPU trigger: `False`
-- next action: Use this as a narrow reproducible model-free demo, with the trainable fixed-feature bridge and local train.py fixed-family arm as intermediate checks. Run the bounded fixed-arm preflight before any GPU spending.
+- next action: Use this as a narrow reproducible model-free demo, with the trainable fixed-feature bridge plus local/cloud train.py fixed-family arms as intermediate checks. Treat the remaining gap as the stronger transformer/foundation-model mechanism.
 
 ## Positive Evidence
 
@@ -44,4 +44,4 @@ uv run python scripts/package_model_free_demo.py
 
 - This is a model-free ridge/count readout demo, not a trained transformer demo.
 - The positive feature is the fixed broad_named_anatomy aggregate, not the full shared parent-region feature vector.
-- The local trainable bridge and train.py fixed-family arm are positive, but no paid GPU run is justified unless the bounded fixed-arm preflight passes.
+- The local and cloud train.py fixed-family arms are positive, but this still does not establish a transformer/foundation-model anatomical mechanism.
