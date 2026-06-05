@@ -132,6 +132,9 @@ diagnostic verdict is `docs/lso_csh_diagnostic_outputs_gate.json`.
 
 The current consolidated decision artifact is
 `docs/current_experiment_state.md`: no paid broadening without a new mechanism.
-The next useful artifact is a CSH mechanism audit comparing true vs
-within-recording-shuffled region embeddings and prediction shifts by carrier
-parent and recording.
+The CSH mechanism audit is now complete at `docs/csh_mechanism_audit.md`. It
+finds no true-label mechanism in the saved artifacts: carrier-parent embeddings
+are nearly identical between true and within-recording-shuffled controls
+(`0.992` mean cosine), and all four held-out recordings have true-vs-shuffle
+paired movement below `0.5`. The next work item is objective redesign, not more
+subject or slice selection.

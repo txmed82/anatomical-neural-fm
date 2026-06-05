@@ -126,3 +126,12 @@ within-recording-shuffled region embeddings and prediction shifts by carrier
 parent and recording, then define an objective/control that requires true
 anatomical labels to improve target-aware within-recording ranking. Do not spend
 on another broadening or fixed-slice RunPod job without that new mechanism.
+
+CSH mechanism audit result: `docs/csh_mechanism_audit.md` found no such
+mechanism in the saved artifacts. Carrier-parent embeddings are nearly identical
+between true and within-recording-shuffled controls (`0.992` mean cosine), and
+every CSH held-out recording has true-vs-shuffle paired target movement below
+`0.5`, including the carrier-rich recordings. The next useful implementation is
+therefore objective redesign: train/evaluate against an explicit
+within-recording true-vs-shuffle separation target, rather than choosing another
+holdout subject or parent-region slice.

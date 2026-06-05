@@ -353,6 +353,24 @@ next; it is whether true region labels create any carrier-parent or
 recording-level target-aware shift that a within-recording shuffled control
 cannot reproduce.
 
+Completed mechanism audit: `docs/csh_mechanism_audit.md` compared the
+recording-centered CSH pilot's true-label arm against the within-recording
+shuffled arm using saved predictions and region embeddings.
+
+- global paired true-vs-shuffle: `0.448`
+- specificity gap: `-0.103`
+- mean carrier-parent embedding cosine true vs shuffled: `0.992`
+- all four held-out recordings have true-vs-shuffle paired movement below `0.5`
+- carrier-rich recordings are not rescued; the largest carrier slice
+  (`5adab0b7...probe00`, 805 carrier units) has paired true-vs-shuffle `0.414`
+
+Decision: the current objective is not producing an anatomical representation
+that survives the recording-matched shuffled control. Do not run another
+subject/slice selection job. The next implementable experiment should change
+the training objective or model comparison so that true anatomical labels must
+beat a within-recording shuffled-label arm on target-aware within-recording
+ranking, preferably as a contrastive or paired auxiliary criterion.
+
 Conclusion: building all 48 public IBL recordings inside a throwaway A100
 container is the wrong next spend. The next attempt should either split the
 candidate manifest into smaller persisted build shards, use a persistent

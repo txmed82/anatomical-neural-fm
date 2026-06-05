@@ -27,3 +27,16 @@ No current strict-gate artifact supports paid broadening. The later recording-ma
 Next mechanism: Define a mechanism-level analysis of the CSH success itself: compare true vs within-recording-shuffled region embeddings and prediction shifts by carrier parent and recording, then implement a training objective/control that requires true anatomical labels to improve target-aware within-recording ranking.
 
 A useful next artifact would be a CSH mechanism audit over saved predictions and region embeddings, not another RunPod launch.
+
+## Mechanism Audit Follow-Up
+
+`docs/csh_mechanism_audit.md` performs that saved-artifact audit on the
+recording-centered gate pilot. It does not find a transferable anatomical
+mechanism:
+
+- global paired true-vs-shuffle remains `0.448`
+- specificity gap is `-0.103`
+- carrier-parent embeddings are nearly identical between true and shuffled controls, with mean carrier cosine `0.992`
+- carrier-rich negative recordings: `4`
+
+Updated mechanism decision: no paid run is justified until the objective itself forces target-aware true-vs-shuffle separation. Region/subject selection and embedding inspection did not reveal a mechanism that the current controls can validate.

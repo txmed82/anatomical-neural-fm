@@ -56,6 +56,7 @@ SLICE_RESULT_FILES = (
     ("NYU-12 fixed carrier slice", "docs/lso_nyu12_parent_slice_results.md", "NYU-12"),
     ("SWC_038 stricter carrier slice", "docs/lso_swc038_parent_slice_results.md", "SWC_038"),
 )
+MECHANISM_AUDIT_FILE = "docs/csh_mechanism_audit.json"
 
 
 def display_path(path: Path) -> str:
@@ -171,7 +172,17 @@ def summarize(strict_rows: list[StrictGateRow], slice_rows: list[SliceRow]) -> d
     }
 
 
-def render_markdown(strict_rows: list[StrictGateRow], slice_rows: list[SliceRow]) -> str:
+def read_mechanism_audit(path: Path) -> dict | None:
+    if not path.exists():
+        return None
+    return json.loads(path.read_text())
+
+
+def render_markdown(
+    strict_rows: list[StrictGateRow],
+    slice_rows: list[SliceRow],
+    mechanism: dict | None = None,
+) -> str:
     summary = summarize(strict_rows, slice_rows)
     lines = [
         "# Current Anatomy-Transfer Experiment State",
@@ -230,6 +241,31 @@ def render_markdown(strict_rows: list[StrictGateRow], slice_rows: list[SliceRow]
         ),
         "",
     ]
+    if mechanism is not None:
+        global_metrics = mechanism.get("global", {})
+        emb = mechanism.get("embedding_summary", {})
+        interp = mechanism.get("interpretation", {})
+        true_vs_shuffle = global_metrics.get("paired_true_vs_shuffle", {})
+        lines += [
+            "## Mechanism Audit Follow-Up",
+            "",
+            "`docs/csh_mechanism_audit.md` performs that saved-artifact audit on the",
+            "recording-centered gate pilot. It does not find a transferable anatomical",
+            "mechanism:",
+            "",
+            f"- global paired true-vs-shuffle remains `{fmt_float(true_vs_shuffle.get('improved_fraction'))}`",
+            f"- specificity gap is `{fmt_signed(global_metrics.get('specificity_gap'))}`",
+            f"- carrier-parent embeddings are nearly identical between true and shuffled controls, with mean carrier cosine `{fmt_float(emb.get('mean_carrier_cosine'))}`",
+            f"- carrier-rich negative recordings: `{len(interp.get('carrier_rich_negative_recordings', []))}`",
+            "",
+            (
+                "Updated mechanism decision: no paid run is justified until the objective "
+                "itself forces target-aware true-vs-shuffle separation. Region/subject "
+                "selection and embedding inspection did not reveal a mechanism that the "
+                "current controls can validate."
+            ),
+            "",
+        ]
     return "\n".join(lines)
 
 
@@ -250,13 +286,15 @@ def main() -> int:
         row for label, rel_path, holdout in SLICE_RESULT_FILES
         if (row := read_slice_result(label, REPO_ROOT / rel_path, holdout)) is not None
     ]
+    mechanism = read_mechanism_audit(REPO_ROOT / MECHANISM_AUDIT_FILE)
     args.out_md.parent.mkdir(parents=True, exist_ok=True)
-    args.out_md.write_text(render_markdown(strict_rows, slice_rows))
+    args.out_md.write_text(render_markdown(strict_rows, slice_rows, mechanism))
     args.out_json.parent.mkdir(parents=True, exist_ok=True)
     args.out_json.write_text(json.dumps({
         "summary": summarize(strict_rows, slice_rows),
         "strict_gates": [row.__dict__ | {"source": display_path(row.source)} for row in strict_rows],
         "fixed_slices": [row.__dict__ | {"source": display_path(row.source)} for row in slice_rows],
+        "mechanism": mechanism,
     }, indent=2, sort_keys=True) + "\n")
     print(f"wrote {args.out_md}")
     print(f"wrote {args.out_json}")
