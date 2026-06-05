@@ -1,0 +1,107 @@
+{
+  "artifacts": {
+    "family_alt_feedback": "docs/model_free_family_bidirectional_gate_feedback_recording_centered.json",
+    "family_alt_prior": "docs/model_free_family_bidirectional_gate_prior_side_recording_centered.json",
+    "iterative_manifest": "docs/shared_family_iterative_manifest_gate.json",
+    "recording_replication": "docs/model_free_recording_replication_audit.json",
+    "shared_broad_repair": "docs/shared_broad_anatomy_repair_sweep.json",
+    "shared_family": "docs/shared_family_target_control_gate.json",
+    "source_target_families": "docs/model_free_source_target_pair_gate_families_recording_centered.json",
+    "symmetric_strict": "docs/symmetric_strict_failure_modes.json",
+    "symmetric_threshold": "docs/symmetric_threshold_sensitivity_audit.json"
+  },
+  "branches": [
+    {
+      "evidence": [
+        "current cached trial targets and shared-family controls all fail strict same-recording bidirectionality",
+        "strict symmetric gate has 0 candidates and 0 one-recording-short global-clear rows",
+        "threshold sensitivity only finds default-target candidates when bidirectional support is relaxed to 0.25 (3 candidates)"
+      ],
+      "gpu_trigger": "At least one local row must clear delta_vs_shuffle>=0, delta_vs_total>=0, target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75.",
+      "name": "new benchmark/control target definition",
+      "next_action": "Define a prospectively balanced target/control that is not just another feature transform of the four cached trial targets. Before training, run the same model-free true-vs-shuffle, total-baseline, global target, and same-recording bidirectional gate.",
+      "priority": 1,
+      "status": "recommended_next"
+    },
+    {
+      "evidence": [
+        "current 28-recording manifest is feasible but not clean enough to pass the local gate",
+        "strict iterative 8-recording manifest has 0 candidates and max bidir 0.250",
+        "recording-subset replication selected zero stable validation rows"
+      ],
+      "gpu_trigger": "Same local gate as above, measured on the proposed manifest before training.",
+      "name": "new manifest with prospective bidirectional support",
+      "next_action": "Only build or fetch more recordings after a target/control proposal defines which recordings should prospectively contain target0+target1 evidence.",
+      "priority": 2,
+      "status": "secondary_after_new_target"
+    },
+    {
+      "evidence": [
+        "shared broad-anatomy repair sweep has 0 candidates, max bidir 2, and max min target margin -0.010"
+      ],
+      "gpu_trigger": "none",
+      "name": "more feature-mode or l2 sweeps on shared broad anatomy",
+      "next_action": "Do not spend more local or GPU time on simple broad-anatomy feature/regularization repair.",
+      "priority": 90,
+      "status": "closed"
+    },
+    {
+      "evidence": [
+        "iterative manifest gate has 0 candidates and max bidir recordings 1",
+        "2-subject manifest is too narrow for the intended cross-animal demo"
+      ],
+      "gpu_trigger": "none",
+      "name": "narrow existing manifest further",
+      "next_action": "Do not keep shrinking the existing cache as the primary rescue path.",
+      "priority": 91,
+      "status": "closed"
+    },
+    {
+      "evidence": [
+        "recording replication audit selected 3 rows and replicated 0"
+      ],
+      "gpu_trigger": "none",
+      "name": "recording-subset selection from current artifacts",
+      "next_action": "Do not train on selected current recordings unless a new target/control first passes locally.",
+      "priority": 92,
+      "status": "closed"
+    },
+    {
+      "evidence": [
+        "shared-family gate has 0 candidates across 112 rows",
+        "top rows are one-sided or fail baseline controls"
+      ],
+      "gpu_trigger": "none",
+      "name": "current shared-family target/control grid",
+      "next_action": "Do not rerun the same target/family grid without a new target/control definition.",
+      "priority": 93,
+      "status": "closed"
+    },
+    {
+      "evidence": [
+        "prior_side family gate candidates=0; feedback family gate candidates=0"
+      ],
+      "gpu_trigger": "none",
+      "name": "alternative cached targets plus family aggregation",
+      "next_action": "Do not expect prior_side or feedback alone to rescue the signal under current controls.",
+      "priority": 94,
+      "status": "closed"
+    },
+    {
+      "evidence": [
+        "family source-target pair gate candidates=0"
+      ],
+      "gpu_trigger": "none",
+      "name": "source-target pair narrowing",
+      "next_action": "Do not run a paid source-target pair sweep without a new local gate pass.",
+      "priority": 95,
+      "status": "closed"
+    }
+  ],
+  "summary": {
+    "closed_branches": 6,
+    "decision": "new_benchmark_control_definition_required",
+    "gpu_training_trigger": "At least one local row must clear delta_vs_shuffle>=0, delta_vs_total>=0, target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75.",
+    "recommended_next": "new benchmark/control target definition"
+  }
+}

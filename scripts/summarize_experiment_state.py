@@ -108,6 +108,7 @@ SHARED_FAMILY_TARGET_CONTROL_GATE_FILE = "docs/shared_family_target_control_gate
 SHARED_FAMILY_CHOICE_FIBER_CSH_NEAR_MISS_FILE = "docs/shared_family_choice_fiber_csh_near_miss.json"
 SHARED_BROAD_ANATOMY_REPAIR_SWEEP_FILE = "docs/shared_broad_anatomy_repair_sweep.json"
 SHARED_FAMILY_ITERATIVE_MANIFEST_GATE_FILE = "docs/shared_family_iterative_manifest_gate.json"
+NEXT_BENCHMARK_CONTROL_OPTIONS_FILE = "docs/next_benchmark_control_options.json"
 MODEL_FREE_MATCHED_SUPPORT80_PANEL_FILE = "docs/model_free_matched_support80_hdf5_panel.json"
 MODEL_FREE_POSITIVE_HOLDOUTS_MECHANISM_FILE = "docs/model_free_positive_holdouts_mechanism.json"
 MODEL_FREE_RECORDING_BIDIRECTIONAL_GATE_FILE = "docs/model_free_recording_bidirectional_gate.json"
@@ -441,6 +442,7 @@ def render_markdown(
     shared_family_choice_fiber_csh_near_miss: dict | None = None,
     shared_broad_anatomy_repair_sweep: dict | None = None,
     shared_family_iterative_manifest_gate: dict | None = None,
+    next_benchmark_control_options: dict | None = None,
     model_free_matched_panel: dict | None = None,
     model_free_positive_holdouts: dict | None = None,
     model_free_recording_bidirectional_gate: dict | None = None,
@@ -1139,6 +1141,37 @@ def render_markdown(
                 "only `1/4` same-recording bidirectional support, so the next branch "
                 "must change the benchmark/control definition rather than further "
                 "narrow this manifest."
+            ),
+            "",
+        ]
+    if next_benchmark_control_options is not None:
+        summary = next_benchmark_control_options["summary"]
+        top = next_benchmark_control_options["branches"][:4]
+        lines += [
+            "## Next Benchmark/Control Options Audit",
+            "",
+            "`docs/next_benchmark_control_options.md` ranks the remaining no-spend",
+            "branches after the current local negative audits.",
+            "",
+            f"- recommended next: `{summary['recommended_next']}`",
+            f"- closed branches: `{summary['closed_branches']}`",
+            f"- decision: `{summary['decision']}`",
+            f"- GPU trigger: {summary['gpu_training_trigger']}",
+            "",
+            "| priority | branch | status | next action |",
+            "|---:|---|---|---|",
+        ]
+        for row in top:
+            lines.append(
+                f"| {row['priority']} | {row['name']} | `{row['status']}` | {row['next_action']} |"
+            )
+        lines += [
+            "",
+            (
+                "Decision: the next aligned work is a new benchmark/control target "
+                "definition that first passes the same local model-free gate. Current "
+                "feature sweeps, manifest narrowing, source-target narrowing, and "
+                "recording-subset selection are closed as GPU triggers."
             ),
             "",
         ]
@@ -1858,6 +1891,7 @@ def main() -> int:
     )
     shared_broad_anatomy_repair_sweep = read_mechanism_audit(REPO_ROOT / SHARED_BROAD_ANATOMY_REPAIR_SWEEP_FILE)
     shared_family_iterative_manifest_gate = read_mechanism_audit(REPO_ROOT / SHARED_FAMILY_ITERATIVE_MANIFEST_GATE_FILE)
+    next_benchmark_control_options = read_mechanism_audit(REPO_ROOT / NEXT_BENCHMARK_CONTROL_OPTIONS_FILE)
     model_free_matched_panel = read_mechanism_audit(REPO_ROOT / MODEL_FREE_MATCHED_SUPPORT80_PANEL_FILE)
     model_free_positive_holdouts = read_mechanism_audit(REPO_ROOT / MODEL_FREE_POSITIVE_HOLDOUTS_MECHANISM_FILE)
     model_free_recording_bidirectional_gate = read_mechanism_audit(
@@ -1948,6 +1982,7 @@ def main() -> int:
         shared_family_choice_fiber_csh_near_miss,
         shared_broad_anatomy_repair_sweep,
         shared_family_iterative_manifest_gate,
+        next_benchmark_control_options,
         model_free_matched_panel,
         model_free_positive_holdouts,
         model_free_recording_bidirectional_gate,
@@ -2031,6 +2066,7 @@ def main() -> int:
         "shared_family_choice_fiber_csh_near_miss": shared_family_choice_fiber_csh_near_miss,
         "shared_broad_anatomy_repair_sweep": shared_broad_anatomy_repair_sweep,
         "shared_family_iterative_manifest_gate": shared_family_iterative_manifest_gate,
+        "next_benchmark_control_options": next_benchmark_control_options,
         "model_free_matched_support80_panel": model_free_matched_panel,
         "model_free_positive_holdouts_mechanism": model_free_positive_holdouts,
         "model_free_recording_bidirectional_gate": model_free_recording_bidirectional_gate,

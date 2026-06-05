@@ -1553,6 +1553,16 @@ to the strictest manifest does not rescue anatomical transfer, and the panel is
 too narrow to be a real cross-animal demo. The next no-spend branch should
 define a new benchmark/control target, not further subset this cache.
 
+Next benchmark/control options audit:
+`scripts/audit_next_benchmark_control_options.py` converts the negative local
+audits into a ranked plan. It recommends `new benchmark/control target
+definition` as the next branch and closes more feature/L2 sweeps, further
+manifest narrowing, recording-subset selection, the current shared-family grid,
+cached alternative targets, and source-target narrowing as GPU triggers. The
+only training trigger remains a local row with delta_vs_shuffle>=`0`,
+delta_vs_total>=`0`, target0>=`0.55`, target1>=`0.55`, and
+bidirectional_recording_fraction>=`0.75`.
+
 Recording-centered feature check:
 The gate also supports `--feature-mode recording_centered`, which subtracts
 each recording's mean parent-region feature vector before fitting. This reduces

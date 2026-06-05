@@ -480,6 +480,15 @@ manifest narrowing alone is not enough, and the 2-subject panel is too narrow
 for a demo anyway. The next branch should change the benchmark/control
 definition rather than keep shrinking this cache.
 
+Next benchmark/control options audit:
+`docs/next_benchmark_control_options.md` ranks the remaining branches. It marks
+simple feature/L2 sweeps, further manifest narrowing, recording-subset
+selection, the current shared-family grid, cached alternative targets, and
+source-target narrowing as closed GPU triggers. The recommended next branch is
+a new benchmark/control target definition, with the same local promotion gate:
+delta vs shuffle and total baseline nonnegative, target0 and target1 >=`0.55`,
+and same-recording bidirectional fraction >=`0.75`.
+
 Recording-centered feature check:
 `docs/model_free_recording_bidirectional_gate_recording_centered.md` subtracts
 each recording's own mean parent-region feature vector before ridge fitting.

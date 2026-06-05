@@ -348,6 +348,25 @@ manifest using all families that pass its feasibility floor.
 
 Decision: stricter manifest support alone does not rescue the signal. The clean 2-subject panel is too narrow for a demo and still reaches only `1/4` same-recording bidirectional support, so the next branch must change the benchmark/control definition rather than further narrow this manifest.
 
+## Next Benchmark/Control Options Audit
+
+`docs/next_benchmark_control_options.md` ranks the remaining no-spend
+branches after the current local negative audits.
+
+- recommended next: `new benchmark/control target definition`
+- closed branches: `6`
+- decision: `new_benchmark_control_definition_required`
+- GPU trigger: At least one local row must clear delta_vs_shuffle>=0, delta_vs_total>=0, target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75.
+
+| priority | branch | status | next action |
+|---:|---|---|---|
+| 1 | new benchmark/control target definition | `recommended_next` | Define a prospectively balanced target/control that is not just another feature transform of the four cached trial targets. Before training, run the same model-free true-vs-shuffle, total-baseline, global target, and same-recording bidirectional gate. |
+| 2 | new manifest with prospective bidirectional support | `secondary_after_new_target` | Only build or fetch more recordings after a target/control proposal defines which recordings should prospectively contain target0+target1 evidence. |
+| 90 | more feature-mode or l2 sweeps on shared broad anatomy | `closed` | Do not spend more local or GPU time on simple broad-anatomy feature/regularization repair. |
+| 91 | narrow existing manifest further | `closed` | Do not keep shrinking the existing cache as the primary rescue path. |
+
+Decision: the next aligned work is a new benchmark/control target definition that first passes the same local model-free gate. Current feature sweeps, manifest narrowing, source-target narrowing, and recording-subset selection are closed as GPU triggers.
+
 ## Matched-Region Model-Free Panel
 
 `docs/model_free_matched_support80_hdf5_panel.md` runs the closed-form
