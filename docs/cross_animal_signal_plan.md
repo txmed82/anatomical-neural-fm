@@ -787,3 +787,22 @@ Cheap fallback check: an `NVIDIA L4` retry also failed before training, with no
 machine details or public IP, and the hardened 300-second guard terminated it.
 This points to a RunPod runtime provisioning/access issue rather than an
 A100-only capacity issue. Active pods returned to zero again.
+
+No-spend paired-output audit update:
+`docs/csh_diagnostic_output_audit.md` now compares seed-0 anatomy-arm
+predictions against the shared baseline trial by trial. Both `region_only` and
+`region_shuffle` mostly apply a uniform upward probability shift rather than a
+target-aware correction: `region_only` shifts probability by +0.019 on average
+and improves the true-class probability on only 45.5% of paired trials, while
+`region_shuffle` shifts by +0.020 and improves 44.8%. The true-label arm has
+larger per-recording AUC gains on the two `5adab0b7` probes, but the shuffled
+control also improves those probes. This makes the surviving seed-0 full-trial
+signal look more like calibration/probe-specific behavior than a clean
+anatomical identity code.
+
+Next no-spend modeling step: specify an objective or evaluation gate that
+requires anatomy to improve target-aware ranking/calibration, not just shift
+held-out probabilities. Candidate directions are per-recording calibration
+before AUC comparison, paired-trial signed probability improvement as a
+selection metric, or a contrastive anatomy objective that must separate true
+labels from shuffled labels before another paid sweep.

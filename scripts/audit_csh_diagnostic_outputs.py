@@ -39,6 +39,16 @@ class PredictionMetrics:
     mean_prob_target1: float
 
 
+@dataclass(frozen=True)
+class PairedDeltaMetrics:
+    n: int
+    mean_delta: float
+    mean_abs_delta: float
+    mean_delta_target0: float
+    mean_delta_target1: float
+    frac_true_probability_improved: float
+
+
 def display_path(path: Path) -> str:
     path = path.expanduser()
     if not path.is_absolute():
@@ -86,6 +96,43 @@ def prediction_metrics(rows: Iterable[dict]) -> PredictionMetrics:
     )
 
 
+def trial_key(row: dict) -> tuple[str, float, int]:
+    return (str(row["recording_id"]), float(row["t0"]), int(row["target"]))
+
+
+def paired_delta_metrics(candidate_rows: Iterable[dict], baseline_rows: Iterable[dict]) -> PairedDeltaMetrics:
+    baseline_by_key = {trial_key(row): row for row in baseline_rows}
+    deltas = []
+    targets = []
+    true_prob_improved = []
+    for row in candidate_rows:
+        key = trial_key(row)
+        baseline = baseline_by_key.get(key)
+        if baseline is None:
+            continue
+        target = int(row["target"])
+        delta = float(row["prob"]) - float(baseline["prob"])
+        deltas.append(delta)
+        targets.append(target)
+        direction = 1.0 if target == 1 else -1.0
+        true_prob_improved.append(direction * delta > 0)
+    if not deltas:
+        return PairedDeltaMetrics(0, float("nan"), float("nan"), float("nan"), float("nan"), float("nan"))
+    deltas_np = np.asarray(deltas, dtype=np.float64)
+    targets_np = np.asarray(targets, dtype=np.int64)
+    improved_np = np.asarray(true_prob_improved, dtype=bool)
+    target0 = deltas_np[targets_np == 0]
+    target1 = deltas_np[targets_np == 1]
+    return PairedDeltaMetrics(
+        n=len(deltas),
+        mean_delta=float(np.mean(deltas_np)),
+        mean_abs_delta=float(np.mean(np.abs(deltas_np))),
+        mean_delta_target0=float(np.mean(target0)) if len(target0) else float("nan"),
+        mean_delta_target1=float(np.mean(target1)) if len(target1) else float("nan"),
+        frac_true_probability_improved=float(np.mean(improved_np)),
+    )
+
+
 def by_recording_metrics(run: PredictionRun) -> list[tuple[str, PredictionMetrics]]:
     rows_by_recording: dict[str, list[dict]] = defaultdict(list)
     for row in run.rows:
@@ -94,6 +141,10 @@ def by_recording_metrics(run: PredictionRun) -> list[tuple[str, PredictionMetric
         (recording, prediction_metrics(rows))
         for recording, rows in sorted(rows_by_recording.items())
     ]
+
+
+def rows_for_recording(rows: Iterable[dict], recording: str) -> list[dict]:
+    return [row for row in rows if str(row["recording_id"]) == recording]
 
 
 def fmt_float(value: float, digits: int = 3) -> str:
@@ -175,6 +226,53 @@ def write_report(root: Path, out_path: Path, carriers: Iterable[str] = DEFAULT_C
                 f"{fmt_float(metrics.auc)} | {fmt_float(metrics.acc)} |"
             )
 
+    lines += [
+        "",
+        "## Seed-0 Per-Recording Delta vs Shared Baseline",
+        "",
+        "| arm | recording | rows | AUC | baseline_AUC | delta_AUC | mean_prob_delta | mean_abs_prob_delta | true_prob_improved |",
+        "|---|---|---:|---:|---:|---:|---:|---:|---:|",
+    ]
+    baseline_run = by_key.get(("shared_baseline", 0))
+    for arm in ("region_only", "region_shuffle"):
+        run = by_key.get((arm, 0))
+        if run is None or baseline_run is None:
+            continue
+        recordings = sorted({str(row["recording_id"]) for row in run.rows})
+        for recording in recordings:
+            arm_rows = rows_for_recording(run.rows, recording)
+            base_rows = rows_for_recording(baseline_run.rows, recording)
+            arm_metrics = prediction_metrics(arm_rows)
+            base_metrics = prediction_metrics(base_rows)
+            paired = paired_delta_metrics(arm_rows, base_rows)
+            lines.append(
+                "| "
+                f"{arm} | `{recording}` | {paired.n} | {fmt_float(arm_metrics.auc)} | "
+                f"{fmt_float(base_metrics.auc)} | {fmt_signed(arm_metrics.auc - base_metrics.auc)} | "
+                f"{fmt_signed(paired.mean_delta)} | {fmt_float(paired.mean_abs_delta)} | "
+                f"{fmt_float(paired.frac_true_probability_improved)} |"
+            )
+
+    lines += [
+        "",
+        "## Seed-0 Paired Trial Probability Shift vs Shared Baseline",
+        "",
+        "| arm | paired_trials | mean_prob_delta | mean_abs_prob_delta | mean_delta_target0 | mean_delta_target1 | true_prob_improved |",
+        "|---|---:|---:|---:|---:|---:|---:|",
+    ]
+    if baseline_run is not None:
+        for arm in ("region_only", "region_shuffle"):
+            run = by_key.get((arm, 0))
+            if run is None:
+                continue
+            paired = paired_delta_metrics(run.rows, baseline_run.rows)
+            lines.append(
+                "| "
+                f"{arm} | {paired.n} | {fmt_signed(paired.mean_delta)} | "
+                f"{fmt_float(paired.mean_abs_delta)} | {fmt_signed(paired.mean_delta_target0)} | "
+                f"{fmt_signed(paired.mean_delta_target1)} | {fmt_float(paired.frac_true_probability_improved)} |"
+            )
+
     true_emb = load_embedding_rows(embedding_path_for(root, "region_only", 0))
     shuffle_emb = load_embedding_rows(embedding_path_for(root, "region_shuffle", 0))
     lines += [
@@ -202,10 +300,14 @@ def write_report(root: Path, out_path: Path, carriers: Iterable[str] = DEFAULT_C
     baseline_run = by_key.get(("shared_baseline", 0))
     region_delta = None
     shuffle_delta = None
+    region_paired = None
+    shuffle_paired = None
     if region_run and baseline_run:
         region_delta = prediction_metrics(region_run.rows).auc - prediction_metrics(baseline_run.rows).auc
+        region_paired = paired_delta_metrics(region_run.rows, baseline_run.rows)
     if shuffle_run and baseline_run:
         shuffle_delta = prediction_metrics(shuffle_run.rows).auc - prediction_metrics(baseline_run.rows).auc
+        shuffle_paired = paired_delta_metrics(shuffle_run.rows, baseline_run.rows)
     lines += [
         "",
         "## Interpretation",
@@ -226,6 +328,28 @@ def write_report(root: Path, out_path: Path, carriers: Iterable[str] = DEFAULT_C
         ),
         "",
     ]
+    if region_paired and shuffle_paired:
+        lines += [
+            (
+                "Paired trial comparisons show that both seed-0 anatomy arms mostly "
+                "shift probabilities upward relative to the shared baseline rather "
+                "than moving probabilities toward the true class: `region_only` "
+                f"mean probability delta {fmt_signed(region_paired.mean_delta)} "
+                f"with true-class improvement on {fmt_float(region_paired.frac_true_probability_improved)} "
+                "of paired trials, and `region_shuffle` mean probability delta "
+                f"{fmt_signed(shuffle_paired.mean_delta)} with true-class improvement on "
+                f"{fmt_float(shuffle_paired.frac_true_probability_improved)} of paired trials."
+            ),
+            "",
+            (
+                "The strongest true-label per-recording gains are on the two "
+                "`5adab0b7` probes, but the shuffled-label control also improves "
+                "those probes. That makes the surviving seed-0 full-trial signal "
+                "look more like calibration/probe-specific behavior than a clean "
+                "anatomical identity code."
+            ),
+            "",
+        ]
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_text("\n".join(lines) + "\n")
 

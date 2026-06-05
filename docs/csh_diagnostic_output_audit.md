@@ -32,6 +32,26 @@ Root: `runs/lso_csh_diagnostic_outputs`
 | shared_baseline | 1 | `5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe01` | 590 | 0.529 | 0.414 |
 | shared_baseline | 1 | `edd22318-216c-44ff-bc24-49ce8be78374_probe00` | 769 | 0.525 | 0.482 |
 
+## Seed-0 Per-Recording Delta vs Shared Baseline
+
+| arm | recording | rows | AUC | baseline_AUC | delta_AUC | mean_prob_delta | mean_abs_prob_delta | true_prob_improved |
+|---|---|---:|---:|---:|---:|---:|---:|---:|
+| region_only | `49e0ab27-827a-4c91-bcaa-97eea27a1b8d_probe01` | 777 | 0.497 | 0.513 | -0.016 | +0.007 | 0.010 | 0.490 |
+| region_only | `5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe00` | 590 | 0.544 | 0.491 | +0.053 | +0.026 | 0.026 | 0.414 |
+| region_only | `5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe01` | 590 | 0.547 | 0.499 | +0.048 | +0.021 | 0.021 | 0.414 |
+| region_only | `edd22318-216c-44ff-bc24-49ce8be78374_probe00` | 769 | 0.509 | 0.494 | +0.015 | +0.023 | 0.023 | 0.482 |
+| region_shuffle | `49e0ab27-827a-4c91-bcaa-97eea27a1b8d_probe01` | 777 | 0.506 | 0.513 | -0.007 | +0.020 | 0.020 | 0.467 |
+| region_shuffle | `5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe00` | 590 | 0.517 | 0.491 | +0.026 | +0.020 | 0.020 | 0.414 |
+| region_shuffle | `5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe01` | 590 | 0.528 | 0.499 | +0.029 | +0.020 | 0.020 | 0.414 |
+| region_shuffle | `edd22318-216c-44ff-bc24-49ce8be78374_probe00` | 769 | 0.496 | 0.494 | +0.001 | +0.020 | 0.020 | 0.482 |
+
+## Seed-0 Paired Trial Probability Shift vs Shared Baseline
+
+| arm | paired_trials | mean_prob_delta | mean_abs_prob_delta | mean_delta_target0 | mean_delta_target1 | true_prob_improved |
+|---|---:|---:|---:|---:|---:|---:|
+| region_only | 2726 | +0.019 | 0.020 | +0.019 | +0.019 | 0.455 |
+| region_shuffle | 2726 | +0.020 | 0.020 | +0.020 | +0.020 | 0.448 |
+
 ## Seed-0 Region Embedding Diagnostics
 
 | region | true_norm | shuffled_norm | true_shuffle_cosine |
@@ -48,4 +68,8 @@ Root: `runs/lso_csh_diagnostic_outputs`
 This is a partial diagnostic run, not a completed three-seed sweep. The pod terminated before `summary.md`, but it preserved full held-out prediction exports for seed 0 `shared_baseline`, `region_only`, and `region_shuffle`, plus seed 1 `shared_baseline`.
 
 For seed 0, exported predictions give `region_only` delta +0.008 AUC vs the exported shared baseline and `region_shuffle` delta +0.009 AUC. Use this artifact-level result to inspect where the canonical aggregate lift comes from before launching additional candidate subjects.
+
+Paired trial comparisons show that both seed-0 anatomy arms mostly shift probabilities upward relative to the shared baseline rather than moving probabilities toward the true class: `region_only` mean probability delta +0.019 with true-class improvement on 0.455 of paired trials, and `region_shuffle` mean probability delta +0.020 with true-class improvement on 0.448 of paired trials.
+
+The strongest true-label per-recording gains are on the two `5adab0b7` probes, but the shuffled-label control also improves those probes. That makes the surviving seed-0 full-trial signal look more like calibration/probe-specific behavior than a clean anatomical identity code.
 

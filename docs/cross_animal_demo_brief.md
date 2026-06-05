@@ -80,6 +80,10 @@ Full-eval launch attempt:
   relative to the exported baseline (+0.008 vs +0.009 AUC). This weakens
   confidence that sampled eval summaries alone are sufficient for a demo-grade
   claim.
+- Paired trial analysis of those seed-0 artifacts shows both anatomy arms mostly
+  shifted probabilities upward rather than toward the true class. `region_only`
+  improved true-class probability on only 45.5% of paired trials, while
+  `region_shuffle` improved 44.8%.
 - The failure-mode audit rules out several simple gates on their own:
   parent-region support, CSH-like composition, trial count, class balance, and
   raw parent-level stimulus contrast.
@@ -104,3 +108,7 @@ survives that full-trial true-vs-shuffled gate across seeds.
 
 The first paid attempt to run that gate failed at RunPod provisioning and
 produced no training metrics, so it does not change the evidence table.
+
+Before another paid retry, tighten the gate so the model has to beat the
+shuffled control on target-aware paired-trial behavior or per-recording
+calibrated ranking, not just sampled eval AUC.

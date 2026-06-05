@@ -4,8 +4,10 @@ import pytest
 
 from scripts.audit_csh_diagnostic_outputs import (
     cosine,
+    paired_delta_metrics,
     parse_run_path,
     prediction_metrics,
+    trial_key,
 )
 
 
@@ -34,3 +36,32 @@ def test_prediction_metrics_computes_auc_accuracy_and_prob_means() -> None:
 
 def test_cosine_handles_orthogonal_vectors() -> None:
     assert cosine([1.0, 0.0], [0.0, 2.0]) == pytest.approx(0.0)
+
+
+def test_trial_key_uses_recording_time_and_target() -> None:
+    row = {"recording_id": "rec", "t0": 12.5, "target": 1, "prob": 0.8}
+
+    assert trial_key(row) == ("rec", 12.5, 1)
+
+
+def test_paired_delta_metrics_tracks_probability_and_true_class_improvement() -> None:
+    baseline = [
+        {"recording_id": "rec", "t0": 0.0, "target": 0, "prob": 0.4},
+        {"recording_id": "rec", "t0": 1.0, "target": 1, "prob": 0.6},
+        {"recording_id": "rec", "t0": 2.0, "target": 1, "prob": 0.7},
+    ]
+    candidate = [
+        {"recording_id": "rec", "t0": 0.0, "target": 0, "prob": 0.3},
+        {"recording_id": "rec", "t0": 1.0, "target": 1, "prob": 0.65},
+        {"recording_id": "rec", "t0": 2.0, "target": 1, "prob": 0.6},
+        {"recording_id": "rec", "t0": 3.0, "target": 1, "prob": 0.9},
+    ]
+
+    metrics = paired_delta_metrics(candidate, baseline)
+
+    assert metrics.n == 3
+    assert metrics.mean_delta == pytest.approx((-0.1 + 0.05 - 0.1) / 3)
+    assert metrics.mean_abs_delta == pytest.approx((0.1 + 0.05 + 0.1) / 3)
+    assert metrics.mean_delta_target0 == pytest.approx(-0.1)
+    assert metrics.mean_delta_target1 == pytest.approx(-0.025)
+    assert metrics.frac_true_probability_improved == pytest.approx(2 / 3)
