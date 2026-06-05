@@ -435,6 +435,26 @@ source-target gate artifacts.
 
 Decision: rare same-recording bidirectional observations are not concentrated enough to define a stable demo subset from the current cache. The next benchmark redesign should prospectively create target0+target1 evidence inside recordings, then rerun the same model-free local gate before GPU training.
 
+## Model-Free Recording Replication Audit
+
+`docs/model_free_recording_replication_audit.md` tests whether a
+recording subset selected from fixed discovery reports keeps bidirectional
+support in held-out validation report families.
+
+- recording-subject rows: `28`
+- selected by discovery rule: `3`
+- replicated in validation: `0`
+- decision: `no_replicating_recording_rule`
+
+| subject | recording | selected | replicated | discovery bidir | validation bidir | validation target0 | validation target1 |
+|---|---|---|---|---:|---:|---:|---:|
+| KS014 | e1931de1-cf7b-49af-af33-2ade15e8abe7_probe00 | True | False | 4/4 | 3/14 | 0.479 | 0.491 |
+| MFD_06 | 6899a67d-2e53-4215-a52a-c7021b5da5d4_probe00 | True | False | 3/4 | 9/14 | 0.557 | 0.530 |
+| KS014 | 16693458-0801-4d35-a3f1-9115c7e5acfd_probe01 | True | False | 3/4 | 1/14 | 0.517 | 0.526 |
+| CSH_ZAD_019 | edd22318-216c-44ff-bc24-49ce8be78374_probe00 | False | False | 3/4 | 1/14 | 0.525 | 0.518 |
+
+Decision: recording-subset selection is not currently a credible demo path. The selected discovery recordings lose bidirectional target support in validation, so the next local work should redesign the target/control or matched manifest rather than narrow this cache.
+
 ## Family-Aggregate Recording-Centered Gate
 
 `docs/model_free_family_bidirectional_gate_recording_centered.md` combines

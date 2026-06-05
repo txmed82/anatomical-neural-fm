@@ -126,6 +126,7 @@ MODEL_FREE_SOURCE_TARGET_PAIR_FAMILIES_RECORDING_CENTERED_FILE = (
 )
 MODEL_FREE_GATE_BLOCKER_AUDIT_FILE = "docs/model_free_gate_blocker_audit.json"
 MODEL_FREE_RECORDING_SUPPORT_AUDIT_FILE = "docs/model_free_recording_support_audit.json"
+MODEL_FREE_RECORDING_REPLICATION_AUDIT_FILE = "docs/model_free_recording_replication_audit.json"
 MODEL_FREE_FAMILY_BIDIRECTIONAL_RECORDING_CENTERED_FILE = (
     "docs/model_free_family_bidirectional_gate_recording_centered.json"
 )
@@ -439,6 +440,7 @@ def render_markdown(
     model_free_source_target_pair_families_recording_centered: dict | None = None,
     model_free_gate_blocker_audit: dict | None = None,
     model_free_recording_support_audit: dict | None = None,
+    model_free_recording_replication_audit: dict | None = None,
     model_free_family_bidirectional_recording_centered: dict | None = None,
     model_free_family_bidirectional_recording_centered_l2_1: dict | None = None,
     model_free_family_bidirectional_recording_centered_l2_100: dict | None = None,
@@ -1282,6 +1284,42 @@ def render_markdown(
             ),
             "",
         ]
+    if model_free_recording_replication_audit is not None:
+        summary = model_free_recording_replication_audit["summary"]
+        top = model_free_recording_replication_audit["rows"][:4]
+        lines += [
+            "## Model-Free Recording Replication Audit",
+            "",
+            "`docs/model_free_recording_replication_audit.md` tests whether a",
+            "recording subset selected from fixed discovery reports keeps bidirectional",
+            "support in held-out validation report families.",
+            "",
+            f"- recording-subject rows: `{summary['n_recording_subject_rows']}`",
+            f"- selected by discovery rule: `{summary['n_selected_by_discovery_rule']}`",
+            f"- replicated in validation: `{summary['n_replicated_in_validation']}`",
+            f"- decision: `{summary['decision']}`",
+            "",
+            "| subject | recording | selected | replicated | discovery bidir | validation bidir | validation target0 | validation target1 |",
+            "|---|---|---|---|---:|---:|---:|---:|",
+        ]
+        for row in top:
+            lines.append(
+                f"| {row['target_subject']} | {row['recording']} | "
+                f"{row['selected']} | {row['replicated']} | "
+                f"{row['discovery_bidirectional_observations']}/{row['discovery_observations']} | "
+                f"{row['validation_bidirectional_observations']}/{row['validation_observations']} | "
+                f"{row['validation_mean_target0']:.3f} | {row['validation_mean_target1']:.3f} |"
+            )
+        lines += [
+            "",
+            (
+                "Decision: recording-subset selection is not currently a credible demo "
+                "path. The selected discovery recordings lose bidirectional target "
+                "support in validation, so the next local work should redesign the "
+                "target/control or matched manifest rather than narrow this cache."
+            ),
+            "",
+        ]
     if model_free_family_bidirectional_recording_centered is not None:
         summary = model_free_family_bidirectional_recording_centered["summary"]
         lines += [
@@ -1515,6 +1553,9 @@ def main() -> int:
     )
     model_free_gate_blocker_audit = read_mechanism_audit(REPO_ROOT / MODEL_FREE_GATE_BLOCKER_AUDIT_FILE)
     model_free_recording_support_audit = read_mechanism_audit(REPO_ROOT / MODEL_FREE_RECORDING_SUPPORT_AUDIT_FILE)
+    model_free_recording_replication_audit = read_mechanism_audit(
+        REPO_ROOT / MODEL_FREE_RECORDING_REPLICATION_AUDIT_FILE
+    )
     model_free_family_bidirectional_recording_centered = read_mechanism_audit(
         REPO_ROOT / MODEL_FREE_FAMILY_BIDIRECTIONAL_RECORDING_CENTERED_FILE
     )
@@ -1571,6 +1612,7 @@ def main() -> int:
         model_free_source_target_pair_families_recording_centered,
         model_free_gate_blocker_audit,
         model_free_recording_support_audit,
+        model_free_recording_replication_audit,
         model_free_family_bidirectional_recording_centered,
         model_free_family_bidirectional_recording_centered_l2_1,
         model_free_family_bidirectional_recording_centered_l2_100,
@@ -1650,6 +1692,7 @@ def main() -> int:
         ),
         "model_free_gate_blocker_audit": model_free_gate_blocker_audit,
         "model_free_recording_support_audit": model_free_recording_support_audit,
+        "model_free_recording_replication_audit": model_free_recording_replication_audit,
         "model_free_family_bidirectional_recording_centered": (
             model_free_family_bidirectional_recording_centered
         ),

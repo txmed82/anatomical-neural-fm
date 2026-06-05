@@ -1454,6 +1454,15 @@ benchmark. The next no-spend milestone is a prospective benchmark/control
 redesign that creates same-recording target0+target1 evidence before GPU
 training.
 
+Recording replication audit:
+The prospective version of that screen is
+`scripts/audit_model_free_recording_replication.py`. It selects recordings only
+from fixed discovery report families, then validates them on held-out report
+families. Three recordings pass discovery, but zero replicate in validation.
+This rules out the simplest "make a demo subset from currently promising
+recordings" path. Next local work should change the target/control definition
+or matched manifest construction, not keep narrowing the same cache.
+
 Recording-centered feature check:
 The gate also supports `--feature-mode recording_centered`, which subtracts
 each recording's mean parent-region feature vector before fitting. This reduces

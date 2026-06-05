@@ -383,6 +383,15 @@ a demo by cherry-picking current recordings. The next benchmark must
 prospectively select or construct recordings with bidirectional target evidence
 and then rerun the same true-vs-shuffled local gate before GPU training.
 
+Recording replication audit:
+`docs/model_free_recording_replication_audit.md` turns that warning into a
+discovery/validation test. Fixed discovery reports select three recordings
+(`KS014` probe00, `MFD_06` probe00, and `KS014` probe01), but zero replicate
+in held-out validation report families. The best validation case (`MFD_06`
+probe00) keeps 9/14 bidirectional observations but drops target1 to `0.530`;
+the KS014 selections drop both validation targets below gate. Decision:
+recording-subset narrowing is not a credible demo path under the current cache.
+
 Recording-centered feature check:
 `docs/model_free_recording_bidirectional_gate_recording_centered.md` subtracts
 each recording's own mean parent-region feature vector before ridge fitting.
