@@ -12,3 +12,11 @@ def test_two_holdout_wrapper_writes_incremental_summary() -> None:
     assert 'mv "$tmp_summary" "$OUT_ROOT/summary.md"' in script
     assert "uv run python scripts/analyze_leave_subject_out.py \"$OUT_ROOT\"" in script
     assert script.count("write_incremental_summary") >= 4
+
+
+def test_two_holdout_wrapper_can_pass_region_include_list() -> None:
+    script = (REPO_ROOT / "scripts/run_lso_two_holdout_shared_parent_shuffle_a100.sh").read_text()
+
+    assert 'REGION_INCLUDE="${REGION_INCLUDE:-}"' in script
+    assert 'COMMON_ARGS+=(--region-include "$REGION_INCLUDE")' in script
+    assert 'region_include: ${REGION_INCLUDE:-<none>}' in script

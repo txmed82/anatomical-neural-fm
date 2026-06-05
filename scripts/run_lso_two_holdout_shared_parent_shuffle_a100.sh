@@ -19,6 +19,7 @@ SUBJECTS="${SUBJECTS:-KS014 MFD_06}"
 TARGET_MODE="${TARGET_MODE:-stimulus_side}"
 REGION_FILTER="${REGION_FILTER:-shared_regions}"
 REGION_GRANULARITY="${REGION_GRANULARITY:-parent}"
+REGION_INCLUDE="${REGION_INCLUDE:-}"
 OUT_ROOT="${OUT_ROOT:-runs/lso_two_holdout_shared_parent_shuffle}"
 MANIFEST="${MANIFEST:-}"
 
@@ -35,6 +36,9 @@ COMMON_ARGS=(
   --region-filter "$REGION_FILTER"
   --region-granularity "$REGION_GRANULARITY"
 )
+if [ -n "$REGION_INCLUDE" ]; then
+  COMMON_ARGS+=(--region-include "$REGION_INCLUDE")
+fi
 if [ -n "$MANIFEST" ]; then
   COMMON_ARGS+=(--manifest "$MANIFEST")
 fi
@@ -56,6 +60,7 @@ echo "arms: shared_baseline region_only region_shuffle"
 echo "seeds: $SEEDS"
 echo "region_filter: $REGION_FILTER"
 echo "region_granularity: $REGION_GRANULARITY"
+echo "region_include: ${REGION_INCLUDE:-<none>}"
 echo "manifest: ${MANIFEST:-<all local recordings>}"
 
 for holdout in $SUBJECTS; do

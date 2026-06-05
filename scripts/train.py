@@ -78,9 +78,14 @@ def parse_args():
     p.add_argument("--target-mode", default="choice", choices=["choice", "stimulus_side"],
                    help="'choice' decodes animal L/R choice. 'stimulus_side' decodes whether "
                         "the visual stimulus contrast was stronger on the right than left.")
-    p.add_argument("--region-filter", default="none", choices=["none", "shared_regions"],
+    p.add_argument("--region-filter", default="none", choices=["none", "shared_regions", "include_regions"],
                    help="'shared_regions' keeps only units whose region acronym appears in both "
-                        "the train and held-out recordings for the current split.")
+                        "the train and held-out recordings for the current split. "
+                        "'include_regions' keeps only units whose mapped acronym is listed in "
+                        "--region-include.")
+    p.add_argument("--region-include", default="",
+                   help="Comma-separated region acronyms to keep after --region-granularity mapping. "
+                        "Used when --region-filter=include_regions.")
     p.add_argument("--region-granularity", default="fine", choices=["fine", "parent", "grandparent"],
                    help="Granularity for region embeddings and region filtering. Cell-type priors "
                         "still use original fine acronyms with their existing ancestor fallback.")
@@ -358,6 +363,10 @@ def shared_split_regions(
     )
 
 
+def parse_region_include(value: str) -> set[str]:
+    return {part.strip() for part in value.split(",") if part.strip()}
+
+
 def recording_diagnostics(recs, rids: list[str]) -> list[dict]:
     rows = []
     for rid in sorted(rids):
@@ -609,11 +618,21 @@ def main():
     n_eval_left = sum(1 for *_, t in eval_trials if t == 0.0)
     n_eval_right = sum(1 for *_, t in eval_trials if t == 1.0)
     allowed_region_acronyms = None
-    region_filter_info = {"region_filter": args.region_filter}
+    include_regions = parse_region_include(args.region_include)
+    region_filter_info = {"region_filter": args.region_filter, "region_include": sorted(include_regions)}
     if args.region_filter == "shared_regions":
         allowed_region_acronyms = shared_split_regions(
             vocab["recs"], train_rids, eval_rids, args.region_granularity,
         )
+        region_filter_info.update({
+            "n_allowed_regions": len(allowed_region_acronyms),
+            "allowed_regions": sorted(allowed_region_acronyms),
+        })
+    elif args.region_filter == "include_regions":
+        if not include_regions:
+            log({"event": "fatal", "msg": "--region-filter=include_regions requires --region-include"})
+            return 1
+        allowed_region_acronyms = include_regions
         region_filter_info.update({
             "n_allowed_regions": len(allowed_region_acronyms),
             "allowed_regions": sorted(allowed_region_acronyms),

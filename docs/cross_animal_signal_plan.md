@@ -601,3 +601,35 @@ high-mass, and stimulus-informative, then search for held-out subjects/sessions
 where those same parents have enough units and aligned stimulus-side contrast.
 Only after that slice is specified should we run another small true-vs-shuffled
 control.
+
+Completed no-spend parent-region slice definition:
+`docs/parent_region_slice_plan.md` defines an explicit carrier-parent slice
+from the successful CSH_ZAD_019 run and scores the current matched-cache
+subjects/sessions against it.
+
+Carrier parents:
+
+- `PRT`, `CA`, `VP`, `MOp`, `DG`, `mfbc`
+
+Candidate gate:
+
+- at least 500 units in the carrier-region slice
+- at least two carrier parents with at least 50 units
+- at least 75% of carrier-slice units have the same stimulus-side contrast sign
+  as CSH_ZAD_019
+
+Current-cache candidates:
+
+- `NYU-12`: passes cleanly; 750 slice units, 3/6 carrier parents, 100% aligned
+  unit mass (`CA`, `VP`, `DG`)
+- `SWC_038`: passes narrowly; 503 slice units, 4/6 carrier parents, 76.7%
+  aligned unit mass
+- strongest recording-level candidate:
+  `a8a8af78-16de-4841-ab07-fde4b5281a03_probe01` from `NYU-12`, with 591
+  slice units in `CA` and `DG`, 100% aligned
+
+Implementation gate completed: `scripts/train.py` and the shared-parent wrapper
+now support an explicit include list via `--region-filter include_regions` and
+`--region-include`. The next paid run, if launched, should therefore be a
+preflighted fixed carrier-parent true-vs-shuffled control rather than another
+shared-region sweep.

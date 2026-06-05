@@ -7,6 +7,7 @@ from scripts.train import (
     build_inputs_for_window,
     build_trial_samples,
     manifest_recording_ids,
+    parse_region_include,
     region_acronym_at_granularity,
     select_recording_ids,
     shared_split_regions,
@@ -124,6 +125,11 @@ def test_shared_split_regions_can_use_parent_granularity() -> None:
 
     assert shared_split_regions(recs, ["train"], ["eval"], region_granularity="fine") == set()
     assert shared_split_regions(recs, ["train"], ["eval"], region_granularity="parent") == {"LAT"}
+
+
+def test_parse_region_include_splits_comma_separated_acronyms() -> None:
+    assert parse_region_include("PRT, CA,VP,,") == {"PRT", "CA", "VP"}
+    assert parse_region_include("") == set()
 
 
 def test_build_inputs_for_window_filters_spikes_to_allowed_regions() -> None:

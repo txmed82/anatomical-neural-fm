@@ -1,0 +1,68 @@
+# Parent-Region Slice Plan
+
+Manifest: `manifests/ibl_bwm_region_matched_support80_best6.json`
+Data cache: `data/brainsets/ibl_bwm`
+Reference holdout: `CSH_ZAD_019`
+Target: `stimulus_side` over 1.0s stimulus-aligned windows
+
+## Slice Definition
+
+Reference carrier criteria:
+
+- parent is present in both train and `CSH_ZAD_019` held-out split
+- at least 100 `CSH_ZAD_019` units
+- at least 3.0% of `CSH_ZAD_019` units
+- absolute right-minus-left spike-rate contrast at least 0.100 Hz
+
+Candidate inclusion gate:
+
+- at least 500 units in the carrier-region slice
+- at least 2 carrier parents with >= 50 units
+- at least 75.0% of carrier-slice units have the same stimulus-side contrast sign as `CSH_ZAD_019`
+
+## CSH Carrier Parents
+
+| parent | CSH_units | CSH_unit_mass | CSH_right_minus_left_hz | units_x_abs_delta |
+|---|---:|---:|---:|---:|
+| PRT | 439 | 12.3% | -0.321 | 141.0 |
+| CA | 480 | 13.5% | -0.145 | 69.7 |
+| VP | 335 | 9.4% | +0.201 | 67.5 |
+| MOp | 477 | 13.4% | -0.121 | 57.6 |
+| DG | 159 | 4.5% | -0.239 | 37.9 |
+| mfbc | 152 | 4.3% | +0.109 | 16.6 |
+
+## Subject-Level Candidate Scores
+
+| subject | pass | slice_units | present_carriers | carriers_with_min_units | aligned_unit_mass | present_parents | aligned_parents |
+|---|---|---:|---:|---:|---:|---|---|
+| NYU-12 | yes | 750 | 3/6 | 2 | 100.0% | CA, VP, DG | CA, VP, DG |
+| SWC_038 | yes | 503 | 4/6 | 3 | 76.7% | PRT, CA, MOp, DG | CA, MOp, DG |
+| KS014 | no | 121 | 1/6 | 1 | 100.0% | PRT | PRT |
+| SWC_043 | no | 723 | 3/6 | 3 | 74.0% | CA, MOp, DG | MOp, DG |
+| NR_0019 | no | 749 | 4/6 | 2 | 20.8% | PRT, VP, DG, mfbc | PRT, DG |
+| MFD_06 | no | 242 | 3/6 | 2 | 1.2% | CA, VP, DG | VP |
+
+## Recording-Level Candidate Scores
+
+| recording | subject | pass | slice_units | present_carriers | carriers_with_min_units | aligned_unit_mass | present_parents | aligned_parents |
+|---|---|---|---:|---:|---:|---:|---|---|
+| a8a8af78-16de-4841-ab07-fde4b5281a03_probe01 | NYU-12 | yes | 591 | 2/6 | 2 | 100.0% | CA, DG | CA, DG |
+| 03063955-2523-47bd-ae57-f7489dd40f15_probe01 | SWC_038 | no | 300 | 1/6 | 1 | 100.0% | MOp | MOp |
+| a8a8af78-16de-4841-ab07-fde4b5281a03_probe00 | NYU-12 | no | 159 | 3/6 | 1 | 100.0% | CA, VP, DG | CA, VP, DG |
+| b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe00 | NR_0019 | no | 156 | 2/6 | 1 | 100.0% | PRT, DG | PRT, DG |
+| e1931de1-cf7b-49af-af33-2ade15e8abe7_probe00 | KS014 | no | 121 | 1/6 | 1 | 100.0% | PRT | PRT |
+| 88d24c31-52e4-49cc-9f32-6adbeb9eba87_probe00 | SWC_043 | no | 121 | 1/6 | 1 | 100.0% | MOp | MOp |
+| 6f09ba7e-e3ce-44b0-932b-c003fb44fb89_probe01 | SWC_043 | no | 602 | 2/6 | 2 | 68.8% | CA, DG | DG |
+| 41872d7f-75cb-4445-bb1a-132b354c44f0_probe01 | SWC_038 | no | 203 | 3/6 | 2 | 42.4% | PRT, CA, DG | CA, DG |
+| 6899a67d-2e53-4215-a52a-c7021b5da5d4_probe00 | MFD_06 | no | 242 | 3/6 | 2 | 1.2% | CA, VP, DG | VP |
+| 63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe00 | NR_0019 | no | 573 | 1/6 | 1 | 0.0% | VP | none |
+| b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe01 | NR_0019 | no | 20 | 1/6 | 0 | 0.0% | mfbc | none |
+| b182b754-3c3e-4942-8144-6ee790926b58_probe01 | NYU-12 | no | 0 | 0/6 | 0 | 0.0% | none | none |
+
+## Decision
+
+The current matched cache contains subject-level slice candidates: NYU-12, SWC_038. The cleanest next paid test is not a broad matched-cache sweep; it is a fixed carrier-parent true-vs-shuffled control on the top passing subject using the explicit parent-region include filter.
+
+At recording level, the strongest slice candidate is `a8a8af78-16de-4841-ab07-fde4b5281a03_probe01` from `NYU-12`. This supports using the slice as an inclusion rule, but a subject-level cross-animal claim still needs whole-subject held-out evaluation.
+
+Next implementation gate before GPU spend: run local/preflight checks for the fixed carrier-parent include list using `--region-filter include_regions` and `--region-include "PRT, CA, VP, MOp, DG, mfbc"`, then launch only if the RunPod cost guard remains below the $100 cap.

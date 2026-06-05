@@ -31,6 +31,7 @@ Broadening audit: `docs/shared_parent_broadening_audit.md`.
 Parent-region support audit: `docs/parent_region_support_signal_audit.md`.
 Candidate ranking: `docs/csh_composition_candidate_ranking.md`.
 Failure-mode audit: `docs/cross_holdout_failure_mode_audit.md`.
+Parent-region slice plan: `docs/parent_region_slice_plan.md`.
 
 ## Why This Is Real Enough To Demo
 
@@ -62,7 +63,8 @@ Failure-mode audit: `docs/cross_holdout_failure_mode_audit.md`.
 ## Next Experimental Gate
 
 Do not launch another paid broadening run unchanged. The next step should be a
-no-spend parent-region slice definition from the successful `CSH_ZAD_019` run:
-identify shared, high-mass, stimulus-informative CSH parent regions, then find
-held-out subjects/sessions where those same parents are sufficiently represented
-and directionally aligned. Only then run another small true-vs-shuffled control.
+fixed carrier-parent true-vs-shuffled control, not another shared-region sweep.
+The carrier parents from the successful `CSH_ZAD_019` run are `PRT`, `CA`,
+`VP`, `MOp`, `DG`, and `mfbc`. `NYU-12` is the cleanest current-cache candidate
+for that slice; do not rent GPU until preflight confirms the fixed-slice run
+remains under budget and no RunPod resources are active.
