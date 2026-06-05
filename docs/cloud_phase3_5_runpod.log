@@ -490,3 +490,85 @@ upload-log count: 1
 === phase 3-5 body complete ===
 upload /tmp/runpod_phase3_5.log -> s3://rppfvo6ifn/brainsets/ibl_bwm/logs/docs_fixed_broad_family_train_arm_runpod_results.log
 upload-log count: 1
+[runpod-pilot-phases-3-5 c14bbe3] Add cloud phase 3-5 pilot results
+ 6 files changed, 1647 insertions(+), 586 deletions(-)
+ rewrite docs/cloud_phase3_5_runpod.log (69%)
+ create mode 100644 docs/fixed_broad_family_train_arm_runpod_results.md
+ create mode 100644 runs/fixed_broad_family_train_arm_panel_runpod/holdout_CSHL045/fixed_broad_family_count_none_seed0/eval_predictions.jsonl
+ create mode 100644 runs/fixed_broad_family_train_arm_panel_runpod/holdout_CSHL045/fixed_broad_family_count_within_recording_shuffle_seed0/eval_predictions.jsonl
+ create mode 100644 runs/fixed_broad_family_train_arm_panel_runpod/holdout_NR_0019/fixed_broad_family_count_none_seed0/eval_predictions.jsonl
+ create mode 100644 runs/fixed_broad_family_train_arm_panel_runpod/holdout_NR_0019/fixed_broad_family_count_within_recording_shuffle_seed0/eval_predictions.jsonl
+To https://github.com/txmed82/anatomical-neural-fm.git
+   4fc0a9e..c14bbe3  HEAD -> runpod-pilot-phases-3-5
+Collecting boto3
+  Downloading boto3-1.43.23-py3-none-any.whl.metadata (6.6 kB)
+Collecting botocore<1.44.0,>=1.43.23 (from boto3)
+  Downloading botocore-1.43.23-py3-none-any.whl.metadata (5.6 kB)
+Collecting jmespath<2.0.0,>=0.7.1 (from boto3)
+  Downloading jmespath-1.1.0-py3-none-any.whl.metadata (7.6 kB)
+Collecting s3transfer<0.19.0,>=0.18.0 (from boto3)
+  Downloading s3transfer-0.18.0-py3-none-any.whl.metadata (1.7 kB)
+Requirement already satisfied: python-dateutil<3.0.0,>=2.1 in /usr/local/lib/python3.11/dist-packages (from botocore<1.44.0,>=1.43.23->boto3) (2.9.0.post0)
+Requirement already satisfied: urllib3!=2.2.0,<3,>=1.25.4 in /usr/local/lib/python3.11/dist-packages (from botocore<1.44.0,>=1.43.23->boto3) (2.2.3)
+Requirement already satisfied: six>=1.5 in /usr/lib/python3/dist-packages (from python-dateutil<3.0.0,>=2.1->botocore<1.44.0,>=1.43.23->boto3) (1.16.0)
+Downloading boto3-1.43.23-py3-none-any.whl (140 kB)
+Downloading botocore-1.43.23-py3-none-any.whl (15.1 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 15.1/15.1 MB 67.9 MB/s eta 0:00:00
+Downloading jmespath-1.1.0-py3-none-any.whl (20 kB)
+Downloading s3transfer-0.18.0-py3-none-any.whl (88 kB)
+Installing collected packages: jmespath, botocore, s3transfer, boto3
+Successfully installed boto3-1.43.23 botocore-1.43.23 jmespath-1.1.0 s3transfer-0.18.0
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable.It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+
+[notice] A new release of pip is available: 24.2 -> 26.1.2
+[notice] To update, run: python3 -m pip install --upgrade pip
+Traceback (most recent call last):
+  File "<stdin>", line 6, in <module>
+ModuleNotFoundError: No module named 'boto3'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<stdin>", line 9, in <module>
+ModuleNotFoundError: No module named 'boto3'
+Traceback (most recent call last):
+  File "<stdin>", line 12, in <module>
+  File "/usr/lib/python3.11/urllib/request.py", line 216, in urlopen
+    return opener.open(url, data, timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/urllib/request.py", line 525, in open
+    response = meth(req, response)
+               ^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/urllib/request.py", line 634, in http_response
+    response = self.parent.error(
+               ^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/urllib/request.py", line 563, in error
+    return self._call_chain(*args)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/urllib/request.py", line 496, in _call_chain
+    result = func(*args)
+             ^^^^^^^^^^^
+  File "/usr/lib/python3.11/urllib/request.py", line 643, in http_error_default
+    raise HTTPError(req.full_url, code, msg, hdrs, fp)
+urllib.error.HTTPError: HTTP Error 403: Forbidden
+Hit:1 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  InRelease
+Hit:2 http://archive.ubuntu.com/ubuntu jammy InRelease
+Hit:3 http://security.ubuntu.com/ubuntu jammy-security InRelease
+Hit:4 http://archive.ubuntu.com/ubuntu jammy-updates InRelease
+Hit:5 http://archive.ubuntu.com/ubuntu jammy-backports InRelease
+Hit:6 https://ppa.launchpadcontent.net/deadsnakes/ppa/ubuntu jammy InRelease
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+ca-certificates is already the newest version (20240203~22.04.1).
+curl is already the newest version (7.81.0-1ubuntu1.24).
+git is already the newest version (1:2.34.1-1ubuntu1.17).
+python3-pip is already the newest version (22.0.2+dfsg-1ubuntu0.7).
+0 upgraded, 0 newly installed, 0 to remove and 153 not upgraded.
+Cloning into 'anatomical-neural-fm'...
+uv 0.11.19 (x86_64-unknown-linux-gnu)
+=== dependency sync start ===
+Using CPython 3.11.10 interpreter at: /usr/bin/python3.11
+Creating virtual environment at: .venv
+Resolved 134 packages in 1ms
