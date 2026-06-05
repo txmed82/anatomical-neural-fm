@@ -18,6 +18,7 @@
     "projected_support80_shared_family": "docs/shared_family_target_control_gate_projected_support80.json",
     "prospect_lead_candidate_validation": "docs/prospect_lead_candidate_validation.json",
     "prospect_lead_feature_mode_validation": "docs/prospect_lead_feature_mode_validation.json",
+    "prospect_lead_subject_stability": "docs/prospect_lead_subject_stability.json",
     "reaction_dynamics_target_family_counts": "docs/reaction_dynamics_target_family_gate_counts.json",
     "reaction_dynamics_target_family_fractions": "docs/reaction_dynamics_target_family_gate_fractions.json",
     "reaction_dynamics_target_family_recording_centered": "docs/reaction_dynamics_target_family_gate.json",
@@ -45,7 +46,7 @@
         "local gate meta-failure audit has 0 candidates across 1924 rows; recording bidirectionality fails in 1919 rows",
         "recording bidirectionality prospectus found 18 prospect recordings from 262 bidirectional observations",
         "prospect-lead manifest has 18 recordings across 7 subjects with 0 missing local recordings",
-        "prospect-lead feature-mode validation has 0 validated candidates across 4 feature modes; 4 candidates are single-recording and 4 are subset-only",
+        "prospect-lead subject-stability audit has 0 stable candidates; 4 fail on same-subject non-lead recordings",
         "recording-subset replication selected zero stable validation rows"
       ],
       "gpu_trigger": "At least one local row on the proposed manifest must clear delta_vs_shuffle>=0, delta_vs_total>=0, target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75 before training.",
@@ -125,11 +126,12 @@
       "evidence": [
         "prospect-lead derived gate found 3 candidates across 84 rows",
         "recording-centered validation found 0 validated candidates; 3 prospect candidates were single-recording and 3 were subset-only",
-        "feature-mode validation found 0 validated candidates from 4 prospect candidates across 4 feature modes"
+        "feature-mode validation found 0 validated candidates from 4 prospect candidates across 4 feature modes",
+        "subject-stability audit found 0 same-subject stable candidates and 4 candidates with same-subject non-lead failure"
       ],
       "gpu_trigger": "none",
       "name": "prospect-lead derived target validation",
-      "next_action": "Do not spend on prospect-lead derived candidates; they fail full-manifest feature-mode validation.",
+      "next_action": "Do not train on prospect-lead candidates; same-subject non-lead recordings do not validate them.",
       "priority": 90,
       "status": "closed"
     },

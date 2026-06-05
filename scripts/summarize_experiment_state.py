@@ -142,6 +142,7 @@ RECORDING_BIDIRECTIONALITY_PROSPECTUS_FILE = "docs/recording_bidirectionality_pr
 DERIVED_TARGET_FAMILY_PROSPECT_LEADS_FILE = "docs/derived_target_family_gate_prospect_leads.json"
 PROSPECT_LEAD_CANDIDATE_VALIDATION_FILE = "docs/prospect_lead_candidate_validation.json"
 PROSPECT_LEAD_FEATURE_MODE_VALIDATION_FILE = "docs/prospect_lead_feature_mode_validation.json"
+PROSPECT_LEAD_SUBJECT_STABILITY_FILE = "docs/prospect_lead_subject_stability.json"
 MODEL_FREE_RECORDING_DIRECTIONALITY_AUDIT_FILE = "docs/model_free_recording_directionality_audit.json"
 SYMMETRIC_RECORDING_SUPPORT_AUDIT_FILE = "docs/symmetric_recording_support_audit.json"
 SYMMETRIC_THRESHOLD_SENSITIVITY_AUDIT_FILE = "docs/symmetric_threshold_sensitivity_audit.json"
@@ -476,6 +477,7 @@ def render_markdown(
     derived_target_family_prospect_leads: dict | None = None,
     prospect_lead_candidate_validation: dict | None = None,
     prospect_lead_feature_mode_validation: dict | None = None,
+    prospect_lead_subject_stability: dict | None = None,
     model_free_recording_directionality_audit: dict | None = None,
     symmetric_recording_support_audit: dict | None = None,
     symmetric_threshold_sensitivity_audit: dict | None = None,
@@ -1921,6 +1923,27 @@ def render_markdown(
             ),
             "",
         ]
+    if prospect_lead_subject_stability is not None:
+        summary = prospect_lead_subject_stability["summary"]
+        lines += [
+            "## Prospect-Lead Subject Stability Audit",
+            "",
+            "`docs/prospect_lead_subject_stability.md` checks whether the prospect-lead",
+            "derived candidates also hold on same-subject non-lead recordings.",
+            "",
+            f"- prospect candidates: `{summary['n_prospect_candidates']}`",
+            f"- same-subject stable candidates: `{summary['n_same_subject_stable_candidates']}`",
+            f"- candidates with non-lead failure: `{summary['n_candidates_with_nonlead_failure']}`",
+            f"- decision: `{summary['decision']}`",
+            "",
+            (
+                "Decision: the prospect-lead rows are selected-recording effects, not "
+                "subject-stable transfer signals. A future target/control rule must be "
+                "stable across multiple recordings within the held-out subject before "
+                "any GPU run."
+            ),
+            "",
+        ]
     if model_free_recording_directionality_audit is not None:
         summary = model_free_recording_directionality_audit["summary"]
         overall = summary["overall"]
@@ -2355,6 +2378,9 @@ def main() -> int:
     prospect_lead_feature_mode_validation = read_mechanism_audit(
         REPO_ROOT / PROSPECT_LEAD_FEATURE_MODE_VALIDATION_FILE
     )
+    prospect_lead_subject_stability = read_mechanism_audit(
+        REPO_ROOT / PROSPECT_LEAD_SUBJECT_STABILITY_FILE
+    )
     model_free_recording_directionality_audit = read_mechanism_audit(
         REPO_ROOT / MODEL_FREE_RECORDING_DIRECTIONALITY_AUDIT_FILE
     )
@@ -2438,6 +2464,7 @@ def main() -> int:
         derived_target_family_prospect_leads,
         prospect_lead_candidate_validation,
         prospect_lead_feature_mode_validation,
+        prospect_lead_subject_stability,
         model_free_recording_directionality_audit,
         symmetric_recording_support_audit,
         symmetric_threshold_sensitivity_audit,
@@ -2538,6 +2565,7 @@ def main() -> int:
         "derived_target_family_prospect_leads": derived_target_family_prospect_leads,
         "prospect_lead_candidate_validation": prospect_lead_candidate_validation,
         "prospect_lead_feature_mode_validation": prospect_lead_feature_mode_validation,
+        "prospect_lead_subject_stability": prospect_lead_subject_stability,
         "model_free_recording_directionality_audit": model_free_recording_directionality_audit,
         "symmetric_recording_support_audit": symmetric_recording_support_audit,
         "symmetric_threshold_sensitivity_audit": symmetric_threshold_sensitivity_audit,

@@ -778,6 +778,18 @@ and unit-residual feature modes against the corresponding full-manifest gates.
 
 Decision: feature-mode variation does not validate the prospect-lead derived candidates. Keep the next step local and do not launch GPU training from these selected-subset rows.
 
+## Prospect-Lead Subject Stability Audit
+
+`docs/prospect_lead_subject_stability.md` checks whether the prospect-lead
+derived candidates also hold on same-subject non-lead recordings.
+
+- prospect candidates: `4`
+- same-subject stable candidates: `0`
+- candidates with non-lead failure: `4`
+- decision: `no_same_subject_stable_prospect_candidate`
+
+Decision: the prospect-lead rows are selected-recording effects, not subject-stable transfer signals. A future target/control rule must be stable across multiple recordings within the held-out subject before any GPU run.
+
 ## Model-Free Recording Directionality Audit
 
 `docs/model_free_recording_directionality_audit.md` classifies every

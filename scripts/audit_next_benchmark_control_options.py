@@ -32,6 +32,7 @@ ARTIFACTS = {
     "derived_target_family_prospect_leads": "docs/derived_target_family_gate_prospect_leads.json",
     "prospect_lead_candidate_validation": "docs/prospect_lead_candidate_validation.json",
     "prospect_lead_feature_mode_validation": "docs/prospect_lead_feature_mode_validation.json",
+    "prospect_lead_subject_stability": "docs/prospect_lead_subject_stability.json",
     "local_cached_manifest_candidates": "docs/local_cached_manifest_candidates.json",
     "projected_support80_shared_family": "docs/shared_family_target_control_gate_projected_support80.json",
     "projected_support80_all_families_recording_centered": (
@@ -160,6 +161,10 @@ def build_report() -> dict:
     prospect_feature_validation = artifacts["prospect_lead_feature_mode_validation"]
     prospect_feature_summary = (
         prospect_feature_validation.get("summary", {}) if prospect_feature_validation is not None else {}
+    )
+    prospect_subject_stability = artifacts["prospect_lead_subject_stability"]
+    prospect_subject_summary = (
+        prospect_subject_stability.get("summary", {}) if prospect_subject_stability is not None else {}
     )
     local_manifest_summary = local_manifest_candidates.get("summary", {}) if local_manifest_candidates is not None else {}
     local_manifest_decision = local_manifest_summary.get("decision")
@@ -350,14 +355,12 @@ def build_report() -> dict:
                 ),
                 (
                     "prospect-lead candidate validation has not been run yet"
-                    if prospect_feature_validation is None
+                    if prospect_subject_stability is None
                     else (
-                        "prospect-lead feature-mode validation has "
-                        f"{prospect_feature_summary.get('n_validated_candidates', 'n/a')} validated candidates across "
-                        f"{prospect_feature_summary.get('n_feature_modes', 'n/a')} feature modes; "
-                        f"{prospect_feature_summary.get('n_single_recording_candidates', 'n/a')} candidates are "
-                        "single-recording and "
-                        f"{prospect_feature_summary.get('n_subset_only_candidates', 'n/a')} are subset-only"
+                        "prospect-lead subject-stability audit has "
+                        f"{prospect_subject_summary.get('n_same_subject_stable_candidates', 'n/a')} stable candidates; "
+                        f"{prospect_subject_summary.get('n_candidates_with_nonlead_failure', 'n/a')} fail on "
+                        "same-subject non-lead recordings"
                     )
                 ),
                 "recording-subset replication selected zero stable validation rows",
@@ -623,9 +626,22 @@ def build_report() -> dict:
                         f"{prospect_feature_summary.get('n_feature_modes', 'n/a')} feature modes"
                     )
                 ),
+                (
+                    "prospect-lead subject-stability audit has not been run yet"
+                    if prospect_subject_stability is None
+                    else (
+                        "subject-stability audit found "
+                        f"{prospect_subject_summary.get('n_same_subject_stable_candidates', 'n/a')} same-subject "
+                        "stable candidates and "
+                        f"{prospect_subject_summary.get('n_candidates_with_nonlead_failure', 'n/a')} candidates with "
+                        "same-subject non-lead failure"
+                    )
+                ),
             ],
             next_action=(
-                prospect_feature_summary.get("next_action", "Keep validation no-spend.")
+                prospect_subject_summary.get("next_action", "Keep validation no-spend.")
+                if prospect_subject_stability is not None
+                else prospect_feature_summary.get("next_action", "Keep validation no-spend.")
                 if prospect_feature_validation is not None
                 else "Run scripts/audit_prospect_lead_feature_mode_validation.py before any training decision."
             ),

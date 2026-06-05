@@ -62578,6 +62578,7 @@
       "projected_support80_shared_family": "docs/shared_family_target_control_gate_projected_support80.json",
       "prospect_lead_candidate_validation": "docs/prospect_lead_candidate_validation.json",
       "prospect_lead_feature_mode_validation": "docs/prospect_lead_feature_mode_validation.json",
+      "prospect_lead_subject_stability": "docs/prospect_lead_subject_stability.json",
       "reaction_dynamics_target_family_counts": "docs/reaction_dynamics_target_family_gate_counts.json",
       "reaction_dynamics_target_family_fractions": "docs/reaction_dynamics_target_family_gate_fractions.json",
       "reaction_dynamics_target_family_recording_centered": "docs/reaction_dynamics_target_family_gate.json",
@@ -62605,7 +62606,7 @@
           "local gate meta-failure audit has 0 candidates across 1924 rows; recording bidirectionality fails in 1919 rows",
           "recording bidirectionality prospectus found 18 prospect recordings from 262 bidirectional observations",
           "prospect-lead manifest has 18 recordings across 7 subjects with 0 missing local recordings",
-          "prospect-lead feature-mode validation has 0 validated candidates across 4 feature modes; 4 candidates are single-recording and 4 are subset-only",
+          "prospect-lead subject-stability audit has 0 stable candidates; 4 fail on same-subject non-lead recordings",
           "recording-subset replication selected zero stable validation rows"
         ],
         "gpu_trigger": "At least one local row on the proposed manifest must clear delta_vs_shuffle>=0, delta_vs_total>=0, target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75 before training.",
@@ -62685,11 +62686,12 @@
         "evidence": [
           "prospect-lead derived gate found 3 candidates across 84 rows",
           "recording-centered validation found 0 validated candidates; 3 prospect candidates were single-recording and 3 were subset-only",
-          "feature-mode validation found 0 validated candidates from 4 prospect candidates across 4 feature modes"
+          "feature-mode validation found 0 validated candidates from 4 prospect candidates across 4 feature modes",
+          "subject-stability audit found 0 same-subject stable candidates and 4 candidates with same-subject non-lead failure"
         ],
         "gpu_trigger": "none",
         "name": "prospect-lead derived target validation",
-        "next_action": "Do not spend on prospect-lead derived candidates; they fail full-manifest feature-mode validation.",
+        "next_action": "Do not train on prospect-lead candidates; same-subject non-lead recordings do not validate them.",
         "priority": 90,
         "status": "closed"
       },
@@ -63454,6 +63456,466 @@
       "min_candidate_recordings": 3
     },
     "validated_candidates": []
+  },
+  "prospect_lead_subject_stability": {
+    "rows": [
+      {
+        "family": "thalamic",
+        "feature_mode": "recording_centered",
+        "full": {
+          "bidirectional_fraction": 0.25,
+          "mean_improved_fraction": 0.5460199004975125,
+          "mean_target0": 0.917910447761194,
+          "mean_target1": 0.17412935323383086,
+          "n_bidirectional_recordings": 1,
+          "n_recordings": 4,
+          "recordings": [
+            {
+              "improved_fraction": 0.5,
+              "mean_true_class_delta": 0.0,
+              "n_trials": 762,
+              "recording": "35eeb752-8f4f-4040-9714-ba0f5b7ccdfe_probe00",
+              "target0_improved": 1.0,
+              "target1_fraction": 0.5,
+              "target1_improved": 0.0
+            },
+            {
+              "improved_fraction": 0.5,
+              "mean_true_class_delta": -9.8473882446789e-27,
+              "n_trials": 672,
+              "recording": "3f71aa98-08c6-4e79-b4c8-00eae4f03eff_probe00",
+              "target0_improved": 1.0,
+              "target1_fraction": 0.5,
+              "target1_improved": 0.0
+            },
+            {
+              "improved_fraction": 0.6840796019900498,
+              "mean_true_class_delta": 0.015065441712955357,
+              "n_trials": 402,
+              "recording": "6899a67d-2e53-4215-a52a-c7021b5da5d4_probe00",
+              "target0_improved": 0.6716417910447762,
+              "target1_fraction": 0.5,
+              "target1_improved": 0.6965174129353234
+            },
+            {
+              "improved_fraction": 0.5,
+              "mean_true_class_delta": 3.5769972434725523e-26,
+              "n_trials": 740,
+              "recording": "a1782f4f-86b0-480c-a7f2-3d8f1ab482ab_probe00",
+              "target0_improved": 1.0,
+              "target1_fraction": 0.5,
+              "target1_improved": 0.0
+            }
+          ]
+        },
+        "full_manifest_decision": "reject: target1",
+        "holdout": "MFD_06",
+        "lead": {
+          "bidirectional_fraction": 1.0,
+          "mean_improved_fraction": 0.6840796019900498,
+          "mean_target0": 0.6716417910447762,
+          "mean_target1": 0.6965174129353234,
+          "n_bidirectional_recordings": 1,
+          "n_recordings": 1,
+          "recordings": [
+            {
+              "improved_fraction": 0.6840796019900498,
+              "mean_true_class_delta": 0.015065441712955357,
+              "n_trials": 402,
+              "recording": "6899a67d-2e53-4215-a52a-c7021b5da5d4_probe00",
+              "target0_improved": 0.6716417910447762,
+              "target1_fraction": 0.5,
+              "target1_improved": 0.6965174129353234
+            }
+          ]
+        },
+        "nonlead": {
+          "bidirectional_fraction": 0.0,
+          "mean_improved_fraction": 0.5,
+          "mean_target0": 1.0,
+          "mean_target1": 0.0,
+          "n_bidirectional_recordings": 0,
+          "n_recordings": 3,
+          "recordings": [
+            {
+              "improved_fraction": 0.5,
+              "mean_true_class_delta": 0.0,
+              "n_trials": 762,
+              "recording": "35eeb752-8f4f-4040-9714-ba0f5b7ccdfe_probe00",
+              "target0_improved": 1.0,
+              "target1_fraction": 0.5,
+              "target1_improved": 0.0
+            },
+            {
+              "improved_fraction": 0.5,
+              "mean_true_class_delta": -9.8473882446789e-27,
+              "n_trials": 672,
+              "recording": "3f71aa98-08c6-4e79-b4c8-00eae4f03eff_probe00",
+              "target0_improved": 1.0,
+              "target1_fraction": 0.5,
+              "target1_improved": 0.0
+            },
+            {
+              "improved_fraction": 0.5,
+              "mean_true_class_delta": 3.5769972434725523e-26,
+              "n_trials": 740,
+              "recording": "a1782f4f-86b0-480c-a7f2-3d8f1ab482ab_probe00",
+              "target0_improved": 1.0,
+              "target1_fraction": 0.5,
+              "target1_improved": 0.0
+            }
+          ]
+        },
+        "prospect_decision": "candidate",
+        "same_subject_stable": false,
+        "target_mode": "response_latency"
+      },
+      {
+        "family": "broad_named_anatomy",
+        "feature_mode": "recording_centered",
+        "full": {
+          "bidirectional_fraction": 0.25,
+          "mean_improved_fraction": 0.5826813110181311,
+          "mean_target0": 0.5492282659228266,
+          "mean_target1": 0.6161343561134356,
+          "n_bidirectional_recordings": 1,
+          "n_recordings": 4,
+          "recordings": [
+            {
+              "improved_fraction": 0.5244444444444445,
+              "mean_true_class_delta": 0.0011496847861318371,
+              "n_trials": 900,
+              "recording": "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe00",
+              "target0_improved": 0.47555555555555556,
+              "target1_fraction": 0.5,
+              "target1_improved": 0.5733333333333334
+            },
+            {
+              "improved_fraction": 0.5322222222222223,
+              "mean_true_class_delta": 0.0003600376820164962,
+              "n_trials": 900,
+              "recording": "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe01",
+              "target0_improved": 0.5288888888888889,
+              "target1_fraction": 0.5,
+              "target1_improved": 0.5355555555555556
+            },
+            {
+              "improved_fraction": 0.5167364016736402,
+              "mean_true_class_delta": 0.0004911195887971377,
+              "n_trials": 478,
+              "recording": "b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe00",
+              "target0_improved": 0.49372384937238495,
+              "target1_fraction": 0.5,
+              "target1_improved": 0.5397489539748954
+            },
+            {
+              "improved_fraction": 0.7573221757322176,
+              "mean_true_class_delta": 0.011614889166458957,
+              "n_trials": 478,
+              "recording": "b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe01",
+              "target0_improved": 0.698744769874477,
+              "target1_fraction": 0.5,
+              "target1_improved": 0.8158995815899581
+            }
+          ]
+        },
+        "full_manifest_decision": "reject: total baseline",
+        "holdout": "NR_0019",
+        "lead": {
+          "bidirectional_fraction": 1.0,
+          "mean_improved_fraction": 0.7573221757322176,
+          "mean_target0": 0.698744769874477,
+          "mean_target1": 0.8158995815899581,
+          "n_bidirectional_recordings": 1,
+          "n_recordings": 1,
+          "recordings": [
+            {
+              "improved_fraction": 0.7573221757322176,
+              "mean_true_class_delta": 0.011614889166458957,
+              "n_trials": 478,
+              "recording": "b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe01",
+              "target0_improved": 0.698744769874477,
+              "target1_fraction": 0.5,
+              "target1_improved": 0.8158995815899581
+            }
+          ]
+        },
+        "nonlead": {
+          "bidirectional_fraction": 0.0,
+          "mean_improved_fraction": 0.5244676894467689,
+          "mean_target0": 0.4993894312722765,
+          "mean_target1": 0.5495459476212615,
+          "n_bidirectional_recordings": 0,
+          "n_recordings": 3,
+          "recordings": [
+            {
+              "improved_fraction": 0.5244444444444445,
+              "mean_true_class_delta": 0.0011496847861318371,
+              "n_trials": 900,
+              "recording": "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe00",
+              "target0_improved": 0.47555555555555556,
+              "target1_fraction": 0.5,
+              "target1_improved": 0.5733333333333334
+            },
+            {
+              "improved_fraction": 0.5322222222222223,
+              "mean_true_class_delta": 0.0003600376820164962,
+              "n_trials": 900,
+              "recording": "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe01",
+              "target0_improved": 0.5288888888888889,
+              "target1_fraction": 0.5,
+              "target1_improved": 0.5355555555555556
+            },
+            {
+              "improved_fraction": 0.5167364016736402,
+              "mean_true_class_delta": 0.0004911195887971377,
+              "n_trials": 478,
+              "recording": "b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe00",
+              "target0_improved": 0.49372384937238495,
+              "target1_fraction": 0.5,
+              "target1_improved": 0.5397489539748954
+            }
+          ]
+        },
+        "prospect_decision": "candidate",
+        "same_subject_stable": false,
+        "target_mode": "response_latency"
+      },
+      {
+        "family": "broad_named_anatomy",
+        "feature_mode": "recording_centered",
+        "full": {
+          "bidirectional_fraction": 0.25,
+          "mean_improved_fraction": 0.47547768479776853,
+          "mean_target0": 0.3888888888888889,
+          "mean_target1": 0.47511932035127913,
+          "n_bidirectional_recordings": 1,
+          "n_recordings": 4,
+          "recordings": [
+            {
+              "improved_fraction": 0.3655555555555556,
+              "mean_true_class_delta": -0.0015463346361828732,
+              "n_trials": 900,
+              "recording": "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe00",
+              "target0_improved": 0.15555555555555556,
+              "target1_fraction": 0.9,
+              "target1_improved": 0.3888888888888889
+            },
+            {
+              "improved_fraction": 0.4777777777777778,
+              "mean_true_class_delta": -0.0027880179239122603,
+              "n_trials": 900,
+              "recording": "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe01",
+              "target0_improved": 0.011111111111111112,
+              "target1_fraction": 0.9,
+              "target1_improved": 0.5296296296296297
+            },
+            {
+              "improved_fraction": 0.39539748953974896,
+              "mean_true_class_delta": -0.0002580743508208436,
+              "n_trials": 478,
+              "recording": "b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe00",
+              "target0_improved": 0.4666666666666667,
+              "target1_fraction": 0.8117154811715481,
+              "target1_improved": 0.3788659793814433
+            },
+            {
+              "improved_fraction": 0.6631799163179917,
+              "mean_true_class_delta": 0.00510775359114057,
+              "n_trials": 478,
+              "recording": "b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe01",
+              "target0_improved": 0.9222222222222223,
+              "target1_fraction": 0.8117154811715481,
+              "target1_improved": 0.6030927835051546
+            }
+          ]
+        },
+        "full_manifest_decision": "reject: shuffle",
+        "holdout": "NR_0019",
+        "lead": {
+          "bidirectional_fraction": 1.0,
+          "mean_improved_fraction": 0.6631799163179917,
+          "mean_target0": 0.9222222222222223,
+          "mean_target1": 0.6030927835051546,
+          "n_bidirectional_recordings": 1,
+          "n_recordings": 1,
+          "recordings": [
+            {
+              "improved_fraction": 0.6631799163179917,
+              "mean_true_class_delta": 0.00510775359114057,
+              "n_trials": 478,
+              "recording": "b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe01",
+              "target0_improved": 0.9222222222222223,
+              "target1_fraction": 0.8117154811715481,
+              "target1_improved": 0.6030927835051546
+            }
+          ]
+        },
+        "nonlead": {
+          "bidirectional_fraction": 0.0,
+          "mean_improved_fraction": 0.4129102742910275,
+          "mean_target0": 0.2111111111111111,
+          "mean_target1": 0.4324614992999873,
+          "n_bidirectional_recordings": 0,
+          "n_recordings": 3,
+          "recordings": [
+            {
+              "improved_fraction": 0.3655555555555556,
+              "mean_true_class_delta": -0.0015463346361828732,
+              "n_trials": 900,
+              "recording": "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe00",
+              "target0_improved": 0.15555555555555556,
+              "target1_fraction": 0.9,
+              "target1_improved": 0.3888888888888889
+            },
+            {
+              "improved_fraction": 0.4777777777777778,
+              "mean_true_class_delta": -0.0027880179239122603,
+              "n_trials": 900,
+              "recording": "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe01",
+              "target0_improved": 0.011111111111111112,
+              "target1_fraction": 0.9,
+              "target1_improved": 0.5296296296296297
+            },
+            {
+              "improved_fraction": 0.39539748953974896,
+              "mean_true_class_delta": -0.0002580743508208436,
+              "n_trials": 478,
+              "recording": "b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe00",
+              "target0_improved": 0.4666666666666667,
+              "target1_fraction": 0.8117154811715481,
+              "target1_improved": 0.3788659793814433
+            }
+          ]
+        },
+        "prospect_decision": "candidate",
+        "same_subject_stable": false,
+        "target_mode": "prior_engaged"
+      },
+      {
+        "family": "broad_named_anatomy",
+        "feature_mode": "counts",
+        "full": {
+          "bidirectional_fraction": 0.0,
+          "mean_improved_fraction": 0.30927359367735935,
+          "mean_target0": 0.7166666666666667,
+          "mean_target1": 0.22850483645157182,
+          "n_bidirectional_recordings": 0,
+          "n_recordings": 4,
+          "recordings": [
+            {
+              "improved_fraction": 0.5011111111111111,
+              "mean_true_class_delta": -0.0001007238658909124,
+              "n_trials": 900,
+              "recording": "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe00",
+              "target0_improved": 0.05555555555555555,
+              "target1_fraction": 0.9,
+              "target1_improved": 0.5506172839506173
+            },
+            {
+              "improved_fraction": 0.1,
+              "mean_true_class_delta": -0.0028256241765828582,
+              "n_trials": 900,
+              "recording": "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe01",
+              "target0_improved": 1.0,
+              "target1_fraction": 0.9,
+              "target1_improved": 0.0
+            },
+            {
+              "improved_fraction": 0.18828451882845187,
+              "mean_true_class_delta": -0.0004857650800320453,
+              "n_trials": 478,
+              "recording": "b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe00",
+              "target0_improved": 0.9555555555555556,
+              "target1_fraction": 0.8117154811715481,
+              "target1_improved": 0.010309278350515464
+            },
+            {
+              "improved_fraction": 0.4476987447698745,
+              "mean_true_class_delta": -0.00015077694876840003,
+              "n_trials": 478,
+              "recording": "b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe01",
+              "target0_improved": 0.8555555555555555,
+              "target1_fraction": 0.8117154811715481,
+              "target1_improved": 0.35309278350515466
+            }
+          ]
+        },
+        "full_manifest_decision": "reject: shuffle",
+        "holdout": "NR_0019",
+        "lead": {
+          "bidirectional_fraction": 0.0,
+          "mean_improved_fraction": 0.4476987447698745,
+          "mean_target0": 0.8555555555555555,
+          "mean_target1": 0.35309278350515466,
+          "n_bidirectional_recordings": 0,
+          "n_recordings": 1,
+          "recordings": [
+            {
+              "improved_fraction": 0.4476987447698745,
+              "mean_true_class_delta": -0.00015077694876840003,
+              "n_trials": 478,
+              "recording": "b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe01",
+              "target0_improved": 0.8555555555555555,
+              "target1_fraction": 0.8117154811715481,
+              "target1_improved": 0.35309278350515466
+            }
+          ]
+        },
+        "nonlead": {
+          "bidirectional_fraction": 0.0,
+          "mean_improved_fraction": 0.263131876646521,
+          "mean_target0": 0.6703703703703704,
+          "mean_target1": 0.18697552076704424,
+          "n_bidirectional_recordings": 0,
+          "n_recordings": 3,
+          "recordings": [
+            {
+              "improved_fraction": 0.5011111111111111,
+              "mean_true_class_delta": -0.0001007238658909124,
+              "n_trials": 900,
+              "recording": "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe00",
+              "target0_improved": 0.05555555555555555,
+              "target1_fraction": 0.9,
+              "target1_improved": 0.5506172839506173
+            },
+            {
+              "improved_fraction": 0.1,
+              "mean_true_class_delta": -0.0028256241765828582,
+              "n_trials": 900,
+              "recording": "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe01",
+              "target0_improved": 1.0,
+              "target1_fraction": 0.9,
+              "target1_improved": 0.0
+            },
+            {
+              "improved_fraction": 0.18828451882845187,
+              "mean_true_class_delta": -0.0004857650800320453,
+              "n_trials": 478,
+              "recording": "b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe00",
+              "target0_improved": 0.9555555555555556,
+              "target1_fraction": 0.8117154811715481,
+              "target1_improved": 0.010309278350515464
+            }
+          ]
+        },
+        "prospect_decision": "candidate",
+        "same_subject_stable": false,
+        "target_mode": "prior_engaged"
+      }
+    ],
+    "same_subject_stable_candidates": [],
+    "summary": {
+      "decision": "no_same_subject_stable_prospect_candidate",
+      "gpu_training_ready": false,
+      "n_candidates_with_nonlead_failure": 4,
+      "n_prospect_candidates": 4,
+      "n_same_subject_stable_candidates": 0,
+      "next_action": "Do not train on prospect-lead candidates; same-subject non-lead recordings do not validate them."
+    },
+    "thresholds": {
+      "min_target_improvement": 0.55
+    }
   },
   "recording_bidirectionality_prospectus": {
     "missing_sources": [],
