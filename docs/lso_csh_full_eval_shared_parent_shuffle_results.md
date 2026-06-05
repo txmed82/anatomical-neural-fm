@@ -122,3 +122,63 @@ No `runs/lso_csh_full_eval_shared_parent_shuffle/summary.md`, `within_summary.md
 `cross_summary.md` file was present when cleanup pushed artifacts. Treat this
 cloud result as incomplete/non-evidence even if the pod exit status is 0.
 
+## Provisioning Attempt Notes
+
+Launch goal: run only the canonical `CSH_ZAD_019` shared-parent
+true-vs-shuffled control with `FULL_EVAL_ON_BEST=1`, three seeds, and no new
+held-out subjects.
+
+Budget guard:
+
+- user cap: $100
+- A100 launch guard: 5,400 seconds max runtime, 300 seconds provisioning
+- L4 fallback guard: 7,200 seconds max runtime, 300 seconds provisioning
+- observed rates: $1.49/hr for A100 placements, $0.39/hr for L4 placement
+
+Attempt 1:
+
+- pod: `wprz1ze9ox8uvx`
+- name: `anfm-csh-full-eval-20260604-195834`
+- GPU request: `NVIDIA A100 80GB PCIe,NVIDIA A100-SXM4-80GB`
+- datacenter: `ANY`
+- rate: $1.49/hr
+- outcome: RunPod assigned machine id `oqo2eflpgwbo`, but the pod never exposed
+  machine details or a public IP. The 300-second provisioning guard terminated
+  it before training started.
+
+Attempt 2:
+
+- datacenter `US-MO-1`: rejected by current RunPod API because that datacenter
+  id is no longer valid.
+- datacenter `US-IL-1`: rejected before pod creation because no matching A100
+  capacity was available.
+- pod: `8piygo34j6vdt0`
+- name: `anfm-csh-full-eval-20260604-200451`
+- GPU request: `NVIDIA A100-SXM4-80GB`
+- datacenter: `ANY`
+- rate: $1.49/hr
+- outcome: RunPod again assigned machine id `oqo2eflpgwbo` with no runtime
+  access. The pod was manually terminated before the full guard window.
+
+Attempt 3:
+
+- pod: `0tjka0eux9n54n`
+- name: `anfm-csh-full-eval-l4-20260604-201016`
+- GPU request: `NVIDIA L4`
+- datacenter: `ANY`
+- rate: $0.39/hr
+- outcome: cheaper GPU fallback also received a machine id without runtime
+  access, machine details, or a public IP. The hardened 300-second provisioning
+  guard terminated the pod before training started.
+
+During cleanup, an unexpected active project pod
+`9sb1b5aiqur37r` (`anfm-two-parent-compact-20260604-200502`) was visible and
+was terminated to enforce the budget cap. Final post-cleanup preflight reported
+`active_pods: 0`.
+
+No training ran and no `full_eval` CSH metrics were produced. Treat this as a
+RunPod provisioning failure, not experimental evidence.
+
+Next launch should wait for healthier RunPod runtime provisioning or use a
+different cloud backend. Do not start more than one pod at a time, and keep the
+`active_pods: 0` preflight gate before each paid attempt.

@@ -782,3 +782,8 @@ current datacenter id, and `US-IL-1` had no matching A100 capacity. Cleanup
 returned active pods to zero. The launcher now treats machine id alone as
 unprovisioned for the billing guard; a future paid retry should wait for
 healthier A100 capacity or use a different valid GPU/datacenter path.
+
+Cheap fallback check: an `NVIDIA L4` retry also failed before training, with no
+machine details or public IP, and the hardened 300-second guard terminated it.
+This points to a RunPod runtime provisioning/access issue rather than an
+A100-only capacity issue. Active pods returned to zero again.
