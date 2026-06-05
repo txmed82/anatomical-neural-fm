@@ -132,6 +132,7 @@ COMPOSITE_BEHAVIOR_RESPONSE_EXTREME_SEED_SENSITIVITY_FILE = (
 )
 RESPONSE_EXTREME_A100_RESULT_FILE = "docs/response_extreme_trigger_a100_results.md"
 RESPONSE_EXTREME_TRAINING_FAILURE_AUDIT_FILE = "docs/response_extreme_training_failure_audit.json"
+RESPONSE_EXTREME_TRAINING_ALIGNED_READOUT_FILE = "docs/response_extreme_training_aligned_readout.json"
 LOW_CONTRAST_CHOICE_FAMILY_GATE_FILE = "docs/low_contrast_choice_family_gate.json"
 LOW_CONTRAST_CHOICE_PROJECTED_GATE_FILE = "docs/low_contrast_choice_family_gate_projected_hdf5.json"
 LOW_CONTRAST_CHOICE_SEED_SENSITIVITY_FILE = "docs/low_contrast_choice_seed_sensitivity.json"
@@ -669,6 +670,7 @@ def render_markdown(
     composite_behavior_response_extreme_projected_gate: dict | None = None,
     composite_behavior_response_extreme_seed_sensitivity: dict | None = None,
     response_extreme_training_failure_audit: dict | None = None,
+    response_extreme_training_aligned_readout: dict | None = None,
     low_contrast_choice_family_gate: dict | None = None,
     low_contrast_choice_projected_gate: dict | None = None,
     low_contrast_choice_seed_sensitivity: dict | None = None,
@@ -2044,6 +2046,9 @@ def render_markdown(
         ]
     if response_extreme_training_failure_audit is not None:
         summary = response_extreme_training_failure_audit["summary"]
+        next_action = summary["next_recommended_action"]
+        if response_extreme_training_aligned_readout is not None:
+            next_action = "direct broad-family feature readout or target/control redesign"
         lines += [
             "## Response-Extreme Training Failure Audit",
             "",
@@ -2054,7 +2059,7 @@ def render_markdown(
             f"- cases: `{summary['n_cases']}`",
             f"- decision: `{summary['decision']}`",
             f"- paid GPU trigger: `{summary['paid_gpu_trigger']}`",
-            f"- next recommended action: `{summary['next_recommended_action']}`",
+            f"- next recommended action: `{next_action}`",
             f"- blockers: `{', '.join(summary['blockers'])}`",
             "",
             "| holdout | target | target alignment | local delta shuffle | cloud true delta | cloud shuffle delta | failure modes |",
@@ -2076,6 +2081,48 @@ def render_markdown(
                 "definition. The next experiment is local and training-aligned: test "
                 "the exact cloud feature space and require full-eval diagnostics before "
                 "any future GPU run."
+            ),
+            "",
+        ]
+    if response_extreme_training_aligned_readout is not None:
+        summary = response_extreme_training_aligned_readout["summary"]
+        lines += [
+            "## Response-Extreme Training-Aligned Readout",
+            "",
+            "`docs/response_extreme_training_aligned_readout.md` tests the A100",
+            "pilot's shared parent-region feature space with a local closed-form",
+            "ridge readout.",
+            "",
+            f"- decision: `{summary['decision']}`",
+            f"- paid GPU trigger: `{summary['paid_gpu_trigger']}`",
+            f"- interpretation: {summary['interpretation']}",
+            "",
+            "| holdout | target | feature mode | shared regions | centered AUC | delta shuffle | delta total | target0 | target1 | recordings | decision |",
+            "|---|---|---|---:|---:|---:|---:|---:|---:|---:|---|",
+        ]
+        for case in response_extreme_training_aligned_readout["cases"]:
+            for row in case["feature_modes"]:
+                row_summary = row["summary"]
+                deltas = row_summary["deltas"]
+                paired = row_summary["paired_true_vs_shuffle"]
+                lines.append(
+                    f"| {case['holdout']} | {case['target_mode']} | {row['feature_mode']} | "
+                    f"{case['n_shared_regions']} | "
+                    f"{row_summary['metrics']['region_true']['eval_centered_auc']:.3f} | "
+                    f"{deltas['true_minus_shuffle_centered_auc']:+.3f} | "
+                    f"{deltas['true_minus_total_centered_auc']:+.3f} | "
+                    f"{paired['target0_improved_fraction']:.3f} | "
+                    f"{paired['target1_improved_fraction']:.3f} | "
+                    f"{row_summary['recordings_positive_true_minus_shuffle']}/{row_summary['n_recordings']} | "
+                    f"{row_summary['decision']} |"
+                )
+        lines += [
+            "",
+            (
+                "Decision: the cloud-aligned feature space is locally negative. "
+                "The next branch should either add a direct fixed broad-family-count "
+                "readout that matches the original local trigger, or abandon this "
+                "response-extreme branch and redesign the target/control."
             ),
             "",
         ]
@@ -4022,6 +4069,9 @@ def main() -> int:
     response_extreme_training_failure_audit = read_mechanism_audit(
         REPO_ROOT / RESPONSE_EXTREME_TRAINING_FAILURE_AUDIT_FILE
     )
+    response_extreme_training_aligned_readout = read_mechanism_audit(
+        REPO_ROOT / RESPONSE_EXTREME_TRAINING_ALIGNED_READOUT_FILE
+    )
     low_contrast_choice_family_gate = read_mechanism_audit(REPO_ROOT / LOW_CONTRAST_CHOICE_FAMILY_GATE_FILE)
     low_contrast_choice_projected_gate = read_mechanism_audit(REPO_ROOT / LOW_CONTRAST_CHOICE_PROJECTED_GATE_FILE)
     low_contrast_choice_seed_sensitivity = read_mechanism_audit(
@@ -4199,6 +4249,7 @@ def main() -> int:
         composite_behavior_response_extreme_projected_gate,
         composite_behavior_response_extreme_seed_sensitivity,
         response_extreme_training_failure_audit,
+        response_extreme_training_aligned_readout,
         low_contrast_choice_family_gate,
         low_contrast_choice_projected_gate,
         low_contrast_choice_seed_sensitivity,
@@ -4346,6 +4397,7 @@ def main() -> int:
             "robust_response_extreme_seed_candidates",
         ),
         "response_extreme_training_failure_audit": response_extreme_training_failure_audit,
+        "response_extreme_training_aligned_readout": response_extreme_training_aligned_readout,
         "low_contrast_choice_family_gate": low_contrast_choice_family_gate,
         "low_contrast_choice_projected_gate": low_contrast_choice_projected_gate,
         "low_contrast_choice_seed_sensitivity": low_contrast_choice_seed_sensitivity,
