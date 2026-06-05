@@ -24,6 +24,7 @@ broadening attempts have not reproduced the CSH-sized controlled effect.
 | two-holdout broadening | shared parent regions, `KS014` + `MFD_06` | +0.016 | -0.006 | true 4/6, shuffled 2/6 |
 | CSH-like candidate broadening | shared parent regions, `NR_0019` | -0.008 | +0.003 | true 1/3, shuffled 2/3 |
 | fixed carrier-parent slice | `NYU-12`, parents `PRT,CA,VP,MOp,DG,mfbc` | +0.013 | +0.020 | true 2/3, shuffled 3/3 |
+| stricter fixed-slice candidate | `SWC_038`, same parents | -0.004 | +0.019 | true 0/2, shuffled 2/2 |
 
 Canonical source: `docs/csh_zad_019_signal_audit.md`. Machine-readable
 metrics: `docs/csh_zad_019_demo_metrics.json`.
@@ -65,6 +66,9 @@ Success-mode audit: `docs/transfer_success_mode_audit.md`.
   leave-subject-out training aggregate sign, but represented only 44.9% of the
   CSH carrier-weighted signal and lacked the strongest CSH carrier parent
   (`PRT`) plus `MOp`.
+- The stricter `SWC_038` fixed-slice run also failed: true labels were below
+  the shared null in both completed seeds, while shuffled labels were positive
+  in both.
 - The failure-mode audit rules out several simple gates on their own:
   parent-region support, CSH-like composition, trial count, class balance, and
   raw parent-level stimulus contrast.
@@ -73,12 +77,8 @@ Success-mode audit: `docs/transfer_success_mode_audit.md`.
 
 ## Next Experimental Gate
 
-Do not launch another paid broadening run unchanged. The fixed carrier-parent
-true-vs-shuffled control has now failed the demo gate on `NYU-12`, despite
-passing the initial no-spend support/alignment screen. The next paid run, if
-launched, should be `SWC_038` under the same fixed carrier-parent
-true-vs-shuffled control because it is the only untested subject that clears the
-stricter gate: >=500 slice units, >=70% CSH carrier-weighted coverage, and
->=75% sign alignment to the leave-subject-out training aggregate. Keep the
-RunPod preflight cost envelope below the $100 cap and verify zero active pods
-before launch.
+Do not launch another paid broadening run unchanged. Both the initial
+fixed-slice candidate (`NYU-12`) and the stricter follow-up (`SWC_038`) failed
+the true-vs-shuffled control. The next step should be no-spend analysis of the
+actual CSH model outputs or a redesign of the anatomical objective, not another
+matched-cache A100 sweep.

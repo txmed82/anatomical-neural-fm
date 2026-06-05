@@ -680,9 +680,23 @@ Key findings:
 - `SWC_043` remains below gate: 42.3% CSH carrier-weighted coverage and 74.0%
   LSO-train aligned unit mass.
 
-Next falsifiable paid gate, if spending again: run only `SWC_038` under the
-same fixed carrier-parent true-vs-shuffled control, with output isolated under
-`runs/lso_swc038_parent_slice` and result doc
-`docs/lso_swc038_parent_slice_results.md`. Preflight must show zero active
-RunPod pods and a worst-case cost envelope below the $100 cap. Stop after this
-single subject unless true labels beat shuffled labels.
+Completed paid stricter fixed-slice gate:
+`docs/lso_swc038_parent_slice_results.md` ran `SWC_038` under the same
+carrier-parent true-vs-shuffled control. The run produced two completed seeds
+before termination, enough to fail the stop rule:
+
+- `SWC_038` `region_only`: -0.004 mean delta, positive in 0/2 completed seeds
+- `SWC_038` `region_shuffle`: +0.019 mean delta, positive in 2/2 completed
+  seeds
+- cache gate: 28/28 matched-cache HDF5 files present
+- preflight envelope: $4.50-$6.00, below the $100 cap
+- active pods returned to zero after completion/termination
+
+Interpretation: the stricter support + CSH-weighted coverage + LSO-train
+alignment gate also failed. This is a stronger negative result than NYU-12
+because `SWC_038` was the only remaining untested subject that cleared the
+stricter no-spend screen. Do not spend on another matched-cache fixed-slice
+variant without a new mechanism. The next useful work is no-spend analysis of
+the actual CSH success: inspect per-recording model outputs, region-embedding
+behavior, and whether the apparent anatomical lift is tied to CSH-specific
+session/probe structure rather than a transferable anatomical code.

@@ -76,6 +76,12 @@ because it covers only 44.9% of the CSH carrier-weighted signal. `SWC_038` is
 the next candidate because it has 503 slice units, 78.5% CSH carrier-weighted
 coverage, and 76.7% sign-aligned unit mass against its LSO training aggregate.
 
-Next paid test, if launched: `SWC_038` only, same parent include list
-(`PRT,CA,VP,MOp,DG,mfbc`), same true-vs-shuffled control, and stop unless true
-labels beat shuffled labels.
+Completed stricter paid test: `docs/lso_swc038_parent_slice_results.md` ran
+`SWC_038` with the same parent include list and true-vs-shuffled control. It
+failed the gate in two completed seeds: `region_only` -0.004 mean delta, 0/2
+positive seeds; `region_shuffle` +0.019 mean delta, 2/2 positive seeds.
+
+Conclusion: neither CSH-sign alignment (`NYU-12`) nor the stricter LSO-train
+alignment plus CSH-weighted coverage gate (`SWC_038`) is sufficient. Stop
+spending on fixed carrier-parent variants until a new no-spend analysis explains
+what is special about the original `CSH_ZAD_019` success.
