@@ -93,6 +93,7 @@ MODEL_FREE_REGION_FAMILY_SCAN_FILE = "docs/csh_model_free_region_family_scan.jso
 CHOICE_MODEL_FREE_REGION_SIGNAL_AUDIT_FILE = "docs/csh_choice_model_free_region_signal_audit.json"
 CHOICE_MODEL_FREE_REGION_CANDIDATE_SCAN_FILE = "docs/csh_choice_model_free_region_candidate_scan.json"
 CHOICE_MODEL_FREE_REGION_FAMILY_SCAN_FILE = "docs/csh_choice_model_free_region_family_scan.json"
+MATCHED_REGION_CACHE_AUDIT_FILE = "docs/matched_region_cache_audit.md"
 LOCAL_PROBE_FILES = (
     (
         "local AUC surrogate",
@@ -288,6 +289,33 @@ def read_mechanism_audit(path: Path) -> dict | None:
     return json.loads(path.read_text())
 
 
+def read_cache_audit(path: Path) -> dict | None:
+    if not path.exists():
+        return None
+    text = path.read_text()
+    present_match = re.search(r"Present:\s+(\d+)/(\d+)\s+\(([^)]+)\)", text)
+    missing_section = text.split("## Shard Build Plan", 1)[0].split("## Missing", 1)[-1]
+    missing = re.findall(r"\| `([^`]+\.h5)` \|", missing_section)
+    shard_rows = []
+    for match in re.finditer(r"\|\s*(\d+)\s*\|\s*(\d+)\s*\|\s*(\d+)\s*\|\s*(\d+)\s*\|", text):
+        shard_rows.append({
+            "shard": int(match.group(1)),
+            "recordings": int(match.group(2)),
+            "present": int(match.group(3)),
+            "missing": int(match.group(4)),
+        })
+    return {
+        "source": path,
+        "present": None if present_match is None else int(present_match.group(1)),
+        "total": None if present_match is None else int(present_match.group(2)),
+        "percent": None if present_match is None else present_match.group(3),
+        "missing_files": missing[:],
+        "missing_count": len(missing),
+        "shards": shard_rows,
+        "shards_with_missing": [row for row in shard_rows if row["missing"] > 0],
+    }
+
+
 def render_markdown(
     strict_rows: list[StrictGateRow],
     slice_rows: list[SliceRow],
@@ -306,6 +334,7 @@ def render_markdown(
     choice_region_audit: dict | None = None,
     choice_region_scan: dict | None = None,
     choice_family_scan: dict | None = None,
+    matched_cache_audit: dict | None = None,
 ) -> str:
     summary = summarize(strict_rows, slice_rows)
     lines = [
@@ -727,6 +756,37 @@ def render_markdown(
             ),
             "",
         ]
+    if matched_cache_audit is not None:
+        lines += [
+            "## Matched-Region Cache Readiness",
+            "",
+            "`docs/matched_region_cache_audit.md` audits the persistent S3 cache for the",
+            "48-recording matched-region manifest. This is the next gate before any",
+            "larger matched-region training attempt.",
+            "",
+            (
+                f"- present: `{matched_cache_audit.get('present')}/{matched_cache_audit.get('total')}` "
+                f"(`{matched_cache_audit.get('percent')}`)"
+            ),
+            f"- missing recordings: `{matched_cache_audit.get('missing_count')}`",
+            f"- shards with missing recordings: `{len(matched_cache_audit.get('shards_with_missing', []))}`",
+            "",
+            "| shard | recordings | present | missing |",
+            "|---:|---:|---:|---:|",
+        ]
+        for row in matched_cache_audit.get("shards_with_missing", [])[:12]:
+            lines.append(
+                f"| {row['shard']} | {row['recordings']} | {row['present']} | {row['missing']} |"
+            )
+        lines += [
+            "",
+            (
+                "Decision: do not launch training. Finish the missing HDF5 cache shards "
+                "first, then rerun the matched-region support scorer and require the "
+                "80% held-out unit-support gate before any seed sweep."
+            ),
+            "",
+        ]
     return "\n".join(lines)
 
 
@@ -765,6 +825,7 @@ def main() -> int:
     choice_region_audit = read_mechanism_audit(REPO_ROOT / CHOICE_MODEL_FREE_REGION_SIGNAL_AUDIT_FILE)
     choice_region_scan = read_mechanism_audit(REPO_ROOT / CHOICE_MODEL_FREE_REGION_CANDIDATE_SCAN_FILE)
     choice_family_scan = read_mechanism_audit(REPO_ROOT / CHOICE_MODEL_FREE_REGION_FAMILY_SCAN_FILE)
+    matched_cache_audit = read_cache_audit(REPO_ROOT / MATCHED_REGION_CACHE_AUDIT_FILE)
     args.out_md.parent.mkdir(parents=True, exist_ok=True)
     args.out_md.write_text(render_markdown(
         strict_rows,
@@ -784,6 +845,7 @@ def main() -> int:
         choice_region_audit,
         choice_region_scan,
         choice_family_scan,
+        matched_cache_audit,
     ))
     args.out_json.parent.mkdir(parents=True, exist_ok=True)
     args.out_json.write_text(json.dumps({
@@ -812,6 +874,10 @@ def main() -> int:
         "choice_model_free_region_signal_audit": choice_region_audit,
         "choice_model_free_region_candidate_scan": choice_region_scan,
         "choice_model_free_region_family_scan": choice_family_scan,
+        "matched_region_cache_audit": (
+            None if matched_cache_audit is None
+            else matched_cache_audit | {"source": display_path(matched_cache_audit["source"])}
+        ),
     }, indent=2, sort_keys=True) + "\n")
     print(f"wrote {args.out_md}")
     print(f"wrote {args.out_json}")

@@ -7,7 +7,8 @@ the cross-animal anatomical transfer benchmark.
 
 ## Current State
 
-- Matched-region S3 cache remains at `4/48` recordings.
+- Matched-region S3 cache is now `29/48` recordings after the latest S3 audit;
+  `19` compact HDF5s are still missing across `15` build shards.
 - Compact support80-best6 S3 cache is `3/28` recordings. Shard 0 contains
   7 recordings; 3 were already remote and 4 still need upload.
 - Missing-only retry manifest:
@@ -175,5 +176,8 @@ threshold.
    repeat a startup smoke before another paid training attempt. The temporary
    `ttl.sh` image did not produce logs on earlier GPU attempts.
 
-Resume model training only with the complete compact cache, the matched-region
-manifest, and the executable CSH gate ready to run on the resulting artifacts.
+Resume model training only after the matched-region cache is complete enough to
+rerun the support scorer. The current `29/48` cache state is useful progress,
+but it is not a training-ready benchmark; finish the missing HDF5 shards first,
+rerun matched-region support scoring, and require the 80% held-out unit-support
+gate before any seed sweep.

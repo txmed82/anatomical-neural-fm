@@ -3,6 +3,7 @@ from pathlib import Path
 
 from scripts.summarize_experiment_state import (
     local_probe_outcome,
+    read_cache_audit,
     read_slice_result,
     read_local_probe_result,
     read_strict_gate,
@@ -95,3 +96,40 @@ def test_local_probe_matrix_rejects_failed_target_class(tmp_path: Path) -> None:
     assert local_probe_outcome(row) == "reject: centered AUC, target1, recording support, mismatch"
     assert "Local Probe Matrix" in markdown
     assert "paired_metric_not_recording_rank_stable" in markdown
+
+
+def test_read_cache_audit_parses_missing_without_present(tmp_path: Path) -> None:
+    path = tmp_path / "cache.md"
+    path.write_text("\n".join([
+        "# BrainSet S3 Cache Audit",
+        "",
+        "Present: 1/3 (33.3%)",
+        "",
+        "## Missing",
+        "",
+        "| filename |",
+        "|---|",
+        "| `missing-a.h5` |",
+        "| `missing-b.h5` |",
+        "",
+        "## Shard Build Plan",
+        "",
+        "| shard | recordings | present | missing | build command |",
+        "|---:|---:|---:|---:|---|",
+        "| 0 | 2 | 1 | 1 | `build 0` |",
+        "",
+        "## Present",
+        "",
+        "| filename |",
+        "|---|",
+        "| `present.h5` |",
+    ]))
+
+    audit = read_cache_audit(path)
+
+    assert audit is not None
+    assert audit["present"] == 1
+    assert audit["total"] == 3
+    assert audit["missing_count"] == 2
+    assert audit["missing_files"] == ["missing-a.h5", "missing-b.h5"]
+    assert audit["shards_with_missing"] == [{"shard": 0, "recordings": 2, "present": 1, "missing": 1}]

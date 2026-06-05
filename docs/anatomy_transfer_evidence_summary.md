@@ -251,3 +251,11 @@ true parent regions have centered AUC `0.480`, shuffled parent labels have
 `0.566`, true-minus-shuffle centered AUC is `-0.086`, and both the
 single-region and region-family scans have zero candidates. Decision: choice
 does not rescue the current CSH parent-region branch.
+
+Matched-region cache readiness: `docs/matched_region_cache_audit.md` now shows
+the larger 48-recording candidate cache is `29/48` present on S3, with `19`
+missing compact HDF5s across `15` shards. This is progress from the stale
+`4/48` state, but it is still not training-ready. Decision: do not launch a
+matched-region seed sweep yet. Finish the missing HDF5 shards, rerun the
+matched-region support scorer, and require the 80% held-out unit-support gate
+before spending on GPU confirmation.

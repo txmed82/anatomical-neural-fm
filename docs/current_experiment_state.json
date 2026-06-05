@@ -4593,6 +4593,272 @@
       "true_minus_shuffle_auc": -0.00934550962844305
     }
   ],
+  "matched_region_cache_audit": {
+    "missing_count": 19,
+    "missing_files": [
+      "034e726f-b35f-41e0-8d6c-a22cc32391fb_probe01.h5",
+      "09156021-9a1d-4e1d-ae59-48cbde3c5d42_probe00.h5",
+      "09b2c4d1-058d-4c84-9fd4-97530f85baf6_probe00.h5",
+      "30e5937e-e86a-47e6-93ae-d2ae3877ff8e_probe00.h5",
+      "4ddb8a95-788b-48d0-8a0a-66c7c796da96_probe00.h5",
+      "4ddb8a95-788b-48d0-8a0a-66c7c796da96_probe01.h5",
+      "5d6aa933-4b00-4e99-ae2d-5003657592e9_probe01.h5",
+      "63f3dbc1-1a5f-44e5-98dd-ce25cd2b7871_probe00.h5",
+      "64977c74-9c04-437a-9ea1-50386c4996db_probe00.h5",
+      "65f5c9b4-4440-48b9-b914-c593a5184a18_probe00.h5",
+      "6668c4a0-70a4-4012-a7da-709660971d7a_probe00.h5",
+      "90e524a2-aa63-47ce-b5b8-1b1941a1223a_probe00.h5",
+      "9a6e127b-bb07-4be2-92e2-53dd858c2762_probe00.h5",
+      "a19c7a3a-7261-42ce-95d5-1f4ca46007ed_probe00.h5",
+      "de588204-8fd6-4ce3-92da-7a6d1dcae238_probe00.h5",
+      "dfd8e7df-dc51-4589-b6ca-7baccfeb94b4_probe01.h5",
+      "e5c772cd-9c92-47ab-9525-d618b66a9b5d_probe00.h5",
+      "f8041c1e-5ef4-4ae6-afec-ed82d7a74dc1_probe01.h5",
+      "fa704052-147e-46f6-b190-a65b837e605e_probe00.h5"
+    ],
+    "percent": "60.4%",
+    "present": 29,
+    "shards": [
+      {
+        "missing": 0,
+        "present": 2,
+        "recordings": 2,
+        "shard": 0
+      },
+      {
+        "missing": 0,
+        "present": 2,
+        "recordings": 2,
+        "shard": 1
+      },
+      {
+        "missing": 2,
+        "present": 0,
+        "recordings": 2,
+        "shard": 2
+      },
+      {
+        "missing": 1,
+        "present": 1,
+        "recordings": 2,
+        "shard": 3
+      },
+      {
+        "missing": 0,
+        "present": 2,
+        "recordings": 2,
+        "shard": 4
+      },
+      {
+        "missing": 1,
+        "present": 1,
+        "recordings": 2,
+        "shard": 5
+      },
+      {
+        "missing": 1,
+        "present": 1,
+        "recordings": 2,
+        "shard": 6
+      },
+      {
+        "missing": 0,
+        "present": 2,
+        "recordings": 2,
+        "shard": 7
+      },
+      {
+        "missing": 2,
+        "present": 0,
+        "recordings": 2,
+        "shard": 8
+      },
+      {
+        "missing": 1,
+        "present": 1,
+        "recordings": 2,
+        "shard": 9
+      },
+      {
+        "missing": 0,
+        "present": 2,
+        "recordings": 2,
+        "shard": 10
+      },
+      {
+        "missing": 1,
+        "present": 1,
+        "recordings": 2,
+        "shard": 11
+      },
+      {
+        "missing": 1,
+        "present": 1,
+        "recordings": 2,
+        "shard": 12
+      },
+      {
+        "missing": 0,
+        "present": 2,
+        "recordings": 2,
+        "shard": 13
+      },
+      {
+        "missing": 2,
+        "present": 0,
+        "recordings": 2,
+        "shard": 14
+      },
+      {
+        "missing": 1,
+        "present": 1,
+        "recordings": 2,
+        "shard": 15
+      },
+      {
+        "missing": 0,
+        "present": 2,
+        "recordings": 2,
+        "shard": 16
+      },
+      {
+        "missing": 1,
+        "present": 1,
+        "recordings": 2,
+        "shard": 17
+      },
+      {
+        "missing": 1,
+        "present": 1,
+        "recordings": 2,
+        "shard": 18
+      },
+      {
+        "missing": 0,
+        "present": 2,
+        "recordings": 2,
+        "shard": 19
+      },
+      {
+        "missing": 2,
+        "present": 0,
+        "recordings": 2,
+        "shard": 20
+      },
+      {
+        "missing": 1,
+        "present": 1,
+        "recordings": 2,
+        "shard": 21
+      },
+      {
+        "missing": 0,
+        "present": 2,
+        "recordings": 2,
+        "shard": 22
+      },
+      {
+        "missing": 1,
+        "present": 1,
+        "recordings": 2,
+        "shard": 23
+      }
+    ],
+    "shards_with_missing": [
+      {
+        "missing": 2,
+        "present": 0,
+        "recordings": 2,
+        "shard": 2
+      },
+      {
+        "missing": 1,
+        "present": 1,
+        "recordings": 2,
+        "shard": 3
+      },
+      {
+        "missing": 1,
+        "present": 1,
+        "recordings": 2,
+        "shard": 5
+      },
+      {
+        "missing": 1,
+        "present": 1,
+        "recordings": 2,
+        "shard": 6
+      },
+      {
+        "missing": 2,
+        "present": 0,
+        "recordings": 2,
+        "shard": 8
+      },
+      {
+        "missing": 1,
+        "present": 1,
+        "recordings": 2,
+        "shard": 9
+      },
+      {
+        "missing": 1,
+        "present": 1,
+        "recordings": 2,
+        "shard": 11
+      },
+      {
+        "missing": 1,
+        "present": 1,
+        "recordings": 2,
+        "shard": 12
+      },
+      {
+        "missing": 2,
+        "present": 0,
+        "recordings": 2,
+        "shard": 14
+      },
+      {
+        "missing": 1,
+        "present": 1,
+        "recordings": 2,
+        "shard": 15
+      },
+      {
+        "missing": 1,
+        "present": 1,
+        "recordings": 2,
+        "shard": 17
+      },
+      {
+        "missing": 1,
+        "present": 1,
+        "recordings": 2,
+        "shard": 18
+      },
+      {
+        "missing": 2,
+        "present": 0,
+        "recordings": 2,
+        "shard": 20
+      },
+      {
+        "missing": 1,
+        "present": 1,
+        "recordings": 2,
+        "shard": 21
+      },
+      {
+        "missing": 1,
+        "present": 1,
+        "recordings": 2,
+        "shard": 23
+      }
+    ],
+    "source": "docs/matched_region_cache_audit.md",
+    "total": 48
+  },
   "mechanism": {
     "carriers": [
       "PRT",

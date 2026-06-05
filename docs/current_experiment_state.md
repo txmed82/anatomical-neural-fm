@@ -215,3 +215,30 @@ whether a different behavioral target exposes anatomical transfer.
 - region-family candidates: `0`
 
 Interpretation: `choice` does not rescue the CSH parent-region branch. Shuffled parent labels still beat true labels on recording-centered AUC, and the single-region/family scans find no promotable candidate.
+
+## Matched-Region Cache Readiness
+
+`docs/matched_region_cache_audit.md` audits the persistent S3 cache for the
+48-recording matched-region manifest. This is the next gate before any
+larger matched-region training attempt.
+
+- present: `29/48` (`60.4%`)
+- missing recordings: `19`
+- shards with missing recordings: `15`
+
+| shard | recordings | present | missing |
+|---:|---:|---:|---:|
+| 2 | 2 | 0 | 2 |
+| 3 | 2 | 1 | 1 |
+| 5 | 2 | 1 | 1 |
+| 6 | 2 | 1 | 1 |
+| 8 | 2 | 0 | 2 |
+| 9 | 2 | 1 | 1 |
+| 11 | 2 | 1 | 1 |
+| 12 | 2 | 1 | 1 |
+| 14 | 2 | 0 | 2 |
+| 15 | 2 | 1 | 1 |
+| 17 | 2 | 1 | 1 |
+| 18 | 2 | 1 | 1 |
+
+Decision: do not launch training. Finish the missing HDF5 cache shards first, then rerun the matched-region support scorer and require the 80% held-out unit-support gate before any seed sweep.
