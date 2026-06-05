@@ -402,19 +402,19 @@ Decision: stricter manifest support alone does not rescue the signal. The clean 
 `docs/next_benchmark_control_options.md` ranks the remaining no-spend
 branches after the current local negative audits.
 
-- recommended next: `bounded response-extreme A100 pilot`
+- recommended next: `local diagnosis after negative response-extreme A100 pilot`
 - closed branches: `26`
-- decision: `local_training_trigger_available`
-- GPU trigger: Only rows that already cleared delta_vs_shuffle>=0, delta_vs_total>=0, target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75 across all shuffle seeds may launch: post_error_response_extreme_25_75_le_1/broad_named_anatomy/CSHL045 and post_error_response_extreme_33_67_le_1/broad_named_anatomy/NR_0019; keep total spend under the existing $100 cap.
+- decision: `cloud_training_trigger_tested_negative`
+- GPU trigger: No remaining paid GPU trigger is active. The bounded response-extreme A100 pilot completed and true region_only did not beat the shared baseline.
 
 | priority | branch | status | next action |
 |---:|---|---|---|
-| 0 | bounded response-extreme A100 pilot | `recommended_next` | Run a bounded A100 pilot for the two robust response-extreme broad-anatomy candidates. |
+| 0 | response-extreme A100 pilot | `completed_negative` | Diagnose why the local broad-anatomy response-extreme signal did not transfer to trained model performance. |
 | 1 | new manifest with prospective bidirectional support | `recommended_next` | Do not launch GPU training from the projected support80 panel; its model-free family and feature-mode gates have no candidates. Redesign the target/control locally. |
 | 80 | composite behavior target search | `closed` | Do not train: post-error fast-response broad-anatomy candidates fail recording-level seed stability. |
 | 81 | lateralized family anatomy target | `closed` | Do not train: left/right family anatomy does not pass current or projected local gates. |
 
-Decision: the current cached target, contextual target, wheel-derived target, reaction-dynamics target, cell-type prior target/control, waveform target/control, and meta-failure synthesis branches are closed as GPU triggers. The next aligned work is a prospectively supported benchmark/control redesign, still gated locally before any paid training.
+Decision: the first local training trigger has now been tested on A100 and failed the trained-model anatomy-control readout. Do not spend on more seeds until the failure is explained locally.
 
 ## Behavior Cache Preflight
 
@@ -676,6 +676,27 @@ within-recording shuffle seeds.
 | post_error_response_extreme_33_67_le_1 | broad_named_anatomy | NR_0019 |
 
 Decision: this is the first local training trigger. Keep the GPU run bounded to the two robust response-extreme rows and the existing cost cap.
+
+## Response-Extreme A100 Pilot
+
+`docs/response_extreme_trigger_a100_results.md` ran the two robust
+response-extreme broad-anatomy candidates on one A100 seed with true
+region labels and shuffled-region controls.
+
+- exit status: `0`
+- cases: `2`
+- true region_only positive deltas: `0/2`
+- shuffled region positive deltas: `2/2`
+- decision: `negative_training_pilot`
+
+| holdout | arm | seeds | mean AUC | delta vs shared | seed deltas |
+|---|---|---:|---:|---:|---|
+| CSHL045 | region_only | 1 | 0.496 | -0.065 | -0.065 |
+| CSHL045 | region_shuffle | 1 | 0.602 | +0.041 | +0.041 |
+| NR_0019 | region_only | 1 | 0.552 | -0.037 | -0.037 |
+| NR_0019 | region_shuffle | 1 | 0.593 | +0.004 | +0.004 |
+
+Decision: the A100 run does not support the anatomy-transfer claim. The local response-extreme signal remains useful as a diagnostic, but the next work is a no-spend local failure analysis of model objective, evaluation metric, and anatomy-control alignment.
 
 ## Composite Behavior Target Gate
 

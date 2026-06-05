@@ -130,6 +130,7 @@ COMPOSITE_BEHAVIOR_RESPONSE_EXTREME_PROJECTED_GATE_FILE = (
 COMPOSITE_BEHAVIOR_RESPONSE_EXTREME_SEED_SENSITIVITY_FILE = (
     "docs/composite_behavior_response_extreme_seed_sensitivity.json"
 )
+RESPONSE_EXTREME_A100_RESULT_FILE = "docs/response_extreme_trigger_a100_results.md"
 LOW_CONTRAST_CHOICE_FAMILY_GATE_FILE = "docs/low_contrast_choice_family_gate.json"
 LOW_CONTRAST_CHOICE_PROJECTED_GATE_FILE = "docs/low_contrast_choice_family_gate_projected_hdf5.json"
 LOW_CONTRAST_CHOICE_SEED_SENSITIVITY_FILE = "docs/low_contrast_choice_seed_sensitivity.json"
@@ -515,6 +516,47 @@ def read_mechanism_audit(path: Path) -> dict | None:
     return json.loads(path.read_text())
 
 
+def read_response_extreme_a100_result(path: Path) -> dict | None:
+    if not path.exists():
+        return None
+    text = path.read_text()
+    exit_match = re.search(r"Exit status:\s+(\d+)", text)
+    rows = []
+    for line in text.splitlines():
+        if not line.startswith("| "):
+            continue
+        parts = [part.strip() for part in line.strip().strip("|").split("|")]
+        if len(parts) != 6 or parts[0] not in {"CSHL045", "NR_0019"}:
+            continue
+        rows.append({
+            "holdout": parts[0],
+            "arm": parts[1],
+            "n_seeds": int(parts[2]),
+            "mean_auc": float(parts[3]),
+            "mean_delta_vs_shared": float(parts[4]),
+            "seed_deltas": parts[5],
+        })
+    region_rows = [row for row in rows if row["arm"] == "region_only"]
+    shuffle_rows = [row for row in rows if row["arm"] == "region_shuffle"]
+    true_positive = sum(row["mean_delta_vs_shared"] > 0.0 for row in region_rows)
+    shuffle_positive = sum(row["mean_delta_vs_shared"] > 0.0 for row in shuffle_rows)
+    return {
+        "source": path,
+        "exit_status": None if exit_match is None else int(exit_match.group(1)),
+        "rows": rows,
+        "summary": {
+            "n_cases": len(region_rows),
+            "n_true_positive": true_positive,
+            "n_shuffle_positive": shuffle_positive,
+            "decision": (
+                "negative_training_pilot"
+                if region_rows and true_positive == 0
+                else "training_pilot_needs_review"
+            ),
+        },
+    }
+
+
 def read_cache_audit(path: Path) -> dict | None:
     if not path.exists():
         return None
@@ -681,6 +723,9 @@ def render_markdown(
     model_free_family_ks014_near_miss: dict | None = None,
 ) -> str:
     summary = summarize(strict_rows, slice_rows)
+    response_extreme_a100_result = read_response_extreme_a100_result(
+        REPO_ROOT / RESPONSE_EXTREME_A100_RESULT_FILE
+    )
     lines = [
         "# Current Anatomy-Transfer Experiment State",
         "",
@@ -1430,7 +1475,30 @@ def render_markdown(
         ]
     if next_benchmark_control_options is not None:
         summary = next_benchmark_control_options["summary"]
-        top = next_benchmark_control_options["branches"][:4]
+        if response_extreme_a100_result is not None:
+            summary = {
+                **summary,
+                "recommended_next": "local diagnosis after negative response-extreme A100 pilot",
+                "decision": "cloud_training_trigger_tested_negative",
+                "gpu_training_trigger": (
+                    "No remaining paid GPU trigger is active. The bounded response-extreme "
+                    "A100 pilot completed and true region_only did not beat the shared baseline."
+                ),
+            }
+            top = [
+                {
+                    "priority": 0,
+                    "name": "response-extreme A100 pilot",
+                    "status": "completed_negative",
+                    "next_action": (
+                        "Diagnose why the local broad-anatomy response-extreme signal "
+                        "did not transfer to trained model performance."
+                    ),
+                },
+                *next_benchmark_control_options["branches"][1:4],
+            ]
+        else:
+            top = next_benchmark_control_options["branches"][:4]
         lines += [
             "## Next Benchmark/Control Options Audit",
             "",
@@ -1450,7 +1518,16 @@ def render_markdown(
                 f"| {row['priority']} | {row['name']} | `{row['status']}` | {row['next_action']} |"
             )
         lines += [""]
-        if summary["decision"] == "behavior_cache_rebuild_required":
+        if summary["decision"] == "cloud_training_trigger_tested_negative":
+            lines += [
+                (
+                    "Decision: the first local training trigger has now been tested on "
+                    "A100 and failed the trained-model anatomy-control readout. Do not "
+                    "spend on more seeds until the failure is explained locally."
+                ),
+                "",
+            ]
+        elif summary["decision"] == "behavior_cache_rebuild_required":
             lines += [
                 (
                     "Decision: direct cached target redesign is closed as a GPU "
@@ -1926,6 +2003,40 @@ def render_markdown(
             (
                 "Decision: this is the first local training trigger. Keep the GPU run "
                 "bounded to the two robust response-extreme rows and the existing cost cap."
+            ),
+            "",
+        ]
+    if response_extreme_a100_result is not None:
+        summary = response_extreme_a100_result["summary"]
+        lines += [
+            "## Response-Extreme A100 Pilot",
+            "",
+            "`docs/response_extreme_trigger_a100_results.md` ran the two robust",
+            "response-extreme broad-anatomy candidates on one A100 seed with true",
+            "region labels and shuffled-region controls.",
+            "",
+            f"- exit status: `{response_extreme_a100_result['exit_status']}`",
+            f"- cases: `{summary['n_cases']}`",
+            f"- true region_only positive deltas: `{summary['n_true_positive']}/{summary['n_cases']}`",
+            f"- shuffled region positive deltas: `{summary['n_shuffle_positive']}/{summary['n_cases']}`",
+            f"- decision: `{summary['decision']}`",
+            "",
+            "| holdout | arm | seeds | mean AUC | delta vs shared | seed deltas |",
+            "|---|---|---:|---:|---:|---|",
+        ]
+        for row in response_extreme_a100_result["rows"]:
+            lines.append(
+                f"| {row['holdout']} | {row['arm']} | {row['n_seeds']} | "
+                f"{row['mean_auc']:.3f} | {row['mean_delta_vs_shared']:+.3f} | "
+                f"{row['seed_deltas']} |"
+            )
+        lines += [
+            "",
+            (
+                "Decision: the A100 run does not support the anatomy-transfer claim. "
+                "The local response-extreme signal remains useful as a diagnostic, but "
+                "the next work is a no-spend local failure analysis of model objective, "
+                "evaluation metric, and anatomy-control alignment."
             ),
             "",
         ]
