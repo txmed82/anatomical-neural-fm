@@ -112,3 +112,9 @@ produced no training metrics, so it does not change the evidence table.
 Before another paid retry, tighten the gate so the model has to beat the
 shuffled control on target-aware paired-trial behavior or per-recording
 calibrated ranking, not just sampled eval AUC.
+
+Current stricter-gate status from the seed-0 diagnostic: recording-centered AUC
+is mildly positive for true labels (`0.521` vs shared `0.500` and shuffled
+`0.510`), but the direct true-vs-shuffle paired-trial gate fails (`50.6%`
+target-direction improvement, below the `55.0%` demo threshold). That is a
+reason to redesign the objective/gate, not to broaden yet.

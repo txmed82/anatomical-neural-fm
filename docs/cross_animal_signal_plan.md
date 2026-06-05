@@ -806,3 +806,22 @@ held-out probabilities. Candidate directions are per-recording calibration
 before AUC comparison, paired-trial signed probability improvement as a
 selection metric, or a contrastive anatomy objective that must separate true
 labels from shuffled labels before another paid sweep.
+
+Gate specification update: the diagnostic audit now reports recording-centered
+AUC and a direct true-vs-shuffle paired-trial gate. On seed 0,
+recording-centered AUC is mildly positive for true labels (`region_only` 0.521,
+shared baseline 0.500, shuffled 0.510), but the paired true-vs-shuffle gate
+fails: true labels move probability in the correct class direction over shuffled
+labels on only 50.6% of paired trials, below the 55.0% demo threshold. Treat the
+centered AUC as a hypothesis to preserve, not enough evidence to spend on broad
+candidate subjects.
+
+Minimum demo gate before another broadening run:
+
+- full held-out-trial true-label AUC must beat shared and shuffled controls
+  across seeds
+- recording-centered true-label AUC must beat shared and shuffled controls
+- true labels must improve target-direction probability over shuffled labels on
+  at least 55% of paired held-out trials
+- learned region embeddings should show more separation than near-identical
+  true-vs-shuffle cosines

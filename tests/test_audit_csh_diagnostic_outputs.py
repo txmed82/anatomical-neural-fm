@@ -3,10 +3,12 @@ from pathlib import Path
 import pytest
 
 from scripts.audit_csh_diagnostic_outputs import (
+    PAIRED_TRUE_VS_SHUFFLE_GATE,
     cosine,
     paired_delta_metrics,
     parse_run_path,
     prediction_metrics,
+    recording_centered_auc,
     trial_key,
 )
 
@@ -65,3 +67,23 @@ def test_paired_delta_metrics_tracks_probability_and_true_class_improvement() ->
     assert metrics.mean_delta_target0 == pytest.approx(-0.1)
     assert metrics.mean_delta_target1 == pytest.approx(-0.025)
     assert metrics.frac_true_probability_improved == pytest.approx(2 / 3)
+
+
+def test_recording_centered_auc_removes_recording_offsets() -> None:
+    rows = [
+        {"recording_id": "a", "target": 0, "prob": 0.89},
+        {"recording_id": "a", "target": 1, "prob": 0.91},
+        {"recording_id": "b", "target": 0, "prob": 0.09},
+        {"recording_id": "b", "target": 1, "prob": 0.11},
+    ]
+
+    raw = prediction_metrics(rows)
+    centered = recording_centered_auc(rows)
+
+    assert raw.auc == pytest.approx(0.75)
+    assert centered.n == 4
+    assert centered.auc == pytest.approx(1.0)
+
+
+def test_paired_true_vs_shuffle_demo_gate_requires_margin() -> None:
+    assert PAIRED_TRUE_VS_SHUFFLE_GATE == pytest.approx(0.55)

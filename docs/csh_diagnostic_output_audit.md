@@ -32,6 +32,14 @@ Root: `runs/lso_csh_diagnostic_outputs`
 | shared_baseline | 1 | `5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe01` | 590 | 0.529 | 0.414 |
 | shared_baseline | 1 | `edd22318-216c-44ff-bc24-49ce8be78374_probe00` | 769 | 0.525 | 0.482 |
 
+## Seed-0 Recording-Centered AUC
+
+| arm | rows | raw_AUC | recording_centered_AUC | centered_delta_vs_shared | centered_delta_vs_shuffle |
+|---|---:|---:|---:|---:|---:|
+| shared_baseline | 2726 | 0.500 | 0.500 | +0.000 | -0.010 |
+| region_only | 2726 | 0.508 | 0.521 | +0.020 | +0.011 |
+| region_shuffle | 2726 | 0.509 | 0.510 | +0.010 | n/a |
+
 ## Seed-0 Per-Recording Delta vs Shared Baseline
 
 | arm | recording | rows | AUC | baseline_AUC | delta_AUC | mean_prob_delta | mean_abs_prob_delta | true_prob_improved |
@@ -51,6 +59,12 @@ Root: `runs/lso_csh_diagnostic_outputs`
 |---|---:|---:|---:|---:|---:|---:|
 | region_only | 2726 | +0.019 | 0.020 | +0.019 | +0.019 | 0.455 |
 | region_shuffle | 2726 | +0.020 | 0.020 | +0.020 | +0.020 | 0.448 |
+
+## Seed-0 True-vs-Shuffle Paired Trial Gate
+
+| comparison | paired_trials | mean_prob_delta | true_prob_improved | verdict |
+|---|---:|---:|---:|---|
+| region_only minus region_shuffle | 2726 | -0.001 | 0.506 | fail |
 
 ## Seed-0 Region Embedding Diagnostics
 
@@ -72,4 +86,8 @@ For seed 0, exported predictions give `region_only` delta +0.008 AUC vs the expo
 Paired trial comparisons show that both seed-0 anatomy arms mostly shift probabilities upward relative to the shared baseline rather than moving probabilities toward the true class: `region_only` mean probability delta +0.019 with true-class improvement on 0.455 of paired trials, and `region_shuffle` mean probability delta +0.020 with true-class improvement on 0.448 of paired trials.
 
 The strongest true-label per-recording gains are on the two `5adab0b7` probes, but the shuffled-label control also improves those probes. That makes the surviving seed-0 full-trial signal look more like calibration/probe-specific behavior than a clean anatomical identity code.
+
+After centering probabilities within each recording before computing AUC, the seed-0 `region_only` delta is +0.020 vs the shared baseline. This is the preferred no-spend diagnostic for separating target-aware within-recording ranking from broad recording/probe-level probability offsets.
+
+The stricter paired true-vs-shuffle gate does not pass: `region_only` improves true-class probability over `region_shuffle` on 0.506 of paired trials, below the 0.550 demo threshold. This should be a required gate for any demo claim because it directly tests whether true anatomical labels move trial probabilities in a more target-aware direction than shuffled anatomical labels.
 

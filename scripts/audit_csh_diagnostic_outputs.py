@@ -20,6 +20,7 @@ from train import _auc  # noqa: E402
 
 
 DEFAULT_CARRIERS = ("PRT", "CA", "VP", "MOp", "DG", "mfbc")
+PAIRED_TRUE_VS_SHUFFLE_GATE = 0.55
 
 
 @dataclass(frozen=True)
@@ -37,6 +38,12 @@ class PredictionMetrics:
     acc: float
     mean_prob_target0: float
     mean_prob_target1: float
+
+
+@dataclass(frozen=True)
+class CalibratedMetrics:
+    n: int
+    auc: float
 
 
 @dataclass(frozen=True)
@@ -93,6 +100,26 @@ def prediction_metrics(rows: Iterable[dict]) -> PredictionMetrics:
         acc=acc,
         mean_prob_target0=float(np.mean(target0)) if len(target0) else float("nan"),
         mean_prob_target1=float(np.mean(target1)) if len(target1) else float("nan"),
+    )
+
+
+def recording_centered_auc(rows: Iterable[dict]) -> CalibratedMetrics:
+    rows = tuple(rows)
+    if not rows:
+        return CalibratedMetrics(0, float("nan"))
+    rows_by_recording: dict[str, list[dict]] = defaultdict(list)
+    for row in rows:
+        rows_by_recording[str(row["recording_id"])].append(row)
+    centered_scores = []
+    targets = []
+    for recording_rows in rows_by_recording.values():
+        probs = np.asarray([float(row["prob"]) for row in recording_rows], dtype=np.float64)
+        centered = probs - float(np.mean(probs))
+        centered_scores.extend(centered.tolist())
+        targets.extend(int(row["target"]) for row in recording_rows)
+    return CalibratedMetrics(
+        n=len(centered_scores),
+        auc=_auc(np.asarray(centered_scores, dtype=np.float64), np.asarray(targets, dtype=np.int64)),
     )
 
 
@@ -228,6 +255,36 @@ def write_report(root: Path, out_path: Path, carriers: Iterable[str] = DEFAULT_C
 
     lines += [
         "",
+        "## Seed-0 Recording-Centered AUC",
+        "",
+        "| arm | rows | raw_AUC | recording_centered_AUC | centered_delta_vs_shared | centered_delta_vs_shuffle |",
+        "|---|---:|---:|---:|---:|---:|",
+    ]
+    centered_by_arm: dict[str, CalibratedMetrics] = {}
+    raw_by_arm: dict[str, PredictionMetrics] = {}
+    for arm in ("shared_baseline", "region_only", "region_shuffle"):
+        run = by_key.get((arm, 0))
+        if run is None:
+            continue
+        centered_by_arm[arm] = recording_centered_auc(run.rows)
+        raw_by_arm[arm] = prediction_metrics(run.rows)
+    centered_baseline = centered_by_arm.get("shared_baseline")
+    centered_shuffle = centered_by_arm.get("region_shuffle")
+    for arm in ("shared_baseline", "region_only", "region_shuffle"):
+        centered = centered_by_arm.get(arm)
+        raw = raw_by_arm.get(arm)
+        if centered is None or raw is None:
+            continue
+        delta_baseline = None if centered_baseline is None else centered.auc - centered_baseline.auc
+        delta_shuffle = None if centered_shuffle is None or arm == "region_shuffle" else centered.auc - centered_shuffle.auc
+        lines.append(
+            "| "
+            f"{arm} | {centered.n} | {fmt_float(raw.auc)} | {fmt_float(centered.auc)} | "
+            f"{fmt_signed(delta_baseline)} | {fmt_signed(delta_shuffle)} |"
+        )
+
+    lines += [
+        "",
         "## Seed-0 Per-Recording Delta vs Shared Baseline",
         "",
         "| arm | recording | rows | AUC | baseline_AUC | delta_AUC | mean_prob_delta | mean_abs_prob_delta | true_prob_improved |",
@@ -273,6 +330,29 @@ def write_report(root: Path, out_path: Path, carriers: Iterable[str] = DEFAULT_C
                 f"{fmt_signed(paired.mean_delta_target1)} | {fmt_float(paired.frac_true_probability_improved)} |"
             )
 
+    lines += [
+        "",
+        "## Seed-0 True-vs-Shuffle Paired Trial Gate",
+        "",
+        "| comparison | paired_trials | mean_prob_delta | true_prob_improved | verdict |",
+        "|---|---:|---:|---:|---|",
+    ]
+    region_run_for_gate = by_key.get(("region_only", 0))
+    shuffle_run_for_gate = by_key.get(("region_shuffle", 0))
+    if region_run_for_gate is not None and shuffle_run_for_gate is not None:
+        true_vs_shuffle = paired_delta_metrics(region_run_for_gate.rows, shuffle_run_for_gate.rows)
+        verdict = (
+            "pass"
+            if true_vs_shuffle.frac_true_probability_improved >= PAIRED_TRUE_VS_SHUFFLE_GATE
+            else "fail"
+        )
+        lines.append(
+            "| "
+            f"region_only minus region_shuffle | {true_vs_shuffle.n} | "
+            f"{fmt_signed(true_vs_shuffle.mean_delta)} | "
+            f"{fmt_float(true_vs_shuffle.frac_true_probability_improved)} | {verdict} |"
+        )
+
     true_emb = load_embedding_rows(embedding_path_for(root, "region_only", 0))
     shuffle_emb = load_embedding_rows(embedding_path_for(root, "region_shuffle", 0))
     lines += [
@@ -302,12 +382,17 @@ def write_report(root: Path, out_path: Path, carriers: Iterable[str] = DEFAULT_C
     shuffle_delta = None
     region_paired = None
     shuffle_paired = None
+    true_vs_shuffle_paired = None
+    region_centered_delta = None
     if region_run and baseline_run:
         region_delta = prediction_metrics(region_run.rows).auc - prediction_metrics(baseline_run.rows).auc
         region_paired = paired_delta_metrics(region_run.rows, baseline_run.rows)
+        region_centered_delta = recording_centered_auc(region_run.rows).auc - recording_centered_auc(baseline_run.rows).auc
     if shuffle_run and baseline_run:
         shuffle_delta = prediction_metrics(shuffle_run.rows).auc - prediction_metrics(baseline_run.rows).auc
         shuffle_paired = paired_delta_metrics(shuffle_run.rows, baseline_run.rows)
+    if region_run and shuffle_run:
+        true_vs_shuffle_paired = paired_delta_metrics(region_run.rows, shuffle_run.rows)
     lines += [
         "",
         "## Interpretation",
@@ -347,6 +432,36 @@ def write_report(root: Path, out_path: Path, carriers: Iterable[str] = DEFAULT_C
                 "those probes. That makes the surviving seed-0 full-trial signal "
                 "look more like calibration/probe-specific behavior than a clean "
                 "anatomical identity code."
+            ),
+            "",
+        ]
+    if region_centered_delta is not None:
+        lines += [
+            (
+                "After centering probabilities within each recording before computing "
+                f"AUC, the seed-0 `region_only` delta is {fmt_signed(region_centered_delta)} "
+                "vs the shared baseline. This is the preferred no-spend diagnostic "
+                "for separating target-aware within-recording ranking from broad "
+                "recording/probe-level probability offsets."
+            ),
+            "",
+        ]
+    if true_vs_shuffle_paired is not None:
+        verdict = (
+            "passes"
+            if true_vs_shuffle_paired.frac_true_probability_improved >= PAIRED_TRUE_VS_SHUFFLE_GATE
+            else "does not pass"
+        )
+        lines += [
+            (
+                "The stricter paired true-vs-shuffle gate "
+                f"{verdict}: `region_only` improves true-class probability over "
+                f"`region_shuffle` on {fmt_float(true_vs_shuffle_paired.frac_true_probability_improved)} "
+                f"of paired trials, below the {fmt_float(PAIRED_TRUE_VS_SHUFFLE_GATE)} "
+                "demo threshold. This should be a required gate for any demo claim "
+                "because it directly tests whether true anatomical labels move "
+                "trial probabilities in a more target-aware direction than shuffled "
+                "anatomical labels."
             ),
             "",
         ]
