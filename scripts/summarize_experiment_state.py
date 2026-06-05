@@ -88,6 +88,7 @@ LOCAL_AUC_SURROGATE_GATE_FILE = "docs/local_csh_auc_surrogate_probe_anatomy_spec
 LOCAL_AUC_SURROGATE_MISMATCH_FILE = "docs/local_csh_auc_surrogate_probe_mismatch.json"
 BATCH_SAMPLING_CONTRAST_AUDIT_FILE = "docs/csh_batch_sampling_contrast_audit.json"
 MODEL_FREE_REGION_SIGNAL_AUDIT_FILE = "docs/csh_model_free_region_signal_audit.json"
+MODEL_FREE_REGION_CANDIDATE_SCAN_FILE = "docs/csh_model_free_region_candidate_scan.json"
 LOCAL_PROBE_FILES = (
     (
         "local AUC surrogate",
@@ -296,6 +297,7 @@ def render_markdown(
     local_probes: list[LocalProbeRow] | None = None,
     batch_sampling_audit: dict | None = None,
     model_free_region_audit: dict | None = None,
+    model_free_region_scan: dict | None = None,
 ) -> str:
     summary = summarize(strict_rows, slice_rows)
     lines = [
@@ -603,6 +605,42 @@ def render_markdown(
             ),
             "",
         ]
+    if model_free_region_scan is not None:
+        lines += [
+            "## Model-Free Single-Region Candidate Scan",
+            "",
+            "`docs/csh_model_free_region_candidate_scan.md` scans each parent region as a",
+            "single-feature ridge model against within-recording shuffled labels and the",
+            "total-spike baseline.",
+            "",
+            f"Candidates passing the strict local gate: `{model_free_region_scan.get('n_candidates')}`",
+            "",
+            "| region | outcome | centered_AUC | delta_vs_shuffle | delta_vs_total | target0 | target1 | recordings | eval_nonzero |",
+            "|---|---|---:|---:|---:|---:|---:|---:|---:|",
+        ]
+        for row in model_free_region_scan.get("top_regions", [])[:8]:
+            lines.append(
+                "| "
+                f"{row.get('region')} | {row.get('outcome')} | "
+                f"{fmt_float(row.get('eval_centered_auc'))} | "
+                f"{fmt_signed(row.get('centered_delta_vs_shuffle'))} | "
+                f"{fmt_signed(row.get('centered_delta_vs_total'))} | "
+                f"{fmt_float(row.get('target0_improved_vs_shuffle'))} | "
+                f"{fmt_float(row.get('target1_improved_vs_shuffle'))} | "
+                f"{row.get('positive_recordings_vs_shuffle')}/{row.get('n_recordings')} | "
+                f"{fmt_float(row.get('eval_nonzero_fraction'))} |"
+            )
+        lines += [
+            "",
+            (
+                "Interpretation: no individual parent region is strong enough to promote. "
+                "The best evaluable regions beat shuffle and total-spike baselines only in "
+                "one target direction or too few recordings. The next no-spend feature step "
+                "should test predefined aggregate region families or a different conserved "
+                "target, not a GPU model run."
+            ),
+            "",
+        ]
     return "\n".join(lines)
 
 
@@ -636,6 +674,7 @@ def main() -> int:
     ]
     batch_sampling_audit = read_mechanism_audit(REPO_ROOT / BATCH_SAMPLING_CONTRAST_AUDIT_FILE)
     model_free_region_audit = read_mechanism_audit(REPO_ROOT / MODEL_FREE_REGION_SIGNAL_AUDIT_FILE)
+    model_free_region_scan = read_mechanism_audit(REPO_ROOT / MODEL_FREE_REGION_CANDIDATE_SCAN_FILE)
     args.out_md.parent.mkdir(parents=True, exist_ok=True)
     args.out_md.write_text(render_markdown(
         strict_rows,
@@ -650,6 +689,7 @@ def main() -> int:
         local_probes,
         batch_sampling_audit,
         model_free_region_audit,
+        model_free_region_scan,
     ))
     args.out_json.parent.mkdir(parents=True, exist_ok=True)
     args.out_json.write_text(json.dumps({
@@ -673,6 +713,7 @@ def main() -> int:
         ],
         "batch_sampling_contrast_audit": batch_sampling_audit,
         "model_free_region_signal_audit": model_free_region_audit,
+        "model_free_region_candidate_scan": model_free_region_scan,
     }, indent=2, sort_keys=True) + "\n")
     print(f"wrote {args.out_md}")
     print(f"wrote {args.out_json}")

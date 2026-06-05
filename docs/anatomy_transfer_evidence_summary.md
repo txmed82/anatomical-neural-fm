@@ -221,3 +221,14 @@ centered AUC is `-0.052`, target0 improvement is `0.338`, target1 improvement
 is `0.703`, and only `1/4` recordings are positive. Decision: the next
 no-spend work should redesign the anatomical feature/control target rather
 than spend on another neural model run.
+
+Single-region candidate scan:
+`docs/csh_model_free_region_candidate_scan.md` tests each parent region as its
+own one-feature ridge model against within-recording shuffled labels and the
+total-spike baseline. No region passes the local promotion gate. The strongest
+evaluable rows are one-sided or low-support: `IB` has centered AUC `0.728` and
+true-minus-shuffle `+0.300` but target0 improvement is only `0.275` with
+`1/4` positive recordings; `CA` and `DG` have `2/4` positive recordings but
+target0 remains around `0.320` and `0.285`. Decision: do not promote any
+single parent region. Next no-spend step is predefined region-family
+aggregates or an alternative conserved behavioral target.

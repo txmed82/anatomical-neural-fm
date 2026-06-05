@@ -1280,3 +1280,13 @@ roadmap away from more architecture/objective sweeps and toward designing a
 better anatomical feature/control target, such as region-family contrasts that
 beat total-spike and within-recording shuffled controls in a model-free audit
 before any GPU confirmation.
+
+Single-region scan refinement:
+`docs/csh_model_free_region_candidate_scan.md` scans all 79 parent regions as
+single-feature model-free candidates. None pass. The best evaluable regions
+show why the current feature target is brittle: `IB`, `BS`, `CA`, and `DG`
+can beat shuffled labels on centered AUC, but the gain is one target direction
+or one/two recordings, not a bidirectional cross-recording effect. The next
+constructive route is to predefine aggregate region families from anatomy
+rather than picking a single post-hoc region, then require the same model-free
+gate before any GPU confirmation.
