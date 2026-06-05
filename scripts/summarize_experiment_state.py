@@ -68,6 +68,8 @@ PAIRWISE_MECHANISM_AUDIT_FILE = "docs/lso_csh_pairwise_rank_pilot_mechanism.json
 PAIRWISE_MISMATCH_AUDIT_FILE = "docs/lso_csh_pairwise_rank_pilot_mismatch.json"
 CENTERED_BCE_MISMATCH_AUDIT_FILE = "docs/lso_csh_pairwise_rank_centered_bce_pilot_mismatch.json"
 CENTERED_BCE_MECHANISM_AUDIT_FILE = "docs/lso_csh_pairwise_rank_centered_bce_pilot_mechanism.json"
+LOCAL_AUC_SURROGATE_GATE_FILE = "docs/local_csh_auc_surrogate_probe_anatomy_specific_gate.json"
+LOCAL_AUC_SURROGATE_MISMATCH_FILE = "docs/local_csh_auc_surrogate_probe_mismatch.json"
 
 
 def display_path(path: Path) -> str:
@@ -203,6 +205,8 @@ def render_markdown(
     pairwise_mismatch: dict | None = None,
     centered_bce_mechanism: dict | None = None,
     centered_bce_mismatch: dict | None = None,
+    local_auc_gate: dict | None = None,
+    local_auc_mismatch: dict | None = None,
 ) -> str:
     summary = summarize(strict_rows, slice_rows)
     lines = [
@@ -377,6 +381,31 @@ def render_markdown(
             ),
             "",
         ]
+    if local_auc_gate is not None and local_auc_mismatch is not None:
+        metrics = local_auc_gate.get("metrics", {})
+        mismatch = local_auc_mismatch.get("summary", {})
+        lines += [
+            "## Local AUC-Surrogate Probe",
+            "",
+            "`scripts/run_local_objective_probe.py` runs a no-spend tiny CPU probe with",
+            "deterministic held-out predictions and immediate strict-gate/mismatch audits.",
+            "The first probe used `recording_local_auc_surrogate` for two CPU steps.",
+            "",
+            f"- gate pass: `{local_auc_gate.get('pass')}`",
+            f"- centered true-minus-shuffle delta: `{fmt_signed(metrics.get('centered_auc_delta_vs_shuffle'))}`",
+            f"- paired true-vs-shuffle: `{fmt_float(metrics.get('paired_true_vs_shuffle'))}`",
+            f"- target0 true-class improved: `{fmt_float(metrics.get('target0_true_class_improved'))}`",
+            f"- target1 true-class improved: `{fmt_float(metrics.get('target1_true_class_improved'))}`",
+            f"- positive recordings: `{metrics.get('recordings_positive')}/{metrics.get('n_recordings')}`",
+            f"- mismatch decision: `{local_auc_mismatch.get('decision')}`",
+            f"- true-minus-shuffle AUC: `{fmt_signed(mismatch.get('true_minus_shuffle_auc'))}`",
+            "",
+            (
+                "Decision: reject this objective configuration locally. It does not justify "
+                "a RunPod launch because it fails target1, centered AUC, and recording support."
+            ),
+            "",
+        ]
     return "\n".join(lines)
 
 
@@ -402,6 +431,8 @@ def main() -> int:
     pairwise_mismatch = read_mechanism_audit(REPO_ROOT / PAIRWISE_MISMATCH_AUDIT_FILE)
     centered_bce_mechanism = read_mechanism_audit(REPO_ROOT / CENTERED_BCE_MECHANISM_AUDIT_FILE)
     centered_bce_mismatch = read_mechanism_audit(REPO_ROOT / CENTERED_BCE_MISMATCH_AUDIT_FILE)
+    local_auc_gate = read_mechanism_audit(REPO_ROOT / LOCAL_AUC_SURROGATE_GATE_FILE)
+    local_auc_mismatch = read_mechanism_audit(REPO_ROOT / LOCAL_AUC_SURROGATE_MISMATCH_FILE)
     args.out_md.parent.mkdir(parents=True, exist_ok=True)
     args.out_md.write_text(render_markdown(
         strict_rows,
@@ -411,6 +442,8 @@ def main() -> int:
         pairwise_mismatch,
         centered_bce_mechanism,
         centered_bce_mismatch,
+        local_auc_gate,
+        local_auc_mismatch,
     ))
     args.out_json.parent.mkdir(parents=True, exist_ok=True)
     args.out_json.write_text(json.dumps({
@@ -422,6 +455,8 @@ def main() -> int:
         "pairwise_mismatch": pairwise_mismatch,
         "centered_bce_mechanism": centered_bce_mechanism,
         "centered_bce_mismatch": centered_bce_mismatch,
+        "local_auc_surrogate_gate": local_auc_gate,
+        "local_auc_surrogate_mismatch": local_auc_mismatch,
     }, indent=2, sort_keys=True) + "\n")
     print(f"wrote {args.out_md}")
     print(f"wrote {args.out_json}")

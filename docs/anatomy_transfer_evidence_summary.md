@@ -181,3 +181,10 @@ latest pilots fail this stricter check: pairwise-rank has target0 `1.000` and
 target1 `0.000`; centered-BCE has target0 `0.354` and target1 `0.650`.
 Training also exposes `--loss-mode recording_local_auc_surrogate` as the direct
 recording-local AUC/ranking surrogate alias for local experiments.
+
+Local objective probe: `scripts/run_local_objective_probe.py` now runs a tiny
+CPU-only three-arm probe and immediately applies the strict bidirectional gate,
+mismatch audit, and failure-mode audit. The first `recording_local_auc_surrogate`
+probe failed locally, so it should not be promoted to RunPod as-is:
+centered true-minus-shuffle delta `-0.005`, paired true-vs-shuffle `0.494`,
+target0 `0.556`, target1 `0.419`, and positive recordings `2/4`.

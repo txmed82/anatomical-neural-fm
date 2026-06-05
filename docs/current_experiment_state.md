@@ -87,3 +87,20 @@ all-trial downward probability shift but did not produce anatomical transfer.
 - mechanism paired true-vs-shuffle: `0.486`
 
 Updated decision: stop paid one-off objective variants for now. Use the implemented bidirectional gate and `recording_local_auc_surrogate` only for local objective debugging until a candidate satisfies target0, target1, and recording-local AUC checks.
+
+## Local AUC-Surrogate Probe
+
+`scripts/run_local_objective_probe.py` runs a no-spend tiny CPU probe with
+deterministic held-out predictions and immediate strict-gate/mismatch audits.
+The first probe used `recording_local_auc_surrogate` for two CPU steps.
+
+- gate pass: `False`
+- centered true-minus-shuffle delta: `-0.005`
+- paired true-vs-shuffle: `0.494`
+- target0 true-class improved: `0.556`
+- target1 true-class improved: `0.419`
+- positive recordings: `2/4`
+- mismatch decision: `paired_metric_not_recording_rank_stable`
+- true-minus-shuffle AUC: `-0.009`
+
+Decision: reject this objective configuration locally. It does not justify a RunPod launch because it fails target1, centered AUC, and recording support.

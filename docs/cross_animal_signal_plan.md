@@ -423,6 +423,14 @@ recording-local pairwise AUC surrogate, verified by CPU smoke. This should be
 used only for local objective debugging until a bidirectional gate result looks
 plausible.
 
+Local probe result: `uv run python scripts/run_local_objective_probe.py --force
+--max-steps 2` ran the direct AUC surrogate on CPU with full deterministic
+held-out predictions. It failed the hardened gate (`target0=0.556`,
+`target1=0.419`, centered delta `-0.005`, positive recordings `2/4`), so this
+objective should not be launched on RunPod as-is. The next no-spend iteration
+should change the objective or sampling so target0 and target1 improve together
+within each recording before any more cloud spend.
+
 Conclusion: building all 48 public IBL recordings inside a throwaway A100
 container is the wrong next spend. The next attempt should either split the
 candidate manifest into smaller persisted build shards, use a persistent

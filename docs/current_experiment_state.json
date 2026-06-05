@@ -363,6 +363,192 @@
       "true_positive": "0/2"
     }
   ],
+  "local_auc_surrogate_gate": {
+    "arms": [
+      "shared_baseline",
+      "region_only",
+      "region_shuffle"
+    ],
+    "checks": {
+      "bidirectional_target_classes": false,
+      "positive_centered_delta": false,
+      "positive_specificity_gap": true,
+      "recording_permutation": false,
+      "recording_support": false
+    },
+    "holdout": "CSH_ZAD_019",
+    "metrics": {
+      "bidirectional_recording_classifications": {
+        "downward_probability_shift": 2,
+        "mixed_or_failed_ranking": 1,
+        "upward_probability_shift": 1
+      },
+      "centered_auc_delta_vs_shuffle": -0.005176594003551915,
+      "centered_auc_region_only": 0.49287551798586204,
+      "centered_auc_region_shuffle": 0.49805211198941396,
+      "full_auc_delta_vs_shuffle": -0.008582677508096215,
+      "full_auc_region_only": 0.47413389716892435,
+      "full_auc_region_shuffle": 0.48271657467702056,
+      "n_recordings": 4,
+      "paired_shuffle_vs_shared": 0.4644167278063096,
+      "paired_specificity_gap": 0.030080704328686703,
+      "paired_true_vs_shuffle": 0.4944974321349963,
+      "recording_deltas": {
+        "49e0ab27-827a-4c91-bcaa-97eea27a1b8d_probe01": -0.030003593244699978,
+        "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe00": -0.044560788401402485,
+        "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe01": 0.0013621718942480876,
+        "edd22318-216c-44ff-bc24-49ce8be78374_probe00": 0.01485188746969357
+      },
+      "recording_sign_flip": {
+        "n_recordings": 4,
+        "null_distribution": [
+          -0.02269461025251103,
+          -0.022013524305386986,
+          -0.015268666517664245,
+          -0.014587580570540201,
+          -0.007692813630161041,
+          -0.007011727683036997,
+          -0.0004142160518097876,
+          -0.0002668698953142562,
+          0.0002668698953142562,
+          0.0004142160518097876,
+          0.007011727683036997,
+          0.007692813630161041,
+          0.014587580570540201,
+          0.015268666517664245,
+          0.022013524305386986,
+          0.02269461025251103
+        ],
+        "observed_mean_delta": -0.014587580570540201,
+        "one_sided_p": 0.8125
+      },
+      "recording_support_fraction": 0.5,
+      "recordings_positive": 2,
+      "target0_true_class_improved": 0.5558510638297872,
+      "target1_true_class_improved": 0.41898527004909986
+    },
+    "pass": false,
+    "root": "/Users/colin/Desktop/Projects/anatomical-neural-fm/runs/local_csh_auc_surrogate_probe",
+    "thresholds": {
+      "alpha": 0.05,
+      "min_centered_delta": 0.01,
+      "min_recording_support_fraction": 0.75,
+      "min_specificity_gap": 0.0,
+      "min_target_class_improvement": 0.55
+    }
+  },
+  "local_auc_surrogate_mismatch": {
+    "decision": "paired_metric_not_recording_rank_stable",
+    "holdout": "CSH_ZAD_019",
+    "root": "/Users/colin/Desktop/Projects/anatomical-neural-fm/runs/local_csh_auc_surrogate_probe",
+    "seed": 0,
+    "summary": {
+      "mean_raw_prob_delta": -0.0007964933827907569,
+      "mean_true_class_delta": -7.633939988907398e-05,
+      "n": 2726,
+      "paired_true_class_improved_fraction": 0.4944974321349963,
+      "raw_prob_delta_negative_fraction": 0.5671313279530448,
+      "recording_classifications": {
+        "downward_probability_shift": 2,
+        "mixed_or_failed_ranking": 1,
+        "upward_probability_shift": 1
+      },
+      "recordings": {
+        "49e0ab27-827a-4c91-bcaa-97eea27a1b8d_probe01": {
+          "classification": "mixed_or_failed_ranking",
+          "mean_raw_prob_delta": 0.00117152331572818,
+          "mean_true_class_delta": -0.00037654303751931,
+          "n": 777,
+          "paired_true_class_improved_fraction": 0.4337194337194337,
+          "raw_prob_delta_negative_fraction": 0.33976833976833976,
+          "raw_prob_delta_positive_fraction": 0.6602316602316602,
+          "shuffle_auc": 0.5095087901412012,
+          "target0_mean_raw_prob_delta": 0.0014527144401851413,
+          "target0_mean_true_class_delta": -0.001452714440185148,
+          "target0_n": 414,
+          "target0_true_class_improved_fraction": 0.28743961352657005,
+          "target1_fraction": 0.4671814671814672,
+          "target1_mean_raw_prob_delta": 0.000850826000231811,
+          "target1_mean_true_class_delta": 0.000850826000231811,
+          "target1_n": 363,
+          "target1_true_class_improved_fraction": 0.6005509641873278,
+          "true_auc": 0.47950519689650123,
+          "true_minus_shuffle_auc": -0.030003593244699978
+        },
+        "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe00": {
+          "classification": "upward_probability_shift",
+          "mean_raw_prob_delta": 0.006598383442321237,
+          "mean_true_class_delta": -0.0013406568538984248,
+          "n": 590,
+          "paired_true_class_improved_fraction": 0.41694915254237286,
+          "raw_prob_delta_negative_fraction": 0.003389830508474576,
+          "raw_prob_delta_positive_fraction": 0.9966101694915255,
+          "shuffle_auc": 0.5285582298872359,
+          "target0_mean_raw_prob_delta": 0.006768834934638151,
+          "target0_mean_true_class_delta": -0.006768834934638151,
+          "target0_n": 346,
+          "target0_true_class_improved_fraction": 0.005780346820809248,
+          "target1_fraction": 0.4135593220338983,
+          "target1_mean_raw_prob_delta": 0.0063566776376423354,
+          "target1_mean_true_class_delta": 0.0063566776376423354,
+          "target1_n": 244,
+          "target1_true_class_improved_fraction": 1.0,
+          "true_auc": 0.4839974414858334,
+          "true_minus_shuffle_auc": -0.044560788401402485
+        },
+        "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe01": {
+          "classification": "downward_probability_shift",
+          "mean_raw_prob_delta": -0.0053979034776174455,
+          "mean_true_class_delta": 0.0009359448275672921,
+          "n": 590,
+          "paired_true_class_improved_fraction": 0.6067796610169491,
+          "raw_prob_delta_negative_fraction": 0.976271186440678,
+          "raw_prob_delta_positive_fraction": 0.023728813559322035,
+          "shuffle_auc": 0.4726618023310907,
+          "target0_mean_raw_prob_delta": -0.005400246387368488,
+          "target0_mean_true_class_delta": 0.005400246387368492,
+          "target0_n": 346,
+          "target0_true_class_improved_fraction": 0.9971098265895953,
+          "target1_fraction": 0.4135593220338983,
+          "target1_mean_raw_prob_delta": -0.005394581154773754,
+          "target1_mean_true_class_delta": -0.005394581154773754,
+          "target1_n": 244,
+          "target1_true_class_improved_fraction": 0.05327868852459016,
+          "true_auc": 0.47402397422533876,
+          "true_minus_shuffle_auc": 0.0013621718942480876
+        },
+        "edd22318-216c-44ff-bc24-49ce8be78374_probe00": {
+          "classification": "downward_probability_shift",
+          "mean_raw_prob_delta": -0.00492821554874335,
+          "mean_true_class_delta": 0.00042035478750358443,
+          "n": 769,
+          "paired_true_class_improved_fraction": 0.52925877763329,
+          "raw_prob_delta_negative_fraction": 0.9154746423927178,
+          "raw_prob_delta_positive_fraction": 0.08452535760728218,
+          "shuffle_auc": 0.5056685042462988,
+          "target0_mean_raw_prob_delta": -0.005167148980620471,
+          "target0_mean_true_class_delta": 0.005167148980620465,
+          "target0_n": 398,
+          "target0_true_class_improved_fraction": 0.9296482412060302,
+          "target1_fraction": 0.48244473342002603,
+          "target1_mean_raw_prob_delta": -0.004671893430449296,
+          "target1_mean_true_class_delta": -0.004671893430449296,
+          "target1_n": 371,
+          "target1_true_class_improved_fraction": 0.09973045822102426,
+          "true_auc": 0.5205203917159924,
+          "true_minus_shuffle_auc": 0.01485188746969357
+        }
+      },
+      "shuffle_auc": 0.48271657467702056,
+      "target0_n": 1504,
+      "target0_true_class_improved_fraction": 0.5558510638297872,
+      "target1_fraction": 0.4482758620689655,
+      "target1_n": 1222,
+      "target1_true_class_improved_fraction": 0.41898527004909986,
+      "true_auc": 0.47413389716892435,
+      "true_minus_shuffle_auc": -0.008582677508096215
+    }
+  },
   "mechanism": {
     "carriers": [
       "PRT",
