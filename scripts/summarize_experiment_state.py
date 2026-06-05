@@ -119,6 +119,9 @@ LATERALIZED_FAMILY_TARGET_PROJECTED_GATE_FILE = "docs/lateralized_family_target_
 COMPOSITE_BEHAVIOR_TARGET_GATE_FILE = "docs/composite_behavior_target_family_gate.json"
 COMPOSITE_BEHAVIOR_TARGET_PROJECTED_GATE_FILE = "docs/composite_behavior_target_family_gate_projected_hdf5.json"
 COMPOSITE_BEHAVIOR_TARGET_SEED_SENSITIVITY_FILE = "docs/composite_behavior_target_seed_sensitivity.json"
+COMPOSITE_BEHAVIOR_TARGET_L2_SEED_SENSITIVITY_FILE = (
+    "docs/composite_behavior_target_l2_seed_sensitivity.json"
+)
 LOW_CONTRAST_CHOICE_FAMILY_GATE_FILE = "docs/low_contrast_choice_family_gate.json"
 LOW_CONTRAST_CHOICE_PROJECTED_GATE_FILE = "docs/low_contrast_choice_family_gate_projected_hdf5.json"
 LOW_CONTRAST_CHOICE_SEED_SENSITIVITY_FILE = "docs/low_contrast_choice_seed_sensitivity.json"
@@ -579,6 +582,7 @@ def render_markdown(
     composite_behavior_target_gate: dict | None = None,
     composite_behavior_target_projected_gate: dict | None = None,
     composite_behavior_target_seed_sensitivity: dict | None = None,
+    composite_behavior_target_l2_seed_sensitivity: dict | None = None,
     low_contrast_choice_family_gate: dict | None = None,
     low_contrast_choice_projected_gate: dict | None = None,
     low_contrast_choice_seed_sensitivity: dict | None = None,
@@ -1914,6 +1918,47 @@ def render_markdown(
                 "Decision: do not train. The post-error fast-response signal is the "
                 "strongest current near miss because both rows are positive in all seeds, "
                 "but neither remains a strict candidate in all seeds."
+            ),
+            "",
+        ]
+    if composite_behavior_target_l2_seed_sensitivity is not None:
+        summary = composite_behavior_target_l2_seed_sensitivity["summary"]
+        top = composite_behavior_target_l2_seed_sensitivity["rows"][:8]
+        lines += [
+            "## Composite Behavior L2/Seed Sensitivity",
+            "",
+            "`docs/composite_behavior_target_l2_seed_sensitivity.md` reruns the projected",
+            "post-error fast-response broad-anatomy near miss across ridge regularization",
+            "values and within-recording shuffle seeds.",
+            "",
+            f"- cases: `{summary['n_cases']}`",
+            f"- l2 values: `{summary['n_l2_values']}`",
+            (
+                "- robust l2/seed candidates: "
+                f"`{summary['n_robust_composite_behavior_l2_seed_candidates']}`"
+            ),
+            f"- max positive shuffle-delta fraction: `{summary['max_positive_shuffle_delta_fraction']:.3f}`",
+            f"- max candidate seed fraction: `{summary['max_candidate_seed_fraction']:.3f}`",
+            f"- decision: `{summary['decision']}`",
+            "",
+            "| l2 | target | family | holdout | positive seeds | candidate seeds | mean delta shuffle | mean delta total | mean targets | bidir range |",
+            "|---:|---|---|---|---:|---:|---:|---:|---:|---:|",
+        ]
+        for row in top:
+            lines.append(
+                f"| {row['l2']:g} | {row['target_mode']} | {row['family']} | {row['holdout']} | "
+                f"{row['n_positive_shuffle_delta_seeds']}/{row['n_seeds']} | "
+                f"{row['n_candidate_seeds']}/{row['n_seeds']} | "
+                f"{row['mean_centered_delta_vs_shuffle']:+.4f} | "
+                f"{row['mean_centered_delta_vs_total']:+.4f} | "
+                f"{row['mean_target0']:.3f}/{row['mean_target1']:.3f} | "
+                f"{row['min_bidirectional_recordings']}-{row['max_bidirectional_recordings']} |"
+            )
+        lines += [
+            "",
+            (
+                "Decision: do not train. The composite near miss is not a ridge-l2 artifact; "
+                "candidate stability is unchanged across l2=1, 10, and 100."
             ),
             "",
         ]
@@ -3631,6 +3676,9 @@ def main() -> int:
     composite_behavior_target_seed_sensitivity = read_mechanism_audit(
         REPO_ROOT / COMPOSITE_BEHAVIOR_TARGET_SEED_SENSITIVITY_FILE
     )
+    composite_behavior_target_l2_seed_sensitivity = read_mechanism_audit(
+        REPO_ROOT / COMPOSITE_BEHAVIOR_TARGET_L2_SEED_SENSITIVITY_FILE
+    )
     low_contrast_choice_family_gate = read_mechanism_audit(REPO_ROOT / LOW_CONTRAST_CHOICE_FAMILY_GATE_FILE)
     low_contrast_choice_projected_gate = read_mechanism_audit(REPO_ROOT / LOW_CONTRAST_CHOICE_PROJECTED_GATE_FILE)
     low_contrast_choice_seed_sensitivity = read_mechanism_audit(
@@ -3802,6 +3850,7 @@ def main() -> int:
         composite_behavior_target_gate,
         composite_behavior_target_projected_gate,
         composite_behavior_target_seed_sensitivity,
+        composite_behavior_target_l2_seed_sensitivity,
         low_contrast_choice_family_gate,
         low_contrast_choice_projected_gate,
         low_contrast_choice_seed_sensitivity,
@@ -3930,6 +3979,10 @@ def main() -> int:
         "composite_behavior_target_seed_sensitivity": compact_seed_sensitivity_payload(
             composite_behavior_target_seed_sensitivity,
             "robust_composite_behavior_seed_candidates",
+        ),
+        "composite_behavior_target_l2_seed_sensitivity": compact_seed_sensitivity_payload(
+            composite_behavior_target_l2_seed_sensitivity,
+            "robust_composite_behavior_l2_seed_candidates",
         ),
         "low_contrast_choice_family_gate": low_contrast_choice_family_gate,
         "low_contrast_choice_projected_gate": low_contrast_choice_projected_gate,

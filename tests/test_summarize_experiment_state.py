@@ -186,11 +186,40 @@ def test_render_markdown_includes_composite_behavior_seed_veto() -> None:
                 }
             ],
         },
+        composite_behavior_target_l2_seed_sensitivity={
+            "summary": {
+                "n_cases": 2,
+                "n_l2_values": 3,
+                "n_robust_composite_behavior_l2_seed_candidates": 0,
+                "max_positive_shuffle_delta_fraction": 1.0,
+                "max_candidate_seed_fraction": 0.8,
+                "decision": "no_composite_behavior_l2_seed_candidate",
+            },
+            "rows": [
+                {
+                    "l2": 1.0,
+                    "target_mode": "post_error_fast_response_le_1",
+                    "family": "broad_named_anatomy",
+                    "holdout": "CSHL045",
+                    "n_positive_shuffle_delta_seeds": 5,
+                    "n_candidate_seeds": 3,
+                    "n_seeds": 5,
+                    "mean_centered_delta_vs_shuffle": 0.062,
+                    "mean_centered_delta_vs_total": 0.039,
+                    "mean_target0": 0.63,
+                    "mean_target1": 0.76,
+                    "min_bidirectional_recordings": 2,
+                    "max_bidirectional_recordings": 3,
+                }
+            ],
+        },
     )
 
     assert "Composite Behavior Seed Sensitivity" in markdown
+    assert "Composite Behavior L2/Seed Sensitivity" in markdown
     assert "do not train" in markdown.lower()
     assert "strongest current near miss" in markdown
+    assert "not a ridge-l2 artifact" in markdown
 
 
 def test_render_markdown_includes_extreme_quantile_seed_veto() -> None:

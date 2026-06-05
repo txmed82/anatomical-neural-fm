@@ -410,7 +410,7 @@ branches after the current local negative audits.
 | priority | branch | status | next action |
 |---:|---|---|---|
 | 1 | new manifest with prospective bidirectional support | `recommended_next` | Do not launch GPU training from the projected support80 panel; its model-free family and feature-mode gates have no candidates. Redesign the target/control locally. |
-| 80 | composite behavior target search | `closed` | Do not train: post-error fast-response broad-anatomy candidates fail strict seed stability. |
+| 80 | composite behavior target search | `closed` | Do not train: post-error fast-response broad-anatomy candidates fail strict seed and l2 stability. |
 | 81 | lateralized family anatomy target | `closed` | Do not train: left/right family anatomy does not pass current or projected local gates. |
 | 82 | signed wheel-direction motor target | `closed` | Do not train: signed wheel-direction does not pass current or projected local gates. |
 
@@ -710,6 +710,30 @@ shuffle seeds.
 | post_error_fast_response_le_1 | broad_named_anatomy | NR_0019 | 5/5 | 4/5 | +0.0023 | +0.0024 | 0.576/0.640 | 2-4 |
 
 Decision: do not train. The post-error fast-response signal is the strongest current near miss because both rows are positive in all seeds, but neither remains a strict candidate in all seeds.
+
+## Composite Behavior L2/Seed Sensitivity
+
+`docs/composite_behavior_target_l2_seed_sensitivity.md` reruns the projected
+post-error fast-response broad-anatomy near miss across ridge regularization
+values and within-recording shuffle seeds.
+
+- cases: `2`
+- l2 values: `3`
+- robust l2/seed candidates: `0`
+- max positive shuffle-delta fraction: `1.000`
+- max candidate seed fraction: `0.800`
+- decision: `no_composite_behavior_l2_seed_candidate`
+
+| l2 | target | family | holdout | positive seeds | candidate seeds | mean delta shuffle | mean delta total | mean targets | bidir range |
+|---:|---|---|---|---:|---:|---:|---:|---:|---:|
+| 1 | post_error_fast_response_le_1 | broad_named_anatomy | CSHL045 | 5/5 | 3/5 | +0.0626 | +0.0386 | 0.632/0.756 | 2-3 |
+| 1 | post_error_fast_response_le_1 | broad_named_anatomy | NR_0019 | 5/5 | 4/5 | +0.0023 | +0.0024 | 0.576/0.640 | 2-4 |
+| 10 | post_error_fast_response_le_1 | broad_named_anatomy | CSHL045 | 5/5 | 3/5 | +0.0626 | +0.0386 | 0.632/0.756 | 2-3 |
+| 10 | post_error_fast_response_le_1 | broad_named_anatomy | NR_0019 | 5/5 | 4/5 | +0.0023 | +0.0024 | 0.576/0.640 | 2-4 |
+| 100 | post_error_fast_response_le_1 | broad_named_anatomy | CSHL045 | 5/5 | 3/5 | +0.0626 | +0.0386 | 0.632/0.756 | 2-3 |
+| 100 | post_error_fast_response_le_1 | broad_named_anatomy | NR_0019 | 5/5 | 4/5 | +0.0023 | +0.0024 | 0.576/0.640 | 2-4 |
+
+Decision: do not train. The composite near miss is not a ridge-l2 artifact; candidate stability is unchanged across l2=1, 10, and 100.
 
 ## Low-Contrast Choice Family Gate
 

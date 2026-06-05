@@ -55,6 +55,7 @@ ARTIFACTS = {
     "composite_behavior_target": "docs/composite_behavior_target_family_gate.json",
     "composite_behavior_target_projected": "docs/composite_behavior_target_family_gate_projected_hdf5.json",
     "composite_behavior_target_seed_sensitivity": "docs/composite_behavior_target_seed_sensitivity.json",
+    "composite_behavior_target_l2_seed_sensitivity": "docs/composite_behavior_target_l2_seed_sensitivity.json",
     "cell_type_prior_target_control": "docs/cell_type_prior_target_control_gate.json",
     "waveform_target_control": "docs/waveform_target_control_gate.json",
     "local_gate_meta_failures": "docs/local_gate_meta_failure_audit.json",
@@ -206,8 +207,15 @@ def build_report() -> dict:
     composite_behavior_seed_summary = (
         composite_behavior_seed.get("summary", {}) if composite_behavior_seed is not None else {}
     )
+    composite_behavior_l2_seed = artifacts["composite_behavior_target_l2_seed_sensitivity"]
+    composite_behavior_l2_seed_summary = (
+        composite_behavior_l2_seed.get("summary", {}) if composite_behavior_l2_seed is not None else {}
+    )
     composite_behavior_seed_robust = int(
         composite_behavior_seed_summary.get("n_robust_composite_behavior_seed_candidates", 0) or 0
+    )
+    composite_behavior_l2_seed_robust = int(
+        composite_behavior_l2_seed_summary.get("n_robust_composite_behavior_l2_seed_candidates", 0) or 0
     )
     low_contrast = artifacts["low_contrast_choice_family"]
     low_contrast_summary = low_contrast.get("summary", {}) if low_contrast is not None else {}
@@ -416,7 +424,11 @@ def build_report() -> dict:
             name="composite behavior target search",
             status=(
                 "closed"
-                if composite_behavior_projected is not None and composite_behavior_seed is not None
+                if (
+                    composite_behavior_projected is not None
+                    and composite_behavior_seed is not None
+                    and composite_behavior_l2_seed is not None
+                )
                 else "secondary_after_new_target"
             ),
             priority=80 if composite_behavior_projected is not None else 3,
@@ -450,10 +462,23 @@ def build_report() -> dict:
                         f"{composite_behavior_seed_summary.get('max_candidate_seed_fraction', 0.0):.3f}"
                     )
                 ),
+                (
+                    "composite behavior l2/seed sensitivity has not been run yet"
+                    if composite_behavior_l2_seed is None
+                    else (
+                        "composite behavior l2/seed sensitivity found "
+                        f"{composite_behavior_l2_seed_robust} robust candidates; max candidate seed fraction="
+                        f"{composite_behavior_l2_seed_summary.get('max_candidate_seed_fraction', 0.0):.3f}"
+                    )
+                ),
             ],
             next_action=(
-                "Do not train: post-error fast-response broad-anatomy candidates fail strict seed stability."
-                if composite_behavior_projected is not None and composite_behavior_seed is not None
+                "Do not train: post-error fast-response broad-anatomy candidates fail strict seed and l2 stability."
+                if (
+                    composite_behavior_projected is not None
+                    and composite_behavior_seed is not None
+                    and composite_behavior_l2_seed is not None
+                )
                 else "Run the bounded composite behavior target gate on current and projected manifests."
             ),
             gpu_trigger="none",

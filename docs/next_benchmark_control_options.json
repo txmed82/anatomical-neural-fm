@@ -3,6 +3,7 @@
     "behavior_cache_preflight": "docs/behavior_cache_preflight.json",
     "cell_type_prior_target_control": "docs/cell_type_prior_target_control_gate.json",
     "composite_behavior_target": "docs/composite_behavior_target_family_gate.json",
+    "composite_behavior_target_l2_seed_sensitivity": "docs/composite_behavior_target_l2_seed_sensitivity.json",
     "composite_behavior_target_projected": "docs/composite_behavior_target_family_gate_projected_hdf5.json",
     "composite_behavior_target_seed_sensitivity": "docs/composite_behavior_target_seed_sensitivity.json",
     "contextual_target_family": "docs/contextual_target_family_gate.json",
@@ -88,11 +89,12 @@
       "evidence": [
         "current-panel composite behavior target gate found 1 candidates across 224 rows and max bidir 0.750",
         "projected-panel composite behavior target gate found 2 candidates across 256 rows and max bidir 0.750",
-        "composite behavior seed sensitivity found 0 robust candidates; max candidate seed fraction=0.800"
+        "composite behavior seed sensitivity found 0 robust candidates; max candidate seed fraction=0.800",
+        "composite behavior l2/seed sensitivity found 0 robust candidates; max candidate seed fraction=0.800"
       ],
       "gpu_trigger": "none",
       "name": "composite behavior target search",
-      "next_action": "Do not train: post-error fast-response broad-anatomy candidates fail strict seed stability.",
+      "next_action": "Do not train: post-error fast-response broad-anatomy candidates fail strict seed and l2 stability.",
       "priority": 80,
       "status": "closed"
     },
