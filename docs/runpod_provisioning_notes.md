@@ -7,8 +7,9 @@ the cross-animal anatomical transfer benchmark.
 
 ## Current State
 
-- Matched-region S3 cache is now `29/48` recordings after the latest S3 audit;
-  `19` compact HDF5s are still missing across `15` build shards.
+- Matched-region S3 cache is now `47/48` recordings after the incremental CPU
+  cache build; only `de588204-8fd6-4ce3-92da-7a6d1dcae238_probe00.h5` remains
+  missing.
 - Missing-only retry manifest:
   `manifests/ibl_bwm_region_matched_candidates_missing_s3.json`.
 - Compact support80-best6 S3 cache later reached `28/28` recordings; the
@@ -178,10 +179,27 @@ threshold.
    `ttl.sh` image did not produce logs on earlier GPU attempts.
 
 Resume model training only after the matched-region cache is complete enough to
-rerun the support scorer. The current `29/48` cache state is useful progress,
-but it is not a training-ready benchmark; finish the missing HDF5 shards first,
-rerun matched-region support scoring, and require the 80% held-out unit-support
-gate before any seed sweep.
+rerun the support scorer. The current `47/48` cache state is useful progress,
+but it is not automatically a training-ready benchmark. Replace or drop the
+single failed recording, then rerun matched-region support scoring and require
+the 80% held-out unit-support gate before any seed sweep.
+
+The incremental CPU run in `docs/matched_region_missing_incremental_results.md`
+built and uploaded `18/19` previously missing HDF5s in about `552s` on a
+`$0.06/hr` CPU pod. The only failure was dataset-specific: OpenAlyx could not
+find a required ALF trials object for
+`de588204-8fd6-4ce3-92da-7a6d1dcae238_probe00`.
+
+Metadata-only support scoring on the cacheable panel is now:
+
+- `manifests/ibl_bwm_region_matched_candidates_s3_present_scored.json`:
+  `47` recordings, `12` subjects, `8/12` subjects pass support80.
+- `manifests/ibl_bwm_region_matched_candidates_s3_present_support80.json`:
+  `28` recordings, `7` subjects, `6/7` subjects pass support80; `SWC_043`
+  remains below gate.
+
+Next paid work, if any, should be HDF5 support confirmation for the cached
+28-recording subset, not model training.
 
 Use the missing-only manifest with the incremental builder for the next cache
 completion attempt, so each successful recording uploads immediately:

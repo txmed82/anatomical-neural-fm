@@ -95,6 +95,8 @@ CHOICE_MODEL_FREE_REGION_CANDIDATE_SCAN_FILE = "docs/csh_choice_model_free_regio
 CHOICE_MODEL_FREE_REGION_FAMILY_SCAN_FILE = "docs/csh_choice_model_free_region_family_scan.json"
 MATCHED_REGION_CACHE_AUDIT_FILE = "docs/matched_region_cache_audit.md"
 MATCHED_REGION_MISSING_MANIFEST_FILE = "manifests/ibl_bwm_region_matched_candidates_missing_s3.json"
+MATCHED_REGION_S3_PRESENT_SCORED_FILE = "manifests/ibl_bwm_region_matched_candidates_s3_present_scored.json"
+MATCHED_REGION_S3_PRESENT_SUPPORT80_FILE = "manifests/ibl_bwm_region_matched_candidates_s3_present_support80.json"
 LOCAL_PROBE_FILES = (
     (
         "local AUC surrogate",
@@ -333,6 +335,28 @@ def read_manifest_summary(path: Path) -> dict | None:
     }
 
 
+def read_support_manifest_summary(path: Path) -> dict | None:
+    if not path.exists():
+        return None
+    payload = json.loads(path.read_text())
+    support = payload.get("region_support", {})
+    fracs = [
+        row.get("unit_support_frac")
+        for row in support.values()
+        if row.get("unit_support_frac") is not None
+    ]
+    pass_count = sum(1 for frac in fracs if frac >= 0.8)
+    return {
+        "source": path,
+        "n_recordings": payload.get("n_recordings"),
+        "n_subjects": payload.get("n_subjects"),
+        "pass_count": pass_count,
+        "subject_count": len(fracs),
+        "min_support": None if not fracs else min(fracs),
+        "optimized": payload.get("selection", {}).get("optimized_support_subset"),
+    }
+
+
 def render_markdown(
     strict_rows: list[StrictGateRow],
     slice_rows: list[SliceRow],
@@ -353,6 +377,8 @@ def render_markdown(
     choice_family_scan: dict | None = None,
     matched_cache_audit: dict | None = None,
     matched_missing_manifest: dict | None = None,
+    matched_present_support: dict | None = None,
+    matched_support80: dict | None = None,
 ) -> str:
     summary = summarize(strict_rows, slice_rows)
     lines = [
@@ -775,6 +801,8 @@ def render_markdown(
             "",
         ]
     if matched_cache_audit is not None:
+        missing_count = matched_cache_audit.get("missing_count")
+        missing_label = "recording" if missing_count == 1 else "recordings"
         lines += [
             "## Matched-Region Cache Readiness",
             "",
@@ -786,14 +814,16 @@ def render_markdown(
                 f"- present: `{matched_cache_audit.get('present')}/{matched_cache_audit.get('total')}` "
                 f"(`{matched_cache_audit.get('percent')}`)"
             ),
-            f"- missing recordings: `{matched_cache_audit.get('missing_count')}`",
+            f"- missing {missing_label}: `{missing_count}`",
             f"- shards with missing recordings: `{len(matched_cache_audit.get('shards_with_missing', []))}`",
         ]
         if matched_missing_manifest is not None:
+            recording_label = "recording" if matched_missing_manifest["n_recordings"] == 1 else "recordings"
+            subject_label = "subject" if matched_missing_manifest["n_subjects"] == 1 else "subjects"
             lines.append(
                 f"- missing-only manifest: `{display_path(matched_missing_manifest['source'])}` "
-                f"({matched_missing_manifest['n_recordings']} recordings, "
-                f"{matched_missing_manifest['n_subjects']} subjects)"
+                f"({matched_missing_manifest['n_recordings']} {recording_label}, "
+                f"{matched_missing_manifest['n_subjects']} {subject_label})"
             )
         lines += [
             "",
@@ -809,9 +839,42 @@ def render_markdown(
             (
                 "Decision: do not launch training. Finish the missing HDF5 cache shards "
                 "first, then rerun the matched-region support scorer and require the "
-                "80% held-out unit-support gate before any seed sweep. Use the "
-                "missing-only manifest with the incremental builder so successful "
-                "recordings upload immediately instead of waiting for a full shard."
+                "80% held-out unit-support gate before any seed sweep."
+            ),
+            "",
+        ]
+        if missing_count == 1:
+            lines[-2] = (
+                "Decision: do not launch training. Replace or drop the single failed "
+                "recording, then rerun the matched-region support scorer and require "
+                "the 80% held-out unit-support gate before any seed sweep."
+            )
+    if matched_present_support is not None or matched_support80 is not None:
+        lines += [
+            "## Matched-Region Support Scoring",
+            "",
+            "Metadata-only OpenAlyx region support has been scored for the S3-present",
+            "cache panel. This is a planning gate; confirm again from HDF5s before training.",
+            "",
+            "| manifest | recordings | subjects | support80 subjects | min support |",
+            "|---|---:|---:|---:|---:|",
+        ]
+        for row in [matched_present_support, matched_support80]:
+            if row is None:
+                continue
+            min_support = row.get("min_support")
+            min_text = "n/a" if min_support is None else f"{min_support:.1%}"
+            lines.append(
+                f"| `{display_path(row['source'])}` | {row['n_recordings']} | "
+                f"{row['n_subjects']} | {row['pass_count']}/{row['subject_count']} | {min_text} |"
+            )
+        lines += [
+            "",
+            (
+                "Decision: the 47-recording cacheable panel is close but not clean. "
+                "Use the optimized 28-recording support80 subset for HDF5-confirmed "
+                "support scoring, or drop the remaining low-support subject before any "
+                "training sweep."
             ),
             "",
         ]
@@ -855,6 +918,8 @@ def main() -> int:
     choice_family_scan = read_mechanism_audit(REPO_ROOT / CHOICE_MODEL_FREE_REGION_FAMILY_SCAN_FILE)
     matched_cache_audit = read_cache_audit(REPO_ROOT / MATCHED_REGION_CACHE_AUDIT_FILE)
     matched_missing_manifest = read_manifest_summary(REPO_ROOT / MATCHED_REGION_MISSING_MANIFEST_FILE)
+    matched_present_support = read_support_manifest_summary(REPO_ROOT / MATCHED_REGION_S3_PRESENT_SCORED_FILE)
+    matched_support80 = read_support_manifest_summary(REPO_ROOT / MATCHED_REGION_S3_PRESENT_SUPPORT80_FILE)
     args.out_md.parent.mkdir(parents=True, exist_ok=True)
     args.out_md.write_text(render_markdown(
         strict_rows,
@@ -876,6 +941,8 @@ def main() -> int:
         choice_family_scan,
         matched_cache_audit,
         matched_missing_manifest,
+        matched_present_support,
+        matched_support80,
     ))
     args.out_json.parent.mkdir(parents=True, exist_ok=True)
     args.out_json.write_text(json.dumps({
@@ -911,6 +978,14 @@ def main() -> int:
         "matched_region_missing_manifest": (
             None if matched_missing_manifest is None
             else matched_missing_manifest | {"source": display_path(matched_missing_manifest["source"])}
+        ),
+        "matched_region_s3_present_support": (
+            None if matched_present_support is None
+            else matched_present_support | {"source": display_path(matched_present_support["source"])}
+        ),
+        "matched_region_s3_present_support80": (
+            None if matched_support80 is None
+            else matched_support80 | {"source": display_path(matched_support80["source"])}
         ),
     }, indent=2, sort_keys=True) + "\n")
     print(f"wrote {args.out_md}")

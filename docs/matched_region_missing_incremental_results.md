@@ -95,9 +95,15 @@ Present: 18/19 (94.7%)
 }
 ```
 
+## Failure Note
+
+The remaining file, `de588204-8fd6-4ce3-92da-7a6d1dcae238_probe00.h5`, failed
+during public OpenAlyx data loading because the required ALF trials object was
+not found. This looks like a dataset/object-availability issue for that
+recording, not a RunPod capacity or S3 upload failure.
+
 ## Missing Sweep Summary
 
 No `runs/matched_region_missing_incremental/summary.md`, `within_summary.md`, or
 `cross_summary.md` file was present when cleanup pushed artifacts. Treat this
 cloud result as incomplete/non-evidence even if the pod exit status is 0.
-

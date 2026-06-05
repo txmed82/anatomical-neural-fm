@@ -17,6 +17,7 @@ from scripts.sync_brainset_s3 import (
     upload_log_file,
     verify_local_cache_rows,
     write_audit_report,
+    write_filtered_manifest,
     write_missing_manifest,
 )
 
@@ -222,6 +223,34 @@ def test_write_missing_manifest_preserves_schema_and_filters_rows(tmp_path) -> N
     assert payload["recordings"] == [
         {"session_id": "eid-b", "probe_name": "probe01", "subject_id": "s1", "lab": "lab-b"},
         {"session_id": "eid-c", "probe_name": "probe00", "subject_id": "s2", "lab": "lab-c"},
+    ]
+
+
+def test_write_filtered_manifest_can_keep_present_rows(tmp_path) -> None:
+    source = tmp_path / "manifest.json"
+    out = tmp_path / "present.json"
+    source.write_text(json.dumps({
+        "dataset": "ibl_bwm",
+        "n_recordings": 2,
+        "n_subjects": 2,
+        "recordings": [
+            {"session_id": "eid-a", "probe_name": "probe00", "subject_id": "s1"},
+            {"session_id": "eid-b", "probe_name": "probe01", "subject_id": "s2"},
+        ],
+    }))
+
+    count = write_filtered_manifest(
+        out,
+        source_manifest=source,
+        keep={"eid-a_probe00.h5"},
+    )
+
+    payload = json.loads(out.read_text())
+    assert count == 1
+    assert payload["n_recordings"] == 1
+    assert payload["n_subjects"] == 1
+    assert payload["recordings"] == [
+        {"session_id": "eid-a", "probe_name": "probe00", "subject_id": "s1"},
     ]
 
 

@@ -222,24 +222,25 @@ Interpretation: `choice` does not rescue the CSH parent-region branch. Shuffled 
 48-recording matched-region manifest. This is the next gate before any
 larger matched-region training attempt.
 
-- present: `29/48` (`60.4%`)
-- missing recordings: `19`
-- shards with missing recordings: `15`
-- missing-only manifest: `manifests/ibl_bwm_region_matched_candidates_missing_s3.json` (19 recordings, 5 subjects)
+- present: `47/48` (`97.9%`)
+- missing recording: `1`
+- shards with missing recordings: `1`
+- missing-only manifest: `manifests/ibl_bwm_region_matched_candidates_missing_s3.json` (1 recording, 1 subject)
 
 | shard | recordings | present | missing |
 |---:|---:|---:|---:|
-| 2 | 2 | 0 | 2 |
 | 3 | 2 | 1 | 1 |
-| 5 | 2 | 1 | 1 |
-| 6 | 2 | 1 | 1 |
-| 8 | 2 | 0 | 2 |
-| 9 | 2 | 1 | 1 |
-| 11 | 2 | 1 | 1 |
-| 12 | 2 | 1 | 1 |
-| 14 | 2 | 0 | 2 |
-| 15 | 2 | 1 | 1 |
-| 17 | 2 | 1 | 1 |
-| 18 | 2 | 1 | 1 |
 
-Decision: do not launch training. Finish the missing HDF5 cache shards first, then rerun the matched-region support scorer and require the 80% held-out unit-support gate before any seed sweep. Use the missing-only manifest with the incremental builder so successful recordings upload immediately instead of waiting for a full shard.
+Decision: do not launch training. Replace or drop the single failed recording, then rerun the matched-region support scorer and require the 80% held-out unit-support gate before any seed sweep.
+
+## Matched-Region Support Scoring
+
+Metadata-only OpenAlyx region support has been scored for the S3-present
+cache panel. This is a planning gate; confirm again from HDF5s before training.
+
+| manifest | recordings | subjects | support80 subjects | min support |
+|---|---:|---:|---:|---:|
+| `manifests/ibl_bwm_region_matched_candidates_s3_present_scored.json` | 47 | 12 | 8/12 | 66.6% |
+| `manifests/ibl_bwm_region_matched_candidates_s3_present_support80.json` | 28 | 7 | 6/7 | 65.8% |
+
+Decision: the 47-recording cacheable panel is close but not clean. Use the optimized 28-recording support80 subset for HDF5-confirmed support scoring, or drop the remaining low-support subject before any training sweep.

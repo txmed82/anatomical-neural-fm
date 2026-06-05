@@ -248,14 +248,14 @@ left zero pods and zero network volumes. The matched-region candidate manifest
 was generated locally from Alyx metadata with no GPU spend. Avoid additional
 paid training until the candidate manifest has been built and region-scored.
 
-Latest no-spend S3 audit: the matched-region candidate cache is `29/48`
-present, with `19` missing compact HDF5s across `15` shards. This improves on
-the stale `4/48` cache state but does not clear the training gate. Finish the
-missing shards, rerun matched-region support scoring, and require the 80%
-held-out unit-support gate before launching any seed sweep. The audit now writes
-`manifests/ibl_bwm_region_matched_candidates_missing_s3.json`; use that with
-`scripts/build_ibl_brainset_incremental.py` so each successful recording uploads
-immediately.
+Latest cache-completion run: the matched-region candidate cache is now `47/48`
+present on S3. A cheap incremental CPU run uploaded `18/19` missing compact
+HDF5s in about `552s`; the only remaining file is
+`de588204-8fd6-4ce3-92da-7a6d1dcae238_probe00.h5`, which failed because
+OpenAlyx could not find the required ALF trials object. This still does not
+clear the training gate. Replace or drop the failed recording, rerun
+matched-region support scoring, and require the 80% held-out unit-support gate
+before launching any seed sweep.
 
 Follow-up cloud audit attempt: a 48-recording matched-region data-build/audit
 job was tried twice on RunPod A100 in `CA-MTL-3`.
@@ -1317,7 +1317,15 @@ candidates. This closes the cheap alternative-target check available in the
 current trainer. The next constructive no-spend step is a larger matched-region
 manifest build/readiness pass that asks whether a different subject/recording
 panel has enough shared anatomical support before any new GPU training. The
-current S3 audit shows `29/48` recordings present and `19` missing, so the next
-action is completing the missing cache shards and rerunning the support scorer,
-not training. The concrete retry path is the generated missing-only manifest
-plus the incremental builder/upload wrapper.
+current S3 audit shows `47/48` recordings present and one dataset-specific
+failure remaining, so the next action is replacing or dropping that recording
+and rerunning the support scorer, not training.
+
+Metadata support scorer update: the 47-recording S3-present panel scores
+`8/12` subjects above 80% held-out unit support. The optimized cached subset
+`manifests/ibl_bwm_region_matched_candidates_s3_present_support80.json` keeps
+28 recordings across 7 subjects and scores `6/7` subjects above 80%
+(`SWC_043` remains below gate at about 65.8%). Next action is HDF5-confirmed
+support scoring on this cached subset, then either drop the remaining
+low-support subject or proceed to a small training gate only if the HDF5 support
+check agrees.

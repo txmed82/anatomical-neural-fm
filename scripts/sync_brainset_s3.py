@@ -359,15 +359,19 @@ def write_audit_report(
     path.write_text("\n".join(lines) + "\n")
 
 
-def write_missing_manifest(path: Path, *, source_manifest: Path, missing: set[str]) -> int:
+def write_filtered_manifest(path: Path, *, source_manifest: Path, keep: set[str]) -> int:
     rows = [
         row for row in manifest_recording_rows(source_manifest)
-        if (name := manifest_recording_name(row)) is not None and name in missing
+        if (name := manifest_recording_name(row)) is not None and name in keep
     ]
     payload = manifest_payload_with_recordings(source_manifest, rows)
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n")
     return len(rows)
+
+
+def write_missing_manifest(path: Path, *, source_manifest: Path, missing: set[str]) -> int:
+    return write_filtered_manifest(path, source_manifest=source_manifest, keep=missing)
 
 
 def parse_args() -> argparse.Namespace:
@@ -390,6 +394,8 @@ def parse_args() -> argparse.Namespace:
                    help="Optional markdown report path for the audit command.")
     p.add_argument("--missing-manifest", type=Path, default=None,
                    help="Optional manifest path containing only missing recordings from audit.")
+    p.add_argument("--present-manifest", type=Path, default=None,
+                   help="Optional manifest path containing only recordings present in S3 from audit.")
     p.add_argument("--num-shards", type=int, default=None,
                    help="Optional shard count to include in audit reports.")
     p.add_argument("--compact-build-args", default="",
@@ -474,6 +480,13 @@ def main() -> int:
                     missing=set(missing),
                 )
                 print(f"wrote {args.missing_manifest} ({missing_count} recordings)")
+            if args.present_manifest is not None:
+                present_count = write_filtered_manifest(
+                    args.present_manifest,
+                    source_manifest=args.manifest,
+                    keep=set(matched),
+                )
+                print(f"wrote {args.present_manifest} ({present_count} recordings)")
         else:
             local_files = local_h5_files(args.data_dir, names)
             present = remote_h5_filenames(client, bucket=bucket, prefix=args.prefix)

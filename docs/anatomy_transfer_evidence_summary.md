@@ -253,12 +253,21 @@ single-region and region-family scans have zero candidates. Decision: choice
 does not rescue the current CSH parent-region branch.
 
 Matched-region cache readiness: `docs/matched_region_cache_audit.md` now shows
-the larger 48-recording candidate cache is `29/48` present on S3, with `19`
-missing compact HDF5s across `15` shards. This is progress from the stale
-`4/48` state, but it is still not training-ready. Decision: do not launch a
-matched-region seed sweep yet. Finish the missing HDF5 shards, rerun the
+the larger 48-recording candidate cache is `47/48` present on S3. The
+incremental CPU cache build in
+`docs/matched_region_missing_incremental_results.md` uploaded `18/19` missing
+HDF5s and left one dataset-specific failure:
+`de588204-8fd6-4ce3-92da-7a6d1dcae238_probe00.h5`, where OpenAlyx could not
+find a required ALF trials object. Decision: do not launch a matched-region
+seed sweep yet. Replace or drop that single failed recording, rerun the
 matched-region support scorer, and require the 80% held-out unit-support gate
-before spending on GPU confirmation. The retry input is now
-`manifests/ibl_bwm_region_matched_candidates_missing_s3.json`; use it with
-`scripts/build_ibl_brainset_incremental.py` so each successful recording is
-uploaded immediately.
+before spending on GPU confirmation.
+
+Metadata-only support scoring on the S3-present cache panel is now complete:
+the 47-recording panel has `8/12` subjects above 80% held-out unit support.
+The optimized cached subset in
+`manifests/ibl_bwm_region_matched_candidates_s3_present_support80.json` has
+28 recordings across 7 subjects, with `6/7` subjects above 80%. Decision:
+confirm support from the actual HDF5 cache for that subset before any training
+sweep; if the low-support subject remains below gate, drop it rather than
+spend on a weak panel.
