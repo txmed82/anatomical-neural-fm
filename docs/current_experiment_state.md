@@ -193,3 +193,25 @@ Candidates passing the strict local gate: `0`
 | thalamic | reject: shuffle | 0.530 | -0.017 | +0.080 | 0.381 | 0.581 | 0/4 | 1.000 |
 
 Interpretation: predefined region-family aggregates also fail the model-free promotion gate. The evidence now argues against spending on another CSH parent-region model variant. The next branch should be an alternative conserved target or a larger matched-region manifest audit.
+
+## Alternative Target: Choice
+
+The same model-free gates were rerun with `--target-mode choice` to test
+whether a different behavioral target exposes anatomical transfer.
+
+| feature_set | train_AUC | eval_AUC | eval_centered_AUC |
+|---|---:|---:|---:|
+| total_spikes | 0.518 | 0.456 | 0.389 |
+| region_true | 0.636 | 0.477 | 0.480 |
+| region_shuffle | 0.639 | 0.540 | 0.566 |
+
+- true-minus-shuffle centered AUC: `-0.086`
+- true-minus-total centered AUC: `+0.091`
+- paired target0 improved vs shuffle: `0.807`
+- paired target1 improved vs shuffle: `0.200`
+- positive recordings vs shuffle: `2/4`
+- full-region decision: `no_model_free_true_region_advantage`
+- single-region candidates: `0`
+- region-family candidates: `0`
+
+Interpretation: `choice` does not rescue the CSH parent-region branch. Shuffled parent labels still beat true labels on recording-centered AUC, and the single-region/family scans find no promotable candidate.

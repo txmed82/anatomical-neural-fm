@@ -1299,3 +1299,12 @@ has broader recording support but still fails target0. This closes the current
 CSH parent-region feature branch. The roadmap should now move to either an
 alternative conserved target or a larger matched-region manifest audit before
 any paid training.
+
+Alternative target refinement:
+`choice` was rerun through the same model-free full-region, single-region, and
+region-family gates. It also fails: true parent labels score centered AUC
+`0.480`, shuffled labels score `0.566`, and both candidate scans return zero
+candidates. This closes the cheap alternative-target check available in the
+current trainer. The next constructive no-spend step is a larger matched-region
+manifest audit that asks whether a different subject/recording panel has enough
+shared anatomical support before any new GPU training.

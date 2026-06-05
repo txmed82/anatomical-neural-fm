@@ -90,6 +90,9 @@ BATCH_SAMPLING_CONTRAST_AUDIT_FILE = "docs/csh_batch_sampling_contrast_audit.jso
 MODEL_FREE_REGION_SIGNAL_AUDIT_FILE = "docs/csh_model_free_region_signal_audit.json"
 MODEL_FREE_REGION_CANDIDATE_SCAN_FILE = "docs/csh_model_free_region_candidate_scan.json"
 MODEL_FREE_REGION_FAMILY_SCAN_FILE = "docs/csh_model_free_region_family_scan.json"
+CHOICE_MODEL_FREE_REGION_SIGNAL_AUDIT_FILE = "docs/csh_choice_model_free_region_signal_audit.json"
+CHOICE_MODEL_FREE_REGION_CANDIDATE_SCAN_FILE = "docs/csh_choice_model_free_region_candidate_scan.json"
+CHOICE_MODEL_FREE_REGION_FAMILY_SCAN_FILE = "docs/csh_choice_model_free_region_family_scan.json"
 LOCAL_PROBE_FILES = (
     (
         "local AUC surrogate",
@@ -300,6 +303,9 @@ def render_markdown(
     model_free_region_audit: dict | None = None,
     model_free_region_scan: dict | None = None,
     model_free_family_scan: dict | None = None,
+    choice_region_audit: dict | None = None,
+    choice_region_scan: dict | None = None,
+    choice_family_scan: dict | None = None,
 ) -> str:
     summary = summarize(strict_rows, slice_rows)
     lines = [
@@ -678,6 +684,49 @@ def render_markdown(
             ),
             "",
         ]
+    if choice_region_audit is not None:
+        summary = choice_region_audit.get("summary", {})
+        metrics = summary.get("metrics", {})
+        deltas = summary.get("deltas", {})
+        paired = summary.get("paired_true_vs_shuffle", {})
+        lines += [
+            "## Alternative Target: Choice",
+            "",
+            "The same model-free gates were rerun with `--target-mode choice` to test",
+            "whether a different behavioral target exposes anatomical transfer.",
+            "",
+            "| feature_set | train_AUC | eval_AUC | eval_centered_AUC |",
+            "|---|---:|---:|---:|",
+        ]
+        for name in ("total_spikes", "region_true", "region_shuffle"):
+            row = metrics.get(name, {})
+            lines.append(
+                "| "
+                f"{name} | {fmt_float(row.get('train_auc'))} | "
+                f"{fmt_float(row.get('eval_auc'))} | "
+                f"{fmt_float(row.get('eval_centered_auc'))} |"
+            )
+        lines += [
+            "",
+            f"- true-minus-shuffle centered AUC: `{fmt_signed(deltas.get('true_minus_shuffle_centered_auc'))}`",
+            f"- true-minus-total centered AUC: `{fmt_signed(deltas.get('true_minus_total_centered_auc'))}`",
+            f"- paired target0 improved vs shuffle: `{fmt_float(paired.get('target0_improved_fraction'))}`",
+            f"- paired target1 improved vs shuffle: `{fmt_float(paired.get('target1_improved_fraction'))}`",
+            (
+                f"- positive recordings vs shuffle: "
+                f"`{summary.get('recordings_positive_true_minus_shuffle')}/{summary.get('n_recordings')}`"
+            ),
+            f"- full-region decision: `{summary.get('decision')}`",
+            f"- single-region candidates: `{None if choice_region_scan is None else choice_region_scan.get('n_candidates')}`",
+            f"- region-family candidates: `{None if choice_family_scan is None else choice_family_scan.get('n_candidates')}`",
+            "",
+            (
+                "Interpretation: `choice` does not rescue the CSH parent-region branch. "
+                "Shuffled parent labels still beat true labels on recording-centered AUC, "
+                "and the single-region/family scans find no promotable candidate."
+            ),
+            "",
+        ]
     return "\n".join(lines)
 
 
@@ -713,6 +762,9 @@ def main() -> int:
     model_free_region_audit = read_mechanism_audit(REPO_ROOT / MODEL_FREE_REGION_SIGNAL_AUDIT_FILE)
     model_free_region_scan = read_mechanism_audit(REPO_ROOT / MODEL_FREE_REGION_CANDIDATE_SCAN_FILE)
     model_free_family_scan = read_mechanism_audit(REPO_ROOT / MODEL_FREE_REGION_FAMILY_SCAN_FILE)
+    choice_region_audit = read_mechanism_audit(REPO_ROOT / CHOICE_MODEL_FREE_REGION_SIGNAL_AUDIT_FILE)
+    choice_region_scan = read_mechanism_audit(REPO_ROOT / CHOICE_MODEL_FREE_REGION_CANDIDATE_SCAN_FILE)
+    choice_family_scan = read_mechanism_audit(REPO_ROOT / CHOICE_MODEL_FREE_REGION_FAMILY_SCAN_FILE)
     args.out_md.parent.mkdir(parents=True, exist_ok=True)
     args.out_md.write_text(render_markdown(
         strict_rows,
@@ -729,6 +781,9 @@ def main() -> int:
         model_free_region_audit,
         model_free_region_scan,
         model_free_family_scan,
+        choice_region_audit,
+        choice_region_scan,
+        choice_family_scan,
     ))
     args.out_json.parent.mkdir(parents=True, exist_ok=True)
     args.out_json.write_text(json.dumps({
@@ -754,6 +809,9 @@ def main() -> int:
         "model_free_region_signal_audit": model_free_region_audit,
         "model_free_region_candidate_scan": model_free_region_scan,
         "model_free_region_family_scan": model_free_family_scan,
+        "choice_model_free_region_signal_audit": choice_region_audit,
+        "choice_model_free_region_candidate_scan": choice_region_scan,
+        "choice_model_free_region_family_scan": choice_family_scan,
     }, indent=2, sort_keys=True) + "\n")
     print(f"wrote {args.out_md}")
     print(f"wrote {args.out_json}")

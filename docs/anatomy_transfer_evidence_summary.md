@@ -242,3 +242,12 @@ target0-sided (`target1=0.000`) and positive in only `1/4` recordings.
 `0.305`. Decision: the CSH parent-region path is exhausted for now under
 model-free gates. The next branch should test an alternative conserved target
 or audit a larger matched-region manifest before spending.
+
+Alternative target check: the same model-free gates were rerun with
+`--target-mode choice` in `docs/csh_choice_model_free_region_signal_audit.md`,
+`docs/csh_choice_model_free_region_candidate_scan.md`, and
+`docs/csh_choice_model_free_region_family_scan.md`. Choice also fails:
+true parent regions have centered AUC `0.480`, shuffled parent labels have
+`0.566`, true-minus-shuffle centered AUC is `-0.086`, and both the
+single-region and region-family scans have zero candidates. Decision: choice
+does not rescue the current CSH parent-region branch.
