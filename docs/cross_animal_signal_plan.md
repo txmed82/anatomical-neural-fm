@@ -1543,6 +1543,16 @@ baseline-control misses. This closes the simple broad-anatomy feature and
 regularization repair path; the next no-spend branch needs a different
 target/control definition or manifest, not paid training.
 
+Shared-family iterative-manifest gate:
+`scripts/audit_shared_family_target_control_gate.py` was rerun on
+`manifests/ibl_bwm_region_matched_candidates_s3_present_support80_hdf5_iterative_pass.json`
+with all seven families that pass that manifest's feasibility floor. The
+cleaner 8-recording/2-subject manifest still has zero candidates; max
+same-recording bidirectional support is only `1/4`. This means simply narrowing
+to the strictest manifest does not rescue anatomical transfer, and the panel is
+too narrow to be a real cross-animal demo. The next no-spend branch should
+define a new benchmark/control target, not further subset this cache.
+
 Recording-centered feature check:
 The gate also supports `--feature-mode recording_centered`, which subtracts
 each recording's mean parent-region feature vector before fitting. This reduces

@@ -471,6 +471,15 @@ still miss target0 and/or baseline controls. Decision: this closes the simple
 feature/regularization repair path for shared broad anatomy; do not launch GPU
 training from it.
 
+Shared-family iterative-manifest gate:
+`docs/shared_family_iterative_manifest_gate.md` tests whether the stricter
+8-recording, 2-subject iterative-pass manifest rescues the shared-family
+target/control screen. It does not: zero candidates, 20 positive centered-delta
+rows, and max same-recording bidirectional support only `1/4`. Decision:
+manifest narrowing alone is not enough, and the 2-subject panel is too narrow
+for a demo anyway. The next branch should change the benchmark/control
+definition rather than keep shrinking this cache.
+
 Recording-centered feature check:
 `docs/model_free_recording_bidirectional_gate_recording_centered.md` subtracts
 each recording's own mean parent-region feature vector before ridge fitting.

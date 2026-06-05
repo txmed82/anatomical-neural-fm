@@ -324,6 +324,30 @@ regularization values.
 
 Decision: this closes the simple shared broad-anatomy repair branch. The best comparable rows remain one bidirectional recording short and also miss target0 and/or baseline controls, so they are not a GPU trigger.
 
+## Shared-Family Iterative Manifest Gate
+
+`docs/shared_family_iterative_manifest_gate.md` reruns the shared-family
+target/control gate on the strict 8-recording, 2-subject iterative-pass
+manifest using all families that pass its feasibility floor.
+
+- rows: `56`
+- candidates: `0`
+- positive centered-delta rows: `20`
+- max bidirectional recordings: `1`
+- max bidirectional recording fraction: `0.250`
+- decision: `no_shared_family_target_candidate`
+
+| target | family | holdout | decision | delta shuffle | delta total | targets | bidir recs |
+|---|---|---|---|---:|---:|---|---:|
+| prior_side | thalamic | MFD_06 | reject: target1 | +0.299 | +0.362 | 0.954/0.095 | 1/4 |
+| feedback | fiber_tracts | NYU-12 | reject: target0 | +0.168 | +0.049 | 0.415/0.703 | 1/4 |
+| feedback | midbrain | NYU-12 | reject: target1 | +0.151 | +0.092 | 0.813/0.263 | 1/4 |
+| stimulus_side | thalamic | MFD_06 | reject: target1 | +0.101 | +0.349 | 0.934/0.108 | 1/4 |
+| prior_side | brainstem_interbrain | MFD_06 | reject: shuffle | +0.001 | -0.001 | 0.755/0.335 | 1/4 |
+| feedback | broad_named_anatomy | NYU-12 | reject: shuffle | -0.002 | -0.008 | 0.571/0.476 | 1/4 |
+
+Decision: stricter manifest support alone does not rescue the signal. The clean 2-subject panel is too narrow for a demo and still reaches only `1/4` same-recording bidirectional support, so the next branch must change the benchmark/control definition rather than further narrow this manifest.
+
 ## Matched-Region Model-Free Panel
 
 `docs/model_free_matched_support80_hdf5_panel.md` runs the closed-form

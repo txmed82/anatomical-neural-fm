@@ -107,6 +107,7 @@ MANIFEST_TARGET_ANATOMY_FEASIBILITY_FILE = "docs/manifest_target_anatomy_feasibi
 SHARED_FAMILY_TARGET_CONTROL_GATE_FILE = "docs/shared_family_target_control_gate.json"
 SHARED_FAMILY_CHOICE_FIBER_CSH_NEAR_MISS_FILE = "docs/shared_family_choice_fiber_csh_near_miss.json"
 SHARED_BROAD_ANATOMY_REPAIR_SWEEP_FILE = "docs/shared_broad_anatomy_repair_sweep.json"
+SHARED_FAMILY_ITERATIVE_MANIFEST_GATE_FILE = "docs/shared_family_iterative_manifest_gate.json"
 MODEL_FREE_MATCHED_SUPPORT80_PANEL_FILE = "docs/model_free_matched_support80_hdf5_panel.json"
 MODEL_FREE_POSITIVE_HOLDOUTS_MECHANISM_FILE = "docs/model_free_positive_holdouts_mechanism.json"
 MODEL_FREE_RECORDING_BIDIRECTIONAL_GATE_FILE = "docs/model_free_recording_bidirectional_gate.json"
@@ -439,6 +440,7 @@ def render_markdown(
     shared_family_target_control_gate: dict | None = None,
     shared_family_choice_fiber_csh_near_miss: dict | None = None,
     shared_broad_anatomy_repair_sweep: dict | None = None,
+    shared_family_iterative_manifest_gate: dict | None = None,
     model_free_matched_panel: dict | None = None,
     model_free_positive_holdouts: dict | None = None,
     model_free_recording_bidirectional_gate: dict | None = None,
@@ -1099,6 +1101,44 @@ def render_markdown(
                 "Decision: this closes the simple shared broad-anatomy repair branch. "
                 "The best comparable rows remain one bidirectional recording short and "
                 "also miss target0 and/or baseline controls, so they are not a GPU trigger."
+            ),
+            "",
+        ]
+    if shared_family_iterative_manifest_gate is not None:
+        summary = shared_family_iterative_manifest_gate["summary"]
+        top = summary["top_rows"][:6]
+        lines += [
+            "## Shared-Family Iterative Manifest Gate",
+            "",
+            "`docs/shared_family_iterative_manifest_gate.md` reruns the shared-family",
+            "target/control gate on the strict 8-recording, 2-subject iterative-pass",
+            "manifest using all families that pass its feasibility floor.",
+            "",
+            f"- rows: `{summary['n_rows']}`",
+            f"- candidates: `{summary['n_candidates']}`",
+            f"- positive centered-delta rows: `{summary['n_positive_centered_delta']}`",
+            f"- max bidirectional recordings: `{summary['max_bidirectional_recordings']}`",
+            f"- max bidirectional recording fraction: `{summary['max_bidirectional_recording_fraction']:.3f}`",
+            f"- decision: `{summary['decision']}`",
+            "",
+            "| target | family | holdout | decision | delta shuffle | delta total | targets | bidir recs |",
+            "|---|---|---|---|---:|---:|---|---:|",
+        ]
+        for row in top:
+            lines.append(
+                f"| {row['target_mode']} | {row['family']} | {row['holdout']} | {row['decision']} | "
+                f"{row['centered_delta_vs_shuffle']:+.3f} | {row['centered_delta_vs_total']:+.3f} | "
+                f"{row['target0_improved_vs_shuffle']:.3f}/{row['target1_improved_vs_shuffle']:.3f} | "
+                f"{row['n_bidirectional_recordings']}/{row['n_recordings']} |"
+            )
+        lines += [
+            "",
+            (
+                "Decision: stricter manifest support alone does not rescue the signal. "
+                "The clean 2-subject panel is too narrow for a demo and still reaches "
+                "only `1/4` same-recording bidirectional support, so the next branch "
+                "must change the benchmark/control definition rather than further "
+                "narrow this manifest."
             ),
             "",
         ]
@@ -1817,6 +1857,7 @@ def main() -> int:
         REPO_ROOT / SHARED_FAMILY_CHOICE_FIBER_CSH_NEAR_MISS_FILE
     )
     shared_broad_anatomy_repair_sweep = read_mechanism_audit(REPO_ROOT / SHARED_BROAD_ANATOMY_REPAIR_SWEEP_FILE)
+    shared_family_iterative_manifest_gate = read_mechanism_audit(REPO_ROOT / SHARED_FAMILY_ITERATIVE_MANIFEST_GATE_FILE)
     model_free_matched_panel = read_mechanism_audit(REPO_ROOT / MODEL_FREE_MATCHED_SUPPORT80_PANEL_FILE)
     model_free_positive_holdouts = read_mechanism_audit(REPO_ROOT / MODEL_FREE_POSITIVE_HOLDOUTS_MECHANISM_FILE)
     model_free_recording_bidirectional_gate = read_mechanism_audit(
@@ -1906,6 +1947,7 @@ def main() -> int:
         shared_family_target_control_gate,
         shared_family_choice_fiber_csh_near_miss,
         shared_broad_anatomy_repair_sweep,
+        shared_family_iterative_manifest_gate,
         model_free_matched_panel,
         model_free_positive_holdouts,
         model_free_recording_bidirectional_gate,
@@ -1988,6 +2030,7 @@ def main() -> int:
         "shared_family_target_control_gate": shared_family_target_control_gate,
         "shared_family_choice_fiber_csh_near_miss": shared_family_choice_fiber_csh_near_miss,
         "shared_broad_anatomy_repair_sweep": shared_broad_anatomy_repair_sweep,
+        "shared_family_iterative_manifest_gate": shared_family_iterative_manifest_gate,
         "model_free_matched_support80_panel": model_free_matched_panel,
         "model_free_positive_holdouts_mechanism": model_free_positive_holdouts,
         "model_free_recording_bidirectional_gate": model_free_recording_bidirectional_gate,
