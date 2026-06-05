@@ -871,10 +871,8 @@
       },
       {
         "exists": true,
-        "missing_streams": [
-          "wheel"
-        ],
-        "needs_behavior_rebuild": true,
+        "missing_streams": [],
+        "needs_behavior_rebuild": false,
         "path": "/Users/colin/Desktop/Projects/anatomical-neural-fm/data/brainsets/ibl_bwm/032ffcdf-7692-40b3-b9ff-8def1fc18b2e_probe00.h5",
         "recording": "032ffcdf-7692-40b3-b9ff-8def1fc18b2e_probe00",
         "streams": [
@@ -884,15 +882,14 @@
           "spikes",
           "subject",
           "trials",
-          "units"
+          "units",
+          "wheel"
         ]
       },
       {
         "exists": true,
-        "missing_streams": [
-          "wheel"
-        ],
-        "needs_behavior_rebuild": true,
+        "missing_streams": [],
+        "needs_behavior_rebuild": false,
         "path": "/Users/colin/Desktop/Projects/anatomical-neural-fm/data/brainsets/ibl_bwm/35eeb752-8f4f-4040-9714-ba0f5b7ccdfe_probe00.h5",
         "recording": "35eeb752-8f4f-4040-9714-ba0f5b7ccdfe_probe00",
         "streams": [
@@ -902,15 +899,14 @@
           "spikes",
           "subject",
           "trials",
-          "units"
+          "units",
+          "wheel"
         ]
       },
       {
         "exists": true,
-        "missing_streams": [
-          "wheel"
-        ],
-        "needs_behavior_rebuild": true,
+        "missing_streams": [],
+        "needs_behavior_rebuild": false,
         "path": "/Users/colin/Desktop/Projects/anatomical-neural-fm/data/brainsets/ibl_bwm/16693458-0801-4d35-a3f1-9115c7e5acfd_probe01.h5",
         "recording": "16693458-0801-4d35-a3f1-9115c7e5acfd_probe01",
         "streams": [
@@ -920,15 +916,14 @@
           "spikes",
           "subject",
           "trials",
-          "units"
+          "units",
+          "wheel"
         ]
       },
       {
         "exists": true,
-        "missing_streams": [
-          "wheel"
-        ],
-        "needs_behavior_rebuild": true,
+        "missing_streams": [],
+        "needs_behavior_rebuild": false,
         "path": "/Users/colin/Desktop/Projects/anatomical-neural-fm/data/brainsets/ibl_bwm/6f09ba7e-e3ce-44b0-932b-c003fb44fb89_probe01.h5",
         "recording": "6f09ba7e-e3ce-44b0-932b-c003fb44fb89_probe01",
         "streams": [
@@ -938,15 +933,14 @@
           "spikes",
           "subject",
           "trials",
-          "units"
+          "units",
+          "wheel"
         ]
       },
       {
         "exists": true,
-        "missing_streams": [
-          "wheel"
-        ],
-        "needs_behavior_rebuild": true,
+        "missing_streams": [],
+        "needs_behavior_rebuild": false,
         "path": "/Users/colin/Desktop/Projects/anatomical-neural-fm/data/brainsets/ibl_bwm/41872d7f-75cb-4445-bb1a-132b354c44f0_probe01.h5",
         "recording": "41872d7f-75cb-4445-bb1a-132b354c44f0_probe01",
         "streams": [
@@ -956,15 +950,14 @@
           "spikes",
           "subject",
           "trials",
-          "units"
+          "units",
+          "wheel"
         ]
       },
       {
         "exists": true,
-        "missing_streams": [
-          "wheel"
-        ],
-        "needs_behavior_rebuild": true,
+        "missing_streams": [],
+        "needs_behavior_rebuild": false,
         "path": "/Users/colin/Desktop/Projects/anatomical-neural-fm/data/brainsets/ibl_bwm/b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe01.h5",
         "recording": "b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe01",
         "streams": [
@@ -974,15 +967,14 @@
           "spikes",
           "subject",
           "trials",
-          "units"
+          "units",
+          "wheel"
         ]
       },
       {
         "exists": true,
-        "missing_streams": [
-          "wheel"
-        ],
-        "needs_behavior_rebuild": true,
+        "missing_streams": [],
+        "needs_behavior_rebuild": false,
         "path": "/Users/colin/Desktop/Projects/anatomical-neural-fm/data/brainsets/ibl_bwm/edd22318-216c-44ff-bc24-49ce8be78374_probe00.h5",
         "recording": "edd22318-216c-44ff-bc24-49ce8be78374_probe00",
         "streams": [
@@ -992,7 +984,8 @@
           "spikes",
           "subject",
           "trials",
-          "units"
+          "units",
+          "wheel"
         ]
       }
     ],
@@ -1000,15 +993,15 @@
       "wheel"
     ],
     "summary": {
-      "decision": "behavior_cache_rebuild_required",
+      "decision": "behavior_cache_ready",
       "n_manifest_recordings": 28,
       "n_missing_files": 0,
       "n_present_files": 28,
-      "n_recordings_needing_behavior_rebuild": 7,
-      "n_recordings_with_all_required_streams": 21,
+      "n_recordings_needing_behavior_rebuild": 0,
+      "n_recordings_with_all_required_streams": 28,
       "next_gate": "After building a behavior-inclusive cache, define the behavior target and rerun the local true-vs-shuffle, total-baseline, global target, and same-recording bidirectional gate before any GPU training.",
       "stream_counts": {
-        "wheel": 21
+        "wheel": 28
       }
     }
   },
@@ -51608,7 +51601,7 @@
           "current cached trial targets and shared-family controls all fail strict same-recording bidirectionality",
           "direct derived cached-field target gate has 0 candidates and max bidir 0.750",
           "contextual trial-state target gate has 0 candidates and max bidir 0.500",
-          "behavior-cache preflight has wheel in 21/28 matched recordings",
+          "behavior-cache preflight has wheel in 28/28 matched recordings",
           "strict symmetric gate has 0 candidates and 0 one-recording-short global-clear rows",
           "threshold sensitivity only finds default-target candidates when bidirectional support is relaxed to 0.25 (3 candidates)"
         ],

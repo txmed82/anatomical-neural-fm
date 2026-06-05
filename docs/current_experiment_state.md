@@ -375,26 +375,18 @@ target/control branch.
 
 - manifest recordings: `28`
 - present files: `28`
-- required stream coverage: `wheel=21/28`
-- recordings needing behavior rebuild: `7`
-- decision: `behavior_cache_rebuild_required`
+- required stream coverage: `wheel=28/28`
+- recordings needing behavior rebuild: `0`
+- decision: `behavior_cache_ready`
 
-Completed rebuild reports:
-
-- `docs/behavior_cache_build_shard00.md`: `7/7` available, `4` rebuilt missing-wheel files, `3` already-valid files skipped, `0` failures in `294s`
-- `docs/behavior_cache_build_shard01.md`: `7/7` available, `7` rebuilt missing-wheel files, `0` failures in `411s`
-- `docs/behavior_cache_build_shard02.md`: `7/7` available, `7` rebuilt missing-wheel files, `0` failures in `449s`
-
-Remaining rebuild command:
+First rebuild commands:
 
 ```bash
-uv run python scripts/build_ibl_brainset_batch.py --manifest manifests/ibl_bwm_region_matched_candidates_s3_present_support80_hdf5_scored.json --num-shards 4 --shard-index 3 --report docs/behavior_cache_build_shard03.md --trial-window-only --window-len 1.0 --rebuild-missing-stream wheel # writes data/brainsets/ibl_bwm
+uv run python scripts/build_ibl_brainset_batch.py --manifest manifests/ibl_bwm_region_matched_candidates_s3_present_support80_hdf5_scored.json --num-shards 4 --shard-index 0 --report docs/behavior_cache_build_shard00.md --trial-window-only --window-len 1.0 --rebuild-missing-stream wheel # writes data/brainsets/ibl_bwm
+uv run python scripts/build_ibl_brainset_batch.py --manifest manifests/ibl_bwm_region_matched_candidates_s3_present_support80_hdf5_scored.json --num-shards 4 --shard-index 1 --report docs/behavior_cache_build_shard01.md --trial-window-only --window-len 1.0 --rebuild-missing-stream wheel # writes data/brainsets/ibl_bwm
 ```
 
-Decision: the local behavior-inclusive rebuild path is working and now covers
-three quarters of the matched cache. Finish shard 3, then define a wheel or
-external behavior target and require the same local gate before any GPU
-training.
+Decision: only a small minority of the matched cache currently has `wheel`, so the next no-spend step is a behavior-inclusive cache rebuild. GPU training remains blocked until a wheel or external behavior target passes the same local gate.
 
 ## Derived Target Family Gate
 

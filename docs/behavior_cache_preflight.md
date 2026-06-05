@@ -5,9 +5,9 @@ No-spend preflight for the next branch after cached trial targets failed.
 - manifest recordings: `28`
 - present files: `28`
 - missing files: `0`
-- required stream coverage: `wheel=21/28`
-- recordings needing behavior rebuild: `7`
-- decision: `behavior_cache_rebuild_required`
+- required stream coverage: `wheel=28/28`
+- recordings needing behavior rebuild: `0`
+- decision: `behavior_cache_ready`
 
 ## Build Plan
 
@@ -34,10 +34,3 @@ Candidate behavior targets to test first:
 
 | recording | missing streams |
 |---|---|
-| 032ffcdf-7692-40b3-b9ff-8def1fc18b2e_probe00 | wheel |
-| 35eeb752-8f4f-4040-9714-ba0f5b7ccdfe_probe00 | wheel |
-| 16693458-0801-4d35-a3f1-9115c7e5acfd_probe01 | wheel |
-| 6f09ba7e-e3ce-44b0-932b-c003fb44fb89_probe01 | wheel |
-| 41872d7f-75cb-4445-bb1a-132b354c44f0_probe01 | wheel |
-| b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe01 | wheel |
-| edd22318-216c-44ff-bc24-49ce8be78374_probe00 | wheel |

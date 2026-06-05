@@ -1574,15 +1574,14 @@ recordings, `4` rebuilt missing-wheel files, and `0` failures
 with `7/7` available recordings, `7` rebuilt missing-wheel files, and `0`
 failures (`docs/behavior_cache_build_shard01.md`). Shard 2 completed locally in
 `449s` with `7/7` available recordings, `7` rebuilt missing-wheel files, and
-`0` failures (`docs/behavior_cache_build_shard02.md`). The cache now has
-`wheel=21/28`; the remaining `7/28` still need the same local rebuild.
-Continue the generated shard 3 command without `--no-wheel`, while keeping
-`--trial-window-only --window-len 1.0`, and add
-`--rebuild-missing-stream wheel` so existing compact HDF5s are rebuilt only
-when the behavior stream is absent. After rebuild, the first local target
-screens should be wheel movement onset versus quiescence, high versus low
-absolute wheel velocity after stimulus onset, and signed wheel velocity
-consistent with action direction. Each must pass the same local model-free
+`0` failures (`docs/behavior_cache_build_shard02.md`). Shard 3 completed
+locally in `462s` with `7/7` available recordings, `7` rebuilt missing-wheel
+files, and `0` failures (`docs/behavior_cache_build_shard03.md`). The cache now
+has `wheel=28/28`; no matched recordings need behavior rebuild. The first
+local target screens should be wheel movement onset versus quiescence, high
+versus low absolute wheel velocity after stimulus onset, and signed wheel
+velocity consistent with action direction. Each must pass the same local
+model-free
 true-vs-shuffle, total-baseline, global target, and same-recording
 bidirectionality gate before any paid training.
 
