@@ -3,13 +3,14 @@
 Ranks remaining no-spend branches after the current local audits. This is the planning gate before any new RunPod training.
 
 - recommended next: `new manifest with prospective bidirectional support`
-- closed branches: `20`
+- closed branches: `21`
 - decision: `no_local_training_trigger`
 - GPU trigger: At least one local row on the proposed manifest must clear delta_vs_shuffle>=0, delta_vs_total>=0, target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75 before training.
 
 | priority | branch | status | next action |
 |---:|---|---|---|
 | 1 | new manifest with prospective bidirectional support | `recommended_next` | Do not launch GPU training from the projected support80 panel; its model-free family and feature-mode gates have no candidates. Redesign the target/control locally. |
+| 82 | prior-aligned choice target redesign | `closed` | Do not train: prior-aligned choice does not pass the projected-panel local gate. |
 | 83 | correct low-contrast choice target redesign | `closed` | Do not train: correct-only low-contrast choice removes the projected-panel candidate. |
 | 84 | low-contrast choice target redesign | `closed` | Do not train: the low-contrast choice candidate does not remain a strict candidate across shuffle seeds. |
 | 85 | extreme-quantile behavioral target gate | `closed` | Do not train: exploratory interpretable region-pair candidates do not remain strict candidates across shuffle seeds. |
@@ -46,6 +47,11 @@ Ranks remaining no-spend branches after the current local audits. This is the pl
 - subject-stable shuffle-seed sensitivity found 0 robust candidates; max positive seed fraction=0.4
 - recording-subset replication selected zero stable validation rows
 - GPU trigger: At least one local row on the proposed manifest must clear delta_vs_shuffle>=0, delta_vs_total>=0, target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75 before training.
+
+### prior-aligned choice target redesign
+- current-panel prior-aligned choice gate found 0 candidates across 112 rows and max bidir 0.500
+- projected-panel prior-aligned choice gate found 0 candidates across 128 rows and max bidir 0.250
+- GPU trigger: none
 
 ### correct low-contrast choice target redesign
 - current-panel correct low-contrast choice gate found 0 candidates across 84 rows and max bidir 0.500

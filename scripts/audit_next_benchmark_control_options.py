@@ -23,6 +23,8 @@ ARTIFACTS = {
     "low_contrast_choice_seed_sensitivity": "docs/low_contrast_choice_seed_sensitivity.json",
     "correct_low_contrast_choice_family": "docs/correct_low_contrast_choice_family_gate.json",
     "correct_low_contrast_choice_projected": "docs/correct_low_contrast_choice_family_gate_projected_hdf5.json",
+    "prior_aligned_choice_family": "docs/prior_aligned_choice_family_gate.json",
+    "prior_aligned_choice_projected": "docs/prior_aligned_choice_family_gate_projected_hdf5.json",
     "extreme_quantile_target_family": "docs/extreme_quantile_target_family_gate.json",
     "extreme_quantile_seed_sensitivity": "docs/extreme_quantile_seed_sensitivity.json",
     "extreme_quantile_cutoff_sensitivity": "docs/extreme_quantile_cutoff_sensitivity.json",
@@ -185,6 +187,12 @@ def build_report() -> dict:
         if correct_low_contrast_projected is not None
         else {}
     )
+    prior_aligned = artifacts["prior_aligned_choice_family"]
+    prior_aligned_summary = prior_aligned.get("summary", {}) if prior_aligned is not None else {}
+    prior_aligned_projected = artifacts["prior_aligned_choice_projected"]
+    prior_aligned_projected_summary = (
+        prior_aligned_projected.get("summary", {}) if prior_aligned_projected is not None else {}
+    )
     extreme_quantile = artifacts["extreme_quantile_target_family"]
     extreme_quantile_done = extreme_quantile is not None
     extreme_quantile_candidates = summary_value(extreme_quantile, "n_candidates", 0)
@@ -339,6 +347,39 @@ def build_report() -> dict:
                 "At least one local wheel row must clear delta_vs_shuffle>=0, delta_vs_total>=0, "
                 "target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75."
             ),
+        ),
+        branch(
+            name="prior-aligned choice target redesign",
+            status="closed" if prior_aligned_projected is not None else "secondary_after_new_target",
+            priority=82 if prior_aligned_projected is not None else 3,
+            evidence=[
+                (
+                    "current-panel prior-aligned choice gate has not been run yet"
+                    if prior_aligned is None
+                    else (
+                        "current-panel prior-aligned choice gate found "
+                        f"{prior_aligned_summary.get('n_candidates', 'n/a')} candidates across "
+                        f"{prior_aligned_summary.get('n_rows', 'n/a')} rows and max bidir "
+                        f"{prior_aligned_summary.get('max_bidirectional_recording_fraction', 0.0):.3f}"
+                    )
+                ),
+                (
+                    "projected-panel prior-aligned choice gate has not been run yet"
+                    if prior_aligned_projected is None
+                    else (
+                        "projected-panel prior-aligned choice gate found "
+                        f"{prior_aligned_projected_summary.get('n_candidates', 'n/a')} candidates across "
+                        f"{prior_aligned_projected_summary.get('n_rows', 'n/a')} rows and max bidir "
+                        f"{prior_aligned_projected_summary.get('max_bidirectional_recording_fraction', 0.0):.3f}"
+                    )
+                ),
+            ],
+            next_action=(
+                "Do not train: prior-aligned choice does not pass the projected-panel local gate."
+                if prior_aligned_projected is not None
+                else "Run scripts/audit_prior_aligned_choice_family_gate.py as a prospective prior-alignment target."
+            ),
+            gpu_trigger="none",
         ),
         branch(
             name="correct low-contrast choice target redesign",

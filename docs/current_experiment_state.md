@@ -403,16 +403,16 @@ Decision: stricter manifest support alone does not rescue the signal. The clean 
 branches after the current local negative audits.
 
 - recommended next: `new manifest with prospective bidirectional support`
-- closed branches: `19`
+- closed branches: `20`
 - decision: `no_local_training_trigger`
 - GPU trigger: At least one local row on the proposed manifest must clear delta_vs_shuffle>=0, delta_vs_total>=0, target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75 before training.
 
 | priority | branch | status | next action |
 |---:|---|---|---|
 | 1 | new manifest with prospective bidirectional support | `recommended_next` | Do not launch GPU training from the projected support80 panel; its model-free family and feature-mode gates have no candidates. Redesign the target/control locally. |
+| 83 | correct low-contrast choice target redesign | `closed` | Do not train: correct-only low-contrast choice removes the projected-panel candidate. |
 | 84 | low-contrast choice target redesign | `closed` | Do not train: the low-contrast choice candidate does not remain a strict candidate across shuffle seeds. |
 | 85 | extreme-quantile behavioral target gate | `closed` | Do not train: exploratory interpretable region-pair candidates do not remain strict candidates across shuffle seeds. |
-| 86 | wheel-derived target family gate | `closed` | Do not spend on the tested wheel targets; move to a prospectively supported manifest. |
 
 Decision: the current cached target, contextual target, wheel-derived target, reaction-dynamics target, cell-type prior target/control, waveform target/control, and meta-failure synthesis branches are closed as GPU triggers. The next aligned work is a prospectively supported benchmark/control redesign, still gated locally before any paid training.
 
@@ -653,6 +653,64 @@ the correct-only low-contrast choice target on the projected local manifest.
 | correct_low_contrast_choice_le_0.0625 | fiber_tracts | NYU-12 | reject: target0 | +0.032 | +0.037 | 0.426/0.622 | 1/4 |
 
 Decision: do not train from the correct-only low-contrast target. It removes the projected-panel low-contrast candidate and reaches only 1/3 same-recording bidirectional support.
+
+## Prior-Aligned Choice Family Gate
+
+`docs/prior_aligned_choice_family_gate.md` keeps biased-block trials and
+classifies whether the animal chose with or against the block prior.
+
+- rows: `112`
+- candidates: `0`
+- positive centered-delta rows: `52`
+- max bidirectional recording fraction: `0.500`
+- decision: `no_prior_aligned_choice_family_candidate`
+
+| target | trials | eligible recordings | recordings |
+|---|---:|---:|---:|
+| prior_aligned_choice_le_0.0625 | 5098 | 24 | 28 |
+| prior_aligned_choice_le_0.125 | 8386 | 28 | 28 |
+| prior_aligned_choice_le_0.25 | 11832 | 28 | 28 |
+| prior_aligned_choice_le_1 | 15266 | 28 | 28 |
+
+| target | family | holdout | decision | delta shuffle | delta total | targets | bidir recs |
+|---|---|---|---|---:|---:|---|---:|
+| prior_aligned_choice_le_0.25 | fiber_tracts | SWC_043 | reject: target0 | +0.011 | +0.004 | 0.505/0.484 | 2/4 |
+| prior_aligned_choice_le_0.0625 | fiber_tracts | SWC_043 | reject: shuffle | -0.002 | -0.009 | 0.506/0.455 | 2/4 |
+| prior_aligned_choice_le_0.25 | broad_named_anatomy | SWC_043 | reject: shuffle | -0.005 | -0.004 | 0.563/0.495 | 2/4 |
+| prior_aligned_choice_le_0.0625 | hippocampal_formation | CSH_ZAD_019 | reject: total baseline | +0.105 | -0.065 | 0.425/0.682 | 1/4 |
+| prior_aligned_choice_le_0.125 | hippocampal_formation | CSH_ZAD_019 | reject: total baseline | +0.067 | -0.049 | 0.603/0.433 | 1/4 |
+| prior_aligned_choice_le_0.125 | fiber_tracts | SWC_043 | reject: total baseline | +0.004 | -0.015 | 0.504/0.478 | 1/4 |
+
+Decision: the current panel has no prior-aligned choice training trigger.
+
+## Prior-Aligned Choice Projected Manifest Gate
+
+`docs/prior_aligned_choice_family_gate_projected_hdf5.md` reruns the
+same prior-alignment target on the projected local manifest.
+
+- rows: `128`
+- candidates: `0`
+- positive centered-delta rows: `56`
+- max bidirectional recording fraction: `0.250`
+- decision: `no_prior_aligned_choice_family_candidate`
+
+| target | trials | eligible recordings | recordings |
+|---|---:|---:|---:|
+| prior_aligned_choice_le_0.0625 | 5984 | 27 | 31 |
+| prior_aligned_choice_le_0.125 | 9834 | 31 | 31 |
+| prior_aligned_choice_le_0.25 | 13842 | 31 | 31 |
+| prior_aligned_choice_le_1 | 17870 | 31 | 31 |
+
+| target | family | holdout | decision | delta shuffle | delta total | targets | bidir recs |
+|---|---|---|---|---:|---:|---|---:|
+| prior_aligned_choice_le_0.0625 | hippocampal_formation | CSH_ZAD_019 | reject: total baseline | +0.066 | -0.072 | 0.445/0.708 | 1/4 |
+| prior_aligned_choice_le_0.125 | hippocampal_formation | CSH_ZAD_019 | reject: total baseline | +0.044 | -0.052 | 0.607/0.445 | 1/4 |
+| prior_aligned_choice_le_0.125 | thalamic | CSHL045 | reject: target1 | +0.032 | +0.042 | 0.775/0.253 | 1/4 |
+| prior_aligned_choice_le_0.25 | thalamic | CSHL045 | reject: target1 | +0.029 | +0.024 | 0.777/0.254 | 1/4 |
+| prior_aligned_choice_le_0.0625 | broad_named_anatomy | MFD_06 | reject: target1 | +0.009 | +0.010 | 0.571/0.478 | 1/4 |
+| prior_aligned_choice_le_0.125 | broad_named_anatomy | CSHL045 | reject: target1 | +0.008 | +0.011 | 0.625/0.431 | 1/4 |
+
+Decision: do not train from prior-aligned choice. It is well balanced but has no strict candidates, and projected support reaches only 1/4 same-recording bidirectional support.
 
 ## Extreme-Quantile Target Family Gate
 

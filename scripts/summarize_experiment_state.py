@@ -119,6 +119,8 @@ CORRECT_LOW_CONTRAST_CHOICE_FAMILY_GATE_FILE = "docs/correct_low_contrast_choice
 CORRECT_LOW_CONTRAST_CHOICE_PROJECTED_GATE_FILE = (
     "docs/correct_low_contrast_choice_family_gate_projected_hdf5.json"
 )
+PRIOR_ALIGNED_CHOICE_FAMILY_GATE_FILE = "docs/prior_aligned_choice_family_gate.json"
+PRIOR_ALIGNED_CHOICE_PROJECTED_GATE_FILE = "docs/prior_aligned_choice_family_gate_projected_hdf5.json"
 EXTREME_QUANTILE_TARGET_FAMILY_GATE_FILE = "docs/extreme_quantile_target_family_gate.json"
 EXTREME_QUANTILE_SEED_SENSITIVITY_FILE = "docs/extreme_quantile_seed_sensitivity.json"
 EXTREME_QUANTILE_CUTOFF_SENSITIVITY_FILE = "docs/extreme_quantile_cutoff_sensitivity.json"
@@ -519,6 +521,8 @@ def render_markdown(
     low_contrast_choice_seed_sensitivity: dict | None = None,
     correct_low_contrast_choice_family_gate: dict | None = None,
     correct_low_contrast_choice_projected_gate: dict | None = None,
+    prior_aligned_choice_family_gate: dict | None = None,
+    prior_aligned_choice_projected_gate: dict | None = None,
     extreme_quantile_target_family_gate: dict | None = None,
     extreme_quantile_seed_sensitivity: dict | None = None,
     extreme_quantile_cutoff_sensitivity: dict | None = None,
@@ -1758,6 +1762,86 @@ def render_markdown(
                 "Decision: do not train from the correct-only low-contrast target. "
                 "It removes the projected-panel low-contrast candidate and reaches only "
                 "1/3 same-recording bidirectional support."
+            ),
+            "",
+        ]
+    if prior_aligned_choice_family_gate is not None:
+        summary = prior_aligned_choice_family_gate["summary"]
+        balances = summary["target_balances"]
+        top = summary["top_rows"][:6]
+        lines += [
+            "## Prior-Aligned Choice Family Gate",
+            "",
+            "`docs/prior_aligned_choice_family_gate.md` keeps biased-block trials and",
+            "classifies whether the animal chose with or against the block prior.",
+            "",
+            f"- rows: `{summary['n_rows']}`",
+            f"- candidates: `{summary['n_candidates']}`",
+            f"- positive centered-delta rows: `{summary['n_positive_centered_delta']}`",
+            f"- max bidirectional recording fraction: `{summary['max_bidirectional_recording_fraction']:.3f}`",
+            f"- decision: `{summary['decision']}`",
+            "",
+            "| target | trials | eligible recordings | recordings |",
+            "|---|---:|---:|---:|",
+        ]
+        for target, row in balances.items():
+            lines.append(
+                f"| {target} | {row['n_trials']} | {row['eligible_recordings']} | {row['n_recordings']} |"
+            )
+        lines += [
+            "",
+            "| target | family | holdout | decision | delta shuffle | delta total | targets | bidir recs |",
+            "|---|---|---|---|---:|---:|---|---:|",
+        ]
+        for row in top:
+            lines.append(
+                f"| {row['target_mode']} | {row['family']} | {row['holdout']} | {row['decision']} | "
+                f"{row['centered_delta_vs_shuffle']:+.3f} | {row['centered_delta_vs_total']:+.3f} | "
+                f"{row['target0_improved_vs_shuffle']:.3f}/{row['target1_improved_vs_shuffle']:.3f} | "
+                f"{row['n_bidirectional_recordings']}/{row['n_recordings']} |"
+            )
+        lines += ["", "Decision: the current panel has no prior-aligned choice training trigger.", ""]
+    if prior_aligned_choice_projected_gate is not None:
+        summary = prior_aligned_choice_projected_gate["summary"]
+        balances = summary["target_balances"]
+        top = summary["top_rows"][:6]
+        lines += [
+            "## Prior-Aligned Choice Projected Manifest Gate",
+            "",
+            "`docs/prior_aligned_choice_family_gate_projected_hdf5.md` reruns the",
+            "same prior-alignment target on the projected local manifest.",
+            "",
+            f"- rows: `{summary['n_rows']}`",
+            f"- candidates: `{summary['n_candidates']}`",
+            f"- positive centered-delta rows: `{summary['n_positive_centered_delta']}`",
+            f"- max bidirectional recording fraction: `{summary['max_bidirectional_recording_fraction']:.3f}`",
+            f"- decision: `{summary['decision']}`",
+            "",
+            "| target | trials | eligible recordings | recordings |",
+            "|---|---:|---:|---:|",
+        ]
+        for target, row in balances.items():
+            lines.append(
+                f"| {target} | {row['n_trials']} | {row['eligible_recordings']} | {row['n_recordings']} |"
+            )
+        lines += [
+            "",
+            "| target | family | holdout | decision | delta shuffle | delta total | targets | bidir recs |",
+            "|---|---|---|---|---:|---:|---|---:|",
+        ]
+        for row in top:
+            lines.append(
+                f"| {row['target_mode']} | {row['family']} | {row['holdout']} | {row['decision']} | "
+                f"{row['centered_delta_vs_shuffle']:+.3f} | {row['centered_delta_vs_total']:+.3f} | "
+                f"{row['target0_improved_vs_shuffle']:.3f}/{row['target1_improved_vs_shuffle']:.3f} | "
+                f"{row['n_bidirectional_recordings']}/{row['n_recordings']} |"
+            )
+        lines += [
+            "",
+            (
+                "Decision: do not train from prior-aligned choice. It is well balanced "
+                "but has no strict candidates, and projected support reaches only 1/4 "
+                "same-recording bidirectional support."
             ),
             "",
         ]
@@ -3024,6 +3108,8 @@ def main() -> int:
     correct_low_contrast_choice_projected_gate = read_mechanism_audit(
         REPO_ROOT / CORRECT_LOW_CONTRAST_CHOICE_PROJECTED_GATE_FILE
     )
+    prior_aligned_choice_family_gate = read_mechanism_audit(REPO_ROOT / PRIOR_ALIGNED_CHOICE_FAMILY_GATE_FILE)
+    prior_aligned_choice_projected_gate = read_mechanism_audit(REPO_ROOT / PRIOR_ALIGNED_CHOICE_PROJECTED_GATE_FILE)
     extreme_quantile_target_family_gate = read_mechanism_audit(REPO_ROOT / EXTREME_QUANTILE_TARGET_FAMILY_GATE_FILE)
     extreme_quantile_seed_sensitivity = read_mechanism_audit(REPO_ROOT / EXTREME_QUANTILE_SEED_SENSITIVITY_FILE)
     extreme_quantile_cutoff_sensitivity = read_mechanism_audit(
@@ -3168,6 +3254,8 @@ def main() -> int:
         low_contrast_choice_seed_sensitivity,
         correct_low_contrast_choice_family_gate,
         correct_low_contrast_choice_projected_gate,
+        prior_aligned_choice_family_gate,
+        prior_aligned_choice_projected_gate,
         extreme_quantile_target_family_gate,
         extreme_quantile_seed_sensitivity,
         extreme_quantile_cutoff_sensitivity,
@@ -3279,6 +3367,8 @@ def main() -> int:
         "low_contrast_choice_seed_sensitivity": low_contrast_choice_seed_sensitivity,
         "correct_low_contrast_choice_family_gate": correct_low_contrast_choice_family_gate,
         "correct_low_contrast_choice_projected_gate": correct_low_contrast_choice_projected_gate,
+        "prior_aligned_choice_family_gate": prior_aligned_choice_family_gate,
+        "prior_aligned_choice_projected_gate": prior_aligned_choice_projected_gate,
         "extreme_quantile_target_family_gate": extreme_quantile_target_family_gate,
         "extreme_quantile_seed_sensitivity": extreme_quantile_seed_sensitivity,
         "extreme_quantile_cutoff_sensitivity": extreme_quantile_cutoff_sensitivity,

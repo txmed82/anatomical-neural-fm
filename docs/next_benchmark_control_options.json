@@ -24,6 +24,8 @@
     "low_contrast_choice_family": "docs/low_contrast_choice_family_gate.json",
     "low_contrast_choice_projected": "docs/low_contrast_choice_family_gate_projected_hdf5.json",
     "low_contrast_choice_seed_sensitivity": "docs/low_contrast_choice_seed_sensitivity.json",
+    "prior_aligned_choice_family": "docs/prior_aligned_choice_family_gate.json",
+    "prior_aligned_choice_projected": "docs/prior_aligned_choice_family_gate_projected_hdf5.json",
     "projected_support80_all_families_counts": "docs/shared_family_target_control_gate_projected_support80_all_families_counts.json",
     "projected_support80_all_families_fractions": "docs/shared_family_target_control_gate_projected_support80_all_families_fractions.json",
     "projected_support80_all_families_recording_centered": "docs/shared_family_target_control_gate_projected_support80_all_families.json",
@@ -70,6 +72,17 @@
       "next_action": "Do not launch GPU training from the projected support80 panel; its model-free family and feature-mode gates have no candidates. Redesign the target/control locally.",
       "priority": 1,
       "status": "recommended_next"
+    },
+    {
+      "evidence": [
+        "current-panel prior-aligned choice gate found 0 candidates across 112 rows and max bidir 0.500",
+        "projected-panel prior-aligned choice gate found 0 candidates across 128 rows and max bidir 0.250"
+      ],
+      "gpu_trigger": "none",
+      "name": "prior-aligned choice target redesign",
+      "next_action": "Do not train: prior-aligned choice does not pass the projected-panel local gate.",
+      "priority": 82,
+      "status": "closed"
     },
     {
       "evidence": [
@@ -305,7 +318,7 @@
     }
   ],
   "summary": {
-    "closed_branches": 20,
+    "closed_branches": 21,
     "decision": "no_local_training_trigger",
     "gpu_training_trigger": "At least one local row on the proposed manifest must clear delta_vs_shuffle>=0, delta_vs_total>=0, target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75 before training.",
     "recommended_next": "new manifest with prospective bidirectional support"

@@ -447,6 +447,50 @@ def test_render_markdown_includes_correct_low_contrast_choice_veto() -> None:
     assert "do not train from the correct-only low-contrast target" in markdown
 
 
+def test_render_markdown_includes_prior_aligned_choice_veto() -> None:
+    gate_payload = {
+        "summary": {
+            "n_rows": 128,
+            "n_candidates": 0,
+            "n_positive_centered_delta": 56,
+            "max_bidirectional_recording_fraction": 0.25,
+            "decision": "no_prior_aligned_choice_family_candidate",
+            "target_balances": {
+                "prior_aligned_choice_le_0.125": {
+                    "n_trials": 9834,
+                    "eligible_recordings": 31,
+                    "n_recordings": 31,
+                }
+            },
+            "top_rows": [
+                {
+                    "target_mode": "prior_aligned_choice_le_0.125",
+                    "family": "hippocampal_formation",
+                    "holdout": "CSH_ZAD_019",
+                    "decision": "reject: total baseline",
+                    "centered_delta_vs_shuffle": 0.044,
+                    "centered_delta_vs_total": -0.052,
+                    "target0_improved_vs_shuffle": 0.607,
+                    "target1_improved_vs_shuffle": 0.445,
+                    "n_bidirectional_recordings": 1,
+                    "n_recordings": 4,
+                }
+            ],
+        }
+    }
+
+    markdown = render_markdown(
+        [],
+        [],
+        prior_aligned_choice_family_gate=gate_payload,
+        prior_aligned_choice_projected_gate=gate_payload,
+    )
+
+    assert "Prior-Aligned Choice Family Gate" in markdown
+    assert "Prior-Aligned Choice Projected Manifest Gate" in markdown
+    assert "do not train from prior-aligned choice" in markdown
+
+
 def test_local_probe_matrix_rejects_failed_target_class(tmp_path: Path) -> None:
     gate_path = tmp_path / "gate.json"
     mismatch_path = tmp_path / "mismatch.json"
