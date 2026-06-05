@@ -261,6 +261,28 @@ redesign.
 
 Decision: the current full matched manifest is feasible enough for another local target/control redesign. The next branch should focus on specific shared families such as thalamic, hippocampal formation, and fiber tracts under the same recording-bidirectional gate, not on GPU training or recording-subset narrowing.
 
+## Shared-Family Target/Control Gate
+
+`docs/shared_family_target_control_gate.md` tests the feasible shared
+families across all four target modes with the same model-free
+true-vs-shuffled and recording-bidirectional promotion gate.
+
+- rows: `112`
+- candidates: `0`
+- positive centered-delta rows: `55`
+- max bidirectional recordings: `2`
+- max bidirectional recording fraction: `0.500`
+- decision: `no_shared_family_target_candidate`
+
+| target | family | holdout | decision | delta shuffle | delta total | target0 | target1 | bidir recs |
+|---|---|---|---|---:|---:|---:|---:|---:|
+| choice | broad_named_anatomy | SWC_043 | reject: shuffle | +0.008 | -0.160 | 0.534 | 0.610 | 2/4 |
+| feedback | broad_named_anatomy | NYU-12 | reject: shuffle | -0.002 | -0.008 | 0.540 | 0.554 | 2/4 |
+| choice | fiber_tracts | CSH_ZAD_019 | reject: recording bidirectionality | +0.199 | +0.221 | 0.558 | 0.614 | 1/4 |
+| stimulus_side | thalamic | MFD_06 | reject: target0 | +0.179 | +0.269 | 0.089 | 0.930 | 1/4 |
+
+Decision: shared-family target/control narrowing does not yet produce a promotable local signal. The best row has real centered deltas and global bidirectional target support, but fails same-recording support at `1/4`; do not launch GPU training from this branch.
+
 ## Matched-Region Model-Free Panel
 
 `docs/model_free_matched_support80_hdf5_panel.md` runs the closed-form

@@ -1473,6 +1473,17 @@ by renting a GPU or fetching a new manifest. It should define a stricter
 shared-family target/control screen using thalamic, hippocampal formation, and
 fiber-tract families, then require the same recording-bidirectional local gate.
 
+Shared-family target/control gate:
+`scripts/audit_shared_family_target_control_gate.py` runs that screen. It tests
+four feasible families across `choice`, `stimulus_side`, `feedback`, and
+`prior_side` for all seven holdouts. There are zero candidates across 112 rows.
+The best row (`choice` + `fiber_tracts` on `CSH_ZAD_019`) has strong true-vs-
+shuffle and true-vs-total centered deltas and passes global target0/target1,
+but still has only `1/4` same-recording bidirectional support. This closes the
+single shared-family branch as a training trigger; any next no-spend redesign
+must address recording-local consistency directly, not just choose a conserved
+family and target.
+
 Recording-centered feature check:
 The gate also supports `--feature-mode recording_centered`, which subtracts
 each recording's mean parent-region feature vector before fitting. This reduces

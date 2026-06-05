@@ -104,6 +104,7 @@ MATCHED_REGION_S3_PRESENT_SUPPORT80_HDF5_ITERATIVE_FILE = (
     "manifests/ibl_bwm_region_matched_candidates_s3_present_support80_hdf5_iterative_pass.json"
 )
 MANIFEST_TARGET_ANATOMY_FEASIBILITY_FILE = "docs/manifest_target_anatomy_feasibility.json"
+SHARED_FAMILY_TARGET_CONTROL_GATE_FILE = "docs/shared_family_target_control_gate.json"
 MODEL_FREE_MATCHED_SUPPORT80_PANEL_FILE = "docs/model_free_matched_support80_hdf5_panel.json"
 MODEL_FREE_POSITIVE_HOLDOUTS_MECHANISM_FILE = "docs/model_free_positive_holdouts_mechanism.json"
 MODEL_FREE_RECORDING_BIDIRECTIONAL_GATE_FILE = "docs/model_free_recording_bidirectional_gate.json"
@@ -429,6 +430,7 @@ def render_markdown(
     matched_support80_hdf5: dict | None = None,
     matched_support80_hdf5_iterative: dict | None = None,
     manifest_target_anatomy_feasibility: dict | None = None,
+    shared_family_target_control_gate: dict | None = None,
     model_free_matched_panel: dict | None = None,
     model_free_positive_holdouts: dict | None = None,
     model_free_recording_bidirectional_gate: dict | None = None,
@@ -982,6 +984,45 @@ def render_markdown(
                 "specific shared families such as thalamic, hippocampal formation, and "
                 "fiber tracts under the same recording-bidirectional gate, not on GPU "
                 "training or recording-subset narrowing."
+            ),
+            "",
+        ]
+    if shared_family_target_control_gate is not None:
+        summary = shared_family_target_control_gate["summary"]
+        top = summary["top_rows"][:4]
+        lines += [
+            "## Shared-Family Target/Control Gate",
+            "",
+            "`docs/shared_family_target_control_gate.md` tests the feasible shared",
+            "families across all four target modes with the same model-free",
+            "true-vs-shuffled and recording-bidirectional promotion gate.",
+            "",
+            f"- rows: `{summary['n_rows']}`",
+            f"- candidates: `{summary['n_candidates']}`",
+            f"- positive centered-delta rows: `{summary['n_positive_centered_delta']}`",
+            f"- max bidirectional recordings: `{summary['max_bidirectional_recordings']}`",
+            f"- max bidirectional recording fraction: `{summary['max_bidirectional_recording_fraction']:.3f}`",
+            f"- decision: `{summary['decision']}`",
+            "",
+            "| target | family | holdout | decision | delta shuffle | delta total | target0 | target1 | bidir recs |",
+            "|---|---|---|---|---:|---:|---:|---:|---:|",
+        ]
+        for row in top:
+            lines.append(
+                f"| {row['target_mode']} | {row['family']} | {row['holdout']} | "
+                f"{row['decision']} | {row['centered_delta_vs_shuffle']:+.3f} | "
+                f"{row['centered_delta_vs_total']:+.3f} | "
+                f"{row['target0_improved_vs_shuffle']:.3f} | "
+                f"{row['target1_improved_vs_shuffle']:.3f} | "
+                f"{row['n_bidirectional_recordings']}/{row['n_recordings']} |"
+            )
+        lines += [
+            "",
+            (
+                "Decision: shared-family target/control narrowing does not yet produce "
+                "a promotable local signal. The best row has real centered deltas and "
+                "global bidirectional target support, but fails same-recording support "
+                "at `1/4`; do not launch GPU training from this branch."
             ),
             "",
         ]
@@ -1558,6 +1599,7 @@ def main() -> int:
     manifest_target_anatomy_feasibility = read_mechanism_audit(
         REPO_ROOT / MANIFEST_TARGET_ANATOMY_FEASIBILITY_FILE
     )
+    shared_family_target_control_gate = read_mechanism_audit(REPO_ROOT / SHARED_FAMILY_TARGET_CONTROL_GATE_FILE)
     model_free_matched_panel = read_mechanism_audit(REPO_ROOT / MODEL_FREE_MATCHED_SUPPORT80_PANEL_FILE)
     model_free_positive_holdouts = read_mechanism_audit(REPO_ROOT / MODEL_FREE_POSITIVE_HOLDOUTS_MECHANISM_FILE)
     model_free_recording_bidirectional_gate = read_mechanism_audit(
@@ -1636,6 +1678,7 @@ def main() -> int:
         matched_support80_hdf5,
         matched_support80_hdf5_iterative,
         manifest_target_anatomy_feasibility,
+        shared_family_target_control_gate,
         model_free_matched_panel,
         model_free_positive_holdouts,
         model_free_recording_bidirectional_gate,
@@ -1711,6 +1754,7 @@ def main() -> int:
             }
         ),
         "manifest_target_anatomy_feasibility": manifest_target_anatomy_feasibility,
+        "shared_family_target_control_gate": shared_family_target_control_gate,
         "model_free_matched_support80_panel": model_free_matched_panel,
         "model_free_positive_holdouts_mechanism": model_free_positive_holdouts,
         "model_free_recording_bidirectional_gate": model_free_recording_bidirectional_gate,

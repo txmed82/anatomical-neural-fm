@@ -404,6 +404,16 @@ current manifest is not the immediate bottleneck. The next no-spend branch
 should test specific shared-family target/control designs under the
 recording-bidirectional gate.
 
+Shared-family target/control gate:
+`docs/shared_family_target_control_gate.md` tests those feasible families
+directly across all four target modes and seven holdouts. It finds zero
+candidates across 112 rows. Fifty-five rows have positive centered true-vs-
+shuffle deltas, but the maximum same-recording bidirectional support is only
+`2/4`. The closest mechanistic row is `choice` + `fiber_tracts` on
+`CSH_ZAD_019`: centered delta vs shuffle `+0.199`, delta vs total `+0.221`,
+target0 `0.558`, target1 `0.614`, but only `1/4` bidirectional recordings.
+Decision: shared-family single-feature narrowing is not a GPU trigger.
+
 Recording-centered feature check:
 `docs/model_free_recording_bidirectional_gate_recording_centered.md` subtracts
 each recording's own mean parent-region feature vector before ridge fitting.
