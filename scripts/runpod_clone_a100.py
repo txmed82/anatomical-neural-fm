@@ -265,7 +265,7 @@ push_artifacts() {{
 
 Date: $(date -u +"%Y-%m-%dT%H:%M:%SZ")
 
-RunPod target: A100 pilot.
+RunPod target: {config.gpu_type}.
 
 Exit status: $status
 

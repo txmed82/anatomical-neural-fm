@@ -12,6 +12,7 @@ Decision: `no_paid_broadening_without_new_mechanism`
 | CSH recording-centered loss | CSH_ZAD_019 | False | -0.050 | 0.451 | -0.092 | 1.000 | fail: small centered delta, paired gate, specificity, sign-flip | `docs/lso_csh_recording_centered_loss_anatomy_specific_gate.json` |
 | CSH within-recording shuffle | CSH_ZAD_019 | False | +0.001 | 0.448 | -0.103 | 0.250 | fail: small centered delta, paired gate, specificity, sign-flip | `docs/lso_csh_within_recording_shuffle_anatomy_specific_gate.json` |
 | CSH recording-centered gate pilot | CSH_ZAD_019 | False | +0.001 | 0.448 | -0.103 | 0.250 | fail: small centered delta, paired gate, specificity, sign-flip | `docs/lso_csh_recording_centered_gate_pilot_anatomy_specific_gate.json` |
+| CSH pairwise-rank objective pilot | CSH_ZAD_019 | False | -0.014 | 0.552 | +0.103 | 0.562 | fail: small centered delta, sign-flip | `docs/lso_csh_pairwise_rank_pilot_anatomy_specific_gate.json` |
 
 ## Fixed-Slice Runs
 
@@ -24,9 +25,7 @@ Decision: `no_paid_broadening_without_new_mechanism`
 
 No current strict-gate artifact supports paid broadening. The later recording-matched controls show the CSH true-region advantage is much smaller than the original sampled-eval signal, and both fixed carrier slice attempts let shuffled labels match or beat true labels.
 
-Next mechanism: Define a mechanism-level analysis of the CSH success itself: compare true vs within-recording-shuffled region embeddings and prediction shifts by carrier parent and recording, then implement a training objective/control that requires true anatomical labels to improve target-aware within-recording ranking.
-
-A useful next artifact would be a CSH mechanism audit over saved predictions and region embeddings, not another RunPod launch.
+Next mechanism: The pairwise-rank objective produced a paired trial-level specificity signal, but it still did not produce a recording-stable anatomical signal. The next no-spend task is to understand why the paired probability shift does not translate into positive recording-centered AUC across recordings.
 
 ## Mechanism Audit Follow-Up
 
@@ -40,3 +39,20 @@ mechanism:
 - carrier-rich negative recordings: `4`
 
 Updated mechanism decision: no paid run is justified until the objective itself forces target-aware true-vs-shuffle separation. Region/subject selection and embedding inspection did not reveal a mechanism that the current controls can validate.
+
+## Pairwise-Rank Objective Pilot
+
+`docs/lso_csh_pairwise_rank_pilot_results.md` ran the implemented
+`recording_pairwise_rank` objective on a one-seed L4 RunPod pilot. It improved
+the global paired true-vs-shuffle check to `0.552`
+and the specificity gap to `+0.103`,
+so the objective change did move the right target-aware paired metric.
+
+The strict anatomy-specific gate still failed:
+
+- centered true-minus-shuffle delta: `-0.014`
+- paired true-vs-shuffle: `0.552`
+- specificity gap: `+0.103`
+- recording sign-flip p-value: `0.562`
+
+Updated decision: promising mechanism candidate, not demo evidence. Do not broaden yet. The next step should be local/no-spend analysis or a very small objective tweak that makes the paired improvement recording-stable.

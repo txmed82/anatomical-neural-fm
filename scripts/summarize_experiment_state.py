@@ -50,6 +50,7 @@ STRICT_GATE_FILES = (
     ("CSH recording-centered loss", "docs/lso_csh_recording_centered_loss_anatomy_specific_gate.json"),
     ("CSH within-recording shuffle", "docs/lso_csh_within_recording_shuffle_anatomy_specific_gate.json"),
     ("CSH recording-centered gate pilot", "docs/lso_csh_recording_centered_gate_pilot_anatomy_specific_gate.json"),
+    ("CSH pairwise-rank objective pilot", "docs/lso_csh_pairwise_rank_pilot_anatomy_specific_gate.json"),
 )
 
 SLICE_RESULT_FILES = (
@@ -57,6 +58,7 @@ SLICE_RESULT_FILES = (
     ("SWC_038 stricter carrier slice", "docs/lso_swc038_parent_slice_results.md", "SWC_038"),
 )
 MECHANISM_AUDIT_FILE = "docs/csh_mechanism_audit.json"
+PAIRWISE_MECHANISM_AUDIT_FILE = "docs/lso_csh_pairwise_rank_pilot_mechanism.json"
 
 
 def display_path(path: Path) -> str:
@@ -164,10 +166,10 @@ def summarize(strict_rows: list[StrictGateRow], slice_rows: list[SliceRow]) -> d
         "slice_promising_count": len(promising_slices),
         "decision": "no_paid_broadening_without_new_mechanism",
         "next_mechanism": (
-            "Define a mechanism-level analysis of the CSH success itself: compare true vs "
-            "within-recording-shuffled region embeddings and prediction shifts by carrier "
-            "parent and recording, then implement a training objective/control that requires "
-            "true anatomical labels to improve target-aware within-recording ranking."
+            "The pairwise-rank objective produced a paired trial-level specificity signal, "
+            "but it still did not produce a recording-stable anatomical signal. The next "
+            "no-spend task is to understand why the paired probability shift does not "
+            "translate into positive recording-centered AUC across recordings."
         ),
     }
 
@@ -182,6 +184,7 @@ def render_markdown(
     strict_rows: list[StrictGateRow],
     slice_rows: list[SliceRow],
     mechanism: dict | None = None,
+    pairwise_mechanism: dict | None = None,
 ) -> str:
     summary = summarize(strict_rows, slice_rows)
     lines = [
@@ -235,11 +238,6 @@ def render_markdown(
             + summary["next_mechanism"]
         ),
         "",
-        (
-            "A useful next artifact would be a CSH mechanism audit over saved predictions "
-            "and region embeddings, not another RunPod launch."
-        ),
-        "",
     ]
     if mechanism is not None:
         global_metrics = mechanism.get("global", {})
@@ -266,6 +264,38 @@ def render_markdown(
             ),
             "",
         ]
+    if pairwise_mechanism is not None:
+        global_metrics = pairwise_mechanism.get("global", {})
+        true_vs_shuffle = global_metrics.get("paired_true_vs_shuffle", {})
+        gate_row = next((row for row in strict_rows if "pairwise-rank" in row.label), None)
+        lines += [
+            "## Pairwise-Rank Objective Pilot",
+            "",
+            "`docs/lso_csh_pairwise_rank_pilot_results.md` ran the implemented",
+            "`recording_pairwise_rank` objective on a one-seed L4 RunPod pilot. It improved",
+            f"the global paired true-vs-shuffle check to `{fmt_float(true_vs_shuffle.get('improved_fraction'))}`",
+            f"and the specificity gap to `{fmt_signed(global_metrics.get('specificity_gap'))}`,",
+            "so the objective change did move the right target-aware paired metric.",
+            "",
+            "The strict anatomy-specific gate still failed:",
+            "",
+        ]
+        if gate_row is not None:
+            lines += [
+                f"- centered true-minus-shuffle delta: `{fmt_signed(gate_row.centered_delta)}`",
+                f"- paired true-vs-shuffle: `{fmt_float(gate_row.paired_true_vs_shuffle)}`",
+                f"- specificity gap: `{fmt_signed(gate_row.specificity_gap)}`",
+                f"- recording sign-flip p-value: `{fmt_float(gate_row.sign_flip_p)}`",
+            ]
+        lines += [
+            "",
+            (
+                "Updated decision: promising mechanism candidate, not demo evidence. Do not "
+                "broaden yet. The next step should be local/no-spend analysis or a very small "
+                "objective tweak that makes the paired improvement recording-stable."
+            ),
+            "",
+        ]
     return "\n".join(lines)
 
 
@@ -287,14 +317,16 @@ def main() -> int:
         if (row := read_slice_result(label, REPO_ROOT / rel_path, holdout)) is not None
     ]
     mechanism = read_mechanism_audit(REPO_ROOT / MECHANISM_AUDIT_FILE)
+    pairwise_mechanism = read_mechanism_audit(REPO_ROOT / PAIRWISE_MECHANISM_AUDIT_FILE)
     args.out_md.parent.mkdir(parents=True, exist_ok=True)
-    args.out_md.write_text(render_markdown(strict_rows, slice_rows, mechanism))
+    args.out_md.write_text(render_markdown(strict_rows, slice_rows, mechanism, pairwise_mechanism))
     args.out_json.parent.mkdir(parents=True, exist_ok=True)
     args.out_json.write_text(json.dumps({
         "summary": summarize(strict_rows, slice_rows),
         "strict_gates": [row.__dict__ | {"source": display_path(row.source)} for row in strict_rows],
         "fixed_slices": [row.__dict__ | {"source": display_path(row.source)} for row in slice_rows],
         "mechanism": mechanism,
+        "pairwise_mechanism": pairwise_mechanism,
     }, indent=2, sort_keys=True) + "\n")
     print(f"wrote {args.out_md}")
     print(f"wrote {args.out_json}")

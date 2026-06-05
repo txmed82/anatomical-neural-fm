@@ -2,7 +2,7 @@
 
 Date: 2026-06-05T03:52:12Z
 
-RunPod target: A100 pilot.
+RunPod target: NVIDIA L4.
 
 Exit status: 0
 

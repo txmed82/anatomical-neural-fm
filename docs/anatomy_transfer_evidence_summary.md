@@ -143,3 +143,11 @@ invariant to recording-level offsets. The intended pilot uses
 `BATCH_SAMPLING=recording_target_balanced` plus the existing
 within-recording-shuffle negative control. Preflight:
 `uv run python scripts/preflight_pairwise_rank_pilot_runpod.py`.
+
+Pairwise-rank pilot result: `docs/lso_csh_pairwise_rank_pilot_results.md`
+completed on a one-seed L4 run. It improved the paired true-vs-shuffle metric
+to `0.552` and the specificity gap to `+0.103`, but failed the strict
+anatomy-specific gate because centered AUC still favored shuffle (`0.480` true
+vs `0.494` shuffle) and only `1/4` held-out recordings had positive
+true-minus-shuffle AUC. This is a useful mechanism lead, not yet a demo-quality
+cross-animal anatomical transfer result.

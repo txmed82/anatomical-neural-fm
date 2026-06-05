@@ -387,6 +387,14 @@ one-seed CSH_ZAD_019 L4 pilot with
 the strict anatomy-specific gate and CSH mechanism audit improve over the
 current paired true-vs-shuffle `0.448` baseline.
 
+Paid pilot result: the one-seed L4 pairwise-rank run finished successfully and
+improved the paired mechanism check (`0.552` true-vs-shuffle, `+0.103`
+specificity gap), but the strict gate still failed. Recording-centered AUC
+favored the shuffled control (`0.480` true vs `0.494` shuffle), positive
+recording support was `1/4`, and the recording sign-flip p-value was `0.562`.
+This is enough to justify no-spend mechanism analysis or a very small objective
+tweak; it is not enough to justify broadening across more subjects yet.
+
 Conclusion: building all 48 public IBL recordings inside a throwaway A100
 container is the wrong next spend. The next attempt should either split the
 candidate manifest into smaller persisted build shards, use a persistent
