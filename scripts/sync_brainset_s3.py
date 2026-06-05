@@ -118,6 +118,24 @@ def manifest_recording_rows(path: Path) -> list[dict]:
     return payload["recordings"] if isinstance(payload, dict) else payload
 
 
+def manifest_payload_with_recordings(source: Path, rows: list[dict]) -> dict | list[dict]:
+    payload = json.loads(source.read_text())
+    if isinstance(payload, dict):
+        out = dict(payload)
+        out["recordings"] = rows
+        out["n_recordings"] = len(rows)
+        if "n_subjects" in out:
+            subjects = {
+                row.get("subject_id") or row.get("subject") or row.get("subject_nickname")
+                for row in rows
+            }
+            out["n_subjects"] = len({subject for subject in subjects if subject})
+        if "labs" in out:
+            out["labs"] = sorted({row["lab"] for row in rows if row.get("lab")})
+        return out
+    return rows
+
+
 def manifest_recording_name(row: dict) -> str | None:
     eid = row.get("session_id") or row.get("eid") or row.get("session")
     probe = row.get("probe_name") or row.get("probe") or row.get("name")
@@ -341,6 +359,17 @@ def write_audit_report(
     path.write_text("\n".join(lines) + "\n")
 
 
+def write_missing_manifest(path: Path, *, source_manifest: Path, missing: set[str]) -> int:
+    rows = [
+        row for row in manifest_recording_rows(source_manifest)
+        if (name := manifest_recording_name(row)) is not None and name in missing
+    ]
+    payload = manifest_payload_with_recordings(source_manifest, rows)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n")
+    return len(rows)
+
+
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser()
     p.add_argument("command", choices=["upload", "download", "list", "audit", "verify-local", "upload-log"])
@@ -359,6 +388,8 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--secret-key", default=None)
     p.add_argument("--report", type=Path, default=None,
                    help="Optional markdown report path for the audit command.")
+    p.add_argument("--missing-manifest", type=Path, default=None,
+                   help="Optional manifest path containing only missing recordings from audit.")
     p.add_argument("--num-shards", type=int, default=None,
                    help="Optional shard count to include in audit reports.")
     p.add_argument("--compact-build-args", default="",
@@ -436,6 +467,13 @@ def main() -> int:
                     compact_build_args=args.compact_build_args,
                 )
                 print(f"wrote {args.report}")
+            if args.missing_manifest is not None:
+                missing_count = write_missing_manifest(
+                    args.missing_manifest,
+                    source_manifest=args.manifest,
+                    missing=set(missing),
+                )
+                print(f"wrote {args.missing_manifest} ({missing_count} recordings)")
         else:
             local_files = local_h5_files(args.data_dir, names)
             present = remote_h5_filenames(client, bucket=bucket, prefix=args.prefix)

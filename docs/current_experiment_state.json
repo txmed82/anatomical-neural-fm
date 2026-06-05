@@ -4859,6 +4859,11 @@
     "source": "docs/matched_region_cache_audit.md",
     "total": 48
   },
+  "matched_region_missing_manifest": {
+    "n_recordings": 19,
+    "n_subjects": 5,
+    "source": "manifests/ibl_bwm_region_matched_candidates_missing_s3.json"
+  },
   "mechanism": {
     "carriers": [
       "PRT",

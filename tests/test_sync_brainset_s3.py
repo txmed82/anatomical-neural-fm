@@ -17,6 +17,7 @@ from scripts.sync_brainset_s3 import (
     upload_log_file,
     verify_local_cache_rows,
     write_audit_report,
+    write_missing_manifest,
 )
 
 
@@ -189,6 +190,39 @@ def test_write_audit_report_includes_optional_shard_plan(tmp_path) -> None:
     assert "--no-wheel --trial-window-only --window-len 1.0" in text
     assert "#### Shard 1" in text
     assert "`eid-c_probe01.h5`" in text
+
+
+def test_write_missing_manifest_preserves_schema_and_filters_rows(tmp_path) -> None:
+    source = tmp_path / "manifest.json"
+    out = tmp_path / "missing.json"
+    source.write_text(json.dumps({
+        "dataset": "ibl_bwm",
+        "labs": ["lab-a", "lab-b", "lab-c"],
+        "n_recordings": 3,
+        "n_subjects": 2,
+        "recordings": [
+            {"session_id": "eid-a", "probe_name": "probe00", "subject_id": "s1", "lab": "lab-a"},
+            {"session_id": "eid-b", "probe_name": "probe01", "subject_id": "s1", "lab": "lab-b"},
+            {"session_id": "eid-c", "probe_name": "probe00", "subject_id": "s2", "lab": "lab-c"},
+        ],
+    }))
+
+    count = write_missing_manifest(
+        out,
+        source_manifest=source,
+        missing={"eid-b_probe01.h5", "eid-c_probe00.h5"},
+    )
+
+    payload = json.loads(out.read_text())
+    assert count == 2
+    assert payload["dataset"] == "ibl_bwm"
+    assert payload["labs"] == ["lab-b", "lab-c"]
+    assert payload["n_recordings"] == 2
+    assert payload["n_subjects"] == 2
+    assert payload["recordings"] == [
+        {"session_id": "eid-b", "probe_name": "probe01", "subject_id": "s1", "lab": "lab-b"},
+        {"session_id": "eid-c", "probe_name": "probe00", "subject_id": "s2", "lab": "lab-c"},
+    ]
 
 
 def test_region_from_args_uses_env_datacenter(monkeypatch) -> None:

@@ -94,6 +94,7 @@ CHOICE_MODEL_FREE_REGION_SIGNAL_AUDIT_FILE = "docs/csh_choice_model_free_region_
 CHOICE_MODEL_FREE_REGION_CANDIDATE_SCAN_FILE = "docs/csh_choice_model_free_region_candidate_scan.json"
 CHOICE_MODEL_FREE_REGION_FAMILY_SCAN_FILE = "docs/csh_choice_model_free_region_family_scan.json"
 MATCHED_REGION_CACHE_AUDIT_FILE = "docs/matched_region_cache_audit.md"
+MATCHED_REGION_MISSING_MANIFEST_FILE = "manifests/ibl_bwm_region_matched_candidates_missing_s3.json"
 LOCAL_PROBE_FILES = (
     (
         "local AUC surrogate",
@@ -316,6 +317,22 @@ def read_cache_audit(path: Path) -> dict | None:
     }
 
 
+def read_manifest_summary(path: Path) -> dict | None:
+    if not path.exists():
+        return None
+    payload = json.loads(path.read_text())
+    rows = payload["recordings"] if isinstance(payload, dict) else payload
+    subjects = {
+        row.get("subject_id") or row.get("subject") or row.get("subject_nickname")
+        for row in rows
+    }
+    return {
+        "source": path,
+        "n_recordings": len(rows),
+        "n_subjects": len({subject for subject in subjects if subject}),
+    }
+
+
 def render_markdown(
     strict_rows: list[StrictGateRow],
     slice_rows: list[SliceRow],
@@ -335,6 +352,7 @@ def render_markdown(
     choice_region_scan: dict | None = None,
     choice_family_scan: dict | None = None,
     matched_cache_audit: dict | None = None,
+    matched_missing_manifest: dict | None = None,
 ) -> str:
     summary = summarize(strict_rows, slice_rows)
     lines = [
@@ -770,6 +788,14 @@ def render_markdown(
             ),
             f"- missing recordings: `{matched_cache_audit.get('missing_count')}`",
             f"- shards with missing recordings: `{len(matched_cache_audit.get('shards_with_missing', []))}`",
+        ]
+        if matched_missing_manifest is not None:
+            lines.append(
+                f"- missing-only manifest: `{display_path(matched_missing_manifest['source'])}` "
+                f"({matched_missing_manifest['n_recordings']} recordings, "
+                f"{matched_missing_manifest['n_subjects']} subjects)"
+            )
+        lines += [
             "",
             "| shard | recordings | present | missing |",
             "|---:|---:|---:|---:|",
@@ -783,7 +809,9 @@ def render_markdown(
             (
                 "Decision: do not launch training. Finish the missing HDF5 cache shards "
                 "first, then rerun the matched-region support scorer and require the "
-                "80% held-out unit-support gate before any seed sweep."
+                "80% held-out unit-support gate before any seed sweep. Use the "
+                "missing-only manifest with the incremental builder so successful "
+                "recordings upload immediately instead of waiting for a full shard."
             ),
             "",
         ]
@@ -826,6 +854,7 @@ def main() -> int:
     choice_region_scan = read_mechanism_audit(REPO_ROOT / CHOICE_MODEL_FREE_REGION_CANDIDATE_SCAN_FILE)
     choice_family_scan = read_mechanism_audit(REPO_ROOT / CHOICE_MODEL_FREE_REGION_FAMILY_SCAN_FILE)
     matched_cache_audit = read_cache_audit(REPO_ROOT / MATCHED_REGION_CACHE_AUDIT_FILE)
+    matched_missing_manifest = read_manifest_summary(REPO_ROOT / MATCHED_REGION_MISSING_MANIFEST_FILE)
     args.out_md.parent.mkdir(parents=True, exist_ok=True)
     args.out_md.write_text(render_markdown(
         strict_rows,
@@ -846,6 +875,7 @@ def main() -> int:
         choice_region_scan,
         choice_family_scan,
         matched_cache_audit,
+        matched_missing_manifest,
     ))
     args.out_json.parent.mkdir(parents=True, exist_ok=True)
     args.out_json.write_text(json.dumps({
@@ -877,6 +907,10 @@ def main() -> int:
         "matched_region_cache_audit": (
             None if matched_cache_audit is None
             else matched_cache_audit | {"source": display_path(matched_cache_audit["source"])}
+        ),
+        "matched_region_missing_manifest": (
+            None if matched_missing_manifest is None
+            else matched_missing_manifest | {"source": display_path(matched_missing_manifest["source"])}
         ),
     }, indent=2, sort_keys=True) + "\n")
     print(f"wrote {args.out_md}")

@@ -252,7 +252,10 @@ Latest no-spend S3 audit: the matched-region candidate cache is `29/48`
 present, with `19` missing compact HDF5s across `15` shards. This improves on
 the stale `4/48` cache state but does not clear the training gate. Finish the
 missing shards, rerun matched-region support scoring, and require the 80%
-held-out unit-support gate before launching any seed sweep.
+held-out unit-support gate before launching any seed sweep. The audit now writes
+`manifests/ibl_bwm_region_matched_candidates_missing_s3.json`; use that with
+`scripts/build_ibl_brainset_incremental.py` so each successful recording uploads
+immediately.
 
 Follow-up cloud audit attempt: a 48-recording matched-region data-build/audit
 job was tried twice on RunPod A100 in `CA-MTL-3`.
@@ -1316,4 +1319,5 @@ manifest build/readiness pass that asks whether a different subject/recording
 panel has enough shared anatomical support before any new GPU training. The
 current S3 audit shows `29/48` recordings present and `19` missing, so the next
 action is completing the missing cache shards and rerunning the support scorer,
-not training.
+not training. The concrete retry path is the generated missing-only manifest
+plus the incremental builder/upload wrapper.

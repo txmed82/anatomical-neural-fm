@@ -9,10 +9,11 @@ the cross-animal anatomical transfer benchmark.
 
 - Matched-region S3 cache is now `29/48` recordings after the latest S3 audit;
   `19` compact HDF5s are still missing across `15` build shards.
-- Compact support80-best6 S3 cache is `3/28` recordings. Shard 0 contains
-  7 recordings; 3 were already remote and 4 still need upload.
 - Missing-only retry manifest:
-  `manifests/ibl_bwm_region_matched_support80_best6_shard0_missing.json`.
+  `manifests/ibl_bwm_region_matched_candidates_missing_s3.json`.
+- Compact support80-best6 S3 cache later reached `28/28` recordings; the
+  older shard-0 missing manifest is historical and should not drive the next
+  run.
 - Local workstation is not viable for cache construction right now: only about
   `1.7 GiB` is free on `/System/Volumes/Data`, and shard02 failed locally with
   `No space left on device`.
@@ -181,3 +182,19 @@ rerun the support scorer. The current `29/48` cache state is useful progress,
 but it is not a training-ready benchmark; finish the missing HDF5 shards first,
 rerun matched-region support scoring, and require the 80% held-out unit-support
 gate before any seed sweep.
+
+Use the missing-only manifest with the incremental builder for the next cache
+completion attempt, so each successful recording uploads immediately:
+
+```bash
+python scripts/build_ibl_brainset_incremental.py \
+  --manifest manifests/ibl_bwm_region_matched_candidates_missing_s3.json \
+  --bucket rppfvo6ifn \
+  --prefix brainsets/ibl_bwm \
+  --datacenter US-IL-1 \
+  --no-wheel \
+  --trial-window-only \
+  --window-len 1.0 \
+  --per-record-timeout 900 \
+  --clear-one-cache
+```

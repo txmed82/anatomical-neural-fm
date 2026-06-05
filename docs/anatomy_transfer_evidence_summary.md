@@ -258,4 +258,7 @@ missing compact HDF5s across `15` shards. This is progress from the stale
 `4/48` state, but it is still not training-ready. Decision: do not launch a
 matched-region seed sweep yet. Finish the missing HDF5 shards, rerun the
 matched-region support scorer, and require the 80% held-out unit-support gate
-before spending on GPU confirmation.
+before spending on GPU confirmation. The retry input is now
+`manifests/ibl_bwm_region_matched_candidates_missing_s3.json`; use it with
+`scripts/build_ibl_brainset_incremental.py` so each successful recording is
+uploaded immediately.

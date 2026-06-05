@@ -225,6 +225,7 @@ larger matched-region training attempt.
 - present: `29/48` (`60.4%`)
 - missing recordings: `19`
 - shards with missing recordings: `15`
+- missing-only manifest: `manifests/ibl_bwm_region_matched_candidates_missing_s3.json` (19 recordings, 5 subjects)
 
 | shard | recordings | present | missing |
 |---:|---:|---:|---:|
@@ -241,4 +242,4 @@ larger matched-region training attempt.
 | 17 | 2 | 1 | 1 |
 | 18 | 2 | 1 | 1 |
 
-Decision: do not launch training. Finish the missing HDF5 cache shards first, then rerun the matched-region support scorer and require the 80% held-out unit-support gate before any seed sweep.
+Decision: do not launch training. Finish the missing HDF5 cache shards first, then rerun the matched-region support scorer and require the 80% held-out unit-support gate before any seed sweep. Use the missing-only manifest with the incremental builder so successful recordings upload immediately instead of waiting for a full shard.
