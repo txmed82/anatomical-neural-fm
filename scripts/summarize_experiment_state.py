@@ -134,6 +134,7 @@ RESPONSE_EXTREME_A100_RESULT_FILE = "docs/response_extreme_trigger_a100_results.
 RESPONSE_EXTREME_TRAINING_FAILURE_AUDIT_FILE = "docs/response_extreme_training_failure_audit.json"
 RESPONSE_EXTREME_TRAINING_ALIGNED_READOUT_FILE = "docs/response_extreme_training_aligned_readout.json"
 DIRECT_BROAD_FAMILY_DEMO_READINESS_FILE = "docs/direct_broad_family_demo_readiness.json"
+MODEL_FREE_DEMO_PACKAGE_FILE = "docs/model_free_anatomical_transfer_demo_package.json"
 LOW_CONTRAST_CHOICE_FAMILY_GATE_FILE = "docs/low_contrast_choice_family_gate.json"
 LOW_CONTRAST_CHOICE_PROJECTED_GATE_FILE = "docs/low_contrast_choice_family_gate_projected_hdf5.json"
 LOW_CONTRAST_CHOICE_SEED_SENSITIVITY_FILE = "docs/low_contrast_choice_seed_sensitivity.json"
@@ -673,6 +674,7 @@ def render_markdown(
     response_extreme_training_failure_audit: dict | None = None,
     response_extreme_training_aligned_readout: dict | None = None,
     direct_broad_family_demo_readiness: dict | None = None,
+    model_free_demo_package: dict | None = None,
     low_contrast_choice_family_gate: dict | None = None,
     low_contrast_choice_projected_gate: dict | None = None,
     low_contrast_choice_seed_sensitivity: dict | None = None,
@@ -2162,6 +2164,26 @@ def render_markdown(
                 "model arm or a new target/control branch that passes local and trained "
                 "readout gates."
             ),
+            "",
+        ]
+    if model_free_demo_package is not None:
+        summary = model_free_demo_package["summary"]
+        lines += [
+            "## Model-Free Anatomical Transfer Demo Package",
+            "",
+            "`docs/model_free_anatomical_transfer_demo_package.md` is the current",
+            "reproducible demo artifact.",
+            "",
+            f"- decision: `{summary['decision']}`",
+            f"- model-free demo ready: `{summary['model_free_demo_ready']}`",
+            f"- trained-model demo ready: `{summary['trained_model_demo_ready']}`",
+            f"- paid GPU trigger: `{summary['paid_gpu_trigger']}`",
+            f"- supported claim: {summary['supported_claim']}",
+            f"- unsupported claim: {summary['unsupported_claim']}",
+            "",
+            "Reproduction commands are listed in the package doc. Use this as the",
+            "current demo boundary until a direct fixed-family model arm or redesigned",
+            "target/control passes local and trained readout gates.",
             "",
         ]
     if composite_behavior_target_gate is not None:
@@ -4113,6 +4135,7 @@ def main() -> int:
     direct_broad_family_demo_readiness = read_mechanism_audit(
         REPO_ROOT / DIRECT_BROAD_FAMILY_DEMO_READINESS_FILE
     )
+    model_free_demo_package = read_mechanism_audit(REPO_ROOT / MODEL_FREE_DEMO_PACKAGE_FILE)
     low_contrast_choice_family_gate = read_mechanism_audit(REPO_ROOT / LOW_CONTRAST_CHOICE_FAMILY_GATE_FILE)
     low_contrast_choice_projected_gate = read_mechanism_audit(REPO_ROOT / LOW_CONTRAST_CHOICE_PROJECTED_GATE_FILE)
     low_contrast_choice_seed_sensitivity = read_mechanism_audit(
@@ -4292,6 +4315,7 @@ def main() -> int:
         response_extreme_training_failure_audit,
         response_extreme_training_aligned_readout,
         direct_broad_family_demo_readiness,
+        model_free_demo_package,
         low_contrast_choice_family_gate,
         low_contrast_choice_projected_gate,
         low_contrast_choice_seed_sensitivity,
@@ -4441,6 +4465,7 @@ def main() -> int:
         "response_extreme_training_failure_audit": response_extreme_training_failure_audit,
         "response_extreme_training_aligned_readout": response_extreme_training_aligned_readout,
         "direct_broad_family_demo_readiness": direct_broad_family_demo_readiness,
+        "model_free_demo_package": model_free_demo_package,
         "low_contrast_choice_family_gate": low_contrast_choice_family_gate,
         "low_contrast_choice_projected_gate": low_contrast_choice_projected_gate,
         "low_contrast_choice_seed_sensitivity": low_contrast_choice_seed_sensitivity,

@@ -755,6 +755,22 @@ cloud-aligned readout checks.
 
 Decision: this branch can support only a narrow model-free demo today. A trained anatomical-transfer demo still requires a direct fixed-family model arm or a new target/control branch that passes local and trained readout gates.
 
+## Model-Free Anatomical Transfer Demo Package
+
+`docs/model_free_anatomical_transfer_demo_package.md` is the current
+reproducible demo artifact.
+
+- decision: `package_model_free_demo`
+- model-free demo ready: `True`
+- trained-model demo ready: `False`
+- paid GPU trigger: `False`
+- supported claim: A narrow model-free cross-animal anatomical readout exists for post-error response-latency extremes using a fixed broad_named_anatomy aggregate.
+- unsupported claim: A trained neural foundation-model anatomical transfer signal is not yet supported: the A100 pilot and cloud-aligned local readout were negative.
+
+Reproduction commands are listed in the package doc. Use this as the
+current demo boundary until a direct fixed-family model arm or redesigned
+target/control passes local and trained readout gates.
+
 ## Composite Behavior Target Gate
 
 `docs/composite_behavior_target_family_gate.md` runs a bounded local
