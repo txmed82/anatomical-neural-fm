@@ -120,5 +120,35 @@ none
 
 No `runs/lso_csh_full_eval_centered_shared_parent_shuffle/summary.md`, `within_summary.md`, or
 `cross_summary.md` file was present when cleanup pushed artifacts. Treat this
-cloud result as incomplete/non-evidence even if the pod exit status is 0.
+cloud result as incomplete/non-canonical even if the pod exit status is 0.
 
+## Local Artifact Analysis
+
+The pod pushed partial diagnostics before cleanup. Seed 0 completed all three
+arms; seed 1 completed only `shared_baseline`. Local analysis with
+`scripts/analyze_leave_subject_out.py` produced:
+
+### Full Held-Out-Trial AUC and Delta vs Shared Null
+
+| holdout | arm | n_seeds | mean_full_AUC | mean_full_delta_vs_shared | seed_full_deltas |
+|---|---|---:|---:|---:|---|
+| CSH_ZAD_019 | region_only | 1 | 0.505 | -0.006 | -0.006 |
+| CSH_ZAD_019 | region_shuffle | 1 | 0.513 | +0.002 | +0.002 |
+
+### Recording-Centered Full-Trial AUC and Delta vs Shared Null
+
+| holdout | arm | n_seeds | mean_centered_AUC | mean_centered_delta_vs_shared | seed_centered_deltas |
+|---|---|---:|---:|---:|---|
+| CSH_ZAD_019 | region_only | 1 | 0.517 | +0.005 | +0.005 |
+| CSH_ZAD_019 | region_shuffle | 1 | 0.514 | +0.003 | +0.003 |
+
+### Paired True-vs-Shuffle Trial Gate
+
+| holdout | seed | paired_trials | true_prob_improved | threshold | verdict |
+|---|---:|---:|---:|---:|---|
+| CSH_ZAD_019 | 0 | 2726 | 0.513 | 0.550 | fail |
+
+Executable gate output was written to
+`docs/lso_csh_full_eval_centered_shared_parent_shuffle_gate.json` with
+`pass: false`. Treat this as weak negative partial evidence, not a successful
+cross-animal anatomical-transfer demo.

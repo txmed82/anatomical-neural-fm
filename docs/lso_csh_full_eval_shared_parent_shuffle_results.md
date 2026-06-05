@@ -171,13 +171,34 @@ Attempt 3:
   access, machine details, or a public IP. The hardened 300-second provisioning
   guard terminated the pod before training started.
 
+Attempt 4:
+
+- pod: `l999fy3799ni7b`
+- name: `anfm-csh-centered-l4-20260604-203923`
+- GPU request: `NVIDIA L4`
+- datacenter: `ANY`
+- rate: `$0.39/hr`
+- output root: `runs/lso_csh_full_eval_centered_shared_parent_shuffle`
+- result doc: `docs/lso_csh_full_eval_centered_shared_parent_shuffle_results.md`
+- sweep env: `FULL_EVAL_ON_BEST=1, SAVE_DIAGNOSTICS=1, BEST_METRIC=full_eval_centered_auc`
+- outcome: RunPod created the pod and assigned machine id `so5311pahl76`.
+  Repeated status polls showed no public IP and no usable machine details, so
+  the 300-second provisioning guard terminated it. S3/Git artifacts later
+  showed that the container did run partially despite the status API: seed 0
+  completed all three arms, seed 1 completed only the shared baseline, and the
+  cleanup pushed `docs/lso_csh_full_eval_centered_shared_parent_shuffle_results.md`
+  plus diagnostic JSONL files.
+
 During cleanup, an unexpected active project pod
 `9sb1b5aiqur37r` (`anfm-two-parent-compact-20260604-200502`) was visible and
 was terminated to enforce the budget cap. Final post-cleanup preflight reported
 `active_pods: 0`.
 
-No training ran and no `full_eval` CSH metrics were produced. Treat this as a
-RunPod provisioning failure, not experimental evidence.
+Attempts 1-3 produced no training evidence. Attempt 4 produced partial
+evidence, but it is not a canonical three-seed result and the executable gate
+failed: seed 0 had region-only centered AUC `0.517` vs shared `0.511`, full AUC
+`0.505` vs shared `0.511`, and true-vs-shuffle paired improvement `0.513`
+against the `0.550` threshold.
 
 Next launch should wait for healthier RunPod runtime provisioning or use a
 different cloud backend. Do not start more than one pod at a time, and keep the

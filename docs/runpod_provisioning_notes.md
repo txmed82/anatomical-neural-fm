@@ -144,18 +144,33 @@ updating; use logs/cache audit as the source of truth.
 
 ## Next Viable Paths
 
-1. Retry compact shard 0 when capacity is available, using
-   `manifests/ibl_bwm_region_matched_support80_best6_shard0_missing.json`
-   and compact build args only. This avoids the inline missing-list bug and
-   does not download/re-upload the three already cached shard-0 HDF5s.
-2. Make GHCR private-image pull work, or publish a reliable public image, then
-   repeat the startup smoke. The temporary `ttl.sh` image was pushed but did not
-   produce logs on earlier GPU attempts.
-3. Free at least `20-30 GiB` locally, then build data shards locally and upload
-   to `rppfvo6ifn`. The current local disk pressure makes this unsafe.
-4. If RunPod continues renting without provisioning, use another provider with
-   enough ephemeral disk for CPU data builds. GPU is not required for cache
-   construction.
+Latest CSH rerun attempt: `anfm-csh-centered-l4-20260604-203923`
+(`l999fy3799ni7b`) requested one `NVIDIA L4` with
+`BEST_METRIC=full_eval_centered_auc`, `FULL_EVAL_ON_BEST=1`, and
+`SAVE_DIAGNOSTICS=1`. RunPod rented the pod at `$0.39/hr` and assigned machine
+id `so5311pahl76`, but repeated status polls exposed no public IP or usable
+machine details. The 300-second provisioning guard terminated it; however,
+S3/Git artifacts later showed the container had run partially. Seed 0 completed
+all three arms and seed 1 completed only the shared baseline. Final preflight
+reported `active_pods: 0`.
 
-Do not resume model training until the cache is substantially complete and
-`scripts/plan_matched_region_manifest.py` passes the held-out support gate.
+The matched compact cache is complete for
+`manifests/ibl_bwm_region_matched_support80_best6.json`; the later cloud audit
+reported `Present: 28/28`. The partial CSH run is weak negative evidence, not a
+canonical result: seed 0 failed the executable gate with paired true-vs-shuffle
+improvement `0.513` against the `0.550` threshold.
+
+1. Retry the CSH centered-selection L4 command only after a clean
+   `active_pods: 0` preflight. Keep `--max-provision-seconds 300`, one pod at a
+   time, and `BEST_METRIC=full_eval_centered_auc`. Because the status API was
+   misleading on this attempt, use S3 log progress as the source of truth before
+   terminating a rented pod that has started uploading logs.
+2. If RunPod continues renting without usable runtime details, move the same
+   pushed-branch command to another provider with a hard runtime cap and enough
+   disk for the cached HDF5 download.
+3. Make GHCR private-image pull work, or publish a reliable public image, then
+   repeat a startup smoke before another paid training attempt. The temporary
+   `ttl.sh` image did not produce logs on earlier GPU attempts.
+
+Resume model training only with the complete compact cache, the matched-region
+manifest, and the executable CSH gate ready to run on the resulting artifacts.

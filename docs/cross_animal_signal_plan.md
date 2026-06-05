@@ -862,11 +862,21 @@ FULL_EVAL_ON_BEST=1 SAVE_DIAGNOSTICS=1 BEST_METRIC=full_eval_centered_auc \
   --sweep-env BEST_METRIC=full_eval_centered_auc
 ```
 
+RunPod retry note: the first L4 attempt using this exact centered selection
+configuration created pod `l999fy3799ni7b` at `$0.39/hr`. The status API never
+exposed usable runtime details or a public IP, so the 300-second provisioning
+guard terminated it, but S3/Git artifacts showed the container had partially
+run: seed 0 completed all three arms and seed 1 completed only the shared
+baseline. The partial seed-0 gate failed (`paired_true_prob_improved=0.513`
+against the `0.550` threshold; full AUC true `0.505` vs shared `0.511` and
+shuffle `0.513`). Treat this as weak negative partial evidence plus unreliable
+RunPod status reporting, not a canonical three-seed result.
+
 After cleanup, run:
 
 ```bash
 uv run python scripts/check_lso_demo_gate.py \
-  runs/lso_csh_full_eval_shared_parent_shuffle \
+  runs/lso_csh_full_eval_centered_shared_parent_shuffle \
   --holdout CSH_ZAD_019 \
-  --out docs/lso_csh_full_eval_shared_parent_shuffle_gate.json
+  --out docs/lso_csh_full_eval_centered_shared_parent_shuffle_gate.json
 ```
