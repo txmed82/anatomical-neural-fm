@@ -392,6 +392,18 @@ probe00) keeps 9/14 bidirectional observations but drops target1 to `0.530`;
 the KS014 selections drop both validation targets below gate. Decision:
 recording-subset narrowing is not a credible demo path under the current cache.
 
+Manifest feasibility audit:
+`docs/manifest_target_anatomy_feasibility.md` checks whether the current
+HDF5-backed manifests are at least capable of supporting a redesigned local
+benchmark. The 28-recording support80 HDF5 manifest passes basic target balance
+for all four target modes (`choice`, `stimulus_side`, `feedback`, and
+`prior_side`) with 28/28 eligible recordings, and has four anatomical families
+passing the shared-support floor across all seven subjects: broad named
+anatomy, thalamic, hippocampal formation, and fiber tracts. Decision: the
+current manifest is not the immediate bottleneck. The next no-spend branch
+should test specific shared-family target/control designs under the
+recording-bidirectional gate.
+
 Recording-centered feature check:
 `docs/model_free_recording_bidirectional_gate_recording_centered.md` subtracts
 each recording's own mean parent-region feature vector before ridge fitting.

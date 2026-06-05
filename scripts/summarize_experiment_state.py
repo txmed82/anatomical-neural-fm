@@ -103,6 +103,7 @@ MATCHED_REGION_S3_PRESENT_SUPPORT80_HDF5_FILE = (
 MATCHED_REGION_S3_PRESENT_SUPPORT80_HDF5_ITERATIVE_FILE = (
     "manifests/ibl_bwm_region_matched_candidates_s3_present_support80_hdf5_iterative_pass.json"
 )
+MANIFEST_TARGET_ANATOMY_FEASIBILITY_FILE = "docs/manifest_target_anatomy_feasibility.json"
 MODEL_FREE_MATCHED_SUPPORT80_PANEL_FILE = "docs/model_free_matched_support80_hdf5_panel.json"
 MODEL_FREE_POSITIVE_HOLDOUTS_MECHANISM_FILE = "docs/model_free_positive_holdouts_mechanism.json"
 MODEL_FREE_RECORDING_BIDIRECTIONAL_GATE_FILE = "docs/model_free_recording_bidirectional_gate.json"
@@ -427,6 +428,7 @@ def render_markdown(
     matched_support80: dict | None = None,
     matched_support80_hdf5: dict | None = None,
     matched_support80_hdf5_iterative: dict | None = None,
+    manifest_target_anatomy_feasibility: dict | None = None,
     model_free_matched_panel: dict | None = None,
     model_free_positive_holdouts: dict | None = None,
     model_free_recording_bidirectional_gate: dict | None = None,
@@ -949,6 +951,37 @@ def render_markdown(
                 "collapses to 2 subjects. Do not claim a clean broad benchmark from this "
                 "panel. Treat `SWC_043` as a known weak-support holdout in any bounded "
                 "training gate, or run another no-spend/model-free screen before spending."
+            ),
+            "",
+        ]
+    if manifest_target_anatomy_feasibility is not None:
+        lines += [
+            "## Manifest Target/Anatomy Feasibility Audit",
+            "",
+            "`docs/manifest_target_anatomy_feasibility.md` checks whether current",
+            "HDF5-backed manifests have balanced within-recording trials for each",
+            "target mode and enough shared anatomical family support for a benchmark",
+            "redesign.",
+            "",
+            "| manifest | recordings | subjects | promotable targets | shared families | decision |",
+            "|---|---:|---:|---|---:|---|",
+        ]
+        for manifest in manifest_target_anatomy_feasibility.get("manifests", []):
+            lines.append(
+                f"| {manifest['label']} | {manifest['n_recordings']} | "
+                f"{manifest['n_subjects']} | "
+                f"{', '.join(manifest['promotable_targets']) or 'none'} | "
+                f"{manifest['anatomy']['n_families_all_subjects_pass']} | "
+                f"`{manifest['decision']}` |"
+            )
+        lines += [
+            "",
+            (
+                "Decision: the current full matched manifest is feasible enough for "
+                "another local target/control redesign. The next branch should focus on "
+                "specific shared families such as thalamic, hippocampal formation, and "
+                "fiber tracts under the same recording-bidirectional gate, not on GPU "
+                "training or recording-subset narrowing."
             ),
             "",
         ]
@@ -1522,6 +1555,9 @@ def main() -> int:
     matched_support80_hdf5_iterative = read_support_manifest_summary(
         REPO_ROOT / MATCHED_REGION_S3_PRESENT_SUPPORT80_HDF5_ITERATIVE_FILE
     )
+    manifest_target_anatomy_feasibility = read_mechanism_audit(
+        REPO_ROOT / MANIFEST_TARGET_ANATOMY_FEASIBILITY_FILE
+    )
     model_free_matched_panel = read_mechanism_audit(REPO_ROOT / MODEL_FREE_MATCHED_SUPPORT80_PANEL_FILE)
     model_free_positive_holdouts = read_mechanism_audit(REPO_ROOT / MODEL_FREE_POSITIVE_HOLDOUTS_MECHANISM_FILE)
     model_free_recording_bidirectional_gate = read_mechanism_audit(
@@ -1599,6 +1635,7 @@ def main() -> int:
         matched_support80,
         matched_support80_hdf5,
         matched_support80_hdf5_iterative,
+        manifest_target_anatomy_feasibility,
         model_free_matched_panel,
         model_free_positive_holdouts,
         model_free_recording_bidirectional_gate,
@@ -1673,6 +1710,7 @@ def main() -> int:
                 "source": display_path(matched_support80_hdf5_iterative["source"])
             }
         ),
+        "manifest_target_anatomy_feasibility": manifest_target_anatomy_feasibility,
         "model_free_matched_support80_panel": model_free_matched_panel,
         "model_free_positive_holdouts_mechanism": model_free_positive_holdouts,
         "model_free_recording_bidirectional_gate": model_free_recording_bidirectional_gate,

@@ -1463,6 +1463,16 @@ This rules out the simplest "make a demo subset from currently promising
 recordings" path. Next local work should change the target/control definition
 or matched manifest construction, not keep narrowing the same cache.
 
+Manifest feasibility audit:
+`scripts/audit_manifest_target_anatomy_feasibility.py` checks the other side of
+that fork. The current 28-recording HDF5 support80 manifest is feasible at the
+basic data level: every recording has at least 40 trials per class for all four
+available target modes, and four anatomical families clear the shared support
+floor across all seven subjects. That means the next iteration should not start
+by renting a GPU or fetching a new manifest. It should define a stricter
+shared-family target/control screen using thalamic, hippocampal formation, and
+fiber-tract families, then require the same recording-bidirectional local gate.
+
 Recording-centered feature check:
 The gate also supports `--feature-mode recording_centered`, which subtracts
 each recording's mean parent-region feature vector before fitting. This reduces

@@ -247,6 +247,20 @@ scoring is a planning gate; HDF5 scoring is the stronger pre-training check.
 
 Decision: the HDF5-confirmed 28-recording panel is close but not clean at `6/7` support80 subjects, while the strict iterative all-pass filter collapses to 2 subjects. Do not claim a clean broad benchmark from this panel. Treat `SWC_043` as a known weak-support holdout in any bounded training gate, or run another no-spend/model-free screen before spending.
 
+## Manifest Target/Anatomy Feasibility Audit
+
+`docs/manifest_target_anatomy_feasibility.md` checks whether current
+HDF5-backed manifests have balanced within-recording trials for each
+target mode and enough shared anatomical family support for a benchmark
+redesign.
+
+| manifest | recordings | subjects | promotable targets | shared families | decision |
+|---|---:|---:|---|---:|---|
+| support80_hdf5_scored | 28 | 7 | choice, stimulus_side, feedback, prior_side | 4 | `manifest_has_target_and_family_feasibility` |
+| support80_hdf5_iterative_pass | 8 | 2 | choice, stimulus_side, feedback, prior_side | 7 | `manifest_has_target_and_family_feasibility` |
+
+Decision: the current full matched manifest is feasible enough for another local target/control redesign. The next branch should focus on specific shared families such as thalamic, hippocampal formation, and fiber tracts under the same recording-bidirectional gate, not on GPU training or recording-subset narrowing.
+
 ## Matched-Region Model-Free Panel
 
 `docs/model_free_matched_support80_hdf5_panel.md` runs the closed-form
