@@ -106,6 +106,7 @@ MATCHED_REGION_S3_PRESENT_SUPPORT80_HDF5_ITERATIVE_FILE = (
 MODEL_FREE_MATCHED_SUPPORT80_PANEL_FILE = "docs/model_free_matched_support80_hdf5_panel.json"
 MODEL_FREE_POSITIVE_HOLDOUTS_MECHANISM_FILE = "docs/model_free_positive_holdouts_mechanism.json"
 MODEL_FREE_RECORDING_BIDIRECTIONAL_GATE_FILE = "docs/model_free_recording_bidirectional_gate.json"
+MODEL_FREE_RECORDING_BIDIRECTIONAL_FRACTIONS_FILE = "docs/model_free_recording_bidirectional_gate_fractions.json"
 MODEL_FREE_RECORDING_BIDIRECTIONAL_PRIOR_FILE = "docs/model_free_recording_bidirectional_gate_prior_side.json"
 MODEL_FREE_RECORDING_BIDIRECTIONAL_FEEDBACK_FILE = "docs/model_free_recording_bidirectional_gate_feedback.json"
 LOCAL_PROBE_FILES = (
@@ -395,6 +396,7 @@ def render_markdown(
     model_free_matched_panel: dict | None = None,
     model_free_positive_holdouts: dict | None = None,
     model_free_recording_bidirectional_gate: dict | None = None,
+    model_free_recording_bidirectional_fractions: dict | None = None,
     model_free_recording_bidirectional_prior: dict | None = None,
     model_free_recording_bidirectional_feedback: dict | None = None,
 ) -> str:
@@ -1012,6 +1014,27 @@ def render_markdown(
             ),
             "",
         ]
+    if model_free_recording_bidirectional_fractions is not None:
+        summary = model_free_recording_bidirectional_fractions["summary"]
+        lines += [
+            "## Region-Fraction Feature Gate",
+            "",
+            "`docs/model_free_recording_bidirectional_gate_fractions.md` reruns the",
+            "same recording-bidirectional gate after normalizing each trial's parent-region",
+            "spike counts to fractions of that trial's total spikes.",
+            "",
+            f"- candidates: `{summary['n_candidates']}/{summary['n_holdouts']}`",
+            f"- positive centered-delta holdouts: `{summary['n_positive_delta_holdouts']}/{summary['n_holdouts']}`",
+            f"- mean bidirectional recording fraction: `{summary['mean_bidirectional_recording_fraction']:.3f}`",
+            f"- decision: `{summary['decision']}`",
+            "",
+            (
+                "Decision: simple region-composition normalization does not rescue the "
+                "anatomical feature branch. It creates three positive centered-delta "
+                "holdouts, but all are one-sided and have `0/4` bidirectional recordings."
+            ),
+            "",
+        ]
     alternative_target_gates = [
         row for row in [
             model_free_recording_bidirectional_prior,
@@ -1100,6 +1123,9 @@ def main() -> int:
     model_free_recording_bidirectional_gate = read_mechanism_audit(
         REPO_ROOT / MODEL_FREE_RECORDING_BIDIRECTIONAL_GATE_FILE
     )
+    model_free_recording_bidirectional_fractions = read_mechanism_audit(
+        REPO_ROOT / MODEL_FREE_RECORDING_BIDIRECTIONAL_FRACTIONS_FILE
+    )
     model_free_recording_bidirectional_prior = read_mechanism_audit(
         REPO_ROOT / MODEL_FREE_RECORDING_BIDIRECTIONAL_PRIOR_FILE
     )
@@ -1134,6 +1160,7 @@ def main() -> int:
         model_free_matched_panel,
         model_free_positive_holdouts,
         model_free_recording_bidirectional_gate,
+        model_free_recording_bidirectional_fractions,
         model_free_recording_bidirectional_prior,
         model_free_recording_bidirectional_feedback,
     ))
@@ -1193,6 +1220,7 @@ def main() -> int:
         "model_free_matched_support80_panel": model_free_matched_panel,
         "model_free_positive_holdouts_mechanism": model_free_positive_holdouts,
         "model_free_recording_bidirectional_gate": model_free_recording_bidirectional_gate,
+        "model_free_recording_bidirectional_fractions": model_free_recording_bidirectional_fractions,
         "model_free_recording_bidirectional_prior_side": model_free_recording_bidirectional_prior,
         "model_free_recording_bidirectional_feedback": model_free_recording_bidirectional_feedback,
     }, indent=2, sort_keys=True) + "\n")

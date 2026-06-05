@@ -20,6 +20,7 @@ from audit_model_free_region_signal import (  # noqa: E402
     make_feature_matrix,
     summarize_results,
     total_spike_feature,
+    transform_region_features,
     zscore_train_eval,
 )
 from train import (  # noqa: E402
@@ -142,6 +143,10 @@ def audit_holdout(args: argparse.Namespace, holdout: str) -> dict:
         seed=args.seed,
         window_len=args.window_len,
     )
+    train_model_x = transform_region_features(train_true_x, args.feature_mode)
+    eval_model_x = transform_region_features(eval_true_x, args.feature_mode)
+    train_shuffle_model_x = transform_region_features(train_shuffle_x, args.feature_mode)
+    eval_shuffle_model_x = transform_region_features(eval_shuffle_x, args.feature_mode)
     results = {
         "total_spikes": evaluate_feature_set(
             name="total_spikes",
@@ -154,18 +159,18 @@ def audit_holdout(args: argparse.Namespace, holdout: str) -> dict:
         ),
         "region_true": evaluate_feature_set(
             name="region_true",
-            train_x=train_true_x,
+            train_x=train_model_x,
             train_y=train_y,
-            eval_x=eval_true_x,
+            eval_x=eval_model_x,
             eval_y=eval_y,
             eval_recording_ids=eval_recordings,
             l2=args.l2,
         ),
         "region_shuffle": evaluate_feature_set(
             name="region_shuffle",
-            train_x=train_shuffle_x,
+            train_x=train_shuffle_model_x,
             train_y=train_y,
-            eval_x=eval_shuffle_x,
+            eval_x=eval_shuffle_model_x,
             eval_y=eval_y,
             eval_recording_ids=eval_recordings,
             l2=args.l2,
@@ -180,6 +185,7 @@ def audit_holdout(args: argparse.Namespace, holdout: str) -> dict:
         "holdout": holdout,
         "train_subjects": split.train_subjects,
         "target_mode": args.target_mode,
+        "feature_mode": args.feature_mode,
         "region_granularity": args.region_granularity,
         "n_train_trials": len(train_trials),
         "n_eval_trials": len(eval_trials),
@@ -270,6 +276,7 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--holdout", nargs="+", default=["KS014", "NR_0019"])
     parser.add_argument("--target-mode", default="stimulus_side", choices=["choice", "stimulus_side", "feedback", "prior_side"])
+    parser.add_argument("--feature-mode", default="counts", choices=["counts", "fractions"])
     parser.add_argument("--region-granularity", default="parent", choices=["fine", "parent", "grandparent"])
     parser.add_argument("--window-len", type=float, default=1.0)
     parser.add_argument("--seed", type=int, default=0)

@@ -101,6 +101,17 @@ def total_spike_feature(region_features: np.ndarray) -> np.ndarray:
     return region_features.sum(axis=1, keepdims=True)
 
 
+def transform_region_features(region_features: np.ndarray, feature_mode: str) -> np.ndarray:
+    if feature_mode == "counts":
+        return region_features
+    if feature_mode == "fractions":
+        totals = total_spike_feature(region_features).astype(np.float32)
+        out = np.zeros_like(region_features, dtype=np.float32)
+        np.divide(region_features, totals, out=out, where=totals > 0.0)
+        return out
+    raise ValueError(f"unknown feature_mode {feature_mode!r}")
+
+
 def zscore_train_eval(train_x: np.ndarray, eval_x: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
     mean = train_x.mean(axis=0, keepdims=True)
     std = train_x.std(axis=0, keepdims=True)
@@ -281,6 +292,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--manifest", type=Path, default=REPO_ROOT / "manifests/ibl_bwm_region_matched_support80_best6.json")
     parser.add_argument("--holdout", nargs="*", default=["CSH_ZAD_019"])
     parser.add_argument("--target-mode", default="stimulus_side", choices=["choice", "stimulus_side", "feedback", "prior_side"])
+    parser.add_argument("--feature-mode", default="counts", choices=["counts", "fractions"])
     parser.add_argument("--region-granularity", default="parent", choices=["fine", "parent", "grandparent"])
     parser.add_argument("--window-len", type=float, default=1.0)
     parser.add_argument("--seed", type=int, default=0)
@@ -340,6 +352,10 @@ def main() -> int:
         seed=args.seed,
         window_len=args.window_len,
     )
+    train_model_x = transform_region_features(train_true_x, args.feature_mode)
+    eval_model_x = transform_region_features(eval_true_x, args.feature_mode)
+    train_shuffle_model_x = transform_region_features(train_shuffle_x, args.feature_mode)
+    eval_shuffle_model_x = transform_region_features(eval_shuffle_x, args.feature_mode)
 
     results = {
         "total_spikes": evaluate_feature_set(
@@ -353,18 +369,18 @@ def main() -> int:
         ),
         "region_true": evaluate_feature_set(
             name="region_true",
-            train_x=train_true_x,
+            train_x=train_model_x,
             train_y=train_y,
-            eval_x=eval_true_x,
+            eval_x=eval_model_x,
             eval_y=eval_y,
             eval_recording_ids=eval_recordings,
             l2=args.l2,
         ),
         "region_shuffle": evaluate_feature_set(
             name="region_shuffle",
-            train_x=train_shuffle_x,
+            train_x=train_shuffle_model_x,
             train_y=train_y,
-            eval_x=eval_shuffle_x,
+            eval_x=eval_shuffle_model_x,
             eval_y=eval_y,
             eval_recording_ids=eval_recordings,
             l2=args.l2,
@@ -377,6 +393,7 @@ def main() -> int:
         "holdout": split.holdout_subjects,
         "train_subjects": split.train_subjects,
         "target_mode": args.target_mode,
+        "feature_mode": args.feature_mode,
         "region_granularity": args.region_granularity,
         "window_len": args.window_len,
         "seed": args.seed,

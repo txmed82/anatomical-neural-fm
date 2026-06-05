@@ -319,3 +319,14 @@ has zero candidates and mean bidirectional recording fraction `0.000`; its
 positive deltas are strongly class-directional, for example `SWC_043` target0
 `0.000` and target1 `1.000`. Decision: these alternative behavioral targets
 do not justify GPU training either.
+
+Region-fraction feature check:
+`docs/model_free_recording_bidirectional_gate_fractions.md` reruns the
+stimulus-side matched-panel gate after normalizing each trial's parent-region
+spike counts to fractions of total spikes. This tests whether raw rate/total
+spike scale was masking an anatomical composition signal. It still finds zero
+candidates and mean bidirectional recording fraction `0.000`. `KS014`,
+`NR_0019`, and `SWC_043` have positive centered deltas, but each has `0/4`
+bidirectional recordings and the gains remain one target direction. Decision:
+simple region-composition normalization is not enough; the next local branch
+needs a different anatomical control or feature family, not GPU training.

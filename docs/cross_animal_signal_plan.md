@@ -1386,3 +1386,15 @@ artifacts. This closes the cheap alternative-target branch available in the
 current cached trial schema. The next no-spend step should change the
 anatomical control or feature representation, not launch GPU training on a new
 target.
+
+Region-fraction feature check:
+`scripts/audit_model_free_region_signal.py` and the recording-bidirectional
+gate now support `--feature-mode fractions`, which normalizes each trial's
+parent-region spike counts to composition fractions before ridge fitting. This
+tests whether raw total-spike/rate scale was hiding a transferable anatomical
+composition signal. It does not pass: the stimulus-side fractions gate has
+zero candidates, mean bidirectional recording fraction `0.000`, and all three
+positive centered-delta holdouts (`KS014`, `NR_0019`, `SWC_043`) remain
+one-sided with `0/4` bidirectional recordings. This closes the simple
+normalization branch; the next no-spend branch should test a different
+anatomical control or feature family rather than a GPU run.

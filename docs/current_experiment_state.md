@@ -308,6 +308,19 @@ that same recording.
 
 Decision: this closes the weak-positive loophole for the current matched panel. Only `NYU-12` has even one bidirectional held-out recording, and it still has negative centered true-minus-shuffle AUC. Do not spend on training until a new target/control produces at least one local pass under this recording-bidirectional gate.
 
+## Region-Fraction Feature Gate
+
+`docs/model_free_recording_bidirectional_gate_fractions.md` reruns the
+same recording-bidirectional gate after normalizing each trial's parent-region
+spike counts to fractions of that trial's total spikes.
+
+- candidates: `0/7`
+- positive centered-delta holdouts: `3/7`
+- mean bidirectional recording fraction: `0.000`
+- decision: `no_recording_bidirectional_model_free_signal`
+
+Decision: simple region-composition normalization does not rescue the anatomical feature branch. It creates three positive centered-delta holdouts, but all are one-sided and have `0/4` bidirectional recordings.
+
 ## Alternative Target Bidirectional Gates
 
 Two additional trial targets exposed by the cached IBL trials were tested

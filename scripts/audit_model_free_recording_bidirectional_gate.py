@@ -145,6 +145,7 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--holdout", nargs="*", default=None)
     parser.add_argument("--target-mode", default="stimulus_side", choices=["choice", "stimulus_side", "feedback", "prior_side"])
+    parser.add_argument("--feature-mode", default="counts", choices=["counts", "fractions"])
     parser.add_argument("--region-granularity", default="parent", choices=["fine", "parent", "grandparent"])
     parser.add_argument("--window-len", type=float, default=1.0)
     parser.add_argument("--seed", type=int, default=0)
@@ -188,6 +189,7 @@ def main() -> int:
     report = {
         "manifest": str(args.manifest),
         "target_mode": args.target_mode,
+        "feature_mode": args.feature_mode,
         "region_granularity": args.region_granularity,
         "thresholds": {
             "min_centered_delta": args.min_centered_delta,
