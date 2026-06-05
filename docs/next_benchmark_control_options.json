@@ -3,6 +3,7 @@
     "behavior_cache_preflight": "docs/behavior_cache_preflight.json",
     "contextual_target_family": "docs/contextual_target_family_gate.json",
     "derived_target_family": "docs/derived_target_family_gate.json",
+    "external_manifest_acquisition_gap": "docs/external_manifest_acquisition_gap.json",
     "family_alt_feedback": "docs/model_free_family_bidirectional_gate_feedback_recording_centered.json",
     "family_alt_prior": "docs/model_free_family_bidirectional_gate_prior_side_recording_centered.json",
     "iterative_manifest": "docs/shared_family_iterative_manifest_gate.json",
@@ -20,12 +21,13 @@
       "evidence": [
         "current 28-recording manifest is feasible but not clean enough to pass the local gate",
         "local cached manifest candidate audit found 0 new candidate panels across 31 local recordings (local_expansion_support_gap)",
+        "external acquisition gap audit identifies 7 missing HDF5 recordings for 2 support-qualified subjects, projecting 31 recordings across 8 subjects",
         "strict iterative 8-recording manifest has 0 candidates and max bidir 0.250",
         "recording-subset replication selected zero stable validation rows"
       ],
       "gpu_trigger": "At least one local row on the proposed manifest must clear delta_vs_shuffle>=0, delta_vs_total>=0, target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75 before training.",
       "name": "new manifest with prospective bidirectional support",
-      "next_action": "The local cache expansion does not create a supported panel; build or fetch a broader manifest only with a prospective target/family support rule, then run the same local model-free gate before training.",
+      "next_action": "The local cache expansion does not create a supported panel; build or fetch the external support80 missing-HDF5 set, then rerun the local manifest candidate audit and the same model-free gate before training.",
       "priority": 1,
       "status": "recommended_next"
     },

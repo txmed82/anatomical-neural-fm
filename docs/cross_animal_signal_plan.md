@@ -1485,6 +1485,19 @@ already-tested 28-recording support80 manifest. This keeps the next branch
 no-spend, but points it toward a broader external selection rule or different
 target/control definition rather than the local expansion.
 
+External manifest acquisition gap audit:
+`scripts/audit_external_manifest_acquisition_gap.py` compares the 47-recording
+S3-present metadata-scored manifest against local HDF5 coverage. It identifies
+two support-qualified subjects that are missing locally: `CSHL045` with 4
+recordings and unit-support `0.852`, and `ZFM-01577` with 3 recordings and
+unit-support `0.841`. The audit writes
+`manifests/ibl_bwm_external_support80_missing_hdf5.json` for those 7 missing
+HDF5s and `manifests/ibl_bwm_external_support80_projected_hdf5.json` for the
+projected 31-recording, 8-subject support-qualified panel. This is the next
+data-acquisition target, not a training trigger. After those HDF5s exist,
+rerun the local manifest candidate audit and the model-free promotion gate
+before any A100 run.
+
 Shared-family target/control gate:
 `scripts/audit_shared_family_target_control_gate.py` runs that screen. It tests
 four feasible families across `choice`, `stimulus_side`, `feedback`, and
@@ -1570,12 +1583,13 @@ Next benchmark/control options audit:
 audits into a ranked plan. After the direct derived-target and contextual
 trial-state screens, the behavior-cache rebuild, and the wheel-derived target
 screen, and the local cached manifest expansion check, it now recommends a
-broader manifest with prospective bidirectional support as the next branch. It
-closes more feature/L2 sweeps, further narrowing of the current manifest,
-recording-subset selection, the current shared-family grid, cached alternative
-targets, direct cached-field derived targets, contextual cached trial-state
-targets, wheel-derived targets, source-target narrowing, and the current local
-cache expansion as GPU triggers. The only training trigger remains a local row with
+broader manifest with prospective bidirectional support as the next branch:
+specifically, the 7 missing HDF5s for `CSHL045` and `ZFM-01577`. It closes more
+feature/L2 sweeps, further narrowing of the current manifest, recording-subset
+selection, the current shared-family grid, cached alternative targets, direct
+cached-field derived targets, contextual cached trial-state targets,
+wheel-derived targets, source-target narrowing, and the current local cache
+expansion as GPU triggers. The only training trigger remains a local row with
 delta_vs_shuffle>=`0`, delta_vs_total>=`0`, target0>=`0.55`,
 target1>=`0.55`, and bidirectional_recording_fraction>=`0.75`.
 

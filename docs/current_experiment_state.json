@@ -17023,6 +17023,793 @@
       "min_total_delta": 0.0
     }
   },
+  "external_manifest_acquisition_gap": {
+    "broad_manifest": "/Users/colin/Desktop/Projects/anatomical-neural-fm/manifests/ibl_bwm_region_matched_candidates_s3_present_scored.json",
+    "local_candidates": "/Users/colin/Desktop/Projects/anatomical-neural-fm/docs/local_cached_manifest_candidates.json",
+    "missing_manifest": {
+      "dataset": "ibl_bwm",
+      "labs": [
+        "churchlandlab",
+        "mainenlab"
+      ],
+      "n_recordings": 7,
+      "n_subjects": 2,
+      "project": "anatomical-neural-fm",
+      "recordings": [
+        {
+          "alignment_qc": 0.8139344262295082,
+          "insertion_id": "e070023a-2a5d-4398-ad66-f9ed5d517ad1",
+          "lab": "churchlandlab",
+          "n_units_meta": 610,
+          "probe_name": "probe01",
+          "qc": "PASS",
+          "session_id": "7939711b-8b4d-4251-b698-b97c1eaa846e",
+          "start_time": "2020-02-28T10:07:18",
+          "subject_id": "CSHL045",
+          "task_protocol": "_iblrig_tasks_ephysChoiceWorld6.4.0"
+        },
+        {
+          "alignment_qc": 0.9131578947368421,
+          "insertion_id": "53b58cc3-8d88-4257-aa63-48da088f2091",
+          "lab": "churchlandlab",
+          "n_units_meta": 383,
+          "probe_name": "probe01",
+          "qc": "PASS",
+          "session_id": "dfd8e7df-dc51-4589-b6ca-7baccfeb94b4",
+          "start_time": "2020-02-25T09:53:24",
+          "subject_id": "CSHL045",
+          "task_protocol": "_iblrig_tasks_ephysChoiceWorld6.2.5"
+        },
+        {
+          "alignment_qc": 0.9554579673776662,
+          "insertion_id": "61ed1a53-2f33-4a83-82ba-ec7dfa65bf60",
+          "lab": "mainenlab",
+          "n_units_meta": 797,
+          "probe_name": "probe01",
+          "qc": "PASS",
+          "session_id": "5d6aa933-4b00-4e99-ae2d-5003657592e9",
+          "start_time": "2020-10-29T15:38:41",
+          "subject_id": "ZFM-01577",
+          "task_protocol": "_iblrig_tasks_ephysChoiceWorld6.4.2"
+        },
+        {
+          "alignment_qc": 0.9145658263305322,
+          "insertion_id": "00a824c0-e060-495f-9ebc-79c82fef4c67",
+          "lab": "churchlandlab",
+          "n_units_meta": 365,
+          "probe_name": "probe00",
+          "qc": "PASS",
+          "session_id": "fa704052-147e-46f6-b190-a65b837e605e",
+          "start_time": "2020-02-26T14:48:55",
+          "subject_id": "CSHL045",
+          "task_protocol": "_iblrig_tasks_ephysChoiceWorld6.2.5"
+        },
+        {
+          "alignment_qc": 1.0,
+          "insertion_id": "bbf6a51e-2999-4982-803f-8769db095dd2",
+          "lab": "mainenlab",
+          "n_units_meta": 576,
+          "probe_name": "probe00",
+          "qc": "PASS",
+          "session_id": "63f3dbc1-1a5f-44e5-98dd-ce25cd2b7871",
+          "start_time": "2020-10-30T16:41:20.275756",
+          "subject_id": "ZFM-01577",
+          "task_protocol": "_iblrig_tasks_ephysChoiceWorld6.4.2"
+        },
+        {
+          "alignment_qc": 0.8625,
+          "insertion_id": "5e84c8e7-236f-4a64-a944-dc4a17c64f1d",
+          "lab": "churchlandlab",
+          "n_units_meta": 320,
+          "probe_name": "probe01",
+          "qc": "PASS",
+          "session_id": "034e726f-b35f-41e0-8d6c-a22cc32391fb",
+          "start_time": "2020-02-24T14:41:02",
+          "subject_id": "CSHL045",
+          "task_protocol": "_iblrig_tasks_ephysChoiceWorld6.2.5"
+        },
+        {
+          "alignment_qc": 0.871841155234657,
+          "insertion_id": "b78b3c42-eee5-47c6-9717-743b78c0b721",
+          "lab": "mainenlab",
+          "n_units_meta": 554,
+          "probe_name": "probe00",
+          "qc": "PASS",
+          "session_id": "09b2c4d1-058d-4c84-9fd4-97530f85baf6",
+          "start_time": "2020-10-28T15:04:48",
+          "subject_id": "ZFM-01577",
+          "task_protocol": "_iblrig_tasks_ephysChoiceWorld6.4.2"
+        }
+      ],
+      "selection": {
+        "label": "external_support80_missing_hdf5",
+        "note": "Support-qualified broad-manifest recordings missing from local HDF5 cache.",
+        "source_manifest": "/Users/colin/Desktop/Projects/anatomical-neural-fm/manifests/ibl_bwm_region_matched_candidates_s3_present_scored.json"
+      }
+    },
+    "n_broad_recordings": 47,
+    "n_broad_subjects": 12,
+    "n_local_hdf5_recordings_in_broad_manifest": 28,
+    "projected_manifest": {
+      "dataset": "ibl_bwm",
+      "labs": [
+        "angelakilab",
+        "churchlandlab",
+        "churchlandlab_ucla",
+        "cortexlab",
+        "mainenlab",
+        "mrsicflogellab",
+        "steinmetzlab",
+        "zadorlab"
+      ],
+      "n_recordings": 31,
+      "n_subjects": 8,
+      "project": "anatomical-neural-fm",
+      "recordings": [
+        {
+          "alignment_qc": 0.7947510094212651,
+          "insertion_id": "c893c0a3-5597-49cf-baa1-60efdfdef542",
+          "lab": "angelakilab",
+          "n_units_meta": 743,
+          "probe_name": "probe01",
+          "qc": "PASS",
+          "session_id": "b182b754-3c3e-4942-8144-6ee790926b58",
+          "start_time": "2020-01-21T15:25:45",
+          "subject_id": "NYU-12",
+          "task_protocol": "_iblrig_tasks_ephysChoiceWorld6.2.5"
+        },
+        {
+          "alignment_qc": 0.8139344262295082,
+          "insertion_id": "e070023a-2a5d-4398-ad66-f9ed5d517ad1",
+          "lab": "churchlandlab",
+          "n_units_meta": 610,
+          "probe_name": "probe01",
+          "qc": "PASS",
+          "session_id": "7939711b-8b4d-4251-b698-b97c1eaa846e",
+          "start_time": "2020-02-28T10:07:18",
+          "subject_id": "CSHL045",
+          "task_protocol": "_iblrig_tasks_ephysChoiceWorld6.4.0"
+        },
+        {
+          "alignment_qc": 0.9606467358145211,
+          "insertion_id": "17fa2600-6349-4b6f-a7e4-d8ea5558fa12",
+          "lab": "churchlandlab_ucla",
+          "n_units_meta": 917,
+          "probe_name": "probe00",
+          "qc": "PASS",
+          "session_id": "3f71aa98-08c6-4e79-b4c8-00eae4f03eff",
+          "start_time": "2023-08-25T14:36:44",
+          "subject_id": "MFD_06",
+          "task_protocol": "_iblrig_tasks_ephysChoiceWorld"
+        },
+        {
+          "alignment_qc": 1.0,
+          "insertion_id": "53ecbf4f-e0d8-4fe6-a852-8b934a37a1c2",
+          "lab": "cortexlab",
+          "n_units_meta": 1548,
+          "probe_name": "probe00",
+          "qc": "PASS",
+          "session_id": "16693458-0801-4d35-a3f1-9115c7e5acfd",
+          "start_time": "2019-12-03T15:07:41.216000",
+          "subject_id": "KS014",
+          "task_protocol": "_iblrig_tasks_ephysChoiceWorld6.1.3"
+        },
+        {
+          "alignment_qc": 0.9859022556390977,
+          "insertion_id": "749cb2b7-e57e-4453-a794-f6230e4d0226",
+          "lab": "mrsicflogellab",
+          "n_units_meta": 822,
+          "probe_name": "probe01",
+          "qc": "PASS",
+          "session_id": "4d8c7767-981c-4347-8e5e-5d5fffe38534",
+          "start_time": "2020-07-30T17:47:20.137580",
+          "subject_id": "SWC_038",
+          "task_protocol": "_iblrig_tasks_ephysChoiceWorld6.4.1"
+        },
+        {
+          "alignment_qc": 0.8949652777777778,
+          "insertion_id": "335d689e-4d98-4532-b01b-7f7da89863c4",
+          "lab": "steinmetzlab",
+          "n_units_meta": 576,
+          "probe_name": "probe00",
+          "qc": "PASS",
+          "session_id": "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9",
+          "start_time": "2022-05-03T15:04:48.713692",
+          "subject_id": "NR_0019",
+          "task_protocol": "_iblrig_tasks_ephysChoiceWorld6.5.3"
+        },
+        {
+          "alignment_qc": 0.8590801886792453,
+          "insertion_id": "b4131145-9675-4433-88e1-9ae016c701dd",
+          "lab": "zadorlab",
+          "n_units_meta": 848,
+          "probe_name": "probe00",
+          "qc": "PASS",
+          "session_id": "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c",
+          "start_time": "2020-08-16T07:39:40",
+          "subject_id": "CSH_ZAD_019",
+          "task_protocol": "_iblrig_tasks_ephysChoiceWorld6.4.1"
+        },
+        {
+          "alignment_qc": 0.765625,
+          "insertion_id": "1e176f17-d00f-49bb-87ff-26d237b525f1",
+          "lab": "angelakilab",
+          "n_units_meta": 478,
+          "probe_name": "probe00",
+          "qc": "PASS",
+          "session_id": "a8a8af78-16de-4841-ab07-fde4b5281a03",
+          "start_time": "2020-01-22T15:39:54",
+          "subject_id": "NYU-12",
+          "task_protocol": "_iblrig_tasks_ephysChoiceWorld6.2.5"
+        },
+        {
+          "alignment_qc": 0.9131578947368421,
+          "insertion_id": "53b58cc3-8d88-4257-aa63-48da088f2091",
+          "lab": "churchlandlab",
+          "n_units_meta": 383,
+          "probe_name": "probe01",
+          "qc": "PASS",
+          "session_id": "dfd8e7df-dc51-4589-b6ca-7baccfeb94b4",
+          "start_time": "2020-02-25T09:53:24",
+          "subject_id": "CSHL045",
+          "task_protocol": "_iblrig_tasks_ephysChoiceWorld6.2.5"
+        },
+        {
+          "alignment_qc": 0.8239524702939337,
+          "insertion_id": "730770d6-617a-4ada-95db-a48521befda5",
+          "lab": "churchlandlab_ucla",
+          "n_units_meta": 759,
+          "probe_name": "probe00",
+          "qc": "PASS",
+          "session_id": "6899a67d-2e53-4215-a52a-c7021b5da5d4",
+          "start_time": "2023-08-29T12:48:38.326259",
+          "subject_id": "MFD_06",
+          "task_protocol": "_iblrig_tasks_ephysChoiceWorld"
+        },
+        {
+          "alignment_qc": 0.8365695792880259,
+          "insertion_id": "9150758e-1390-41d1-b426-96675e60dbea",
+          "lab": "cortexlab",
+          "n_units_meta": 1548,
+          "probe_name": "probe00",
+          "qc": "PASS",
+          "session_id": "e1931de1-cf7b-49af-af33-2ade15e8abe7",
+          "start_time": "2019-12-05T16:28:54.084000",
+          "subject_id": "KS014",
+          "task_protocol": "_iblrig_tasks_ephysChoiceWorld6.1.3"
+        },
+        {
+          "alignment_qc": 0.9554579673776662,
+          "insertion_id": "61ed1a53-2f33-4a83-82ba-ec7dfa65bf60",
+          "lab": "mainenlab",
+          "n_units_meta": 797,
+          "probe_name": "probe01",
+          "qc": "PASS",
+          "session_id": "5d6aa933-4b00-4e99-ae2d-5003657592e9",
+          "start_time": "2020-10-29T15:38:41",
+          "subject_id": "ZFM-01577",
+          "task_protocol": "_iblrig_tasks_ephysChoiceWorld6.4.2"
+        },
+        {
+          "alignment_qc": 0.9464285714285714,
+          "insertion_id": "2b3c3126-11f3-4a8e-aa44-2f965bf8ab9c",
+          "lab": "mrsicflogellab",
+          "n_units_meta": 657,
+          "probe_name": "probe01",
+          "qc": "PASS",
+          "session_id": "1e45d992-c356-40e1-9be1-a506d944896f",
+          "start_time": "2020-07-31T15:03:32.002743",
+          "subject_id": "SWC_038",
+          "task_protocol": "_iblrig_tasks_ephysChoiceWorld6.4.1"
+        },
+        {
+          "alignment_qc": 0.008108108108108109,
+          "insertion_id": "33cde267-919e-4c4d-9105-814787499837",
+          "lab": "steinmetzlab",
+          "n_units_meta": 370,
+          "probe_name": "probe00",
+          "qc": "PASS",
+          "session_id": "b887df2c-bb9c-44c9-a9c0-538da87b2cab",
+          "start_time": "2022-05-01T17:59:33.227365",
+          "subject_id": "NR_0019",
+          "task_protocol": "_iblrig_tasks_ephysChoiceWorld6.5.3"
+        },
+        {
+          "alignment_qc": 0.8702290076335878,
+          "insertion_id": "96fe2729-b5a2-4e77-92bb-9df410144768",
+          "lab": "zadorlab",
+          "n_units_meta": 655,
+          "probe_name": "probe01",
+          "qc": "PASS",
+          "session_id": "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c",
+          "start_time": "2020-08-16T07:39:40",
+          "subject_id": "CSH_ZAD_019",
+          "task_protocol": "_iblrig_tasks_ephysChoiceWorld6.4.1"
+        },
+        {
+          "alignment_qc": 0.8479318734793188,
+          "insertion_id": "701026df-e170-4ca7-88aa-eb0b95ef6ba1",
+          "lab": "angelakilab",
+          "n_units_meta": 429,
+          "probe_name": "probe01",
+          "qc": "PASS",
+          "session_id": "a8a8af78-16de-4841-ab07-fde4b5281a03",
+          "start_time": "2020-01-22T15:39:54",
+          "subject_id": "NYU-12",
+          "task_protocol": "_iblrig_tasks_ephysChoiceWorld6.2.5"
+        },
+        {
+          "alignment_qc": 0.9145658263305322,
+          "insertion_id": "00a824c0-e060-495f-9ebc-79c82fef4c67",
+          "lab": "churchlandlab",
+          "n_units_meta": 365,
+          "probe_name": "probe00",
+          "qc": "PASS",
+          "session_id": "fa704052-147e-46f6-b190-a65b837e605e",
+          "start_time": "2020-02-26T14:48:55",
+          "subject_id": "CSHL045",
+          "task_protocol": "_iblrig_tasks_ephysChoiceWorld6.2.5"
+        },
+        {
+          "alignment_qc": 0.9306833114323259,
+          "insertion_id": "38e9e5b8-db29-4158-a09d-cc1de4a1365a",
+          "lab": "churchlandlab_ucla",
+          "n_units_meta": 593,
+          "probe_name": "probe00",
+          "qc": "PASS",
+          "session_id": "a1782f4f-86b0-480c-a7f2-3d8f1ab482ab",
+          "start_time": "2023-08-24T14:00:19.754812",
+          "subject_id": "MFD_06",
+          "task_protocol": "_iblrig_tasks_ephysChoiceWorld"
+        },
+        {
+          "alignment_qc": 0.5108695652173914,
+          "insertion_id": "ea931b15-6214-4b80-8d88-7acbbe071bc0",
+          "lab": "cortexlab",
+          "n_units_meta": 1526,
+          "probe_name": "probe00",
+          "qc": "PASS",
+          "session_id": "b9c205c3-feac-485b-a89d-afc96d9cb280",
+          "start_time": "2019-12-07T16:19:38.121000",
+          "subject_id": "KS014",
+          "task_protocol": "_iblrig_tasks_ephysChoiceWorld6.1.3"
+        },
+        {
+          "alignment_qc": 1.0,
+          "insertion_id": "bbf6a51e-2999-4982-803f-8769db095dd2",
+          "lab": "mainenlab",
+          "n_units_meta": 576,
+          "probe_name": "probe00",
+          "qc": "PASS",
+          "session_id": "63f3dbc1-1a5f-44e5-98dd-ce25cd2b7871",
+          "start_time": "2020-10-30T16:41:20.275756",
+          "subject_id": "ZFM-01577",
+          "task_protocol": "_iblrig_tasks_ephysChoiceWorld6.4.2"
+        },
+        {
+          "alignment_qc": 0.9028776978417267,
+          "insertion_id": "7bd5627e-b02e-47f1-b476-4bf8eaa726b3",
+          "lab": "mrsicflogellab",
+          "n_units_meta": 532,
+          "probe_name": "probe01",
+          "qc": "PASS",
+          "session_id": "03063955-2523-47bd-ae57-f7489dd40f15",
+          "start_time": "2020-08-01T15:51:23.913929",
+          "subject_id": "SWC_038",
+          "task_protocol": "_iblrig_tasks_ephysChoiceWorld6.4.1"
+        },
+        {
+          "alignment_qc": 0.9027303754266212,
+          "insertion_id": "83716e49-3026-41a3-b021-1a4b6362f433",
+          "lab": "steinmetzlab",
+          "n_units_meta": 293,
+          "probe_name": "probe01",
+          "qc": "PASS",
+          "session_id": "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9",
+          "start_time": "2022-05-03T15:04:48.713692",
+          "subject_id": "NR_0019",
+          "task_protocol": "_iblrig_tasks_ephysChoiceWorld6.5.3"
+        },
+        {
+          "alignment_qc": 0.901656314699793,
+          "insertion_id": "ed469fda-4519-456f-a671-cf901222b4f8",
+          "lab": "zadorlab",
+          "n_units_meta": 483,
+          "probe_name": "probe01",
+          "qc": "PASS",
+          "session_id": "49e0ab27-827a-4c91-bcaa-97eea27a1b8d",
+          "start_time": "2020-08-18T07:41:02",
+          "subject_id": "CSH_ZAD_019",
+          "task_protocol": "_iblrig_tasks_ephysChoiceWorld6.4.1"
+        },
+        {
+          "alignment_qc": 0.8047210300429185,
+          "insertion_id": "d213e786-4b1c-477d-a710-766d69fa1ac1",
+          "lab": "angelakilab",
+          "n_units_meta": 233,
+          "probe_name": "probe00",
+          "qc": "PASS",
+          "session_id": "032ffcdf-7692-40b3-b9ff-8def1fc18b2e",
+          "start_time": "2020-01-23T14:56:31",
+          "subject_id": "NYU-12",
+          "task_protocol": "_iblrig_tasks_ephysChoiceWorld6.2.5"
+        },
+        {
+          "alignment_qc": 0.8625,
+          "insertion_id": "5e84c8e7-236f-4a64-a944-dc4a17c64f1d",
+          "lab": "churchlandlab",
+          "n_units_meta": 320,
+          "probe_name": "probe01",
+          "qc": "PASS",
+          "session_id": "034e726f-b35f-41e0-8d6c-a22cc32391fb",
+          "start_time": "2020-02-24T14:41:02",
+          "subject_id": "CSHL045",
+          "task_protocol": "_iblrig_tasks_ephysChoiceWorld6.2.5"
+        },
+        {
+          "alignment_qc": 0.972313777191826,
+          "insertion_id": "069c2674-80b0-44b4-a3d9-28337512967f",
+          "lab": "churchlandlab_ucla",
+          "n_units_meta": 563,
+          "probe_name": "probe00",
+          "qc": "PASS",
+          "session_id": "35eeb752-8f4f-4040-9714-ba0f5b7ccdfe",
+          "start_time": "2023-08-22T16:40:39",
+          "subject_id": "MFD_06",
+          "task_protocol": "_iblrig_tasks_ephysChoiceWorld"
+        },
+        {
+          "alignment_qc": 0.5596868884540117,
+          "insertion_id": "b543e81e-4c8f-415e-82ec-631b177d19d2",
+          "lab": "cortexlab",
+          "n_units_meta": 511,
+          "probe_name": "probe01",
+          "qc": "PASS",
+          "session_id": "16693458-0801-4d35-a3f1-9115c7e5acfd",
+          "start_time": "2019-12-03T15:07:41.216000",
+          "subject_id": "KS014",
+          "task_protocol": "_iblrig_tasks_ephysChoiceWorld6.1.3"
+        },
+        {
+          "alignment_qc": 0.871841155234657,
+          "insertion_id": "b78b3c42-eee5-47c6-9717-743b78c0b721",
+          "lab": "mainenlab",
+          "n_units_meta": 554,
+          "probe_name": "probe00",
+          "qc": "PASS",
+          "session_id": "09b2c4d1-058d-4c84-9fd4-97530f85baf6",
+          "start_time": "2020-10-28T15:04:48",
+          "subject_id": "ZFM-01577",
+          "task_protocol": "_iblrig_tasks_ephysChoiceWorld6.4.2"
+        },
+        {
+          "alignment_qc": 0.9063745019920318,
+          "insertion_id": "8b7c808f-763b-44c8-b273-63c6afbc6aae",
+          "lab": "mrsicflogellab",
+          "n_units_meta": 497,
+          "probe_name": "probe01",
+          "qc": "PASS",
+          "session_id": "41872d7f-75cb-4445-bb1a-132b354c44f0",
+          "start_time": "2020-07-29T17:28:21.311088",
+          "subject_id": "SWC_038",
+          "task_protocol": "_iblrig_tasks_ephysChoiceWorld6.4.1"
+        },
+        {
+          "alignment_qc": 0.8942731277533039,
+          "insertion_id": "59b7a543-8827-4157-a4f6-d5d0e50fdf39",
+          "lab": "steinmetzlab",
+          "n_units_meta": 227,
+          "probe_name": "probe01",
+          "qc": "PASS",
+          "session_id": "b887df2c-bb9c-44c9-a9c0-538da87b2cab",
+          "start_time": "2022-05-01T17:59:33.227365",
+          "subject_id": "NR_0019",
+          "task_protocol": "_iblrig_tasks_ephysChoiceWorld6.5.3"
+        },
+        {
+          "alignment_qc": 0.9029126213592233,
+          "insertion_id": "257d0357-76ed-4220-8d50-68da6efda72d",
+          "lab": "zadorlab",
+          "n_units_meta": 440,
+          "probe_name": "probe00",
+          "qc": "PASS",
+          "session_id": "edd22318-216c-44ff-bc24-49ce8be78374",
+          "start_time": "2020-08-19T11:31:40",
+          "subject_id": "CSH_ZAD_019",
+          "task_protocol": "_iblrig_tasks_ephysChoiceWorld6.4.1"
+        }
+      ],
+      "selection": {
+        "label": "external_support80_projected_hdf5",
+        "note": "Projected support-qualified HDF5 panel after acquiring the missing recordings.",
+        "source_manifest": "/Users/colin/Desktop/Projects/anatomical-neural-fm/manifests/ibl_bwm_region_matched_candidates_s3_present_scored.json"
+      }
+    },
+    "subject_rows": [
+      {
+        "local_hdf5_recordings": 0,
+        "missing_hdf5_recordings": 4,
+        "missing_recording_ids": [
+          "7939711b-8b4d-4251-b698-b97c1eaa846e_probe01",
+          "dfd8e7df-dc51-4589-b6ca-7baccfeb94b4_probe01",
+          "fa704052-147e-46f6-b190-a65b837e605e_probe00",
+          "034e726f-b35f-41e0-8d6c-a22cc32391fb_probe01"
+        ],
+        "missing_top": [
+          "sAMY"
+        ],
+        "n_recordings": 4,
+        "recording_ids": [
+          "7939711b-8b4d-4251-b698-b97c1eaa846e_probe01",
+          "dfd8e7df-dc51-4589-b6ca-7baccfeb94b4_probe01",
+          "fa704052-147e-46f6-b190-a65b837e605e_probe00",
+          "034e726f-b35f-41e0-8d6c-a22cc32391fb_probe01"
+        ],
+        "subject": "CSHL045",
+        "support_qualified": true,
+        "top_supported": 7,
+        "top_total": 8,
+        "unit_support_frac": 0.851840490797546
+      },
+      {
+        "local_hdf5_recordings": 0,
+        "missing_hdf5_recordings": 3,
+        "missing_recording_ids": [
+          "5d6aa933-4b00-4e99-ae2d-5003657592e9_probe01",
+          "63f3dbc1-1a5f-44e5-98dd-ce25cd2b7871_probe00",
+          "09b2c4d1-058d-4c84-9fd4-97530f85baf6_probe00"
+        ],
+        "missing_top": [
+          "CENT",
+          "VISl"
+        ],
+        "n_recordings": 3,
+        "recording_ids": [
+          "5d6aa933-4b00-4e99-ae2d-5003657592e9_probe01",
+          "63f3dbc1-1a5f-44e5-98dd-ce25cd2b7871_probe00",
+          "09b2c4d1-058d-4c84-9fd4-97530f85baf6_probe00"
+        ],
+        "subject": "ZFM-01577",
+        "support_qualified": true,
+        "top_supported": 6,
+        "top_total": 8,
+        "unit_support_frac": 0.840959409594096
+      },
+      {
+        "local_hdf5_recordings": 4,
+        "missing_hdf5_recordings": 0,
+        "missing_recording_ids": [],
+        "missing_top": [],
+        "n_recordings": 4,
+        "recording_ids": [
+          "16693458-0801-4d35-a3f1-9115c7e5acfd_probe00",
+          "e1931de1-cf7b-49af-af33-2ade15e8abe7_probe00",
+          "b9c205c3-feac-485b-a89d-afc96d9cb280_probe00",
+          "16693458-0801-4d35-a3f1-9115c7e5acfd_probe01"
+        ],
+        "subject": "KS014",
+        "support_qualified": true,
+        "top_supported": 8,
+        "top_total": 8,
+        "unit_support_frac": 1.0
+      },
+      {
+        "local_hdf5_recordings": 4,
+        "missing_hdf5_recordings": 0,
+        "missing_recording_ids": [],
+        "missing_top": [],
+        "n_recordings": 4,
+        "recording_ids": [
+          "3f71aa98-08c6-4e79-b4c8-00eae4f03eff_probe00",
+          "6899a67d-2e53-4215-a52a-c7021b5da5d4_probe00",
+          "a1782f4f-86b0-480c-a7f2-3d8f1ab482ab_probe00",
+          "35eeb752-8f4f-4040-9714-ba0f5b7ccdfe_probe00"
+        ],
+        "subject": "MFD_06",
+        "support_qualified": true,
+        "top_supported": 8,
+        "top_total": 8,
+        "unit_support_frac": 0.9982715575187248
+      },
+      {
+        "local_hdf5_recordings": 4,
+        "missing_hdf5_recordings": 0,
+        "missing_recording_ids": [],
+        "missing_top": [],
+        "n_recordings": 4,
+        "recording_ids": [
+          "b182b754-3c3e-4942-8144-6ee790926b58_probe01",
+          "a8a8af78-16de-4841-ab07-fde4b5281a03_probe00",
+          "a8a8af78-16de-4841-ab07-fde4b5281a03_probe01",
+          "032ffcdf-7692-40b3-b9ff-8def1fc18b2e_probe00"
+        ],
+        "subject": "NYU-12",
+        "support_qualified": true,
+        "top_supported": 8,
+        "top_total": 8,
+        "unit_support_frac": 0.9687426556991774
+      },
+      {
+        "local_hdf5_recordings": 4,
+        "missing_hdf5_recordings": 0,
+        "missing_recording_ids": [],
+        "missing_top": [
+          "ORBvl"
+        ],
+        "n_recordings": 4,
+        "recording_ids": [
+          "4d8c7767-981c-4347-8e5e-5d5fffe38534_probe01",
+          "1e45d992-c356-40e1-9be1-a506d944896f_probe01",
+          "03063955-2523-47bd-ae57-f7489dd40f15_probe01",
+          "41872d7f-75cb-4445-bb1a-132b354c44f0_probe01"
+        ],
+        "subject": "SWC_038",
+        "support_qualified": true,
+        "top_supported": 7,
+        "top_total": 8,
+        "unit_support_frac": 0.9156689224362311
+      },
+      {
+        "local_hdf5_recordings": 4,
+        "missing_hdf5_recordings": 0,
+        "missing_recording_ids": [],
+        "missing_top": [
+          "MED"
+        ],
+        "n_recordings": 4,
+        "recording_ids": [
+          "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe00",
+          "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe01",
+          "49e0ab27-827a-4c91-bcaa-97eea27a1b8d_probe01",
+          "edd22318-216c-44ff-bc24-49ce8be78374_probe00"
+        ],
+        "subject": "CSH_ZAD_019",
+        "support_qualified": true,
+        "top_supported": 7,
+        "top_total": 8,
+        "unit_support_frac": 0.9001122334455668
+      },
+      {
+        "local_hdf5_recordings": 4,
+        "missing_hdf5_recordings": 0,
+        "missing_recording_ids": [],
+        "missing_top": [
+          "SSp-ul"
+        ],
+        "n_recordings": 4,
+        "recording_ids": [
+          "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe00",
+          "b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe00",
+          "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe01",
+          "b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe01"
+        ],
+        "subject": "NR_0019",
+        "support_qualified": true,
+        "top_supported": 7,
+        "top_total": 8,
+        "unit_support_frac": 0.8458218909376226
+      },
+      {
+        "local_hdf5_recordings": 0,
+        "missing_hdf5_recordings": 4,
+        "missing_recording_ids": [
+          "9a6e127b-bb07-4be2-92e2-53dd858c2762_probe00",
+          "09156021-9a1d-4e1d-ae59-48cbde3c5d42_probe00",
+          "64977c74-9c04-437a-9ea1-50386c4996db_probe00",
+          "90e524a2-aa63-47ce-b5b8-1b1941a1223a_probe00"
+        ],
+        "missing_top": [
+          "VISal",
+          "ECT",
+          "AUDpo"
+        ],
+        "n_recordings": 4,
+        "recording_ids": [
+          "9a6e127b-bb07-4be2-92e2-53dd858c2762_probe00",
+          "09156021-9a1d-4e1d-ae59-48cbde3c5d42_probe00",
+          "64977c74-9c04-437a-9ea1-50386c4996db_probe00",
+          "90e524a2-aa63-47ce-b5b8-1b1941a1223a_probe00"
+        ],
+        "subject": "PL015",
+        "support_qualified": false,
+        "top_supported": 5,
+        "top_total": 8,
+        "unit_support_frac": 0.7584554678692221
+      },
+      {
+        "local_hdf5_recordings": 0,
+        "missing_hdf5_recordings": 4,
+        "missing_recording_ids": [
+          "e5c772cd-9c92-47ab-9525-d618b66a9b5d_probe00",
+          "a19c7a3a-7261-42ce-95d5-1f4ca46007ed_probe00",
+          "6668c4a0-70a4-4012-a7da-709660971d7a_probe00",
+          "30e5937e-e86a-47e6-93ae-d2ae3877ff8e_probe00"
+        ],
+        "missing_top": [
+          "CN",
+          "HEM"
+        ],
+        "n_recordings": 4,
+        "recording_ids": [
+          "e5c772cd-9c92-47ab-9525-d618b66a9b5d_probe00",
+          "a19c7a3a-7261-42ce-95d5-1f4ca46007ed_probe00",
+          "6668c4a0-70a4-4012-a7da-709660971d7a_probe00",
+          "30e5937e-e86a-47e6-93ae-d2ae3877ff8e_probe00"
+        ],
+        "subject": "DY_009",
+        "support_qualified": false,
+        "top_supported": 6,
+        "top_total": 8,
+        "unit_support_frac": 0.7446758163748225
+      },
+      {
+        "local_hdf5_recordings": 0,
+        "missing_hdf5_recordings": 4,
+        "missing_recording_ids": [
+          "65f5c9b4-4440-48b9-b914-c593a5184a18_probe00",
+          "4ddb8a95-788b-48d0-8a0a-66c7c796da96_probe01",
+          "4ddb8a95-788b-48d0-8a0a-66c7c796da96_probe00",
+          "f8041c1e-5ef4-4ae6-afec-ed82d7a74dc1_probe01"
+        ],
+        "missing_top": [
+          "ORBl",
+          "ILA"
+        ],
+        "n_recordings": 4,
+        "recording_ids": [
+          "65f5c9b4-4440-48b9-b914-c593a5184a18_probe00",
+          "4ddb8a95-788b-48d0-8a0a-66c7c796da96_probe01",
+          "4ddb8a95-788b-48d0-8a0a-66c7c796da96_probe00",
+          "f8041c1e-5ef4-4ae6-afec-ed82d7a74dc1_probe01"
+        ],
+        "subject": "ibl_witten_19",
+        "support_qualified": false,
+        "top_supported": 6,
+        "top_total": 8,
+        "unit_support_frac": 0.6658751696065129
+      },
+      {
+        "local_hdf5_recordings": 4,
+        "missing_hdf5_recordings": 0,
+        "missing_recording_ids": [],
+        "missing_top": [
+          "LS",
+          "SSs"
+        ],
+        "n_recordings": 4,
+        "recording_ids": [
+          "4ecb5d24-f5cc-402c-be28-9d0f7cb14b3a_probe00",
+          "6fb1e12c-883b-46d1-a745-473cde3232c8_probe00",
+          "88d24c31-52e4-49cc-9f32-6adbeb9eba87_probe00",
+          "6f09ba7e-e3ce-44b0-932b-c003fb44fb89_probe01"
+        ],
+        "subject": "SWC_043",
+        "support_qualified": false,
+        "top_supported": 6,
+        "top_total": 8,
+        "unit_support_frac": 0.6749533871970168
+      }
+    ],
+    "summary": {
+      "decision": "external_support80_acquisition_candidate",
+      "missing_hdf5_recordings_for_qualified_subjects": 7,
+      "n_broad_recordings": 47,
+      "n_broad_subjects": 12,
+      "n_local_hdf5_recordings_in_broad_manifest": 28,
+      "projected_manifest_recordings": 31,
+      "projected_manifest_subjects": 8,
+      "support_qualified_subjects": 8,
+      "support_qualified_subjects_missing_hdf5": 2
+    },
+    "thresholds": {
+      "min_recordings_per_subject": 2,
+      "min_support": 0.8
+    },
+    "written_manifests": {
+      "missing_hdf5": "manifests/ibl_bwm_external_support80_missing_hdf5.json",
+      "projected_hdf5": "manifests/ibl_bwm_external_support80_projected_hdf5.json"
+    }
+  },
   "fixed_slices": [
     {
       "holdout": "NYU-12",
@@ -55244,6 +56031,7 @@
       "behavior_cache_preflight": "docs/behavior_cache_preflight.json",
       "contextual_target_family": "docs/contextual_target_family_gate.json",
       "derived_target_family": "docs/derived_target_family_gate.json",
+      "external_manifest_acquisition_gap": "docs/external_manifest_acquisition_gap.json",
       "family_alt_feedback": "docs/model_free_family_bidirectional_gate_feedback_recording_centered.json",
       "family_alt_prior": "docs/model_free_family_bidirectional_gate_prior_side_recording_centered.json",
       "iterative_manifest": "docs/shared_family_iterative_manifest_gate.json",
@@ -55261,12 +56049,13 @@
         "evidence": [
           "current 28-recording manifest is feasible but not clean enough to pass the local gate",
           "local cached manifest candidate audit found 0 new candidate panels across 31 local recordings (local_expansion_support_gap)",
+          "external acquisition gap audit identifies 7 missing HDF5 recordings for 2 support-qualified subjects, projecting 31 recordings across 8 subjects",
           "strict iterative 8-recording manifest has 0 candidates and max bidir 0.250",
           "recording-subset replication selected zero stable validation rows"
         ],
         "gpu_trigger": "At least one local row on the proposed manifest must clear delta_vs_shuffle>=0, delta_vs_total>=0, target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75 before training.",
         "name": "new manifest with prospective bidirectional support",
-        "next_action": "The local cache expansion does not create a supported panel; build or fetch a broader manifest only with a prospective target/family support rule, then run the same local model-free gate before training.",
+        "next_action": "The local cache expansion does not create a supported panel; build or fetch the external support80 missing-HDF5 set, then rerun the local manifest candidate audit and the same model-free gate before training.",
         "priority": 1,
         "status": "recommended_next"
       },

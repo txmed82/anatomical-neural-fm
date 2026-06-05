@@ -9,7 +9,7 @@ Ranks remaining no-spend branches after the current local audits. This is the pl
 
 | priority | branch | status | next action |
 |---:|---|---|---|
-| 1 | new manifest with prospective bidirectional support | `recommended_next` | The local cache expansion does not create a supported panel; build or fetch a broader manifest only with a prospective target/family support rule, then run the same local model-free gate before training. |
+| 1 | new manifest with prospective bidirectional support | `recommended_next` | The local cache expansion does not create a supported panel; build or fetch the external support80 missing-HDF5 set, then rerun the local manifest candidate audit and the same model-free gate before training. |
 | 86 | wheel-derived target family gate | `closed` | Do not spend on the tested wheel targets; move to a prospectively supported manifest. |
 | 87 | behavior-inclusive cache rebuild | `closed` | Cache rebuild is complete; all matched recordings now expose wheel. Use the wheel-derived local target gate before any training. |
 | 88 | direct cached-field derived targets | `closed` | Do not launch GPU training from contrast_strength, response_latency, or prior_engaged. |
@@ -26,6 +26,7 @@ Ranks remaining no-spend branches after the current local audits. This is the pl
 ### new manifest with prospective bidirectional support
 - current 28-recording manifest is feasible but not clean enough to pass the local gate
 - local cached manifest candidate audit found 0 new candidate panels across 31 local recordings (local_expansion_support_gap)
+- external acquisition gap audit identifies 7 missing HDF5 recordings for 2 support-qualified subjects, projecting 31 recordings across 8 subjects
 - strict iterative 8-recording manifest has 0 candidates and max bidir 0.250
 - recording-subset replication selected zero stable validation rows
 - GPU trigger: At least one local row on the proposed manifest must clear delta_vs_shuffle>=0, delta_vs_total>=0, target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75 before training.

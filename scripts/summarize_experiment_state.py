@@ -113,6 +113,7 @@ DERIVED_TARGET_FAMILY_GATE_FILE = "docs/derived_target_family_gate.json"
 CONTEXTUAL_TARGET_FAMILY_GATE_FILE = "docs/contextual_target_family_gate.json"
 WHEEL_TARGET_FAMILY_GATE_FILE = "docs/wheel_target_family_gate.json"
 LOCAL_CACHED_MANIFEST_CANDIDATES_FILE = "docs/local_cached_manifest_candidates.json"
+EXTERNAL_MANIFEST_ACQUISITION_GAP_FILE = "docs/external_manifest_acquisition_gap.json"
 BEHAVIOR_CACHE_PREFLIGHT_FILE = "docs/behavior_cache_preflight.json"
 MODEL_FREE_MATCHED_SUPPORT80_PANEL_FILE = "docs/model_free_matched_support80_hdf5_panel.json"
 MODEL_FREE_POSITIVE_HOLDOUTS_MECHANISM_FILE = "docs/model_free_positive_holdouts_mechanism.json"
@@ -452,6 +453,7 @@ def render_markdown(
     contextual_target_family_gate: dict | None = None,
     wheel_target_family_gate: dict | None = None,
     local_cached_manifest_candidates: dict | None = None,
+    external_manifest_acquisition_gap: dict | None = None,
     behavior_cache_preflight: dict | None = None,
     model_free_matched_panel: dict | None = None,
     model_free_positive_holdouts: dict | None = None,
@@ -1045,6 +1047,43 @@ def render_markdown(
                 "support floor. The next manifest branch needs a broader external "
                 "selection rule or a different target/control definition, not a GPU "
                 "run on the local expansion."
+            ),
+            "",
+        ]
+    if external_manifest_acquisition_gap is not None:
+        summary = external_manifest_acquisition_gap["summary"]
+        lines += [
+            "## External Manifest Acquisition Gap Audit",
+            "",
+            "`docs/external_manifest_acquisition_gap.md` compares the broader",
+            "S3-present metadata-scored manifest against local HDF5 coverage.",
+            "",
+            f"- broad manifest recordings: `{summary['n_broad_recordings']}`",
+            f"- broad manifest subjects: `{summary['n_broad_subjects']}`",
+            f"- local HDF5 recordings in broad manifest: `{summary['n_local_hdf5_recordings_in_broad_manifest']}`",
+            f"- support-qualified subjects: `{summary['support_qualified_subjects']}`",
+            f"- support-qualified subjects missing HDF5: `{summary['support_qualified_subjects_missing_hdf5']}`",
+            f"- missing HDF5 recordings for qualified subjects: `{summary['missing_hdf5_recordings_for_qualified_subjects']}`",
+            f"- projected manifest: `{summary['projected_manifest_recordings']}` recordings, `{summary['projected_manifest_subjects']}` subjects",
+            f"- decision: `{summary['decision']}`",
+            "",
+            "| subject | support | broad recs | local HDF5 | missing HDF5 | qualified |",
+            "|---|---:|---:|---:|---:|---|",
+        ]
+        for row in external_manifest_acquisition_gap["subject_rows"][:8]:
+            support = "n/a" if row["unit_support_frac"] is None else f"{row['unit_support_frac']:.3f}"
+            lines.append(
+                f"| {row['subject']} | {support} | {row['n_recordings']} | "
+                f"{row['local_hdf5_recordings']} | {row['missing_hdf5_recordings']} | "
+                f"{row['support_qualified']} |"
+            )
+        lines += [
+            "",
+            (
+                "Decision: this is a data-acquisition trigger, not a training trigger. "
+                "The concrete next set is seven missing HDF5 recordings for CSHL045 "
+                "and ZFM-01577; after acquiring them, rerun the local manifest and "
+                "model-free gates before any GPU run."
             ),
             "",
         ]
@@ -2152,6 +2191,7 @@ def main() -> int:
     contextual_target_family_gate = read_mechanism_audit(REPO_ROOT / CONTEXTUAL_TARGET_FAMILY_GATE_FILE)
     wheel_target_family_gate = read_mechanism_audit(REPO_ROOT / WHEEL_TARGET_FAMILY_GATE_FILE)
     local_cached_manifest_candidates = read_mechanism_audit(REPO_ROOT / LOCAL_CACHED_MANIFEST_CANDIDATES_FILE)
+    external_manifest_acquisition_gap = read_mechanism_audit(REPO_ROOT / EXTERNAL_MANIFEST_ACQUISITION_GAP_FILE)
     behavior_cache_preflight = read_mechanism_audit(REPO_ROOT / BEHAVIOR_CACHE_PREFLIGHT_FILE)
     model_free_matched_panel = read_mechanism_audit(REPO_ROOT / MODEL_FREE_MATCHED_SUPPORT80_PANEL_FILE)
     model_free_positive_holdouts = read_mechanism_audit(REPO_ROOT / MODEL_FREE_POSITIVE_HOLDOUTS_MECHANISM_FILE)
@@ -2248,6 +2288,7 @@ def main() -> int:
         contextual_target_family_gate,
         wheel_target_family_gate,
         local_cached_manifest_candidates,
+        external_manifest_acquisition_gap,
         behavior_cache_preflight,
         model_free_matched_panel,
         model_free_positive_holdouts,
@@ -2337,6 +2378,7 @@ def main() -> int:
         "contextual_target_family_gate": contextual_target_family_gate,
         "wheel_target_family_gate": wheel_target_family_gate,
         "local_cached_manifest_candidates": local_cached_manifest_candidates,
+        "external_manifest_acquisition_gap": external_manifest_acquisition_gap,
         "behavior_cache_preflight": behavior_cache_preflight,
         "model_free_matched_support80_panel": model_free_matched_panel,
         "model_free_positive_holdouts_mechanism": model_free_positive_holdouts,

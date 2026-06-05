@@ -19,6 +19,7 @@ ARTIFACTS = {
     "contextual_target_family": "docs/contextual_target_family_gate.json",
     "wheel_target_family": "docs/wheel_target_family_gate.json",
     "local_cached_manifest_candidates": "docs/local_cached_manifest_candidates.json",
+    "external_manifest_acquisition_gap": "docs/external_manifest_acquisition_gap.json",
     "behavior_cache_preflight": "docs/behavior_cache_preflight.json",
     "family_alt_prior": "docs/model_free_family_bidirectional_gate_prior_side_recording_centered.json",
     "family_alt_feedback": "docs/model_free_family_bidirectional_gate_feedback_recording_centered.json",
@@ -69,6 +70,7 @@ def build_report() -> dict:
     contextual = artifacts["contextual_target_family"]
     wheel = artifacts["wheel_target_family"]
     local_manifest_candidates = artifacts["local_cached_manifest_candidates"]
+    external_acquisition = artifacts["external_manifest_acquisition_gap"]
     behavior_cache = artifacts["behavior_cache_preflight"]
     behavior_summary = behavior_cache.get("summary", {}) if behavior_cache is not None else {}
     stream_counts = behavior_summary.get("stream_counts", {})
@@ -79,6 +81,7 @@ def build_report() -> dict:
     wheel_done = wheel is not None
     local_manifest_summary = local_manifest_candidates.get("summary", {}) if local_manifest_candidates is not None else {}
     local_manifest_decision = local_manifest_summary.get("decision")
+    external_summary = external_acquisition.get("summary", {}) if external_acquisition is not None else {}
     default_candidate_setting = summary_value(threshold, "strongest_default_target_candidate_setting", {}) or {}
     default_candidate_bidir = default_candidate_setting.get("min_bidirectional_recording_fraction")
     default_candidate_count = default_candidate_setting.get("n_candidates")
@@ -191,6 +194,19 @@ def build_report() -> dict:
                     )
                 ),
                 (
+                    "external manifest acquisition gap audit has not been run yet"
+                    if external_acquisition is None
+                    else (
+                        "external acquisition gap audit identifies "
+                        f"{external_summary.get('missing_hdf5_recordings_for_qualified_subjects', 'n/a')} "
+                        "missing HDF5 recordings for "
+                        f"{external_summary.get('support_qualified_subjects_missing_hdf5', 'n/a')} "
+                        "support-qualified subjects, projecting "
+                        f"{external_summary.get('projected_manifest_recordings', 'n/a')} recordings across "
+                        f"{external_summary.get('projected_manifest_subjects', 'n/a')} subjects"
+                    )
+                ),
+                (
                     "strict iterative 8-recording manifest has "
                     f"{summary_value(iterative, 'n_candidates', 'n/a')} candidates and max bidir "
                     f"{summary_value(iterative, 'max_bidirectional_recording_fraction', 0.0):.3f}"
@@ -199,6 +215,10 @@ def build_report() -> dict:
             ],
             next_action=(
                 "The local cache expansion does not create a supported panel; build or fetch "
+                "the external support80 missing-HDF5 set, then rerun the local manifest "
+                "candidate audit and the same model-free gate before training."
+                if external_summary.get("decision") == "external_support80_acquisition_candidate"
+                else "The local cache expansion does not create a supported panel; build or fetch "
                 "a broader manifest only with a prospective target/family support rule, then "
                 "run the same local model-free gate before training."
                 if local_manifest_decision == "local_expansion_support_gap"

@@ -414,6 +414,19 @@ has 0 passing target/family rows across 31 recordings, and the 30-recording
 extra MFD_08/MFD_09 local recordings are not a training trigger and do not
 replace a broader manifest/design step.
 
+External manifest acquisition gap audit:
+`docs/external_manifest_acquisition_gap.md` converts the broader manifest
+branch into a concrete data-acquisition target. The 47-recording S3-present
+metadata-scored manifest has 8 support-qualified subjects. Six are already in
+the local HDF5 panel; two qualified subjects are missing locally: `CSHL045`
+(4 recordings, support `0.852`) and `ZFM-01577` (3 recordings, support
+`0.841`). The audit writes `manifests/ibl_bwm_external_support80_missing_hdf5.json`
+for those 7 missing HDF5s and
+`manifests/ibl_bwm_external_support80_projected_hdf5.json` for the projected
+31-recording, 8-subject panel. Decision: this is a data-acquisition trigger,
+not a training trigger; rerun local manifest and model-free gates after the
+HDF5s exist.
+
 Shared-family target/control gate:
 `docs/shared_family_target_control_gate.md` tests those feasible families
 directly across all four target modes and seven holdouts. It finds zero
@@ -497,10 +510,11 @@ selection, the current shared-family grid, cached alternative targets,
 source-target narrowing, direct cached-field derived targets, and contextual
 trial-state targets as closed GPU triggers. After the wheel-cache rebuild and
 wheel-derived target audit, and after checking the extra local cached
-recordings, the recommended next branch is a broader manifest with prospective
-bidirectional support. The same local promotion gate remains in force before
-any training: delta vs shuffle and total baseline nonnegative, target0 and
-target1 >=`0.55`, and same-recording bidirectional fraction >=`0.75`.
+recordings, the recommended next branch is the external support80 missing-HDF5
+set for `CSHL045` and `ZFM-01577`. The same local promotion gate remains in
+force before any training: delta vs shuffle and total baseline nonnegative,
+target0 and target1 >=`0.55`, and same-recording bidirectional fraction
+>=`0.75`.
 
 Behavior-cache preflight:
 `docs/behavior_cache_preflight.md` inspects the active matched cache for richer

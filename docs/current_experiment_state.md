@@ -282,6 +282,33 @@ any new data fetch or GPU launch.
 
 Decision: the extra local recordings add MFD_08/MFD_09 coverage, but the expanded panels fail the prospective per-subject target/family support floor. The next manifest branch needs a broader external selection rule or a different target/control definition, not a GPU run on the local expansion.
 
+## External Manifest Acquisition Gap Audit
+
+`docs/external_manifest_acquisition_gap.md` compares the broader
+S3-present metadata-scored manifest against local HDF5 coverage.
+
+- broad manifest recordings: `47`
+- broad manifest subjects: `12`
+- local HDF5 recordings in broad manifest: `28`
+- support-qualified subjects: `8`
+- support-qualified subjects missing HDF5: `2`
+- missing HDF5 recordings for qualified subjects: `7`
+- projected manifest: `31` recordings, `8` subjects
+- decision: `external_support80_acquisition_candidate`
+
+| subject | support | broad recs | local HDF5 | missing HDF5 | qualified |
+|---|---:|---:|---:|---:|---|
+| CSHL045 | 0.852 | 4 | 0 | 4 | True |
+| ZFM-01577 | 0.841 | 3 | 0 | 3 | True |
+| KS014 | 1.000 | 4 | 4 | 0 | True |
+| MFD_06 | 0.998 | 4 | 4 | 0 | True |
+| NYU-12 | 0.969 | 4 | 4 | 0 | True |
+| SWC_038 | 0.916 | 4 | 4 | 0 | True |
+| CSH_ZAD_019 | 0.900 | 4 | 4 | 0 | True |
+| NR_0019 | 0.846 | 4 | 4 | 0 | True |
+
+Decision: this is a data-acquisition trigger, not a training trigger. The concrete next set is seven missing HDF5 recordings for CSHL045 and ZFM-01577; after acquiring them, rerun the local manifest and model-free gates before any GPU run.
+
 ## Shared-Family Target/Control Gate
 
 `docs/shared_family_target_control_gate.md` tests the feasible shared
@@ -381,7 +408,7 @@ branches after the current local negative audits.
 
 | priority | branch | status | next action |
 |---:|---|---|---|
-| 1 | new manifest with prospective bidirectional support | `recommended_next` | The local cache expansion does not create a supported panel; build or fetch a broader manifest only with a prospective target/family support rule, then run the same local model-free gate before training. |
+| 1 | new manifest with prospective bidirectional support | `recommended_next` | The local cache expansion does not create a supported panel; build or fetch the external support80 missing-HDF5 set, then rerun the local manifest candidate audit and the same model-free gate before training. |
 | 86 | wheel-derived target family gate | `closed` | Do not spend on the tested wheel targets; move to a prospectively supported manifest. |
 | 87 | behavior-inclusive cache rebuild | `closed` | Cache rebuild is complete; all matched recordings now expose wheel. Use the wheel-derived local target gate before any training. |
 | 88 | direct cached-field derived targets | `closed` | Do not launch GPU training from contrast_strength, response_latency, or prior_engaged. |
