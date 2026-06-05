@@ -323,6 +323,24 @@ paid launch. The preset is intentionally one seed on an L4, with
 post-run anatomy-specific gate and prediction failure-mode audit. Do not launch
 if it reports dirty git state, active pods, or estimated cost above `$8`.
 
+Pilot result: the preset ran successfully on RunPod L4 and terminated cleanly,
+but it failed the anatomy-specific gate. Metrics match the prior
+within-recording-shuffle pilot: centered true-vs-shuffle delta `+0.001`, paired
+true-vs-shuffle `0.448`, specificity gap `-0.103`, and sign-flip p-value
+`0.25`. This means the current CSH setup is not just missing the right gate; the
+learned true-region effect is too small relative to a recording-matched
+shuffled control.
+
+Updated next step: do not spend on more seeds for this CSH variant. Use the
+saved predictions and local HDF5 cache to define a stricter inclusion rule for a
+region-family slice before the next paid run. The next benchmark should choose
+held-out recordings where the candidate parent regions have:
+
+- sufficient held-out and training unit support
+- nontrivial stimulus-side spike-rate contrast
+- aligned contrast direction across train and held-out subjects
+- an explicit within-recording shuffle negative control
+
 Conclusion: building all 48 public IBL recordings inside a throwaway A100
 container is the wrong next spend. The next attempt should either split the
 candidate manifest into smaller persisted build shards, use a persistent

@@ -104,3 +104,16 @@ Next design rule: any new demo attempt must make recording-centered evaluation
 and recording-matched shuffled negatives primary gates. Raw full-trial AUC is
 too easy to improve through recording/probe calibration and should not be used
 as the model-selection metric for the anatomy claim.
+
+Recording-centered gate pilot result: the executable preflight/run path in
+`scripts/preflight_recording_centered_pilot_runpod.py` reproduced the same CSH
+failure under the intended centered-selection settings. The anatomy-specific
+gate still fails: centered true-vs-shuffle AUC delta is only `+0.0014`, paired
+true-vs-shuffle is `0.448`, specificity gap is `-0.103`, and sign-flip p-value
+is `0.25`. This confirms that merely making the gate and checkpoint selection
+recording-centered is not sufficient; do not broaden this CSH variant.
+
+Next no-spend design task: change the experimental unit, not just the gate. The
+next candidate should predefine a region-family slice or contrast where
+held-out recordings have aligned stimulus-side region activity, then test that
+slice with the same recording-matched shuffle gate.
