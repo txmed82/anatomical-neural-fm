@@ -403,16 +403,16 @@ Decision: stricter manifest support alone does not rescue the signal. The clean 
 branches after the current local negative audits.
 
 - recommended next: `new manifest with prospective bidirectional support`
-- closed branches: `23`
+- closed branches: `24`
 - decision: `no_local_training_trigger`
 - GPU trigger: At least one local row on the proposed manifest must clear delta_vs_shuffle>=0, delta_vs_total>=0, target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75 before training.
 
 | priority | branch | status | next action |
 |---:|---|---|---|
 | 1 | new manifest with prospective bidirectional support | `recommended_next` | Do not launch GPU training from the projected support80 panel; its model-free family and feature-mode gates have no candidates. Redesign the target/control locally. |
-| 81 | neutral-prior low-contrast choice target redesign | `closed` | Do not train: neutral-prior low-contrast choice fails projected-panel and seed-stability gates. |
-| 82 | recording-zscore anatomy representation | `closed` | Do not train: recording-zscore anatomy features do not pass the local gate. |
-| 83 | prior-aligned choice target redesign | `closed` | Do not train: prior-aligned choice does not pass the projected-panel local gate. |
+| 81 | signed wheel-direction motor target | `closed` | Do not train: signed wheel-direction does not pass current or projected local gates. |
+| 82 | neutral-prior low-contrast choice target redesign | `closed` | Do not train: neutral-prior low-contrast choice fails projected-panel and seed-stability gates. |
+| 83 | recording-zscore anatomy representation | `closed` | Do not train: recording-zscore anatomy features do not pass the local gate. |
 
 Decision: the current cached target, contextual target, wheel-derived target, reaction-dynamics target, cell-type prior target/control, waveform target/control, and meta-failure synthesis branches are closed as GPU triggers. The next aligned work is a prospectively supported benchmark/control redesign, still gated locally before any paid training.
 
@@ -519,6 +519,60 @@ and `choice_aligned_wheel`.
 | wheel_displacement | thalamic | SWC_038 | reject: target0 | +0.211 | +0.039 | 0.111/0.955 | 1/4 |
 
 Decision: wheel-derived targets only justify paid training if they clear the same true-vs-shuffle, total-baseline, global target, and same-recording bidirectional gate used by the prior audits.
+
+## Signed Wheel-Direction Family Gate
+
+`docs/signed_wheel_direction_family_gate.md` classifies post-stimulus
+wheel displacement direction under the unchanged shared-family local gate.
+
+- rows: `70`
+- candidates: `0`
+- positive centered-delta rows: `31`
+- max bidirectional recordings: `2`
+- max bidirectional recording fraction: `0.500`
+- decision: `no_signed_wheel_direction_family_candidate`
+
+| target | trials | eligible recordings | recordings |
+|---|---:|---:|---:|
+| signed_wheel_direction | 16615 | 28 | 28 |
+
+| target | family | holdout | decision | delta shuffle | delta total | targets | bidir recs |
+|---|---|---|---|---:|---:|---|---:|
+| signed_wheel_direction | fiber_tracts | CSH_ZAD_019 | reject: target1 | +0.198 | +0.186 | 0.628/0.533 | 2/4 |
+| signed_wheel_direction | broad_named_anatomy | SWC_043 | reject: total baseline | +0.009 | -0.142 | 0.612/0.541 | 2/4 |
+| signed_wheel_direction | brainstem_interbrain | NR_0019 | reject: target1 | +0.119 | +0.174 | 0.756/0.397 | 1/4 |
+| signed_wheel_direction | basal_ganglia | NR_0019 | reject: target1 | +0.110 | +0.095 | 0.785/0.366 | 1/4 |
+| signed_wheel_direction | fiber_tracts | KS014 | reject: target0 | +0.054 | +0.186 | 0.450/0.620 | 1/4 |
+| signed_wheel_direction | brainstem_interbrain | KS014 | reject: target1 | +0.042 | +0.089 | 0.599/0.362 | 1/4 |
+
+Decision: signed wheel direction is not a training trigger on the current panel. The best row has a strong fiber-tract delta but misses target1 and reaches only 2/4 bidirectional recordings.
+
+## Signed Wheel-Direction Projected Manifest Gate
+
+`docs/signed_wheel_direction_family_gate_projected_hdf5.md` reruns
+the signed wheel-direction target on the projected local manifest.
+
+- rows: `80`
+- candidates: `0`
+- positive centered-delta rows: `34`
+- max bidirectional recordings: `2`
+- max bidirectional recording fraction: `0.500`
+- decision: `no_signed_wheel_direction_family_candidate`
+
+| target | trials | eligible recordings | recordings |
+|---|---:|---:|---:|
+| signed_wheel_direction | 19287 | 31 | 31 |
+
+| target | family | holdout | decision | delta shuffle | delta total | targets | bidir recs |
+|---|---|---|---|---:|---:|---|---:|
+| signed_wheel_direction | basal_ganglia | CSHL045 | reject: shuffle | -0.075 | +0.138 | 0.204/0.860 | 2/4 |
+| signed_wheel_direction | midbrain | ZFM-01577 | reject: shuffle | -0.219 | +0.058 | 0.121/0.903 | 1/3 |
+| signed_wheel_direction | brainstem_interbrain | NR_0019 | reject: target1 | +0.153 | +0.197 | 0.752/0.400 | 1/4 |
+| signed_wheel_direction | brainstem_interbrain | KS014 | reject: target1 | +0.051 | +0.088 | 0.599/0.362 | 1/4 |
+| signed_wheel_direction | fiber_tracts | KS014 | reject: target0 | +0.032 | +0.176 | 0.456/0.618 | 1/4 |
+| signed_wheel_direction | broad_named_anatomy | SWC_038 | reject: shuffle | -0.001 | -0.003 | 0.529/0.497 | 1/4 |
+
+Decision: the projected panel also has zero signed wheel-direction candidates. Max same-recording bidirectional support remains 2/4, so this motor target is closed.
 
 ## Low-Contrast Choice Family Gate
 

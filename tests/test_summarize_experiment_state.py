@@ -506,6 +506,51 @@ def test_render_markdown_includes_neutral_prior_low_contrast_choice_veto() -> No
     assert "do not train from the neutral-prior low-contrast choice row" in markdown
 
 
+def test_render_markdown_includes_signed_wheel_direction_veto() -> None:
+    gate_payload = {
+        "summary": {
+            "n_rows": 80,
+            "n_candidates": 0,
+            "n_positive_centered_delta": 34,
+            "max_bidirectional_recordings": 2,
+            "max_bidirectional_recording_fraction": 0.5,
+            "decision": "no_signed_wheel_direction_family_candidate",
+            "target_balances": {
+                "signed_wheel_direction": {
+                    "n_trials": 19287,
+                    "eligible_recordings": 31,
+                    "n_recordings": 31,
+                }
+            },
+            "top_rows": [
+                {
+                    "target_mode": "signed_wheel_direction",
+                    "family": "fiber_tracts",
+                    "holdout": "CSH_ZAD_019",
+                    "decision": "reject: target1",
+                    "centered_delta_vs_shuffle": 0.198,
+                    "centered_delta_vs_total": 0.186,
+                    "target0_improved_vs_shuffle": 0.628,
+                    "target1_improved_vs_shuffle": 0.533,
+                    "n_bidirectional_recordings": 2,
+                    "n_recordings": 4,
+                }
+            ],
+        }
+    }
+
+    markdown = render_markdown(
+        [],
+        [],
+        signed_wheel_direction_family_gate=gate_payload,
+        signed_wheel_direction_projected_gate=gate_payload,
+    )
+
+    assert "Signed Wheel-Direction Family Gate" in markdown
+    assert "Signed Wheel-Direction Projected Manifest Gate" in markdown
+    assert "this motor target is closed" in markdown
+
+
 def test_render_markdown_includes_correct_low_contrast_choice_veto() -> None:
     gate_payload = {
         "summary": {

@@ -112,6 +112,8 @@ NEXT_BENCHMARK_CONTROL_OPTIONS_FILE = "docs/next_benchmark_control_options.json"
 DERIVED_TARGET_FAMILY_GATE_FILE = "docs/derived_target_family_gate.json"
 CONTEXTUAL_TARGET_FAMILY_GATE_FILE = "docs/contextual_target_family_gate.json"
 WHEEL_TARGET_FAMILY_GATE_FILE = "docs/wheel_target_family_gate.json"
+SIGNED_WHEEL_DIRECTION_FAMILY_GATE_FILE = "docs/signed_wheel_direction_family_gate.json"
+SIGNED_WHEEL_DIRECTION_PROJECTED_GATE_FILE = "docs/signed_wheel_direction_family_gate_projected_hdf5.json"
 LOW_CONTRAST_CHOICE_FAMILY_GATE_FILE = "docs/low_contrast_choice_family_gate.json"
 LOW_CONTRAST_CHOICE_PROJECTED_GATE_FILE = "docs/low_contrast_choice_family_gate_projected_hdf5.json"
 LOW_CONTRAST_CHOICE_SEED_SENSITIVITY_FILE = "docs/low_contrast_choice_seed_sensitivity.json"
@@ -526,6 +528,8 @@ def render_markdown(
     derived_target_family_gate: dict | None = None,
     contextual_target_family_gate: dict | None = None,
     wheel_target_family_gate: dict | None = None,
+    signed_wheel_direction_family_gate: dict | None = None,
+    signed_wheel_direction_projected_gate: dict | None = None,
     low_contrast_choice_family_gate: dict | None = None,
     low_contrast_choice_projected_gate: dict | None = None,
     low_contrast_choice_seed_sensitivity: dict | None = None,
@@ -1570,6 +1574,95 @@ def render_markdown(
                 "Decision: wheel-derived targets only justify paid training if they "
                 "clear the same true-vs-shuffle, total-baseline, global target, and "
                 "same-recording bidirectional gate used by the prior audits."
+            ),
+            "",
+        ]
+    if signed_wheel_direction_family_gate is not None:
+        summary = signed_wheel_direction_family_gate["summary"]
+        balances = summary["target_balances"]
+        top = summary["top_rows"][:6]
+        lines += [
+            "## Signed Wheel-Direction Family Gate",
+            "",
+            "`docs/signed_wheel_direction_family_gate.md` classifies post-stimulus",
+            "wheel displacement direction under the unchanged shared-family local gate.",
+            "",
+            f"- rows: `{summary['n_rows']}`",
+            f"- candidates: `{summary['n_candidates']}`",
+            f"- positive centered-delta rows: `{summary['n_positive_centered_delta']}`",
+            f"- max bidirectional recordings: `{summary['max_bidirectional_recordings']}`",
+            f"- max bidirectional recording fraction: `{summary['max_bidirectional_recording_fraction']:.3f}`",
+            f"- decision: `{summary['decision']}`",
+            "",
+            "| target | trials | eligible recordings | recordings |",
+            "|---|---:|---:|---:|",
+        ]
+        for target, row in balances.items():
+            lines.append(
+                f"| {target} | {row['n_trials']} | {row['eligible_recordings']} | {row['n_recordings']} |"
+            )
+        lines += [
+            "",
+            "| target | family | holdout | decision | delta shuffle | delta total | targets | bidir recs |",
+            "|---|---|---|---|---:|---:|---|---:|",
+        ]
+        for row in top:
+            lines.append(
+                f"| {row['target_mode']} | {row['family']} | {row['holdout']} | {row['decision']} | "
+                f"{row['centered_delta_vs_shuffle']:+.3f} | {row['centered_delta_vs_total']:+.3f} | "
+                f"{row['target0_improved_vs_shuffle']:.3f}/{row['target1_improved_vs_shuffle']:.3f} | "
+                f"{row['n_bidirectional_recordings']}/{row['n_recordings']} |"
+            )
+        lines += [
+            "",
+            (
+                "Decision: signed wheel direction is not a training trigger on the current panel. "
+                "The best row has a strong fiber-tract delta but misses target1 and reaches only "
+                "2/4 bidirectional recordings."
+            ),
+            "",
+        ]
+    if signed_wheel_direction_projected_gate is not None:
+        summary = signed_wheel_direction_projected_gate["summary"]
+        balances = summary["target_balances"]
+        top = summary["top_rows"][:6]
+        lines += [
+            "## Signed Wheel-Direction Projected Manifest Gate",
+            "",
+            "`docs/signed_wheel_direction_family_gate_projected_hdf5.md` reruns",
+            "the signed wheel-direction target on the projected local manifest.",
+            "",
+            f"- rows: `{summary['n_rows']}`",
+            f"- candidates: `{summary['n_candidates']}`",
+            f"- positive centered-delta rows: `{summary['n_positive_centered_delta']}`",
+            f"- max bidirectional recordings: `{summary['max_bidirectional_recordings']}`",
+            f"- max bidirectional recording fraction: `{summary['max_bidirectional_recording_fraction']:.3f}`",
+            f"- decision: `{summary['decision']}`",
+            "",
+            "| target | trials | eligible recordings | recordings |",
+            "|---|---:|---:|---:|",
+        ]
+        for target, row in balances.items():
+            lines.append(
+                f"| {target} | {row['n_trials']} | {row['eligible_recordings']} | {row['n_recordings']} |"
+            )
+        lines += [
+            "",
+            "| target | family | holdout | decision | delta shuffle | delta total | targets | bidir recs |",
+            "|---|---|---|---|---:|---:|---|---:|",
+        ]
+        for row in top:
+            lines.append(
+                f"| {row['target_mode']} | {row['family']} | {row['holdout']} | {row['decision']} | "
+                f"{row['centered_delta_vs_shuffle']:+.3f} | {row['centered_delta_vs_total']:+.3f} | "
+                f"{row['target0_improved_vs_shuffle']:.3f}/{row['target1_improved_vs_shuffle']:.3f} | "
+                f"{row['n_bidirectional_recordings']}/{row['n_recordings']} |"
+            )
+        lines += [
+            "",
+            (
+                "Decision: the projected panel also has zero signed wheel-direction candidates. "
+                "Max same-recording bidirectional support remains 2/4, so this motor target is closed."
             ),
             "",
         ]
@@ -3274,6 +3367,8 @@ def main() -> int:
     derived_target_family_gate = read_mechanism_audit(REPO_ROOT / DERIVED_TARGET_FAMILY_GATE_FILE)
     contextual_target_family_gate = read_mechanism_audit(REPO_ROOT / CONTEXTUAL_TARGET_FAMILY_GATE_FILE)
     wheel_target_family_gate = read_mechanism_audit(REPO_ROOT / WHEEL_TARGET_FAMILY_GATE_FILE)
+    signed_wheel_direction_family_gate = read_mechanism_audit(REPO_ROOT / SIGNED_WHEEL_DIRECTION_FAMILY_GATE_FILE)
+    signed_wheel_direction_projected_gate = read_mechanism_audit(REPO_ROOT / SIGNED_WHEEL_DIRECTION_PROJECTED_GATE_FILE)
     low_contrast_choice_family_gate = read_mechanism_audit(REPO_ROOT / LOW_CONTRAST_CHOICE_FAMILY_GATE_FILE)
     low_contrast_choice_projected_gate = read_mechanism_audit(REPO_ROOT / LOW_CONTRAST_CHOICE_PROJECTED_GATE_FILE)
     low_contrast_choice_seed_sensitivity = read_mechanism_audit(
@@ -3438,6 +3533,8 @@ def main() -> int:
         derived_target_family_gate,
         contextual_target_family_gate,
         wheel_target_family_gate,
+        signed_wheel_direction_family_gate,
+        signed_wheel_direction_projected_gate,
         low_contrast_choice_family_gate,
         low_contrast_choice_projected_gate,
         low_contrast_choice_seed_sensitivity,
@@ -3555,6 +3652,8 @@ def main() -> int:
         "derived_target_family_gate": derived_target_family_gate,
         "contextual_target_family_gate": contextual_target_family_gate,
         "wheel_target_family_gate": wheel_target_family_gate,
+        "signed_wheel_direction_family_gate": signed_wheel_direction_family_gate,
+        "signed_wheel_direction_projected_gate": signed_wheel_direction_projected_gate,
         "low_contrast_choice_family_gate": low_contrast_choice_family_gate,
         "low_contrast_choice_projected_gate": low_contrast_choice_projected_gate,
         "low_contrast_choice_seed_sensitivity": low_contrast_choice_seed_sensitivity,

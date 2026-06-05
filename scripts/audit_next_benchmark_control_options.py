@@ -48,6 +48,8 @@ ARTIFACTS = {
     "reaction_dynamics_target_family_counts": "docs/reaction_dynamics_target_family_gate_counts.json",
     "reaction_dynamics_target_family_fractions": "docs/reaction_dynamics_target_family_gate_fractions.json",
     "reaction_dynamics_target_family_unit_residuals": "docs/reaction_dynamics_target_family_gate_unit_residuals.json",
+    "signed_wheel_direction_family": "docs/signed_wheel_direction_family_gate.json",
+    "signed_wheel_direction_projected": "docs/signed_wheel_direction_family_gate_projected_hdf5.json",
     "cell_type_prior_target_control": "docs/cell_type_prior_target_control_gate.json",
     "waveform_target_control": "docs/waveform_target_control_gate.json",
     "local_gate_meta_failures": "docs/local_gate_meta_failure_audit.json",
@@ -177,6 +179,12 @@ def build_report() -> dict:
     behavior_ready = behavior_summary.get("decision") == "behavior_cache_ready"
     wheel_candidates = summary_value(wheel, "n_candidates", None)
     wheel_done = wheel is not None
+    signed_wheel = artifacts["signed_wheel_direction_family"]
+    signed_wheel_summary = signed_wheel.get("summary", {}) if signed_wheel is not None else {}
+    signed_wheel_projected = artifacts["signed_wheel_direction_projected"]
+    signed_wheel_projected_summary = (
+        signed_wheel_projected.get("summary", {}) if signed_wheel_projected is not None else {}
+    )
     low_contrast = artifacts["low_contrast_choice_family"]
     low_contrast_summary = low_contrast.get("summary", {}) if low_contrast is not None else {}
     low_contrast_projected = artifacts["low_contrast_choice_projected"]
@@ -347,7 +355,7 @@ def build_report() -> dict:
                 if not wheel_done or (wheel_candidates or 0) > 0
                 else "closed"
             ),
-            priority=2 if not behavior_ready else (1 if not wheel_done or (wheel_candidates or 0) > 0 else 87),
+            priority=2 if not behavior_ready else (1 if not wheel_done or (wheel_candidates or 0) > 0 else 88),
             evidence=[
                 (
                     f"behavior-cache preflight has wheel in {wheel_count}/{n_behavior_recordings} "
@@ -381,13 +389,46 @@ def build_report() -> dict:
             ),
         ),
         branch(
+            name="signed wheel-direction motor target",
+            status="closed" if signed_wheel_projected is not None else "secondary_after_wheel",
+            priority=81 if signed_wheel_projected is not None else 3,
+            evidence=[
+                (
+                    "current-panel signed wheel-direction gate has not been run yet"
+                    if signed_wheel is None
+                    else (
+                        "current-panel signed wheel-direction gate found "
+                        f"{signed_wheel_summary.get('n_candidates', 'n/a')} candidates across "
+                        f"{signed_wheel_summary.get('n_rows', 'n/a')} rows and max bidir "
+                        f"{signed_wheel_summary.get('max_bidirectional_recording_fraction', 0.0):.3f}"
+                    )
+                ),
+                (
+                    "projected-panel signed wheel-direction gate has not been run yet"
+                    if signed_wheel_projected is None
+                    else (
+                        "projected-panel signed wheel-direction gate found "
+                        f"{signed_wheel_projected_summary.get('n_candidates', 'n/a')} candidates across "
+                        f"{signed_wheel_projected_summary.get('n_rows', 'n/a')} rows and max bidir "
+                        f"{signed_wheel_projected_summary.get('max_bidirectional_recording_fraction', 0.0):.3f}"
+                    )
+                ),
+            ],
+            next_action=(
+                "Do not train: signed wheel-direction does not pass current or projected local gates."
+                if signed_wheel_projected is not None
+                else "Run the signed wheel-direction local gate on current and projected manifests."
+            ),
+            gpu_trigger="none",
+        ),
+        branch(
             name="neutral-prior low-contrast choice target redesign",
             status=(
                 "closed"
                 if neutral_prior_low_contrast_projected is not None and neutral_prior_low_contrast_seed is not None
                 else "secondary_after_new_target"
             ),
-            priority=81 if neutral_prior_low_contrast_projected is not None else 3,
+            priority=82 if neutral_prior_low_contrast_projected is not None else 3,
             evidence=[
                 (
                     "current-panel neutral-prior low-contrast choice gate has not been run yet"
@@ -433,7 +474,7 @@ def build_report() -> dict:
                 if artifacts["projected_support80_all_families_recording_zscore"] is not None
                 else "secondary_after_new_target"
             ),
-            priority=82 if artifacts["projected_support80_all_families_recording_zscore"] is not None else 3,
+            priority=83 if artifacts["projected_support80_all_families_recording_zscore"] is not None else 3,
             evidence=[
                 (
                     "projected support80 recording-zscore family gate has not been run yet"
@@ -458,7 +499,7 @@ def build_report() -> dict:
         branch(
             name="prior-aligned choice target redesign",
             status="closed" if prior_aligned_projected is not None else "secondary_after_new_target",
-            priority=83 if prior_aligned_projected is not None else 3,
+            priority=84 if prior_aligned_projected is not None else 3,
             evidence=[
                 (
                     "current-panel prior-aligned choice gate has not been run yet"
@@ -491,7 +532,7 @@ def build_report() -> dict:
         branch(
             name="correct low-contrast choice target redesign",
             status="closed" if correct_low_contrast_projected is not None else "secondary_after_new_target",
-            priority=84 if correct_low_contrast_projected is not None else 3,
+            priority=85 if correct_low_contrast_projected is not None else 3,
             evidence=[
                 (
                     "current-panel correct low-contrast choice gate has not been run yet"
@@ -532,7 +573,7 @@ def build_report() -> dict:
                 if low_contrast_seed is not None
                 else "secondary_after_new_target"
             ),
-            priority=85 if low_contrast_seed is not None else (1 if low_contrast_projected is not None else 3),
+            priority=86 if low_contrast_seed is not None else (1 if low_contrast_projected is not None else 3),
             evidence=[
                 (
                     "current-panel low-contrast choice gate has not been run yet"
@@ -591,7 +632,7 @@ def build_report() -> dict:
                 if extreme_seed is not None
                 else "secondary_after_cache"
             ),
-            priority=86 if extreme_seed is not None else (1 if extreme_quantile_done else 3),
+            priority=87 if extreme_seed is not None else (1 if extreme_quantile_done else 3),
             evidence=[
                 (
                     "extreme-quantile target family gate has not been run yet"
@@ -848,7 +889,7 @@ def build_report() -> dict:
         branch(
             name="reaction-dynamics wheel targets",
             status="closed" if reaction_feature_modes["n_modes"] else "recommended_next",
-            priority=88 if reaction_feature_modes["n_modes"] else 1,
+            priority=89 if reaction_feature_modes["n_modes"] else 1,
             evidence=[
                 (
                     "reaction-dynamics target family feature-mode sweep has not been run yet"
@@ -884,7 +925,7 @@ def build_report() -> dict:
         branch(
             name="cell-type prior target/control gate",
             status="closed" if cell_type_prior_done else "recommended_next",
-            priority=89 if cell_type_prior_done else 1,
+            priority=90 if cell_type_prior_done else 1,
             evidence=[
                 (
                     "cell-type prior target/control gate has not been run yet"
