@@ -16,7 +16,7 @@ Ranks remaining no-spend branches after the current local audits. This is the pl
 | 89 | waveform target/control gate | `closed` | Do not spend on simple waveform-channel controls; they do not pass the local bidirectional gate. |
 | 90 | local gate meta-failure synthesis | `closed` | Use the meta-audit redesign rule: require prospectively defined same-recording target0+target1 evidence before any GPU run. |
 | 90 | recording bidirectionality prospectus | `closed` | Run the unchanged local gate on manifests/ibl_bwm_recording_bidirectionality_prospect_leads.json; treat any pass as a local redesign candidate, not a training trigger. |
-| 90 | prospect-lead derived target validation | `closed` | Treat prospect-lead rows as design leads only; require full-manifest or held-out validation before GPU training. |
+| 90 | prospect-lead derived target validation | `closed` | Do not spend on prospect-lead derived candidates; they fail full-manifest feature-mode validation. |
 | 91 | behavior-inclusive cache rebuild | `closed` | Cache rebuild is complete; all matched recordings now expose wheel. Use the wheel-derived local target gate before any training. |
 | 92 | direct cached-field derived targets | `closed` | Do not launch GPU training from contrast_strength, response_latency, or prior_engaged. |
 | 93 | contextual cached trial-state targets | `closed` | Do not spend on contextual trial-sequence targets from the compact cache. |
@@ -39,7 +39,7 @@ Ranks remaining no-spend branches after the current local audits. This is the pl
 - local gate meta-failure audit has 0 candidates across 1924 rows; recording bidirectionality fails in 1919 rows
 - recording bidirectionality prospectus found 18 prospect recordings from 262 bidirectional observations
 - prospect-lead manifest has 18 recordings across 7 subjects with 0 missing local recordings
-- prospect-lead validation has 0 validated candidates; 3 candidates are single-recording and 3 are subset-only
+- prospect-lead feature-mode validation has 0 validated candidates across 4 feature modes; 4 candidates are single-recording and 4 are subset-only
 - recording-subset replication selected zero stable validation rows
 - GPU trigger: At least one local row on the proposed manifest must clear delta_vs_shuffle>=0, delta_vs_total>=0, target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75 before training.
 
@@ -76,7 +76,8 @@ Ranks remaining no-spend branches after the current local audits. This is the pl
 
 ### prospect-lead derived target validation
 - prospect-lead derived gate found 3 candidates across 84 rows
-- validation found 0 validated candidates; 3 prospect candidates were single-recording and 3 were subset-only
+- recording-centered validation found 0 validated candidates; 3 prospect candidates were single-recording and 3 were subset-only
+- feature-mode validation found 0 validated candidates from 4 prospect candidates across 4 feature modes
 - GPU trigger: none
 
 ### behavior-inclusive cache rebuild

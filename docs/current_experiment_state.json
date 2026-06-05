@@ -62577,6 +62577,7 @@
       "projected_support80_all_families_unit_residuals": "docs/shared_family_target_control_gate_projected_support80_all_families_unit_residuals.json",
       "projected_support80_shared_family": "docs/shared_family_target_control_gate_projected_support80.json",
       "prospect_lead_candidate_validation": "docs/prospect_lead_candidate_validation.json",
+      "prospect_lead_feature_mode_validation": "docs/prospect_lead_feature_mode_validation.json",
       "reaction_dynamics_target_family_counts": "docs/reaction_dynamics_target_family_gate_counts.json",
       "reaction_dynamics_target_family_fractions": "docs/reaction_dynamics_target_family_gate_fractions.json",
       "reaction_dynamics_target_family_recording_centered": "docs/reaction_dynamics_target_family_gate.json",
@@ -62604,7 +62605,7 @@
           "local gate meta-failure audit has 0 candidates across 1924 rows; recording bidirectionality fails in 1919 rows",
           "recording bidirectionality prospectus found 18 prospect recordings from 262 bidirectional observations",
           "prospect-lead manifest has 18 recordings across 7 subjects with 0 missing local recordings",
-          "prospect-lead validation has 0 validated candidates; 3 candidates are single-recording and 3 are subset-only",
+          "prospect-lead feature-mode validation has 0 validated candidates across 4 feature modes; 4 candidates are single-recording and 4 are subset-only",
           "recording-subset replication selected zero stable validation rows"
         ],
         "gpu_trigger": "At least one local row on the proposed manifest must clear delta_vs_shuffle>=0, delta_vs_total>=0, target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75 before training.",
@@ -62683,11 +62684,12 @@
       {
         "evidence": [
           "prospect-lead derived gate found 3 candidates across 84 rows",
-          "validation found 0 validated candidates; 3 prospect candidates were single-recording and 3 were subset-only"
+          "recording-centered validation found 0 validated candidates; 3 prospect candidates were single-recording and 3 were subset-only",
+          "feature-mode validation found 0 validated candidates from 4 prospect candidates across 4 feature modes"
         ],
         "gpu_trigger": "none",
         "name": "prospect-lead derived target validation",
-        "next_action": "Treat prospect-lead rows as design leads only; require full-manifest or held-out validation before GPU training.",
+        "next_action": "Do not spend on prospect-lead derived candidates; they fail full-manifest feature-mode validation.",
         "priority": 90,
         "status": "closed"
       },
@@ -63298,6 +63300,155 @@
       "n_subset_only_candidates": 3,
       "n_validated_candidates": 0,
       "next_action": "Treat prospect-lead rows as design leads only; require full-manifest or held-out validation before GPU training."
+    },
+    "thresholds": {
+      "min_candidate_recordings": 3
+    },
+    "validated_candidates": []
+  },
+  "prospect_lead_feature_mode_validation": {
+    "feature_mode_rows": [
+      {
+        "feature_mode": "recording_centered",
+        "full_candidates": 0,
+        "full_gate": "docs/derived_target_family_gate.json",
+        "full_max_bidirectional_recording_fraction": 0.75,
+        "full_max_bidirectional_recordings": 3,
+        "prospect_candidates": 3,
+        "prospect_gate": "docs/derived_target_family_gate_prospect_leads.json",
+        "prospect_max_bidirectional_recording_fraction": 1.0,
+        "prospect_max_bidirectional_recordings": 3,
+        "single_recording_candidates": 3,
+        "subset_only_candidates": 3,
+        "validated_candidates": 0
+      },
+      {
+        "feature_mode": "counts",
+        "full_candidates": 0,
+        "full_gate": "docs/derived_target_family_gate_counts.json",
+        "full_max_bidirectional_recording_fraction": 0.25,
+        "full_max_bidirectional_recordings": 1,
+        "prospect_candidates": 1,
+        "prospect_gate": "docs/derived_target_family_gate_prospect_leads_counts.json",
+        "prospect_max_bidirectional_recording_fraction": 1.0,
+        "prospect_max_bidirectional_recordings": 1,
+        "single_recording_candidates": 1,
+        "subset_only_candidates": 1,
+        "validated_candidates": 0
+      },
+      {
+        "feature_mode": "fractions",
+        "full_candidates": 0,
+        "full_gate": "docs/derived_target_family_gate_fractions.json",
+        "full_max_bidirectional_recording_fraction": 0.5,
+        "full_max_bidirectional_recordings": 2,
+        "prospect_candidates": 0,
+        "prospect_gate": "docs/derived_target_family_gate_prospect_leads_fractions.json",
+        "prospect_max_bidirectional_recording_fraction": 0.3333333333333333,
+        "prospect_max_bidirectional_recordings": 1,
+        "single_recording_candidates": 0,
+        "subset_only_candidates": 0,
+        "validated_candidates": 0
+      },
+      {
+        "feature_mode": "unit_residuals",
+        "full_candidates": 0,
+        "full_gate": "docs/derived_target_family_gate_unit_residuals.json",
+        "full_max_bidirectional_recording_fraction": 0.5,
+        "full_max_bidirectional_recordings": 2,
+        "prospect_candidates": 0,
+        "prospect_gate": "docs/derived_target_family_gate_prospect_leads_unit_residuals.json",
+        "prospect_max_bidirectional_recording_fraction": 0.3333333333333333,
+        "prospect_max_bidirectional_recordings": 1,
+        "single_recording_candidates": 0,
+        "subset_only_candidates": 0,
+        "validated_candidates": 0
+      }
+    ],
+    "prospect_candidates": [
+      {
+        "family": "thalamic",
+        "feature_mode": "recording_centered",
+        "full_bidirectional_recording_fraction": 0.25,
+        "full_manifest_decision": "reject: target1",
+        "full_n_bidirectional_recordings": 1,
+        "full_n_recordings": 4,
+        "holdout": "MFD_06",
+        "prospect_bidirectional_recording_fraction": 1.0,
+        "prospect_centered_delta_vs_shuffle": 0.05027103289522539,
+        "prospect_centered_delta_vs_total": 0.01227692383851886,
+        "prospect_decision": "candidate",
+        "prospect_n_bidirectional_recordings": 1,
+        "prospect_n_recordings": 1,
+        "prospect_target0": 0.6865671641791045,
+        "prospect_target1": 0.7164179104477612,
+        "target_mode": "response_latency"
+      },
+      {
+        "family": "broad_named_anatomy",
+        "feature_mode": "recording_centered",
+        "full_bidirectional_recording_fraction": 0.25,
+        "full_manifest_decision": "reject: total baseline",
+        "full_n_bidirectional_recordings": 1,
+        "full_n_recordings": 4,
+        "holdout": "NR_0019",
+        "prospect_bidirectional_recording_fraction": 1.0,
+        "prospect_centered_delta_vs_shuffle": 0.020938008788361495,
+        "prospect_centered_delta_vs_total": 0.008718334763046842,
+        "prospect_decision": "candidate",
+        "prospect_n_bidirectional_recordings": 1,
+        "prospect_n_recordings": 1,
+        "prospect_target0": 0.6150627615062761,
+        "prospect_target1": 0.6861924686192469,
+        "target_mode": "response_latency"
+      },
+      {
+        "family": "broad_named_anatomy",
+        "feature_mode": "recording_centered",
+        "full_bidirectional_recording_fraction": 0.25,
+        "full_manifest_decision": "reject: shuffle",
+        "full_n_bidirectional_recordings": 1,
+        "full_n_recordings": 4,
+        "holdout": "NR_0019",
+        "prospect_bidirectional_recording_fraction": 1.0,
+        "prospect_centered_delta_vs_shuffle": 0.03319014891179842,
+        "prospect_centered_delta_vs_total": 0.00429553264604815,
+        "prospect_decision": "candidate",
+        "prospect_n_bidirectional_recordings": 1,
+        "prospect_n_recordings": 1,
+        "prospect_target0": 0.8444444444444444,
+        "prospect_target1": 0.6030927835051546,
+        "target_mode": "prior_engaged"
+      },
+      {
+        "family": "broad_named_anatomy",
+        "feature_mode": "counts",
+        "full_bidirectional_recording_fraction": 0.0,
+        "full_manifest_decision": "reject: shuffle",
+        "full_n_bidirectional_recordings": 0,
+        "full_n_recordings": 4,
+        "holdout": "NR_0019",
+        "prospect_bidirectional_recording_fraction": 1.0,
+        "prospect_centered_delta_vs_shuffle": 0.03319014891179842,
+        "prospect_centered_delta_vs_total": 0.00429553264604815,
+        "prospect_decision": "candidate",
+        "prospect_n_bidirectional_recordings": 1,
+        "prospect_n_recordings": 1,
+        "prospect_target0": 0.8444444444444444,
+        "prospect_target1": 0.6030927835051546,
+        "target_mode": "prior_engaged"
+      }
+    ],
+    "summary": {
+      "decision": "no_validated_prospect_lead_feature_mode_candidate",
+      "gpu_training_ready": false,
+      "n_feature_modes": 4,
+      "n_full_candidates": 0,
+      "n_prospect_candidates": 4,
+      "n_single_recording_candidates": 4,
+      "n_subset_only_candidates": 4,
+      "n_validated_candidates": 0,
+      "next_action": "Do not spend on prospect-lead derived candidates; they fail full-manifest feature-mode validation."
     },
     "thresholds": {
       "min_candidate_recordings": 3

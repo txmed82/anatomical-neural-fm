@@ -141,6 +141,7 @@ MODEL_FREE_RECORDING_SUPPORT_AUDIT_FILE = "docs/model_free_recording_support_aud
 RECORDING_BIDIRECTIONALITY_PROSPECTUS_FILE = "docs/recording_bidirectionality_prospectus.json"
 DERIVED_TARGET_FAMILY_PROSPECT_LEADS_FILE = "docs/derived_target_family_gate_prospect_leads.json"
 PROSPECT_LEAD_CANDIDATE_VALIDATION_FILE = "docs/prospect_lead_candidate_validation.json"
+PROSPECT_LEAD_FEATURE_MODE_VALIDATION_FILE = "docs/prospect_lead_feature_mode_validation.json"
 MODEL_FREE_RECORDING_DIRECTIONALITY_AUDIT_FILE = "docs/model_free_recording_directionality_audit.json"
 SYMMETRIC_RECORDING_SUPPORT_AUDIT_FILE = "docs/symmetric_recording_support_audit.json"
 SYMMETRIC_THRESHOLD_SENSITIVITY_AUDIT_FILE = "docs/symmetric_threshold_sensitivity_audit.json"
@@ -474,6 +475,7 @@ def render_markdown(
     recording_bidirectionality_prospectus: dict | None = None,
     derived_target_family_prospect_leads: dict | None = None,
     prospect_lead_candidate_validation: dict | None = None,
+    prospect_lead_feature_mode_validation: dict | None = None,
     model_free_recording_directionality_audit: dict | None = None,
     symmetric_recording_support_audit: dict | None = None,
     symmetric_threshold_sensitivity_audit: dict | None = None,
@@ -1895,6 +1897,30 @@ def render_markdown(
             ),
             "",
         ]
+    if prospect_lead_feature_mode_validation is not None:
+        summary = prospect_lead_feature_mode_validation["summary"]
+        lines += [
+            "## Prospect-Lead Feature-Mode Validation",
+            "",
+            "`docs/prospect_lead_feature_mode_validation.md` validates prospect-lead",
+            "derived target candidates across recording-centered, counts, fractions,",
+            "and unit-residual feature modes against the corresponding full-manifest gates.",
+            "",
+            f"- feature modes: `{summary['n_feature_modes']}`",
+            f"- prospect candidates: `{summary['n_prospect_candidates']}`",
+            f"- full-manifest candidates: `{summary['n_full_candidates']}`",
+            f"- validated candidates: `{summary['n_validated_candidates']}`",
+            f"- single-recording candidates: `{summary['n_single_recording_candidates']}`",
+            f"- subset-only candidates: `{summary['n_subset_only_candidates']}`",
+            f"- decision: `{summary['decision']}`",
+            "",
+            (
+                "Decision: feature-mode variation does not validate the prospect-lead "
+                "derived candidates. Keep the next step local and do not launch GPU "
+                "training from these selected-subset rows."
+            ),
+            "",
+        ]
     if model_free_recording_directionality_audit is not None:
         summary = model_free_recording_directionality_audit["summary"]
         overall = summary["overall"]
@@ -2326,6 +2352,9 @@ def main() -> int:
     prospect_lead_candidate_validation = read_mechanism_audit(
         REPO_ROOT / PROSPECT_LEAD_CANDIDATE_VALIDATION_FILE
     )
+    prospect_lead_feature_mode_validation = read_mechanism_audit(
+        REPO_ROOT / PROSPECT_LEAD_FEATURE_MODE_VALIDATION_FILE
+    )
     model_free_recording_directionality_audit = read_mechanism_audit(
         REPO_ROOT / MODEL_FREE_RECORDING_DIRECTIONALITY_AUDIT_FILE
     )
@@ -2408,6 +2437,7 @@ def main() -> int:
         recording_bidirectionality_prospectus,
         derived_target_family_prospect_leads,
         prospect_lead_candidate_validation,
+        prospect_lead_feature_mode_validation,
         model_free_recording_directionality_audit,
         symmetric_recording_support_audit,
         symmetric_threshold_sensitivity_audit,
@@ -2507,6 +2537,7 @@ def main() -> int:
         "recording_bidirectionality_prospectus": recording_bidirectionality_prospectus,
         "derived_target_family_prospect_leads": derived_target_family_prospect_leads,
         "prospect_lead_candidate_validation": prospect_lead_candidate_validation,
+        "prospect_lead_feature_mode_validation": prospect_lead_feature_mode_validation,
         "model_free_recording_directionality_audit": model_free_recording_directionality_audit,
         "symmetric_recording_support_audit": symmetric_recording_support_audit,
         "symmetric_threshold_sensitivity_audit": symmetric_threshold_sensitivity_audit,

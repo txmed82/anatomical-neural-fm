@@ -762,6 +762,22 @@ candidates against the full-manifest derived target gate.
 
 Decision: prospect-lead rows remain design leads only. They do not justify GPU training until they validate outside the selected subset.
 
+## Prospect-Lead Feature-Mode Validation
+
+`docs/prospect_lead_feature_mode_validation.md` validates prospect-lead
+derived target candidates across recording-centered, counts, fractions,
+and unit-residual feature modes against the corresponding full-manifest gates.
+
+- feature modes: `4`
+- prospect candidates: `4`
+- full-manifest candidates: `0`
+- validated candidates: `0`
+- single-recording candidates: `4`
+- subset-only candidates: `4`
+- decision: `no_validated_prospect_lead_feature_mode_candidate`
+
+Decision: feature-mode variation does not validate the prospect-lead derived candidates. Keep the next step local and do not launch GPU training from these selected-subset rows.
+
 ## Model-Free Recording Directionality Audit
 
 `docs/model_free_recording_directionality_audit.md` classifies every
