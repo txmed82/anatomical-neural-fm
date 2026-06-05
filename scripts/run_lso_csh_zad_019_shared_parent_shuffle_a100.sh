@@ -12,6 +12,7 @@ cd "$(dirname "$0")/.."
 DEVICE="${DEVICE:-cuda}"
 MAX_STEPS="${MAX_STEPS:-300}"
 EVAL_BATCHES="${EVAL_BATCHES:-20}"
+BEST_METRIC="${BEST_METRIC:-eval_loss}"
 BATCH_SIZE="${BATCH_SIZE:-16}"
 DIM="${DIM:-96}"
 DEPTH="${DEPTH:-3}"
@@ -33,6 +34,7 @@ COMMON_ARGS=(
   --dim "$DIM" --depth "$DEPTH" --num-latents "$NUM_LATENTS"
   --max-steps "$MAX_STEPS"
   --eval-every 150 --eval-batches "$EVAL_BATCHES"
+  --best-metric "$BEST_METRIC"
   --log-every 50 --warmup-steps 75
   --target-mode "$TARGET_MODE"
   --split-mode animal
@@ -62,6 +64,7 @@ echo "region_granularity: $REGION_GRANULARITY"
 echo "manifest: ${MANIFEST:-<all local recordings>}"
 echo "save_diagnostics: $SAVE_DIAGNOSTICS"
 echo "full_eval_on_best: $FULL_EVAL_ON_BEST"
+echo "best_metric: $BEST_METRIC"
 
 for seed in $SEEDS; do
   for arm in shared_baseline region_only region_shuffle; do

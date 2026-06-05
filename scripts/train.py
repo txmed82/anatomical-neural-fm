@@ -113,6 +113,9 @@ def parse_args():
     p.add_argument("--eval-every", type=int, default=100)
     p.add_argument("--eval-batches", type=int, default=20)
     p.add_argument("--log-every", type=int, default=20)
+    p.add_argument("--best-metric", default="eval_loss", choices=["eval_loss", "eval_auc"],
+                   help="Metric used to select best.ckpt. Use eval_auc for anatomy-transfer "
+                        "diagnostics where ranking is more important than calibration.")
     p.add_argument("--save-eval-predictions", action="store_true",
                    help="When a new best checkpoint is found, write deterministic held-out "
                         "trial predictions to eval_predictions.jsonl for model diagnostics.")
@@ -502,6 +505,24 @@ def lr_lambda(step: int, warmup: int, total: int) -> float:
     return 0.5 * (1.0 + math.cos(math.pi * min(1.0, progress)))
 
 
+def best_metric_initial_value(metric: str) -> float:
+    if metric == "eval_loss":
+        return float("inf")
+    if metric == "eval_auc":
+        return -float("inf")
+    raise ValueError(f"unknown best metric {metric!r}")
+
+
+def is_better_metric(metric: str, candidate: float, current: float) -> bool:
+    if math.isnan(candidate):
+        return False
+    if metric == "eval_loss":
+        return candidate < current
+    if metric == "eval_auc":
+        return candidate > current
+    raise ValueError(f"unknown best metric {metric!r}")
+
+
 def draw_batch(
     ds,
     trial_list,
@@ -797,7 +818,7 @@ def main():
         optimizer, lambda s: lr_lambda(s, args.warmup_steps, args.max_steps),
     )
 
-    best_eval = float("inf")
+    best_eval = best_metric_initial_value(args.best_metric)
     losses = []
     t_start = time.time()
     model.train()
@@ -827,14 +848,17 @@ def main():
         if step % args.eval_every == 0 or step == args.max_steps:
             eval_metrics = evaluate(model, ds, eval_trials, args, allowed_region_acronyms)
             log({"event": "eval", "step": step, **eval_metrics})
-            if eval_metrics["eval_loss"] < best_eval:
-                best_eval = eval_metrics["eval_loss"]
+            candidate_metric = float(eval_metrics[args.best_metric])
+            if is_better_metric(args.best_metric, candidate_metric, best_eval):
+                best_eval = candidate_metric
                 ckpt = {"step": step, "args": vars(args), "state_dict": model.state_dict(),
                         "vocab_unit_ids": vocab["all_unit_ids"],
                         "vocab_session_ids": vocab["session_ids"],
                         "eval": eval_metrics}
                 torch.save(ckpt, args.out_dir / "best.ckpt")
-                log({"event": "ckpt_best", "step": step, "eval_loss": best_eval,
+                log({"event": "ckpt_best", "step": step,
+                     "best_metric": args.best_metric, "best_metric_value": best_eval,
+                     "eval_loss": eval_metrics["eval_loss"],
                      "eval_acc": eval_metrics["eval_acc"], "eval_auc": eval_metrics["eval_auc"]})
                 prediction_rows = None
                 if args.save_eval_predictions or args.full_eval_on_best:
@@ -870,7 +894,15 @@ def main():
     # Save last
     torch.save({"step": step, "args": vars(args), "state_dict": model.state_dict()},
                args.out_dir / "last.ckpt")
-    log({"event": "done", "wall_clock_s": time.time() - t_start, "best_eval_loss": best_eval})
+    done_record = {
+        "event": "done",
+        "wall_clock_s": time.time() - t_start,
+        "best_metric": args.best_metric,
+        "best_metric_value": best_eval,
+    }
+    if args.best_metric == "eval_loss":
+        done_record["best_eval_loss"] = best_eval
+    log(done_record)
     log_fh.close()
     return 0
 

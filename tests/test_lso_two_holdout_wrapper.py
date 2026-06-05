@@ -30,6 +30,8 @@ def test_two_holdout_wrapper_can_enable_diagnostic_exports() -> None:
     assert "--eval-prediction-max-trials" in script
     assert 'FULL_EVAL_ON_BEST="${FULL_EVAL_ON_BEST:-0}"' in script
     assert "--full-eval-on-best" in script
+    assert 'BEST_METRIC="${BEST_METRIC:-eval_loss}"' in script
+    assert "--best-metric" in script
 
 
 def test_csh_wrapper_can_enable_diagnostic_exports() -> None:
@@ -40,3 +42,5 @@ def test_csh_wrapper_can_enable_diagnostic_exports() -> None:
     assert "--eval-prediction-max-trials" in script
     assert 'FULL_EVAL_ON_BEST="${FULL_EVAL_ON_BEST:-0}"' in script
     assert "--full-eval-on-best" in script
+    assert 'BEST_METRIC="${BEST_METRIC:-eval_loss}"' in script
+    assert "--best-metric" in script

@@ -121,3 +121,7 @@ reason to redesign the objective/gate, not to broaden yet.
 
 The executable gate is `scripts/check_lso_demo_gate.py`; the preserved CSH
 diagnostic verdict is `docs/lso_csh_diagnostic_outputs_gate.json`.
+
+For the next canonical rerun, use `BEST_METRIC=eval_auc` so `best.ckpt` is
+selected by held-out ranking instead of BCE calibration loss, and keep
+`SAVE_DIAGNOSTICS=1` so the paired-trial gate can be computed.
