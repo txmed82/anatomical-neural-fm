@@ -209,3 +209,15 @@ target pair in only `0.023` of batches, target-balanced sampling in `0.040`,
 but `recording_target_balanced` creates one in `1.000` of batches. Since the
 local probe matrix still fails under `recording_target_balanced`, the remaining
 failure is the anatomical signal/control/objective, not inactive pairwise loss.
+
+Model-free region signal audit:
+`docs/csh_model_free_region_signal_audit.md` removes the transformer and fits a
+closed-form ridge classifier on trial-level parent-region spike counts. This is
+a strong negative for the current parent-region feature representation. A
+total-spike-count baseline reaches centered AUC `0.553` on held-out
+CSH_ZAD_019, true parent-region features reach only `0.487`, and
+within-recording shuffled parent labels reach `0.538`. True-minus-shuffle
+centered AUC is `-0.052`, target0 improvement is `0.338`, target1 improvement
+is `0.703`, and only `1/4` recordings are positive. Decision: the next
+no-spend work should redesign the anatomical feature/control target rather
+than spend on another neural model run.

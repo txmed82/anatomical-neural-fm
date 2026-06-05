@@ -1269,3 +1269,14 @@ target-balanced sampling almost never do (`0.023` and `0.040`). Therefore the
 next no-spend work should not be another sampler-only tweak. It should build a
 stronger anatomical/control diagnostic or objective that creates bidirectional
 held-out improvement despite an already-active recording-local rank loss.
+
+Model-free feature audit refinement:
+`docs/csh_model_free_region_signal_audit.md` tests parent-region spike-count
+features without the transformer. It is negative: true parent regions have
+centered AUC `0.487`, shuffled parent labels have `0.538`, and a total-spike
+baseline has `0.553`. True labels beat shuffled labels on only `1/4`
+recordings and fail bidirectional target-class improvement. This shifts the
+roadmap away from more architecture/objective sweeps and toward designing a
+better anatomical feature/control target, such as region-family contrasts that
+beat total-spike and within-recording shuffled controls in a model-free audit
+before any GPU confirmation.

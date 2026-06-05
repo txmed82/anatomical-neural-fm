@@ -131,3 +131,23 @@ condition for recording-local ranking losses to be active.
 | recording_target_balanced | 0.500 | 1.000 | 1.000 | 1.000 |
 
 Interpretation: `recording_target_balanced` makes the recording-local rank loss active in every audited batch, while uniform and target-balanced sampling rarely produce same-recording contrast. Since the local probe matrix still fails under `recording_target_balanced`, the next failure is not pair availability; it is the anatomy/control signal or objective itself.
+
+## Model-Free Region Signal Audit
+
+`docs/csh_model_free_region_signal_audit.md` removes the transformer and
+tests closed-form ridge classifiers on trial-level parent-region spike counts.
+
+| feature_set | train_AUC | eval_AUC | eval_centered_AUC |
+|---|---:|---:|---:|
+| total_spikes | 0.503 | 0.555 | 0.553 |
+| region_true | 0.597 | 0.499 | 0.487 |
+| region_shuffle | 0.601 | 0.479 | 0.538 |
+
+- true-minus-shuffle centered AUC: `-0.052`
+- true-minus-total centered AUC: `-0.066`
+- paired target0 improved vs shuffle: `0.338`
+- paired target1 improved vs shuffle: `0.703`
+- positive recordings vs shuffle: `1/4`
+- decision: `no_model_free_true_region_advantage`
+
+Interpretation: the current parent-region spike-count representation does not show model-free anatomical transfer for CSH. True region labels are worse than shuffled labels on recording-centered AUC and worse than a total-spike-count baseline, so the next no-spend step should redesign the anatomical feature/control target rather than spend on another neural model run.

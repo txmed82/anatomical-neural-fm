@@ -87,6 +87,7 @@ CENTERED_BCE_MECHANISM_AUDIT_FILE = "docs/lso_csh_pairwise_rank_centered_bce_pil
 LOCAL_AUC_SURROGATE_GATE_FILE = "docs/local_csh_auc_surrogate_probe_anatomy_specific_gate.json"
 LOCAL_AUC_SURROGATE_MISMATCH_FILE = "docs/local_csh_auc_surrogate_probe_mismatch.json"
 BATCH_SAMPLING_CONTRAST_AUDIT_FILE = "docs/csh_batch_sampling_contrast_audit.json"
+MODEL_FREE_REGION_SIGNAL_AUDIT_FILE = "docs/csh_model_free_region_signal_audit.json"
 LOCAL_PROBE_FILES = (
     (
         "local AUC surrogate",
@@ -294,6 +295,7 @@ def render_markdown(
     local_auc_mismatch: dict | None = None,
     local_probes: list[LocalProbeRow] | None = None,
     batch_sampling_audit: dict | None = None,
+    model_free_region_audit: dict | None = None,
 ) -> str:
     summary = summarize(strict_rows, slice_rows)
     lines = [
@@ -558,6 +560,49 @@ def render_markdown(
             ),
             "",
         ]
+    if model_free_region_audit is not None:
+        summary = model_free_region_audit.get("summary", {})
+        metrics = summary.get("metrics", {})
+        deltas = summary.get("deltas", {})
+        paired = summary.get("paired_true_vs_shuffle", {})
+        lines += [
+            "## Model-Free Region Signal Audit",
+            "",
+            "`docs/csh_model_free_region_signal_audit.md` removes the transformer and",
+            "tests closed-form ridge classifiers on trial-level parent-region spike counts.",
+            "",
+            "| feature_set | train_AUC | eval_AUC | eval_centered_AUC |",
+            "|---|---:|---:|---:|",
+        ]
+        for name in ("total_spikes", "region_true", "region_shuffle"):
+            row = metrics.get(name, {})
+            lines.append(
+                "| "
+                f"{name} | {fmt_float(row.get('train_auc'))} | "
+                f"{fmt_float(row.get('eval_auc'))} | "
+                f"{fmt_float(row.get('eval_centered_auc'))} |"
+            )
+        lines += [
+            "",
+            f"- true-minus-shuffle centered AUC: `{fmt_signed(deltas.get('true_minus_shuffle_centered_auc'))}`",
+            f"- true-minus-total centered AUC: `{fmt_signed(deltas.get('true_minus_total_centered_auc'))}`",
+            f"- paired target0 improved vs shuffle: `{fmt_float(paired.get('target0_improved_fraction'))}`",
+            f"- paired target1 improved vs shuffle: `{fmt_float(paired.get('target1_improved_fraction'))}`",
+            (
+                f"- positive recordings vs shuffle: "
+                f"`{summary.get('recordings_positive_true_minus_shuffle')}/{summary.get('n_recordings')}`"
+            ),
+            f"- decision: `{summary.get('decision')}`",
+            "",
+            (
+                "Interpretation: the current parent-region spike-count representation does "
+                "not show model-free anatomical transfer for CSH. True region labels are "
+                "worse than shuffled labels on recording-centered AUC and worse than a "
+                "total-spike-count baseline, so the next no-spend step should redesign the "
+                "anatomical feature/control target rather than spend on another neural model run."
+            ),
+            "",
+        ]
     return "\n".join(lines)
 
 
@@ -590,6 +635,7 @@ def main() -> int:
         if (row := read_local_probe_result(label, REPO_ROOT / gate_rel, REPO_ROOT / mismatch_rel)) is not None
     ]
     batch_sampling_audit = read_mechanism_audit(REPO_ROOT / BATCH_SAMPLING_CONTRAST_AUDIT_FILE)
+    model_free_region_audit = read_mechanism_audit(REPO_ROOT / MODEL_FREE_REGION_SIGNAL_AUDIT_FILE)
     args.out_md.parent.mkdir(parents=True, exist_ok=True)
     args.out_md.write_text(render_markdown(
         strict_rows,
@@ -603,6 +649,7 @@ def main() -> int:
         local_auc_mismatch,
         local_probes,
         batch_sampling_audit,
+        model_free_region_audit,
     ))
     args.out_json.parent.mkdir(parents=True, exist_ok=True)
     args.out_json.write_text(json.dumps({
@@ -625,6 +672,7 @@ def main() -> int:
             for row in local_probes
         ],
         "batch_sampling_contrast_audit": batch_sampling_audit,
+        "model_free_region_signal_audit": model_free_region_audit,
     }, indent=2, sort_keys=True) + "\n")
     print(f"wrote {args.out_md}")
     print(f"wrote {args.out_json}")
