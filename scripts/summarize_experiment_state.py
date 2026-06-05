@@ -107,6 +107,9 @@ MODEL_FREE_MATCHED_SUPPORT80_PANEL_FILE = "docs/model_free_matched_support80_hdf
 MODEL_FREE_POSITIVE_HOLDOUTS_MECHANISM_FILE = "docs/model_free_positive_holdouts_mechanism.json"
 MODEL_FREE_RECORDING_BIDIRECTIONAL_GATE_FILE = "docs/model_free_recording_bidirectional_gate.json"
 MODEL_FREE_RECORDING_BIDIRECTIONAL_FRACTIONS_FILE = "docs/model_free_recording_bidirectional_gate_fractions.json"
+MODEL_FREE_RECORDING_BIDIRECTIONAL_UNIT_RESIDUALS_FILE = (
+    "docs/model_free_recording_bidirectional_gate_unit_residuals.json"
+)
 MODEL_FREE_RECORDING_BIDIRECTIONAL_PRIOR_FILE = "docs/model_free_recording_bidirectional_gate_prior_side.json"
 MODEL_FREE_RECORDING_BIDIRECTIONAL_FEEDBACK_FILE = "docs/model_free_recording_bidirectional_gate_feedback.json"
 LOCAL_PROBE_FILES = (
@@ -397,6 +400,7 @@ def render_markdown(
     model_free_positive_holdouts: dict | None = None,
     model_free_recording_bidirectional_gate: dict | None = None,
     model_free_recording_bidirectional_fractions: dict | None = None,
+    model_free_recording_bidirectional_unit_residuals: dict | None = None,
     model_free_recording_bidirectional_prior: dict | None = None,
     model_free_recording_bidirectional_feedback: dict | None = None,
 ) -> str:
@@ -1035,6 +1039,30 @@ def render_markdown(
             ),
             "",
         ]
+    if model_free_recording_bidirectional_unit_residuals is not None:
+        summary = model_free_recording_bidirectional_unit_residuals["summary"]
+        positives = ", ".join(summary["positive_delta_holdouts"]) or "none"
+        lines += [
+            "## Unit-Residual Feature Gate",
+            "",
+            "`docs/model_free_recording_bidirectional_gate_unit_residuals.md` subtracts",
+            "each recording's expected region counts from every trial, using total spikes",
+            "times that recording's static unit-region distribution.",
+            "",
+            f"- candidates: `{summary['n_candidates']}/{summary['n_holdouts']}`",
+            f"- positive centered-delta holdouts: `{summary['n_positive_delta_holdouts']}/{summary['n_holdouts']}`",
+            f"- positive holdouts: `{positives}`",
+            f"- mean bidirectional recording fraction: `{summary['mean_bidirectional_recording_fraction']:.3f}`",
+            f"- decision: `{summary['decision']}`",
+            "",
+            (
+                "Decision: residualizing static anatomical coverage increases the number "
+                "of positive centered deltas, but does not create a valid transfer signal. "
+                "Every positive holdout remains one target direction with `0/4` "
+                "bidirectional recordings."
+            ),
+            "",
+        ]
     alternative_target_gates = [
         row for row in [
             model_free_recording_bidirectional_prior,
@@ -1126,6 +1154,9 @@ def main() -> int:
     model_free_recording_bidirectional_fractions = read_mechanism_audit(
         REPO_ROOT / MODEL_FREE_RECORDING_BIDIRECTIONAL_FRACTIONS_FILE
     )
+    model_free_recording_bidirectional_unit_residuals = read_mechanism_audit(
+        REPO_ROOT / MODEL_FREE_RECORDING_BIDIRECTIONAL_UNIT_RESIDUALS_FILE
+    )
     model_free_recording_bidirectional_prior = read_mechanism_audit(
         REPO_ROOT / MODEL_FREE_RECORDING_BIDIRECTIONAL_PRIOR_FILE
     )
@@ -1161,6 +1192,7 @@ def main() -> int:
         model_free_positive_holdouts,
         model_free_recording_bidirectional_gate,
         model_free_recording_bidirectional_fractions,
+        model_free_recording_bidirectional_unit_residuals,
         model_free_recording_bidirectional_prior,
         model_free_recording_bidirectional_feedback,
     ))
@@ -1221,6 +1253,7 @@ def main() -> int:
         "model_free_positive_holdouts_mechanism": model_free_positive_holdouts,
         "model_free_recording_bidirectional_gate": model_free_recording_bidirectional_gate,
         "model_free_recording_bidirectional_fractions": model_free_recording_bidirectional_fractions,
+        "model_free_recording_bidirectional_unit_residuals": model_free_recording_bidirectional_unit_residuals,
         "model_free_recording_bidirectional_prior_side": model_free_recording_bidirectional_prior,
         "model_free_recording_bidirectional_feedback": model_free_recording_bidirectional_feedback,
     }, indent=2, sort_keys=True) + "\n")

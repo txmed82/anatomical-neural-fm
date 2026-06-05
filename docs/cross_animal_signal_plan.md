@@ -1398,3 +1398,15 @@ positive centered-delta holdouts (`KS014`, `NR_0019`, `SWC_043`) remain
 one-sided with `0/4` bidirectional recordings. This closes the simple
 normalization branch; the next no-spend branch should test a different
 anatomical control or feature family rather than a GPU run.
+
+Unit-residual feature check:
+The model-free gate now also supports `--feature-mode unit_residuals`, which
+subtracts each recording's expected region counts from every trial using total
+spikes times the recording's static unit-region distribution. This is a more
+targeted control for total rate and anatomical coverage than fractions. It
+creates many more positive centered deltas (`6/7` holdouts), but still has zero
+candidates and mean bidirectional recording fraction `0.000`; every positive
+holdout remains one-sided. This suggests there may be a weak region-deviation
+signal, but not one that supports the cross-animal anatomical transfer claim
+under the current target/control gates. Do not launch GPU training from this
+result.

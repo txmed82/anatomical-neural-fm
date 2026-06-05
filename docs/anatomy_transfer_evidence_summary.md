@@ -330,3 +330,15 @@ candidates and mean bidirectional recording fraction `0.000`. `KS014`,
 bidirectional recordings and the gains remain one target direction. Decision:
 simple region-composition normalization is not enough; the next local branch
 needs a different anatomical control or feature family, not GPU training.
+
+Unit-residual feature check:
+`docs/model_free_recording_bidirectional_gate_unit_residuals.md` subtracts
+each recording's expected region counts from each trial, using total spikes
+times that recording's static unit-region distribution. This controls both
+total spike scale and static anatomical coverage. It increases positive
+centered-delta holdouts to `6/7`, but still yields zero candidates and mean
+bidirectional recording fraction `0.000`. The positive deltas are still
+target-direction artifacts: `CSH_ZAD_019` has target0 `0.120` and target1
+`0.903`, while `NYU-12` flips to target0 `0.694` and target1 `0.341`.
+Decision: residualized region deviations are not enough to trigger GPU
+training.

@@ -18,6 +18,7 @@ from audit_model_free_region_signal import (  # noqa: E402
     evaluate_feature_set,
     interpret,
     make_feature_matrix,
+    recording_region_unit_fractions,
     summarize_results,
     total_spike_feature,
     transform_region_features,
@@ -103,7 +104,7 @@ def audit_holdout(args: argparse.Namespace, holdout: str) -> dict:
     eval_trials = build_trial_samples(vocab["recs"], split.eval_rids, args.window_len, args.target_mode)
     regions = build_region_vocab(vocab["recs"], split.train_rids + split.eval_rids, args.region_granularity)
 
-    train_true_x, train_y, _ = make_feature_matrix(
+    train_true_x, train_y, train_recordings = make_feature_matrix(
         ds,
         vocab["recs"],
         train_trials,
@@ -143,10 +144,46 @@ def audit_holdout(args: argparse.Namespace, holdout: str) -> dict:
         seed=args.seed,
         window_len=args.window_len,
     )
-    train_model_x = transform_region_features(train_true_x, args.feature_mode)
-    eval_model_x = transform_region_features(eval_true_x, args.feature_mode)
-    train_shuffle_model_x = transform_region_features(train_shuffle_x, args.feature_mode)
-    eval_shuffle_model_x = transform_region_features(eval_shuffle_x, args.feature_mode)
+    true_unit_fractions = recording_region_unit_fractions(
+        vocab["recs"],
+        split.train_rids + split.eval_rids,
+        regions=regions,
+        region_granularity=args.region_granularity,
+        region_control="none",
+        seed=args.seed,
+    )
+    shuffle_unit_fractions = recording_region_unit_fractions(
+        vocab["recs"],
+        split.train_rids + split.eval_rids,
+        regions=regions,
+        region_granularity=args.region_granularity,
+        region_control="within_recording_shuffle",
+        seed=args.seed,
+    )
+    train_model_x = transform_region_features(
+        train_true_x,
+        args.feature_mode,
+        recording_ids=train_recordings,
+        unit_region_fractions=true_unit_fractions,
+    )
+    eval_model_x = transform_region_features(
+        eval_true_x,
+        args.feature_mode,
+        recording_ids=eval_recordings,
+        unit_region_fractions=true_unit_fractions,
+    )
+    train_shuffle_model_x = transform_region_features(
+        train_shuffle_x,
+        args.feature_mode,
+        recording_ids=train_recordings,
+        unit_region_fractions=shuffle_unit_fractions,
+    )
+    eval_shuffle_model_x = transform_region_features(
+        eval_shuffle_x,
+        args.feature_mode,
+        recording_ids=eval_recordings,
+        unit_region_fractions=shuffle_unit_fractions,
+    )
     results = {
         "total_spikes": evaluate_feature_set(
             name="total_spikes",
@@ -180,7 +217,7 @@ def audit_holdout(args: argparse.Namespace, holdout: str) -> dict:
     summary["decision"] = interpret(summary)
     true_scores = results["region_true"]["eval_scores"]
     shuffle_scores = results["region_shuffle"]["eval_scores"]
-    weights = fit_region_weights(train_true_x, train_y, l2=args.l2)
+    weights = fit_region_weights(train_model_x, train_y, l2=args.l2)
     return {
         "holdout": holdout,
         "train_subjects": split.train_subjects,
@@ -276,7 +313,7 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--holdout", nargs="+", default=["KS014", "NR_0019"])
     parser.add_argument("--target-mode", default="stimulus_side", choices=["choice", "stimulus_side", "feedback", "prior_side"])
-    parser.add_argument("--feature-mode", default="counts", choices=["counts", "fractions"])
+    parser.add_argument("--feature-mode", default="counts", choices=["counts", "fractions", "unit_residuals"])
     parser.add_argument("--region-granularity", default="parent", choices=["fine", "parent", "grandparent"])
     parser.add_argument("--window-len", type=float, default=1.0)
     parser.add_argument("--seed", type=int, default=0)

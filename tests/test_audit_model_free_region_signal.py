@@ -4,6 +4,7 @@ from scripts.audit_model_free_region_signal import (
     centered_auc,
     evaluate_feature_set,
     paired_improvement,
+    recording_region_unit_fractions,
     summarize_results,
     transform_region_features,
 )
@@ -49,6 +50,48 @@ def test_transform_region_features_can_use_trial_fractions() -> None:
     assert np.allclose(fractions[1], [0.0, 0.0, 0.0])
     assert np.allclose(fractions[2], [0.125, 0.375, 0.5])
     assert transform_region_features(features, "counts") is features
+
+
+def test_recording_region_unit_fractions_uses_recording_labels() -> None:
+    class Units:
+        region_acronym = np.asarray(["A", "A", "B", "C"])
+
+    class Rec:
+        units = Units()
+
+    fractions = recording_region_unit_fractions(
+        {"rec": Rec()},
+        ["rec"],
+        regions=["A", "B", "C"],
+        region_granularity="fine",
+        region_control="none",
+        seed=0,
+    )
+
+    assert np.allclose(fractions["rec"], [0.5, 0.25, 0.25])
+
+
+def test_transform_region_features_can_residualize_unit_distribution() -> None:
+    features = np.asarray([
+        [8.0, 2.0],
+        [0.0, 0.0],
+        [4.0, 6.0],
+    ], dtype=np.float32)
+    unit_fractions = {
+        "a": np.asarray([0.75, 0.25], dtype=np.float32),
+        "b": np.asarray([0.25, 0.75], dtype=np.float32),
+    }
+
+    residuals = transform_region_features(
+        features,
+        "unit_residuals",
+        recording_ids=["a", "a", "b"],
+        unit_region_fractions=unit_fractions,
+    )
+
+    assert np.allclose(residuals[0], [0.5, -0.5])
+    assert np.allclose(residuals[1], [0.0, 0.0])
+    assert np.allclose(residuals[2], [1.5, -1.5])
 
 
 def test_summary_decision_tracks_bidirectional_failure() -> None:

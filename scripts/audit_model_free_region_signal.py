@@ -63,6 +63,29 @@ def build_region_vocab(recs, rids: list[str], granularity: str) -> list[str]:
     return sorted(regions)
 
 
+def recording_region_unit_fractions(
+    recs,
+    rids: list[str],
+    *,
+    regions: list[str],
+    region_granularity: str,
+    region_control: str,
+    seed: int,
+) -> dict[str, np.ndarray]:
+    region_to_col = {region: idx for idx, region in enumerate(regions)}
+    out: dict[str, np.ndarray] = {}
+    for rid in rids:
+        labels = recording_region_labels(recs[rid], region_granularity, region_control, rid, seed)
+        counts = np.zeros(len(regions), dtype=np.float32)
+        for region, count in zip(*np.unique(labels, return_counts=True)):
+            col = region_to_col.get(str(region))
+            if col is not None:
+                counts[col] = float(count)
+        total = float(counts.sum())
+        out[str(rid)] = counts / total if total > 0.0 else counts
+    return out
+
+
 def make_feature_matrix(
     ds: Dataset,
     recs,
@@ -101,7 +124,13 @@ def total_spike_feature(region_features: np.ndarray) -> np.ndarray:
     return region_features.sum(axis=1, keepdims=True)
 
 
-def transform_region_features(region_features: np.ndarray, feature_mode: str) -> np.ndarray:
+def transform_region_features(
+    region_features: np.ndarray,
+    feature_mode: str,
+    *,
+    recording_ids: list[str] | None = None,
+    unit_region_fractions: dict[str, np.ndarray] | None = None,
+) -> np.ndarray:
     if feature_mode == "counts":
         return region_features
     if feature_mode == "fractions":
@@ -109,6 +138,12 @@ def transform_region_features(region_features: np.ndarray, feature_mode: str) ->
         out = np.zeros_like(region_features, dtype=np.float32)
         np.divide(region_features, totals, out=out, where=totals > 0.0)
         return out
+    if feature_mode == "unit_residuals":
+        if recording_ids is None or unit_region_fractions is None:
+            raise ValueError("unit_residuals requires recording_ids and unit_region_fractions")
+        totals = total_spike_feature(region_features).astype(np.float32)
+        expected = np.vstack([unit_region_fractions[rid] for rid in recording_ids]).astype(np.float32)
+        return region_features.astype(np.float32) - totals * expected
     raise ValueError(f"unknown feature_mode {feature_mode!r}")
 
 
@@ -292,7 +327,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--manifest", type=Path, default=REPO_ROOT / "manifests/ibl_bwm_region_matched_support80_best6.json")
     parser.add_argument("--holdout", nargs="*", default=["CSH_ZAD_019"])
     parser.add_argument("--target-mode", default="stimulus_side", choices=["choice", "stimulus_side", "feedback", "prior_side"])
-    parser.add_argument("--feature-mode", default="counts", choices=["counts", "fractions"])
+    parser.add_argument("--feature-mode", default="counts", choices=["counts", "fractions", "unit_residuals"])
     parser.add_argument("--region-granularity", default="parent", choices=["fine", "parent", "grandparent"])
     parser.add_argument("--window-len", type=float, default=1.0)
     parser.add_argument("--seed", type=int, default=0)
@@ -312,7 +347,7 @@ def main() -> int:
     eval_trials = build_trial_samples(vocab["recs"], split.eval_rids, args.window_len, args.target_mode)
     regions = build_region_vocab(vocab["recs"], split.train_rids + split.eval_rids, args.region_granularity)
 
-    train_true_x, train_y, _train_recordings = make_feature_matrix(
+    train_true_x, train_y, train_recordings = make_feature_matrix(
         ds,
         vocab["recs"],
         train_trials,
@@ -352,10 +387,46 @@ def main() -> int:
         seed=args.seed,
         window_len=args.window_len,
     )
-    train_model_x = transform_region_features(train_true_x, args.feature_mode)
-    eval_model_x = transform_region_features(eval_true_x, args.feature_mode)
-    train_shuffle_model_x = transform_region_features(train_shuffle_x, args.feature_mode)
-    eval_shuffle_model_x = transform_region_features(eval_shuffle_x, args.feature_mode)
+    true_unit_fractions = recording_region_unit_fractions(
+        vocab["recs"],
+        split.train_rids + split.eval_rids,
+        regions=regions,
+        region_granularity=args.region_granularity,
+        region_control="none",
+        seed=args.seed,
+    )
+    shuffle_unit_fractions = recording_region_unit_fractions(
+        vocab["recs"],
+        split.train_rids + split.eval_rids,
+        regions=regions,
+        region_granularity=args.region_granularity,
+        region_control="within_recording_shuffle",
+        seed=args.seed,
+    )
+    train_model_x = transform_region_features(
+        train_true_x,
+        args.feature_mode,
+        recording_ids=train_recordings,
+        unit_region_fractions=true_unit_fractions,
+    )
+    eval_model_x = transform_region_features(
+        eval_true_x,
+        args.feature_mode,
+        recording_ids=eval_recordings,
+        unit_region_fractions=true_unit_fractions,
+    )
+    train_shuffle_model_x = transform_region_features(
+        train_shuffle_x,
+        args.feature_mode,
+        recording_ids=train_recordings,
+        unit_region_fractions=shuffle_unit_fractions,
+    )
+    eval_shuffle_model_x = transform_region_features(
+        eval_shuffle_x,
+        args.feature_mode,
+        recording_ids=eval_recordings,
+        unit_region_fractions=shuffle_unit_fractions,
+    )
 
     results = {
         "total_spikes": evaluate_feature_set(

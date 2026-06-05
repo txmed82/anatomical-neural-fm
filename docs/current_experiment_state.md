@@ -321,6 +321,20 @@ spike counts to fractions of that trial's total spikes.
 
 Decision: simple region-composition normalization does not rescue the anatomical feature branch. It creates three positive centered-delta holdouts, but all are one-sided and have `0/4` bidirectional recordings.
 
+## Unit-Residual Feature Gate
+
+`docs/model_free_recording_bidirectional_gate_unit_residuals.md` subtracts
+each recording's expected region counts from every trial, using total spikes
+times that recording's static unit-region distribution.
+
+- candidates: `0/7`
+- positive centered-delta holdouts: `6/7`
+- positive holdouts: `CSH_ZAD_019, KS014, NR_0019, NYU-12, SWC_038, SWC_043`
+- mean bidirectional recording fraction: `0.000`
+- decision: `no_recording_bidirectional_model_free_signal`
+
+Decision: residualizing static anatomical coverage increases the number of positive centered deltas, but does not create a valid transfer signal. Every positive holdout remains one target direction with `0/4` bidirectional recordings.
+
 ## Alternative Target Bidirectional Gates
 
 Two additional trial targets exposed by the cached IBL trials were tested
