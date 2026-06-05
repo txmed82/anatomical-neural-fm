@@ -37,6 +37,7 @@ uv run python scripts/audit_response_extreme_training_aligned_readout.py
 uv run python scripts/audit_direct_broad_family_demo_readiness.py
 uv run python scripts/audit_direct_broad_family_trainable_readout.py
 uv run python scripts/summarize_fixed_broad_family_train_arm_panel.py
+uv run python scripts/audit_fixed_broad_family_train_arm_prediction_gate.py
 uv run python scripts/package_model_free_demo.py
 ```
 
@@ -44,4 +45,5 @@ uv run python scripts/package_model_free_demo.py
 
 - This is a model-free ridge/count readout demo, not a trained transformer demo.
 - The positive feature is the fixed broad_named_anatomy aggregate, not the full shared parent-region feature vector.
+- The bounded cloud fixed-feature prediction gate has one strict candidate holdout, NR_0019; CSHL045 is aggregate-positive but fails recording-local bidirectionality.
 - The local and cloud train.py fixed-family arms are positive, but this still does not establish a transformer/foundation-model anatomical mechanism.

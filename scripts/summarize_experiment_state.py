@@ -137,6 +137,9 @@ DIRECT_BROAD_FAMILY_DEMO_READINESS_FILE = "docs/direct_broad_family_demo_readine
 DIRECT_BROAD_FAMILY_TRAINABLE_READOUT_FILE = "docs/direct_broad_family_trainable_readout.json"
 FIXED_BROAD_FAMILY_TRAIN_ARM_LOCAL_PANEL_FILE = "docs/fixed_broad_family_train_arm_local_panel.json"
 FIXED_BROAD_FAMILY_TRAIN_ARM_RUNPOD_PANEL_FILE = "docs/fixed_broad_family_train_arm_runpod_panel.json"
+FIXED_BROAD_FAMILY_TRAIN_ARM_PREDICTION_GATE_FILE = (
+    "docs/fixed_broad_family_train_arm_prediction_gate.json"
+)
 MODEL_FREE_DEMO_PACKAGE_FILE = "docs/model_free_anatomical_transfer_demo_package.json"
 LOW_CONTRAST_CHOICE_FAMILY_GATE_FILE = "docs/low_contrast_choice_family_gate.json"
 LOW_CONTRAST_CHOICE_PROJECTED_GATE_FILE = "docs/low_contrast_choice_family_gate_projected_hdf5.json"
@@ -680,6 +683,7 @@ def render_markdown(
     direct_broad_family_trainable_readout: dict | None = None,
     fixed_broad_family_train_arm_local_panel: dict | None = None,
     fixed_broad_family_train_arm_runpod_panel: dict | None = None,
+    fixed_broad_family_train_arm_prediction_gate: dict | None = None,
     model_free_demo_package: dict | None = None,
     low_contrast_choice_family_gate: dict | None = None,
     low_contrast_choice_projected_gate: dict | None = None,
@@ -2272,6 +2276,44 @@ def render_markdown(
                 "replication on the two response-extreme cases. This strengthens the "
                 "narrow anatomical-transfer demo but remains a fixed-feature readout, "
                 "not a transformer/foundation-model result."
+            ),
+            "",
+        ]
+    if fixed_broad_family_train_arm_prediction_gate is not None:
+        summary = fixed_broad_family_train_arm_prediction_gate["summary"]
+        lines += [
+            "## Fixed Broad-Family Train Arm Prediction Gate",
+            "",
+            "`docs/fixed_broad_family_train_arm_prediction_gate.md` applies a",
+            "trial-paired true-vs-shuffled prediction gate to the bounded RunPod",
+            "fixed-family arm.",
+            "",
+            f"- decision: `{summary['decision']}`",
+            f"- candidates: `{summary['n_candidates']}/{summary['n_cases']}`",
+            f"- candidate holdouts: `{', '.join(summary['candidate_holdouts']) or '<none>'}`",
+            f"- global target pass: `{summary['n_global_target_pass']}/{summary['n_cases']}`",
+            f"- positive centered-delta cases: `{summary['n_positive_centered_delta']}/{summary['n_cases']}`",
+            f"- paid GPU trigger: `{summary['paid_gpu_trigger']}`",
+            f"- next action: {summary['next_action']}",
+            "",
+            "| holdout | target | delta AUC | target0 | target1 | bidir recs | decision |",
+            "|---|---|---:|---:|---:|---:|---|",
+        ]
+        for row in fixed_broad_family_train_arm_prediction_gate["rows"]:
+            lines.append(
+                f"| {row['holdout']} | {row['target_mode']} | "
+                f"{row['centered_delta_vs_shuffle']:+.4f} | "
+                f"{row['target0_improved_vs_shuffle']:.3f} | "
+                f"{row['target1_improved_vs_shuffle']:.3f} | "
+                f"{row['n_bidirectional_recordings']}/{row['n_evaluable_recordings']} | "
+                f"{row['decision']} |"
+            )
+        lines += [
+            "",
+            (
+                "Decision: the cloud fixed-feature arm clears the strict prediction "
+                "gate for `NR_0019`; `CSHL045` remains only an aggregate/global "
+                "positive because recording-local bidirectionality is 2/4."
             ),
             "",
         ]
@@ -4253,6 +4295,9 @@ def main() -> int:
     fixed_broad_family_train_arm_runpod_panel = read_mechanism_audit(
         REPO_ROOT / FIXED_BROAD_FAMILY_TRAIN_ARM_RUNPOD_PANEL_FILE
     )
+    fixed_broad_family_train_arm_prediction_gate = read_mechanism_audit(
+        REPO_ROOT / FIXED_BROAD_FAMILY_TRAIN_ARM_PREDICTION_GATE_FILE
+    )
     model_free_demo_package = read_mechanism_audit(REPO_ROOT / MODEL_FREE_DEMO_PACKAGE_FILE)
     low_contrast_choice_family_gate = read_mechanism_audit(REPO_ROOT / LOW_CONTRAST_CHOICE_FAMILY_GATE_FILE)
     low_contrast_choice_projected_gate = read_mechanism_audit(REPO_ROOT / LOW_CONTRAST_CHOICE_PROJECTED_GATE_FILE)
@@ -4436,6 +4481,7 @@ def main() -> int:
         direct_broad_family_trainable_readout,
         fixed_broad_family_train_arm_local_panel,
         fixed_broad_family_train_arm_runpod_panel,
+        fixed_broad_family_train_arm_prediction_gate,
         model_free_demo_package,
         low_contrast_choice_family_gate,
         low_contrast_choice_projected_gate,
@@ -4589,6 +4635,7 @@ def main() -> int:
         "direct_broad_family_trainable_readout": direct_broad_family_trainable_readout,
         "fixed_broad_family_train_arm_local_panel": fixed_broad_family_train_arm_local_panel,
         "fixed_broad_family_train_arm_runpod_panel": fixed_broad_family_train_arm_runpod_panel,
+        "fixed_broad_family_train_arm_prediction_gate": fixed_broad_family_train_arm_prediction_gate,
         "model_free_demo_package": model_free_demo_package,
         "low_contrast_choice_family_gate": low_contrast_choice_family_gate,
         "low_contrast_choice_projected_gate": low_contrast_choice_projected_gate,

@@ -810,6 +810,27 @@ committed held-out prediction files.
 
 Decision: the fixed broad-family count arm now has a bounded cloud replication on the two response-extreme cases. This strengthens the narrow anatomical-transfer demo but remains a fixed-feature readout, not a transformer/foundation-model result.
 
+## Fixed Broad-Family Train Arm Prediction Gate
+
+`docs/fixed_broad_family_train_arm_prediction_gate.md` applies a
+trial-paired true-vs-shuffled prediction gate to the bounded RunPod
+fixed-family arm.
+
+- decision: `fixed_broad_family_prediction_gate_candidate`
+- candidates: `1/2`
+- candidate holdouts: `NR_0019`
+- global target pass: `2/2`
+- positive centered-delta cases: `2/2`
+- paid GPU trigger: `False`
+- next action: Package the fixed-feature cloud demo around the candidate holdout(s), and keep the transformer/foundation-model claim separate.
+
+| holdout | target | delta AUC | target0 | target1 | bidir recs | decision |
+|---|---|---:|---:|---:|---:|---|
+| CSHL045 | post_error_response_extreme_25_75_le_1 | +0.0132 | 0.645 | 0.688 | 2/4 | reject: recording bidirectionality |
+| NR_0019 | post_error_response_extreme_33_67_le_1 | +0.0036 | 0.684 | 0.719 | 4/4 | candidate |
+
+Decision: the cloud fixed-feature arm clears the strict prediction gate for `NR_0019`; `CSHL045` remains only an aggregate/global positive because recording-local bidirectionality is 2/4.
+
 ## Model-Free Anatomical Transfer Demo Package
 
 `docs/model_free_anatomical_transfer_demo_package.md` is the current
