@@ -164,3 +164,19 @@ root: `runs/lso_csh_full_eval_centered_shared_parent_shuffle`
 | CSH_ZAD_019 | 0 | 2726 | 0.513 | 0.550 | fail |
 | CSH_ZAD_019 | 1 | 2726 | 0.486 | 0.550 | fail |
 | CSH_ZAD_019 | 2 | 2726 | 0.552 | 0.550 | pass |
+
+## Executable Gate
+
+Post-pull gate refresh:
+
+- gate artifact: `docs/lso_csh_full_eval_centered_shared_parent_shuffle_gate.json`
+- pass: `false`
+- passing seeds: `1/3`
+- paired true-vs-shuffle improvements: `0.513`, `0.486`, `0.552`
+- threshold: `0.550`
+
+Interpretation: the centered-selection rerun is no longer blocked by cloud
+execution, but it does not satisfy the demo gate. The centered-AUC pattern is
+suggestive (`region_only` mean centered AUC `0.517`, delta `+0.016`; shuffle
+mean centered AUC `0.501`, delta `-0.000`), but the paired trial criterion is
+not reliable across seeds.

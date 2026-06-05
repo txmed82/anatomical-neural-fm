@@ -144,21 +144,23 @@ updating; use logs/cache audit as the source of truth.
 
 ## Next Viable Paths
 
-Latest CSH rerun attempt: `anfm-csh-centered-l4-20260604-203923`
-(`l999fy3799ni7b`) requested one `NVIDIA L4` with
+Latest CSH rerun attempts requested one `NVIDIA L4` with
 `BEST_METRIC=full_eval_centered_auc`, `FULL_EVAL_ON_BEST=1`, and
-`SAVE_DIAGNOSTICS=1`. RunPod rented the pod at `$0.39/hr` and assigned machine
-id `so5311pahl76`, but repeated status polls exposed no public IP or usable
-machine details. The 300-second provisioning guard terminated it; however,
-S3/Git artifacts later showed the container had run partially. Seed 0 completed
-all three arms and seed 1 completed only the shared baseline. Final preflight
-reported `active_pods: 0`.
+`SAVE_DIAGNOSTICS=1`. RunPod repeatedly rented pods at `$0.39/hr` while the
+status API exposed no public IP or usable machine details. The first centered
+attempt was terminated by the old provisioning guard despite partial S3/Git
+artifacts. After `scripts/runpod_clone_a100.py` was hardened to preserve pods
+with active S3 logs, the second centered attempt
+(`anfm-csh-centered-l4-20260604-205209`, pod `jt36y9tajx4p5u`) reached the body
+completion marker and self-cleanup path. Final preflight reported
+`active_pods: 0`.
 
 The matched compact cache is complete for
 `manifests/ibl_bwm_region_matched_support80_best6.json`; the later cloud audit
-reported `Present: 28/28`. The partial CSH run is weak negative evidence, not a
-canonical result: seed 0 failed the executable gate with paired true-vs-shuffle
-improvement `0.513` against the `0.550` threshold.
+reported `Present: 28/28`. The completed CSH centered-selection rerun is
+suggestive but below the demo gate: `n_passing_seeds=1/3`, with paired
+true-vs-shuffle improvements `0.513`, `0.486`, and `0.552` against the `0.550`
+threshold.
 
 1. Retry the CSH centered-selection L4 command only after a clean
    `active_pods: 0` preflight. Keep `--max-provision-seconds 300`, one pod at a

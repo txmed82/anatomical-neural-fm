@@ -200,6 +200,12 @@ failed: seed 0 had region-only centered AUC `0.517` vs shared `0.511`, full AUC
 `0.505` vs shared `0.511`, and true-vs-shuffle paired improvement `0.513`
 against the `0.550` threshold.
 
+Follow-up attempt `jt36y9tajx4p5u` (`anfm-csh-centered-l4-20260604-205209`)
+used the S3-log-aware polling guard and completed all three centered-selection
+seeds. The canonical gate still failed with `n_passing_seeds=1/3`; see
+`docs/lso_csh_full_eval_centered_shared_parent_shuffle_results.md` and
+`docs/lso_csh_full_eval_centered_shared_parent_shuffle_gate.json`.
+
 Next launch should wait for healthier RunPod runtime provisioning or use a
 different cloud backend. Do not start more than one pod at a time, and keep the
 `active_pods: 0` preflight gate before each paid attempt.
