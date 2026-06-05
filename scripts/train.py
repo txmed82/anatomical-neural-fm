@@ -113,9 +113,11 @@ def parse_args():
     p.add_argument("--eval-every", type=int, default=100)
     p.add_argument("--eval-batches", type=int, default=20)
     p.add_argument("--log-every", type=int, default=20)
-    p.add_argument("--best-metric", default="eval_loss", choices=["eval_loss", "eval_auc"],
-                   help="Metric used to select best.ckpt. Use eval_auc for anatomy-transfer "
-                        "diagnostics where ranking is more important than calibration.")
+    p.add_argument("--best-metric", default="eval_loss",
+                   choices=["eval_loss", "eval_auc", "full_eval_auc", "full_eval_centered_auc"],
+                   help="Metric used to select best.ckpt. full_eval_* metrics score every "
+                        "held-out trial at each eval point and are best aligned with the "
+                        "anatomy-transfer demo gate.")
     p.add_argument("--save-eval-predictions", action="store_true",
                    help="When a new best checkpoint is found, write deterministic held-out "
                         "trial predictions to eval_predictions.jsonl for model diagnostics.")
@@ -508,7 +510,7 @@ def lr_lambda(step: int, warmup: int, total: int) -> float:
 def best_metric_initial_value(metric: str) -> float:
     if metric == "eval_loss":
         return float("inf")
-    if metric == "eval_auc":
+    if metric in {"eval_auc", "full_eval_auc", "full_eval_centered_auc"}:
         return -float("inf")
     raise ValueError(f"unknown best metric {metric!r}")
 
@@ -518,9 +520,13 @@ def is_better_metric(metric: str, candidate: float, current: float) -> bool:
         return False
     if metric == "eval_loss":
         return candidate < current
-    if metric == "eval_auc":
+    if metric in {"eval_auc", "full_eval_auc", "full_eval_centered_auc"}:
         return candidate > current
     raise ValueError(f"unknown best metric {metric!r}")
+
+
+def best_metric_requires_full_eval(metric: str) -> bool:
+    return metric.startswith("full_eval_")
 
 
 def draw_batch(
@@ -670,6 +676,7 @@ def metrics_from_prediction_rows(rows: list[dict], prefix: str = "full_eval") ->
             f"{prefix}_loss": float("nan"),
             f"{prefix}_acc": float("nan"),
             f"{prefix}_auc": float("nan"),
+            f"{prefix}_centered_auc": float("nan"),
             f"{prefix}_n": 0,
             f"{prefix}_n_pos": 0,
             f"{prefix}_n_neg": 0,
@@ -683,10 +690,27 @@ def metrics_from_prediction_rows(rows: list[dict], prefix: str = "full_eval") ->
         f"{prefix}_loss": bce,
         f"{prefix}_acc": acc,
         f"{prefix}_auc": _auc(probs, tgts),
+        f"{prefix}_centered_auc": recording_centered_auc_from_prediction_rows(rows),
         f"{prefix}_n": int(len(tgts)),
         f"{prefix}_n_pos": int((tgts == 1).sum()),
         f"{prefix}_n_neg": int((tgts == 0).sum()),
     }
+
+
+def recording_centered_auc_from_prediction_rows(rows: list[dict]) -> float:
+    rows_by_recording: dict[str, list[dict]] = defaultdict(list)
+    for row in rows:
+        rows_by_recording[str(row.get("recording_id", "__all__"))].append(row)
+    scores = []
+    labels = []
+    for recording_rows in rows_by_recording.values():
+        probs = np.asarray([float(row["prob"]) for row in recording_rows], dtype=np.float64)
+        centered = probs - float(np.mean(probs))
+        scores.extend(float(x) for x in centered)
+        labels.extend(int(row["target"]) for row in recording_rows)
+    if not scores:
+        return float("nan")
+    return _auc(np.asarray(scores, dtype=np.float64), np.asarray(labels, dtype=np.int64))
 
 
 def write_eval_prediction_rows(rows: list[dict], path: Path) -> int:
@@ -848,7 +872,23 @@ def main():
         if step % args.eval_every == 0 or step == args.max_steps:
             eval_metrics = evaluate(model, ds, eval_trials, args, allowed_region_acronyms)
             log({"event": "eval", "step": step, **eval_metrics})
-            candidate_metric = float(eval_metrics[args.best_metric])
+            prediction_rows = None
+            full_eval_metrics = None
+            full_eval_selection = best_metric_requires_full_eval(args.best_metric)
+            if full_eval_selection:
+                prediction_rows = eval_prediction_rows(
+                    model,
+                    ds,
+                    eval_trials,
+                    args,
+                    allowed_region_acronyms,
+                    vocab["subject_by_rid"],
+                    max_trials=0,
+                )
+                full_eval_metrics = metrics_from_prediction_rows(prediction_rows)
+                log({"event": "full_eval", "step": step, **full_eval_metrics})
+            metric_values = {**eval_metrics, **(full_eval_metrics or {})}
+            candidate_metric = float(metric_values[args.best_metric])
             if is_better_metric(args.best_metric, candidate_metric, best_eval):
                 best_eval = candidate_metric
                 ckpt = {"step": step, "args": vars(args), "state_dict": model.state_dict(),
@@ -860,18 +900,18 @@ def main():
                      "best_metric": args.best_metric, "best_metric_value": best_eval,
                      "eval_loss": eval_metrics["eval_loss"],
                      "eval_acc": eval_metrics["eval_acc"], "eval_auc": eval_metrics["eval_auc"]})
-                prediction_rows = None
                 if args.save_eval_predictions or args.full_eval_on_best:
-                    prediction_rows = eval_prediction_rows(
-                        model,
-                        ds,
-                        eval_trials,
-                        args,
-                        allowed_region_acronyms,
-                        vocab["subject_by_rid"],
-                        max_trials=0 if args.full_eval_on_best else args.eval_prediction_max_trials,
-                    )
-                if args.full_eval_on_best:
+                    if prediction_rows is None:
+                        prediction_rows = eval_prediction_rows(
+                            model,
+                            ds,
+                            eval_trials,
+                            args,
+                            allowed_region_acronyms,
+                            vocab["subject_by_rid"],
+                            max_trials=0 if args.full_eval_on_best else args.eval_prediction_max_trials,
+                        )
+                if args.full_eval_on_best and not full_eval_selection:
                     assert prediction_rows is not None
                     log({"event": "full_eval", "step": step, **metrics_from_prediction_rows(prediction_rows)})
                 if args.save_eval_predictions:

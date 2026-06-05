@@ -840,26 +840,26 @@ shuffle AUC and the paired 55% threshold; seed 1 is incomplete because only the
 shared baseline artifact exists. Future canonical runs should publish this JSON
 next to the result doc and must pass before any broadening spend.
 
-Training selection update: `scripts/train.py` now supports
-`--best-metric eval_auc`, and the CSH/two-holdout wrappers expose it as
-`BEST_METRIC=eval_auc`. This prevents the next canonical rerun from selecting
-checkpoints purely by BCE calibration loss when the demo gate is about ranking
-and target-aware true-vs-shuffle behavior. Local CPU smoke
-`runs/best_metric_smoke` verified that `eval_auc` checkpoint selection logs
-`best_metric: eval_auc`, saves a best checkpoint, and still emits `full_eval`
-metrics.
+Training selection update: `scripts/train.py` now supports `--best-metric`
+values `eval_auc`, `full_eval_auc`, and `full_eval_centered_auc`, and the
+CSH/two-holdout wrappers expose this as `BEST_METRIC=...`. The next canonical
+rerun should use `BEST_METRIC=full_eval_centered_auc` so checkpoint selection
+uses every held-out trial and removes recording-level probability offsets before
+ranking. Local CPU smoke `runs/best_metric_smoke` verified that
+`full_eval_centered_auc` checkpoint selection logs `best_metric:
+full_eval_centered_auc`, saves a best checkpoint, and emits `full_eval` metrics.
 
 Next canonical command shape, once cloud runtime access is healthy:
 
 ```bash
-FULL_EVAL_ON_BEST=1 SAVE_DIAGNOSTICS=1 BEST_METRIC=eval_auc \
+FULL_EVAL_ON_BEST=1 SAVE_DIAGNOSTICS=1 BEST_METRIC=full_eval_centered_auc \
   uv run python scripts/runpod_clone_a100.py --poll ... \
   --sweep-script scripts/run_lso_csh_zad_019_shared_parent_shuffle_a100.sh \
   --output-root runs/lso_csh_full_eval_shared_parent_shuffle \
   --result-doc docs/lso_csh_full_eval_shared_parent_shuffle_results.md \
   --sweep-env FULL_EVAL_ON_BEST=1 \
   --sweep-env SAVE_DIAGNOSTICS=1 \
-  --sweep-env BEST_METRIC=eval_auc
+  --sweep-env BEST_METRIC=full_eval_centered_auc
 ```
 
 After cleanup, run:

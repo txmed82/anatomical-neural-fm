@@ -6,6 +6,7 @@ import torch
 from scripts.train import (
     apply_region_label_control,
     best_metric_initial_value,
+    best_metric_requires_full_eval,
     build_inputs_for_window,
     build_trial_samples,
     is_better_metric,
@@ -14,6 +15,7 @@ from scripts.train import (
     parse_region_include,
     region_acronym_at_granularity,
     region_index_lookup,
+    recording_centered_auc_from_prediction_rows,
     select_recording_ids,
     shared_split_regions,
     write_region_embeddings,
@@ -220,13 +222,32 @@ def test_metrics_from_prediction_rows_computes_full_eval_fields() -> None:
     assert metrics["full_eval_n_neg"] == 2
     assert metrics["full_eval_acc"] == 1.0
     assert metrics["full_eval_auc"] == 1.0
+    assert metrics["full_eval_centered_auc"] == 1.0
 
 
 def test_best_metric_helpers_support_loss_and_auc() -> None:
     assert best_metric_initial_value("eval_loss") == float("inf")
     assert best_metric_initial_value("eval_auc") == -float("inf")
+    assert best_metric_initial_value("full_eval_auc") == -float("inf")
+    assert best_metric_initial_value("full_eval_centered_auc") == -float("inf")
     assert is_better_metric("eval_loss", 0.4, 0.5)
     assert not is_better_metric("eval_loss", 0.6, 0.5)
     assert is_better_metric("eval_auc", 0.6, 0.5)
     assert not is_better_metric("eval_auc", 0.4, 0.5)
+    assert is_better_metric("full_eval_auc", 0.6, 0.5)
+    assert is_better_metric("full_eval_centered_auc", 0.6, 0.5)
     assert not is_better_metric("eval_auc", float("nan"), 0.5)
+    assert not best_metric_requires_full_eval("eval_auc")
+    assert best_metric_requires_full_eval("full_eval_auc")
+    assert best_metric_requires_full_eval("full_eval_centered_auc")
+
+
+def test_recording_centered_auc_from_prediction_rows_removes_recording_offsets() -> None:
+    rows = [
+        {"recording_id": "a", "target": 0, "prob": 0.89},
+        {"recording_id": "a", "target": 1, "prob": 0.91},
+        {"recording_id": "b", "target": 0, "prob": 0.09},
+        {"recording_id": "b", "target": 1, "prob": 0.11},
+    ]
+
+    assert recording_centered_auc_from_prediction_rows(rows) == 1.0
