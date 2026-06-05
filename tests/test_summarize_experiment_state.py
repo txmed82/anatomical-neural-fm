@@ -170,11 +170,60 @@ def test_render_markdown_includes_extreme_quantile_seed_veto() -> None:
                 }
             ],
         },
+        extreme_quantile_region_specificity={
+            "summary": {
+                "n_regions": 1,
+                "n_candidates": 1,
+                "n_positive_centered_delta": 1,
+                "max_bidirectional_recording_fraction": 0.75,
+                "decision": "extreme_quantile_region_candidate",
+                "top_rows": [
+                    {
+                        "region": "root",
+                        "holdout": "CSH_ZAD_019",
+                        "decision": "candidate",
+                        "centered_delta_vs_shuffle": 0.13,
+                        "centered_delta_vs_total": 0.02,
+                        "target0_improved_vs_shuffle": 0.62,
+                        "target1_improved_vs_shuffle": 0.59,
+                        "n_bidirectional_recordings": 3,
+                        "n_recordings": 4,
+                        "eval_nonzero_fraction": 0.48,
+                    }
+                ],
+            }
+        },
+        extreme_quantile_region_seed_sensitivity={
+            "summary": {
+                "n_cases": 1,
+                "n_robust_region_seed_candidates": 0,
+                "max_positive_shuffle_delta_fraction": 1.0,
+                "decision": "no_extreme_quantile_region_seed_candidate",
+            },
+            "rows": [
+                {
+                    "target_mode": "response_latency_extreme",
+                    "region": "root",
+                    "holdout": "CSH_ZAD_019",
+                    "n_positive_shuffle_delta_seeds": 5,
+                    "n_candidate_seeds": 1,
+                    "n_seeds": 5,
+                    "mean_centered_delta_vs_shuffle": 0.079,
+                    "mean_centered_delta_vs_total": 0.019,
+                    "mean_target0": 0.54,
+                    "mean_target1": 0.56,
+                    "min_bidirectional_recordings": 1,
+                    "max_bidirectional_recordings": 3,
+                }
+            ],
+        },
     )
 
     assert "Extreme-Quantile Target Family Gate" in markdown
     assert "Extreme-Quantile Shuffle Seed Sensitivity" in markdown
     assert "Extreme-Quantile Cutoff Sensitivity" in markdown
+    assert "Extreme-Quantile Region Specificity" in markdown
+    assert "Extreme-Quantile Region Seed Sensitivity" in markdown
     assert "do not train from the extreme-quantile candidate" in markdown
 
 

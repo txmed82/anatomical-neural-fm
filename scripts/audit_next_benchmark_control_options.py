@@ -21,6 +21,8 @@ ARTIFACTS = {
     "extreme_quantile_target_family": "docs/extreme_quantile_target_family_gate.json",
     "extreme_quantile_seed_sensitivity": "docs/extreme_quantile_seed_sensitivity.json",
     "extreme_quantile_cutoff_sensitivity": "docs/extreme_quantile_cutoff_sensitivity.json",
+    "extreme_quantile_region_specificity": "docs/extreme_quantile_region_specificity.json",
+    "extreme_quantile_region_seed_sensitivity": "docs/extreme_quantile_region_seed_sensitivity.json",
     "reaction_dynamics_target_family_recording_centered": "docs/reaction_dynamics_target_family_gate.json",
     "reaction_dynamics_target_family_counts": "docs/reaction_dynamics_target_family_gate_counts.json",
     "reaction_dynamics_target_family_fractions": "docs/reaction_dynamics_target_family_gate_fractions.json",
@@ -158,6 +160,10 @@ def build_report() -> dict:
     extreme_seed_robust = int(extreme_seed_summary.get("n_robust_shuffle_seed_candidates", 0) or 0)
     extreme_cutoff = artifacts["extreme_quantile_cutoff_sensitivity"]
     extreme_cutoff_summary = extreme_cutoff.get("summary", {}) if extreme_cutoff is not None else {}
+    extreme_region = artifacts["extreme_quantile_region_specificity"]
+    extreme_region_summary = extreme_region.get("summary", {}) if extreme_region is not None else {}
+    extreme_region_seed = artifacts["extreme_quantile_region_seed_sensitivity"]
+    extreme_region_seed_summary = extreme_region_seed.get("summary", {}) if extreme_region_seed is not None else {}
     reaction_feature_modes = reaction_feature_mode_summary(artifacts)
     cell_type_prior = artifacts["cell_type_prior_target_control"]
     cell_type_prior_done = cell_type_prior is not None
@@ -333,12 +339,35 @@ def build_report() -> dict:
                         f"{extreme_cutoff_summary.get('best_candidate_seeds', 'n/a')}/5 candidate seeds"
                     )
                 ),
+                (
+                    "region specificity scan has not been run yet"
+                    if extreme_region is None
+                    else (
+                        "region specificity scan found "
+                        f"{extreme_region_summary.get('n_candidates', 'n/a')} strict parent-region candidates "
+                        f"across {extreme_region_summary.get('n_regions', 'n/a')} regions"
+                    )
+                ),
+                (
+                    "region seed sensitivity has not been run yet"
+                    if extreme_region_seed is None
+                    else (
+                        "region seed sensitivity found "
+                        f"{extreme_region_seed_summary.get('n_robust_region_seed_candidates', 'n/a')} robust candidates; "
+                        f"max positive seed fraction="
+                        f"{extreme_region_seed_summary.get('max_positive_shuffle_delta_fraction', 0.0):.3f}"
+                    )
+                ),
             ],
             next_action=(
                 "Run scripts/audit_extreme_quantile_seed_sensitivity.py before any GPU training."
                 if extreme_quantile_done and (extreme_quantile_candidates or 0) > 0 and extreme_seed is None
                 else "Run scripts/audit_extreme_quantile_cutoff_sensitivity.py before any GPU training."
                 if extreme_seed is not None and extreme_cutoff is None
+                else "Run scripts/audit_extreme_quantile_region_seed_sensitivity.py before any GPU training."
+                if extreme_region is not None and extreme_region_seed is None
+                else extreme_region_seed_summary.get("next_action", "Keep extreme-quantile region redesign local.")
+                if extreme_region_seed is not None
                 else extreme_cutoff_summary.get("next_action", "Keep extreme-quantile cutoff redesign local.")
                 if extreme_cutoff is not None
                 else extreme_seed_summary.get("next_action", "Keep extreme-quantile redesign local.")

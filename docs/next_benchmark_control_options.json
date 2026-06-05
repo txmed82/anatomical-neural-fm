@@ -7,6 +7,8 @@
     "derived_target_family_prospect_leads": "docs/derived_target_family_gate_prospect_leads.json",
     "external_manifest_acquisition_gap": "docs/external_manifest_acquisition_gap.json",
     "extreme_quantile_cutoff_sensitivity": "docs/extreme_quantile_cutoff_sensitivity.json",
+    "extreme_quantile_region_seed_sensitivity": "docs/extreme_quantile_region_seed_sensitivity.json",
+    "extreme_quantile_region_specificity": "docs/extreme_quantile_region_specificity.json",
     "extreme_quantile_seed_sensitivity": "docs/extreme_quantile_seed_sensitivity.json",
     "extreme_quantile_target_family": "docs/extreme_quantile_target_family_gate.json",
     "family_alt_feedback": "docs/model_free_family_bidirectional_gate_feedback_recording_centered.json",
@@ -65,11 +67,13 @@
       "evidence": [
         "extreme-quantile target family gate found 1 candidates across 175 rows and max bidir 1.000",
         "seed sensitivity found 0 robust candidates; max positive seed fraction=0.400",
-        "cutoff sensitivity found 0 robust cutoffs; best cutoff=20/80 with 2/5 candidate seeds"
+        "cutoff sensitivity found 0 robust cutoffs; best cutoff=20/80 with 2/5 candidate seeds",
+        "region specificity scan found 1 strict parent-region candidates across 79 regions",
+        "region seed sensitivity found 0 robust candidates; max positive seed fraction=1.000"
       ],
       "gpu_trigger": "A candidate must pass the unchanged local gate and remain positive across multiple within-recording shuffle seeds before training.",
       "name": "extreme-quantile behavioral target gate",
-      "next_action": "Do not train: cutoff changes do not make the extreme response-latency candidate robust to within-recording shuffled anatomy.",
+      "next_action": "Do not train: the coarse root-region row beats shuffle across seeds, but target and recording bidirectionality do not remain stable.",
       "priority": 85,
       "status": "closed"
     },

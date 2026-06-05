@@ -115,6 +115,8 @@ WHEEL_TARGET_FAMILY_GATE_FILE = "docs/wheel_target_family_gate.json"
 EXTREME_QUANTILE_TARGET_FAMILY_GATE_FILE = "docs/extreme_quantile_target_family_gate.json"
 EXTREME_QUANTILE_SEED_SENSITIVITY_FILE = "docs/extreme_quantile_seed_sensitivity.json"
 EXTREME_QUANTILE_CUTOFF_SENSITIVITY_FILE = "docs/extreme_quantile_cutoff_sensitivity.json"
+EXTREME_QUANTILE_REGION_SPECIFICITY_FILE = "docs/extreme_quantile_region_specificity.json"
+EXTREME_QUANTILE_REGION_SEED_SENSITIVITY_FILE = "docs/extreme_quantile_region_seed_sensitivity.json"
 LOCAL_CACHED_MANIFEST_CANDIDATES_FILE = "docs/local_cached_manifest_candidates.json"
 EXTERNAL_MANIFEST_ACQUISITION_GAP_FILE = "docs/external_manifest_acquisition_gap.json"
 BEHAVIOR_CACHE_PREFLIGHT_FILE = "docs/behavior_cache_preflight.json"
@@ -466,6 +468,8 @@ def render_markdown(
     extreme_quantile_target_family_gate: dict | None = None,
     extreme_quantile_seed_sensitivity: dict | None = None,
     extreme_quantile_cutoff_sensitivity: dict | None = None,
+    extreme_quantile_region_specificity: dict | None = None,
+    extreme_quantile_region_seed_sensitivity: dict | None = None,
     local_cached_manifest_candidates: dict | None = None,
     external_manifest_acquisition_gap: dict | None = None,
     behavior_cache_preflight: dict | None = None,
@@ -1603,6 +1607,79 @@ def render_markdown(
             ),
             "",
         ]
+    if extreme_quantile_region_specificity is not None:
+        summary = extreme_quantile_region_specificity["summary"]
+        top = summary["top_rows"][:8]
+        lines += [
+            "## Extreme-Quantile Region Specificity",
+            "",
+            "`docs/extreme_quantile_region_specificity.md` scans single parent",
+            "regions for the response-latency extreme target under the unchanged",
+            "strict local gate.",
+            "",
+            f"- regions: `{summary['n_regions']}`",
+            f"- candidates: `{summary['n_candidates']}`",
+            f"- positive centered-delta rows: `{summary['n_positive_centered_delta']}`",
+            f"- max bidirectional recording fraction: `{summary['max_bidirectional_recording_fraction']:.3f}`",
+            f"- decision: `{summary['decision']}`",
+            "",
+            "| region | holdout | decision | delta shuffle | delta total | targets | bidir recs | eval nonzero |",
+            "|---|---|---|---:|---:|---:|---:|---:|",
+        ]
+        for row in top:
+            lines.append(
+                f"| {row['region']} | {row['holdout']} | {row['decision']} | "
+                f"{row['centered_delta_vs_shuffle']:+.3f} | {row['centered_delta_vs_total']:+.3f} | "
+                f"{row['target0_improved_vs_shuffle']:.3f}/{row['target1_improved_vs_shuffle']:.3f} | "
+                f"{row['n_bidirectional_recordings']}/{row['n_recordings']} | "
+                f"{row['eval_nonzero_fraction']:.3f} |"
+            )
+        lines += [
+            "",
+            (
+                "Decision before seed validation: single-region specificity finds a "
+                "larger shuffle margin, but the strict pass is a coarse `root` label. "
+                "Require seed-stable target and recording support before any training."
+            ),
+            "",
+        ]
+    if extreme_quantile_region_seed_sensitivity is not None:
+        summary = extreme_quantile_region_seed_sensitivity["summary"]
+        top = extreme_quantile_region_seed_sensitivity["rows"][:5]
+        lines += [
+            "## Extreme-Quantile Region Seed Sensitivity",
+            "",
+            "`docs/extreme_quantile_region_seed_sensitivity.md` reruns the strict",
+            "parent-region candidate across multiple within-recording shuffle seeds.",
+            "",
+            f"- cases: `{summary['n_cases']}`",
+            f"- robust region-seed candidates: `{summary['n_robust_region_seed_candidates']}`",
+            f"- max positive shuffle-delta fraction: `{summary['max_positive_shuffle_delta_fraction']:.3f}`",
+            f"- decision: `{summary['decision']}`",
+            "",
+            "| target | region | holdout | positive seeds | candidate seeds | mean shuffle delta | mean total delta | mean targets | bidir range |",
+            "|---|---|---|---:|---:|---:|---:|---:|---:|",
+        ]
+        for row in top:
+            lines.append(
+                f"| {row['target_mode']} | {row['region']} | {row['holdout']} | "
+                f"{row['n_positive_shuffle_delta_seeds']}/{row['n_seeds']} | "
+                f"{row['n_candidate_seeds']}/{row['n_seeds']} | "
+                f"{row['mean_centered_delta_vs_shuffle']:+.4f} | "
+                f"{row['mean_centered_delta_vs_total']:+.4f} | "
+                f"{row['mean_target0']:.3f}/{row['mean_target1']:.3f} | "
+                f"{row['min_bidirectional_recordings']}-{row['max_bidirectional_recordings']} |"
+            )
+        lines += [
+            "",
+            (
+                "Decision: do not train from the parent-region row. It separates true "
+                "from shuffled labels in centered AUC across all seeds, but the full "
+                "target and same-recording bidirectional gate is seed-unstable and the "
+                "region is too coarse to demonstrate anatomical specificity."
+            ),
+            "",
+        ]
     if model_free_matched_panel is not None:
         summary = model_free_matched_panel["summary"]
         lines += [
@@ -2566,6 +2643,10 @@ def main() -> int:
     extreme_quantile_cutoff_sensitivity = read_mechanism_audit(
         REPO_ROOT / EXTREME_QUANTILE_CUTOFF_SENSITIVITY_FILE
     )
+    extreme_quantile_region_specificity = read_mechanism_audit(REPO_ROOT / EXTREME_QUANTILE_REGION_SPECIFICITY_FILE)
+    extreme_quantile_region_seed_sensitivity = read_mechanism_audit(
+        REPO_ROOT / EXTREME_QUANTILE_REGION_SEED_SENSITIVITY_FILE
+    )
     local_cached_manifest_candidates = read_mechanism_audit(REPO_ROOT / LOCAL_CACHED_MANIFEST_CANDIDATES_FILE)
     external_manifest_acquisition_gap = read_mechanism_audit(REPO_ROOT / EXTERNAL_MANIFEST_ACQUISITION_GAP_FILE)
     behavior_cache_preflight = read_mechanism_audit(REPO_ROOT / BEHAVIOR_CACHE_PREFLIGHT_FILE)
@@ -2690,6 +2771,8 @@ def main() -> int:
         extreme_quantile_target_family_gate,
         extreme_quantile_seed_sensitivity,
         extreme_quantile_cutoff_sensitivity,
+        extreme_quantile_region_specificity,
+        extreme_quantile_region_seed_sensitivity,
         local_cached_manifest_candidates,
         external_manifest_acquisition_gap,
         behavior_cache_preflight,
@@ -2791,6 +2874,8 @@ def main() -> int:
         "extreme_quantile_target_family_gate": extreme_quantile_target_family_gate,
         "extreme_quantile_seed_sensitivity": extreme_quantile_seed_sensitivity,
         "extreme_quantile_cutoff_sensitivity": extreme_quantile_cutoff_sensitivity,
+        "extreme_quantile_region_specificity": extreme_quantile_region_specificity,
+        "extreme_quantile_region_seed_sensitivity": extreme_quantile_region_seed_sensitivity,
         "local_cached_manifest_candidates": local_cached_manifest_candidates,
         "external_manifest_acquisition_gap": external_manifest_acquisition_gap,
         "behavior_cache_preflight": behavior_cache_preflight,

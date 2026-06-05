@@ -410,7 +410,7 @@ branches after the current local negative audits.
 | priority | branch | status | next action |
 |---:|---|---|---|
 | 1 | new manifest with prospective bidirectional support | `recommended_next` | Do not launch GPU training from the projected support80 panel; its model-free family and feature-mode gates have no candidates. Redesign the target/control locally. |
-| 85 | extreme-quantile behavioral target gate | `closed` | Do not train: the extreme-quantile candidate does not robustly beat within-recording shuffled anatomy across seeds. |
+| 85 | extreme-quantile behavioral target gate | `closed` | Do not train: cutoff changes do not make the extreme response-latency candidate robust to within-recording shuffled anatomy. |
 | 86 | wheel-derived target family gate | `closed` | Do not spend on the tested wheel targets; move to a prospectively supported manifest. |
 | 87 | reaction-dynamics wheel targets | `closed` | Do not spend on reaction-dynamics wheel targets; the near miss fails true-vs-shuffle and does not replicate across feature modes. |
 
@@ -579,6 +579,47 @@ across multiple within-recording shuffle seeds.
 | 30/70 | 1/5 | 0/5 | -0.0002 | -0.0001 | 0.598/0.638 | 1-3 |
 
 Decision: changing the cutoff does not rescue the extreme response-latency candidate. The best setting is still only 2/5 candidate seeds, so the next redesign should increase true-vs-shuffle anatomical specificity rather than tune quantile thresholds.
+
+## Extreme-Quantile Region Specificity
+
+`docs/extreme_quantile_region_specificity.md` scans single parent
+regions for the response-latency extreme target under the unchanged
+strict local gate.
+
+- regions: `79`
+- candidates: `1`
+- positive centered-delta rows: `234`
+- max bidirectional recording fraction: `0.750`
+- decision: `extreme_quantile_region_candidate`
+
+| region | holdout | decision | delta shuffle | delta total | targets | bidir recs | eval nonzero |
+|---|---|---|---:|---:|---:|---:|---:|
+| root | CSH_ZAD_019 | candidate | +0.136 | +0.019 | 0.625/0.588 | 3/4 | 0.478 |
+| cVIIIn | NYU-12 | reject: target1 | +0.192 | +0.262 | 0.866/0.322 | 2/4 | 0.224 |
+| BS | KS014 | reject: total baseline | +0.104 | -0.106 | 0.422/0.681 | 2/4 | 0.387 |
+| PRT | CSH_ZAD_019 | reject: target0 | +0.082 | +0.038 | 0.411/0.791 | 2/4 | 0.268 |
+| root | NR_0019 | reject: total baseline | +0.041 | -0.186 | 0.696/0.357 | 2/4 | 0.249 |
+| root | NYU-12 | reject: target0 | +0.027 | +0.125 | 0.345/0.777 | 2/4 | 0.250 |
+| cc | SWC_038 | reject: total baseline | +0.010 | -0.004 | 0.782/0.342 | 2/4 | 0.285 |
+| MOs | SWC_038 | reject: shuffle | -0.023 | -0.051 | 0.874/0.299 | 2/4 | 0.208 |
+
+Decision before seed validation: single-region specificity finds a larger shuffle margin, but the strict pass is a coarse `root` label. Require seed-stable target and recording support before any training.
+
+## Extreme-Quantile Region Seed Sensitivity
+
+`docs/extreme_quantile_region_seed_sensitivity.md` reruns the strict
+parent-region candidate across multiple within-recording shuffle seeds.
+
+- cases: `1`
+- robust region-seed candidates: `0`
+- max positive shuffle-delta fraction: `1.000`
+- decision: `no_extreme_quantile_region_seed_candidate`
+
+| target | region | holdout | positive seeds | candidate seeds | mean shuffle delta | mean total delta | mean targets | bidir range |
+|---|---|---|---:|---:|---:|---:|---:|---:|
+| response_latency_extreme | root | CSH_ZAD_019 | 5/5 | 1/5 | +0.0792 | +0.0186 | 0.538/0.555 | 1-3 |
+
+Decision: do not train from the parent-region row. It separates true from shuffled labels in centered AUC across all seeds, but the full target and same-recording bidirectional gate is seed-unstable and the region is too coarse to demonstrate anatomical specificity.
 
 ## Matched-Region Model-Free Panel
 
