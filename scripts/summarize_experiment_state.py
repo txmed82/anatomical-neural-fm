@@ -118,6 +118,7 @@ MODEL_FREE_RECORDING_BIDIRECTIONAL_FEEDBACK_FILE = "docs/model_free_recording_bi
 MODEL_FREE_FAMILY_BIDIRECTIONAL_RECORDING_CENTERED_FILE = (
     "docs/model_free_family_bidirectional_gate_recording_centered.json"
 )
+MODEL_FREE_FAMILY_KS014_NEAR_MISS_FILE = "docs/model_free_family_ks014_near_miss_mechanism.json"
 LOCAL_PROBE_FILES = (
     (
         "local AUC surrogate",
@@ -411,6 +412,7 @@ def render_markdown(
     model_free_recording_bidirectional_prior: dict | None = None,
     model_free_recording_bidirectional_feedback: dict | None = None,
     model_free_family_bidirectional_recording_centered: dict | None = None,
+    model_free_family_ks014_near_miss: dict | None = None,
 ) -> str:
     summary = summarize(strict_rows, slice_rows)
     lines = [
@@ -1113,6 +1115,35 @@ def render_markdown(
             ),
             "",
         ]
+    if model_free_family_ks014_near_miss is not None:
+        top_rows = model_free_family_ks014_near_miss.get("family_rows", [])[:5]
+        lines += [
+            "## KS014 Family Near-Miss Mechanism",
+            "",
+            "`docs/model_free_family_ks014_near_miss_mechanism.md` decomposes the",
+            "strongest family-aggregate near miss by family contribution.",
+            "",
+            f"- bidirectional family candidates: `{len(model_free_family_ks014_near_miss.get('bidirectional_family_candidates', []))}`",
+            f"- decision: `{model_free_family_ks014_near_miss.get('decision')}`",
+            "",
+            "| family | class | mean delta | target0 | target1 | recordings |",
+            "|---|---|---:|---:|---:|---:|",
+        ]
+        for row in top_rows:
+            lines.append(
+                f"| {row['family']} | {row['classification']} | "
+                f"{row['mean_true_class_delta']:+.3f} | "
+                f"{row['target0_improved']:.3f} | {row['target1_improved']:.3f} | "
+                f"{row['positive_recordings']}/{row['n_recordings']} |"
+            )
+        lines += [
+            "",
+            (
+                "Decision: the KS014 family-level near miss is a mixture of one-sided "
+                "family movements, not a hidden bidirectional anatomical mechanism."
+            ),
+            "",
+        ]
     alternative_target_gates = [
         row for row in [
             model_free_recording_bidirectional_prior,
@@ -1219,6 +1250,9 @@ def main() -> int:
     model_free_family_bidirectional_recording_centered = read_mechanism_audit(
         REPO_ROOT / MODEL_FREE_FAMILY_BIDIRECTIONAL_RECORDING_CENTERED_FILE
     )
+    model_free_family_ks014_near_miss = read_mechanism_audit(
+        REPO_ROOT / MODEL_FREE_FAMILY_KS014_NEAR_MISS_FILE
+    )
     args.out_md.parent.mkdir(parents=True, exist_ok=True)
     args.out_md.write_text(render_markdown(
         strict_rows,
@@ -1253,6 +1287,7 @@ def main() -> int:
         model_free_recording_bidirectional_prior,
         model_free_recording_bidirectional_feedback,
         model_free_family_bidirectional_recording_centered,
+        model_free_family_ks014_near_miss,
     ))
     args.out_json.parent.mkdir(parents=True, exist_ok=True)
     args.out_json.write_text(json.dumps({
@@ -1320,6 +1355,7 @@ def main() -> int:
         "model_free_family_bidirectional_recording_centered": (
             model_free_family_bidirectional_recording_centered
         ),
+        "model_free_family_ks014_near_miss": model_free_family_ks014_near_miss,
     }, indent=2, sort_keys=True) + "\n")
     print(f"wrote {args.out_md}")
     print(f"wrote {args.out_json}")

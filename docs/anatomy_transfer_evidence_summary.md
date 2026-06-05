@@ -363,3 +363,13 @@ recordings. It still has zero candidates because the global bidirectional
 target-class gate fails (`KS014` target0 `0.510`, target1 `0.548`; `MFD_06`
 target0 `0.565`, target1 `0.489`). Decision: this suggests a weak family-level
 signal worth diagnosing locally, but not a RunPod training trigger.
+
+KS014 family near-miss mechanism:
+`docs/model_free_family_ks014_near_miss_mechanism.md` decomposes the strongest
+near miss by family contribution. It finds zero bidirectional family
+candidates. The apparent KS014 family signal is split across one-sided
+families: `broad_named_anatomy` is target0-only (`0.589` target0, `0.456`
+target1), `fiber_tracts` is also target0-only (`0.657`, `0.465`), while
+`cortical_retrosplenial` (`0.130`, `0.898`), `thalamic` (`0.122`, `0.874`),
+and `hippocampal_formation` (`0.206`, `0.724`) are target1-only. Decision:
+the KS014 near miss is not hiding a bidirectional anatomical mechanism.

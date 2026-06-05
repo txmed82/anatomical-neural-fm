@@ -1433,3 +1433,14 @@ recordings. The failure is still the actual claim gate, not a bookkeeping
 issue: global target0/target1 remains below threshold for the positive
 holdouts. Next local work should diagnose the KS014 family-level signal by
 family contribution and recording, rather than spend on a neural training run.
+
+KS014 family near-miss mechanism:
+`scripts/audit_family_near_miss_mechanism.py` performs that decomposition for
+the strongest near miss. It finds no bidirectional family contribution. The
+main families split by target direction: `broad_named_anatomy` and
+`fiber_tracts` are target0-only, while `cortical_retrosplenial`, `thalamic`,
+`hippocampal_formation`, `cortical_visual`, and `brainstem_interbrain` are
+target1-only. This closes the obvious family-level explanation for KS014.
+Next no-spend work should either design a stricter family-specific target that
+can pass both classes locally, or step back to manifest/benchmark redesign;
+there is still no RunPod training trigger.

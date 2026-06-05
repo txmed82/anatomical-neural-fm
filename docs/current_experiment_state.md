@@ -360,6 +360,24 @@ centering and the same same-recording bidirectional gate.
 
 Decision: this is the strongest local near miss so far, but still not a training trigger. `KS014` reaches centered delta `+0.080` and `2/4` bidirectional recordings, yet misses global target0 at `0.510`.
 
+## KS014 Family Near-Miss Mechanism
+
+`docs/model_free_family_ks014_near_miss_mechanism.md` decomposes the
+strongest family-aggregate near miss by family contribution.
+
+- bidirectional family candidates: `0`
+- decision: `No family contribution is bidirectional enough to explain a promotable signal. The KS014 near miss is still a mixture of one-sided family movements.`
+
+| family | class | mean delta | target0 | target1 | recordings |
+|---|---|---:|---:|---:|---:|
+| midbrain | weak_or_mixed | -0.016 | 0.410 | 0.547 | 2/4 |
+| broad_named_anatomy | target0_only | +0.015 | 0.589 | 0.456 | 2/4 |
+| cortical_retrosplenial | target1_only | +0.016 | 0.130 | 0.898 | 3/4 |
+| fiber_tracts | target0_only | +0.005 | 0.657 | 0.465 | 2/4 |
+| hippocampal_formation | target1_only | -0.004 | 0.206 | 0.724 | 2/4 |
+
+Decision: the KS014 family-level near miss is a mixture of one-sided family movements, not a hidden bidirectional anatomical mechanism.
+
 ## Alternative Target Bidirectional Gates
 
 Two additional trial targets exposed by the cached IBL trials were tested
