@@ -113,6 +113,15 @@ def parse_args():
     p.add_argument("--eval-every", type=int, default=100)
     p.add_argument("--eval-batches", type=int, default=20)
     p.add_argument("--log-every", type=int, default=20)
+    p.add_argument("--save-eval-predictions", action="store_true",
+                   help="When a new best checkpoint is found, write deterministic held-out "
+                        "trial predictions to eval_predictions.jsonl for model diagnostics.")
+    p.add_argument("--eval-prediction-max-trials", type=int, default=0,
+                   help="Maximum eval trials to export when --save-eval-predictions is set. "
+                        "0 exports all valid eval trials.")
+    p.add_argument("--save-region-embeddings", action="store_true",
+                   help="When a new best checkpoint is found, write region embedding vectors "
+                        "to region_embeddings.jsonl for anatomical-code diagnostics.")
     return p.parse_args()
 
 
@@ -565,6 +574,96 @@ def evaluate(model, ds, eval_trial_list, args, allowed_region_acronyms: set[str]
             "eval_n_pos": int((tgts == 1).sum()), "eval_n_neg": int((tgts == 0).sum())}
 
 
+def region_index_lookup(vocab: dict) -> dict[int, str]:
+    """Recover the mapped region acronym for each region embedding index."""
+    lookup: dict[int, str] = {}
+    for idx, acronym in zip(vocab["region_idx_per_unit"], vocab["region_acronyms"]):
+        idx_int = int(idx)
+        if idx_int not in lookup:
+            lookup[idx_int] = str(acronym)
+    return lookup
+
+
+def write_region_embeddings(model, vocab: dict, path: Path) -> int:
+    if getattr(model, "region_emb", None) is None:
+        return 0
+    lookup = region_index_lookup(vocab)
+    weights = model.region_emb.weight.detach().float().cpu().numpy()
+    rows_written = 0
+    with path.open("w") as fh:
+        for idx in sorted(lookup):
+            vec = weights[idx]
+            fh.write(json.dumps({
+                "region_idx": idx,
+                "region": lookup[idx],
+                "norm": float(np.linalg.norm(vec)),
+                "embedding": [float(x) for x in vec],
+            }) + "\n")
+            rows_written += 1
+    return rows_written
+
+
+def eval_prediction_rows(
+    model,
+    ds,
+    eval_trial_list,
+    args,
+    allowed_region_acronyms: set[str] | None,
+    subject_by_rid: dict[str, str],
+    *,
+    max_trials: int = 0,
+) -> list[dict]:
+    """Deterministically score held-out trials one by one for diagnostics."""
+    model.eval()
+    rows = []
+    limit = None if max_trials <= 0 else max_trials
+    with torch.no_grad():
+        for rid, t0, target in eval_trial_list:
+            sample = ds[DatasetIndex(recording_id=rid, start=t0, end=t0 + args.window_len)]
+            inputs_np = build_inputs_for_window(model, sample, rid, t0, args, allowed_region_acronyms)
+            if inputs_np is None:
+                continue
+            batch = collate_batch([inputs_np], device=next(model.parameters()).device)
+            logit = float(model(**batch).squeeze(-1).detach().float().cpu().numpy().ravel()[0])
+            prob = float(1 / (1 + math.exp(-logit)))
+            rows.append({
+                "recording_id": rid,
+                "subject": subject_by_rid.get(rid),
+                "t0": float(t0),
+                "target": int(target),
+                "logit": logit,
+                "prob": prob,
+            })
+            if limit is not None and len(rows) >= limit:
+                break
+    model.train()
+    return rows
+
+
+def write_eval_predictions(
+    model,
+    ds,
+    eval_trial_list,
+    args,
+    allowed_region_acronyms: set[str] | None,
+    subject_by_rid: dict[str, str],
+    path: Path,
+) -> int:
+    rows = eval_prediction_rows(
+        model,
+        ds,
+        eval_trial_list,
+        args,
+        allowed_region_acronyms,
+        subject_by_rid,
+        max_trials=args.eval_prediction_max_trials,
+    )
+    with path.open("w") as fh:
+        for row in rows:
+            fh.write(json.dumps(row) + "\n")
+    return len(rows)
+
+
 def main():
     args = parse_args()
     args.out_dir.mkdir(parents=True, exist_ok=True)
@@ -726,6 +825,26 @@ def main():
                 torch.save(ckpt, args.out_dir / "best.ckpt")
                 log({"event": "ckpt_best", "step": step, "eval_loss": best_eval,
                      "eval_acc": eval_metrics["eval_acc"], "eval_auc": eval_metrics["eval_auc"]})
+                if args.save_eval_predictions:
+                    n_pred_rows = write_eval_predictions(
+                        model,
+                        ds,
+                        eval_trials,
+                        args,
+                        allowed_region_acronyms,
+                        vocab["subject_by_rid"],
+                        args.out_dir / "eval_predictions.jsonl",
+                    )
+                    log({"event": "eval_predictions_saved", "step": step, "rows": n_pred_rows,
+                         "path": str(args.out_dir / "eval_predictions.jsonl")})
+                if args.save_region_embeddings:
+                    n_region_rows = write_region_embeddings(
+                        model,
+                        vocab,
+                        args.out_dir / "region_embeddings.jsonl",
+                    )
+                    log({"event": "region_embeddings_saved", "step": step, "rows": n_region_rows,
+                         "path": str(args.out_dir / "region_embeddings.jsonl")})
 
     # Save last
     torch.save({"step": step, "args": vars(args), "state_dict": model.state_dict()},

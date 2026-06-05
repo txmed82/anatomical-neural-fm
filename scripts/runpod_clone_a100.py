@@ -339,6 +339,7 @@ EOF
     fi
 
     git add {result_doc} docs/cloud_phase3_5_runpod.log 2>/dev/null || true
+    find {output_root} -type f \\( -name eval_predictions.jsonl -o -name region_embeddings.jsonl \\) -print0 2>/dev/null | xargs -0 -r git add -f -- 2>/dev/null || true
     git add manifests/ibl_bwm.local.json 2>/dev/null || true
     git commit -m "Add cloud phase 3-5 pilot results" || true
     git push origin HEAD:{branch_raw} || true

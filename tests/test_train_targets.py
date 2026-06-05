@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import numpy as np
+import torch
 
 from scripts.train import (
     apply_region_label_control,
@@ -9,8 +10,10 @@ from scripts.train import (
     manifest_recording_ids,
     parse_region_include,
     region_acronym_at_granularity,
+    region_index_lookup,
     select_recording_ids,
     shared_split_regions,
+    write_region_embeddings,
 )
 
 
@@ -168,3 +171,32 @@ def test_build_inputs_for_window_filters_spikes_to_allowed_regions() -> None:
     assert out is not None
     assert out["input_unit_index"].tolist() == [0, 2]
     assert out["input_timestamps"].tolist() == [0.0, 0.20000004768371582]
+
+
+def test_region_index_lookup_recovers_first_acronym_for_each_index() -> None:
+    vocab = {
+        "region_idx_per_unit": np.array([2, 0, 2, 1]),
+        "region_acronyms": np.array(["DG", "CA", "DG-duplicate", "MOp"]),
+    }
+
+    assert region_index_lookup(vocab) == {0: "CA", 1: "MOp", 2: "DG"}
+
+
+def test_write_region_embeddings_exports_labeled_vectors(tmp_path) -> None:
+    model = Obj(region_emb=torch.nn.Embedding(3, 2))
+    with torch.no_grad():
+        model.region_emb.weight.copy_(torch.tensor([[1.0, 0.0], [0.0, 2.0], [3.0, 4.0]]))
+    vocab = {
+        "region_idx_per_unit": np.array([2, 0]),
+        "region_acronyms": np.array(["DG", "CA"]),
+    }
+    out = tmp_path / "region_embeddings.jsonl"
+
+    rows = write_region_embeddings(model, vocab, out)
+
+    lines = out.read_text().splitlines()
+    assert rows == 2
+    assert '"region": "CA"' in lines[0]
+    assert '"embedding": [1.0, 0.0]' in lines[0]
+    assert '"region": "DG"' in lines[1]
+    assert '"norm": 5.0' in lines[1]

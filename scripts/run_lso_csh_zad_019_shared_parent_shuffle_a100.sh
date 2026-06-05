@@ -22,6 +22,8 @@ REGION_FILTER="${REGION_FILTER:-shared_regions}"
 REGION_GRANULARITY="${REGION_GRANULARITY:-parent}"
 OUT_ROOT="${OUT_ROOT:-runs/lso_csh_zad_019_shared_parent_shuffle}"
 MANIFEST="${MANIFEST:-}"
+SAVE_DIAGNOSTICS="${SAVE_DIAGNOSTICS:-0}"
+EVAL_PREDICTION_MAX_TRIALS="${EVAL_PREDICTION_MAX_TRIALS:-0}"
 
 COMMON_ARGS=(
   --device "$DEVICE"
@@ -40,6 +42,12 @@ COMMON_ARGS=(
 if [ -n "$MANIFEST" ]; then
   COMMON_ARGS+=(--manifest "$MANIFEST")
 fi
+if [ "$SAVE_DIAGNOSTICS" = "1" ]; then
+  COMMON_ARGS+=(--save-eval-predictions --save-region-embeddings)
+  if [ "$EVAL_PREDICTION_MAX_TRIALS" != "0" ]; then
+    COMMON_ARGS+=(--eval-prediction-max-trials "$EVAL_PREDICTION_MAX_TRIALS")
+  fi
+fi
 
 mkdir -p "$OUT_ROOT/holdout_CSH_ZAD_019"
 echo "subjects: CSH_ZAD_019"
@@ -48,6 +56,7 @@ echo "seeds: $SEEDS"
 echo "region_filter: $REGION_FILTER"
 echo "region_granularity: $REGION_GRANULARITY"
 echo "manifest: ${MANIFEST:-<all local recordings>}"
+echo "save_diagnostics: $SAVE_DIAGNOSTICS"
 
 for seed in $SEEDS; do
   for arm in shared_baseline region_only region_shuffle; do

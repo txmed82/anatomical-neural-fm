@@ -700,3 +700,28 @@ variant without a new mechanism. The next useful work is no-spend analysis of
 the actual CSH success: inspect per-recording model outputs, region-embedding
 behavior, and whether the apparent anatomical lift is tied to CSH-specific
 session/probe structure rather than a transferable anatomical code.
+
+Instrumentation gate completed: `scripts/train.py` can now export diagnostic
+artifacts when a new best checkpoint is selected:
+
+- `--save-eval-predictions` writes held-out trial predictions to
+  `eval_predictions.jsonl` with recording id, subject, target, logit, and
+  probability.
+- `--save-region-embeddings` writes learned region embedding vectors to
+  `region_embeddings.jsonl` with mapped region acronym and embedding norm.
+- `scripts/run_lso_csh_zad_019_shared_parent_shuffle_a100.sh` and
+  `scripts/run_lso_two_holdout_shared_parent_shuffle_a100.sh` can enable these
+  via `SAVE_DIAGNOSTICS=1`.
+- `scripts/runpod_clone_a100.py` now force-adds only those diagnostic JSONL
+  files from ignored `runs/` trees, not checkpoints.
+
+Local smoke check: `runs/instrumentation_smoke` verified the new exports on a
+one-step CPU run with five prediction rows and 79 region-embedding rows.
+
+Next falsifiable diagnostic run, if spending again: rerun only the canonical
+`CSH_ZAD_019` shared-parent true-vs-shuffled control with `SAVE_DIAGNOSTICS=1`
+and a small prediction cap first, using the already proven result doc path or a
+new diagnostic result doc. The goal is not another broadening claim; it is to
+answer whether the CSH lift is distributed across recordings/trials and whether
+the learned region embeddings show true-vs-shuffled structure. Do not launch
+another candidate-subject run until those exported artifacts have been audited.

@@ -20,3 +20,19 @@ def test_two_holdout_wrapper_can_pass_region_include_list() -> None:
     assert 'REGION_INCLUDE="${REGION_INCLUDE:-}"' in script
     assert 'COMMON_ARGS+=(--region-include "$REGION_INCLUDE")' in script
     assert 'region_include: ${REGION_INCLUDE:-<none>}' in script
+
+
+def test_two_holdout_wrapper_can_enable_diagnostic_exports() -> None:
+    script = (REPO_ROOT / "scripts/run_lso_two_holdout_shared_parent_shuffle_a100.sh").read_text()
+
+    assert 'SAVE_DIAGNOSTICS="${SAVE_DIAGNOSTICS:-0}"' in script
+    assert "--save-eval-predictions --save-region-embeddings" in script
+    assert "--eval-prediction-max-trials" in script
+
+
+def test_csh_wrapper_can_enable_diagnostic_exports() -> None:
+    script = (REPO_ROOT / "scripts/run_lso_csh_zad_019_shared_parent_shuffle_a100.sh").read_text()
+
+    assert 'SAVE_DIAGNOSTICS="${SAVE_DIAGNOSTICS:-0}"' in script
+    assert "--save-eval-predictions --save-region-embeddings" in script
+    assert "--eval-prediction-max-trials" in script

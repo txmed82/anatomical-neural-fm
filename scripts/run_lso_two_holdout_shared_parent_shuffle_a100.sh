@@ -22,6 +22,8 @@ REGION_GRANULARITY="${REGION_GRANULARITY:-parent}"
 REGION_INCLUDE="${REGION_INCLUDE:-}"
 OUT_ROOT="${OUT_ROOT:-runs/lso_two_holdout_shared_parent_shuffle}"
 MANIFEST="${MANIFEST:-}"
+SAVE_DIAGNOSTICS="${SAVE_DIAGNOSTICS:-0}"
+EVAL_PREDICTION_MAX_TRIALS="${EVAL_PREDICTION_MAX_TRIALS:-0}"
 
 COMMON_ARGS=(
   --device "$DEVICE"
@@ -41,6 +43,12 @@ if [ -n "$REGION_INCLUDE" ]; then
 fi
 if [ -n "$MANIFEST" ]; then
   COMMON_ARGS+=(--manifest "$MANIFEST")
+fi
+if [ "$SAVE_DIAGNOSTICS" = "1" ]; then
+  COMMON_ARGS+=(--save-eval-predictions --save-region-embeddings)
+  if [ "$EVAL_PREDICTION_MAX_TRIALS" != "0" ]; then
+    COMMON_ARGS+=(--eval-prediction-max-trials "$EVAL_PREDICTION_MAX_TRIALS")
+  fi
 fi
 
 mkdir -p "$OUT_ROOT"
@@ -62,6 +70,7 @@ echo "region_filter: $REGION_FILTER"
 echo "region_granularity: $REGION_GRANULARITY"
 echo "region_include: ${REGION_INCLUDE:-<none>}"
 echo "manifest: ${MANIFEST:-<all local recordings>}"
+echo "save_diagnostics: $SAVE_DIAGNOSTICS"
 
 for holdout in $SUBJECTS; do
   safe_holdout="$(printf '%s' "$holdout" | tr -c '[:alnum:]_.-' '_')"

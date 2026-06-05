@@ -82,3 +82,9 @@ fixed-slice candidate (`NYU-12`) and the stricter follow-up (`SWC_038`) failed
 the true-vs-shuffled control. The next step should be no-spend analysis of the
 actual CSH model outputs or a redesign of the anatomical objective, not another
 matched-cache A100 sweep.
+
+Instrumentation is now available for that diagnostic: `scripts/train.py` can
+export held-out trial predictions and learned region embeddings, and the RunPod
+launcher will preserve those JSONL artifacts. The next bounded run should be
+the canonical `CSH_ZAD_019` control with diagnostics enabled, followed by an
+artifact audit before any more broadening attempts.

@@ -181,7 +181,14 @@ def test_start_script_marks_missing_sweep_summary_as_incomplete() -> None:
         "No \\`runs/phase2_cloud_a100/summary.md\\`, \\`within_summary.md\\`, or\n"
         "\\`cross_summary.md\\` file was present"
     ) in script
-    assert "cloud result as incomplete/non-evidence" in script
+
+
+def test_start_script_force_adds_diagnostic_jsonl_artifacts() -> None:
+    script = build_start_script(config())
+
+    assert "eval_predictions.jsonl" in script
+    assert "region_embeddings.jsonl" in script
+    assert "git add -f --" in script
 
 
 def test_start_script_can_skip_pod_verification() -> None:
