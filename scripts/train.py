@@ -106,6 +106,10 @@ def parse_args():
                             "waveform", "waveform_only"])
     # Optim
     p.add_argument("--batch-size", type=int, default=4)
+    p.add_argument("--batch-sampling", default="uniform", choices=["uniform", "target_balanced"],
+                   help="'uniform' samples trial windows uniformly. 'target_balanced' alternates "
+                        "left/right targets within accepted training batches to reduce target-prior "
+                        "leakage; sampled eval remains uniform.")
     p.add_argument("--lr", type=float, default=3e-4)
     p.add_argument("--weight-decay", type=float, default=1e-4)
     p.add_argument("--max-steps", type=int, default=500)
@@ -358,6 +362,32 @@ def build_trial_samples(
     return out
 
 
+def trial_indices_by_target(trial_list: list[tuple[str, float, float]]) -> dict[int, list[int]]:
+    by_target: dict[int, list[int]] = defaultdict(list)
+    for idx, (_rid, _t0, target) in enumerate(trial_list):
+        by_target[int(target)].append(idx)
+    return dict(by_target)
+
+
+def choose_trial_index(
+    trial_list: list[tuple[str, float, float]],
+    rng,
+    batch_sampling: str,
+    accepted_count: int,
+    target_offset: int = 0,
+) -> int:
+    if batch_sampling == "uniform":
+        return int(rng.integers(len(trial_list)))
+    if batch_sampling != "target_balanced":
+        raise ValueError(f"unknown batch_sampling {batch_sampling!r}")
+    by_target = trial_indices_by_target(trial_list)
+    if not by_target.get(0) or not by_target.get(1):
+        return int(rng.integers(len(trial_list)))
+    desired_target = int((accepted_count + target_offset) % 2)
+    choices = by_target[desired_target]
+    return int(choices[int(rng.integers(len(choices)))])
+
+
 def recording_region_acronyms(recs, rids: list[str], region_granularity: str = "fine") -> set[str]:
     regions: set[str] = set()
     for rid in rids:
@@ -536,6 +566,7 @@ def draw_batch(
     model,
     rng,
     allowed_region_acronyms: set[str] | None = None,
+    batch_sampling: str | None = None,
 ) -> tuple[dict, torch.Tensor]:
     """Draw a batch of `batch_size` trial-aligned windows from the precomputed list.
 
@@ -545,9 +576,18 @@ def draw_batch(
     samples = []
     targets = []
     attempts = 0
+    sampling_mode = getattr(args, "batch_sampling", "uniform") if batch_sampling is None else batch_sampling
+    target_offset = int(rng.integers(2)) if sampling_mode == "target_balanced" else 0
     while len(samples) < args.batch_size and attempts < 50:
         attempts += 1
-        rid, t0, target = trial_list[rng.integers(len(trial_list))]
+        idx = choose_trial_index(
+            trial_list,
+            rng,
+            sampling_mode,
+            accepted_count=len(samples),
+            target_offset=target_offset,
+        )
+        rid, t0, target = trial_list[idx]
         sample = ds[DatasetIndex(recording_id=rid, start=t0, end=t0 + args.window_len)]
         inputs_np = build_inputs_for_window(model, sample, rid, t0, args, allowed_region_acronyms)
         if inputs_np is None:
@@ -583,7 +623,15 @@ def evaluate(model, ds, eval_trial_list, args, allowed_region_acronyms: set[str]
     rng = np.random.default_rng(args.seed + 1000)  # deterministic eval order
     with torch.no_grad():
         for _ in range(args.eval_batches):
-            batch, tgt = draw_batch(ds, eval_trial_list, args, model, rng, allowed_region_acronyms)
+            batch, tgt = draw_batch(
+                ds,
+                eval_trial_list,
+                args,
+                model,
+                rng,
+                allowed_region_acronyms,
+                batch_sampling="uniform",
+            )
             if batch is None:
                 continue
             out = model(**batch).squeeze(-1)  # (B, 1)

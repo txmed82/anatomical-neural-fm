@@ -916,6 +916,17 @@ and sign-flip p-value is `0.5000`. This confirms the current architecture/gate
 is not demo-ready. The next implementation step should change what is trained
 or selected, not spend on more held-out animals.
 
+Target-balanced training update: `scripts/train.py` now supports
+`--batch-sampling target_balanced`, and the CSH/two-holdout RunPod wrappers
+expose it as `BATCH_SAMPLING=target_balanced`. This alternates accepted
+left/right targets during training while leaving sampled eval uniform, so the
+next candidate run is less able to exploit target-prior imbalance without
+changing the held-out metric. The next paid run should be a bounded single
+CSH_ZAD_019 pilot with `BATCH_SAMPLING=target_balanced`,
+`BEST_METRIC=full_eval_centered_auc`, `FULL_EVAL_ON_BEST=1`, and
+`SAVE_DIAGNOSTICS=1`; only broaden to NR_0019 if the strict anatomy-specific
+permutation gate improves.
+
 After cleanup, run:
 
 ```bash

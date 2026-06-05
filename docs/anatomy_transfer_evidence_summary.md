@@ -29,3 +29,13 @@ CSH has broad recording support but the effect is too small, not specific
 against shuffle-vs-shared, and misses the recording-level sign-flip threshold.
 NR_0019 has a larger ensemble AUC delta but it is localized to one recording and
 has no paired specificity. Neither result is demo-ready.
+
+## Next Training Variant
+
+The next implementation change is target-balanced training, not another
+same-setup sweep. `scripts/train.py` accepts `--batch-sampling target_balanced`,
+and the held-out RunPod wrappers expose the same control through
+`BATCH_SAMPLING=target_balanced`. This balances accepted training batches across
+left/right targets while keeping sampled eval uniform. Use it first on a bounded
+single CSH_ZAD_019 pilot with full held-out-trial diagnostics; broaden only if
+the anatomy-specific permutation gate improves.

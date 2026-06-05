@@ -34,6 +34,14 @@ def test_two_holdout_wrapper_can_enable_diagnostic_exports() -> None:
     assert "--best-metric" in script
 
 
+def test_two_holdout_wrapper_can_set_batch_sampling_mode() -> None:
+    script = (REPO_ROOT / "scripts/run_lso_two_holdout_shared_parent_shuffle_a100.sh").read_text()
+
+    assert 'BATCH_SAMPLING="${BATCH_SAMPLING:-uniform}"' in script
+    assert '--batch-sampling "$BATCH_SAMPLING"' in script
+    assert 'batch_sampling: $BATCH_SAMPLING' in script
+
+
 def test_csh_wrapper_can_enable_diagnostic_exports() -> None:
     script = (REPO_ROOT / "scripts/run_lso_csh_zad_019_shared_parent_shuffle_a100.sh").read_text()
 
@@ -44,3 +52,11 @@ def test_csh_wrapper_can_enable_diagnostic_exports() -> None:
     assert "--full-eval-on-best" in script
     assert 'BEST_METRIC="${BEST_METRIC:-eval_loss}"' in script
     assert "--best-metric" in script
+
+
+def test_csh_wrapper_can_set_batch_sampling_mode() -> None:
+    script = (REPO_ROOT / "scripts/run_lso_csh_zad_019_shared_parent_shuffle_a100.sh").read_text()
+
+    assert 'BATCH_SAMPLING="${BATCH_SAMPLING:-uniform}"' in script
+    assert '--batch-sampling "$BATCH_SAMPLING"' in script
+    assert 'batch_sampling: $BATCH_SAMPLING' in script

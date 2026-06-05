@@ -9,6 +9,7 @@ from scripts.train import (
     best_metric_requires_full_eval,
     build_inputs_for_window,
     build_trial_samples,
+    choose_trial_index,
     is_better_metric,
     manifest_recording_ids,
     metrics_from_prediction_rows,
@@ -18,6 +19,7 @@ from scripts.train import (
     recording_centered_auc_from_prediction_rows,
     select_recording_ids,
     shared_split_regions,
+    trial_indices_by_target,
     write_region_embeddings,
 )
 
@@ -108,6 +110,42 @@ def test_build_trial_samples_stimulus_side_uses_contrast_not_choice() -> None:
     )
 
     assert samples == [("rec", 0.1, 0.0), ("rec", 0.2, 1.0), ("rec", 0.4, 1.0)]
+
+
+def test_trial_indices_by_target_groups_binary_targets() -> None:
+    trials = [
+        ("a", 0.1, 0.0),
+        ("a", 0.2, 1.0),
+        ("b", 0.3, 1.0),
+        ("b", 0.4, 0.0),
+    ]
+
+    assert trial_indices_by_target(trials) == {0: [0, 3], 1: [1, 2]}
+
+
+def test_target_balanced_trial_choice_alternates_requested_target() -> None:
+    trials = [
+        ("a", 0.1, 0.0),
+        ("a", 0.2, 1.0),
+        ("b", 0.3, 1.0),
+        ("b", 0.4, 0.0),
+    ]
+    rng = np.random.default_rng(0)
+
+    first = choose_trial_index(trials, rng, "target_balanced", accepted_count=0, target_offset=0)
+    second = choose_trial_index(trials, rng, "target_balanced", accepted_count=1, target_offset=0)
+
+    assert trials[first][2] == 0.0
+    assert trials[second][2] == 1.0
+
+
+def test_target_balanced_trial_choice_falls_back_when_one_class_missing() -> None:
+    trials = [("a", 0.1, 1.0), ("a", 0.2, 1.0)]
+    rng = np.random.default_rng(0)
+
+    idx = choose_trial_index(trials, rng, "target_balanced", accepted_count=0, target_offset=0)
+
+    assert idx in {0, 1}
 
 
 def test_shared_split_regions_uses_train_eval_intersection() -> None:
