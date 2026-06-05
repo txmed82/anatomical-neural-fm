@@ -352,3 +352,14 @@ bidirectional recording fraction `0.071`. `KS014` has centered delta `+0.042`
 but target0 `0.520`, target1 `0.540`, and only `1/4` bidirectional recordings;
 `NR_0019` has centered delta `+0.047` but target0 `0.482`. Decision: keep this
 as a near-miss diagnostic, not a GPU trigger.
+
+Family-aggregate recording-centered check:
+`docs/model_free_family_bidirectional_gate_recording_centered.md` combines
+predefined parent-region family aggregates with recording-centered features.
+This is the strongest no-spend near miss so far: positive centered-delta
+holdouts increase to `4/7`, mean bidirectional recording fraction rises to
+`0.179`, and `KS014` reaches centered delta `+0.080` with `2/4` bidirectional
+recordings. It still has zero candidates because the global bidirectional
+target-class gate fails (`KS014` target0 `0.510`, target1 `0.548`; `MFD_06`
+target0 `0.565`, target1 `0.489`). Decision: this suggests a weak family-level
+signal worth diagnosing locally, but not a RunPod training trigger.

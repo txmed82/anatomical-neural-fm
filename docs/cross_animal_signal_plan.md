@@ -1421,3 +1421,15 @@ deltas. Treat this as the best near-miss feature transform so far. The next
 local branch should combine recording-centered features with structured
 anatomical families or predefined region groups, then require the same
 recording-bidirectional gate before any cloud run.
+
+Family-aggregate recording-centered check:
+`scripts/audit_model_free_family_bidirectional_gate.py` implements that next
+branch using the predefined parent-region families from the earlier CSH family
+scan. With `--feature-mode recording_centered`, the matched-panel gate still
+has zero candidates, but it is the strongest local near miss so far: `4/7`
+positive centered-delta holdouts, mean bidirectional recording fraction
+`0.179`, and `KS014` at centered delta `+0.080` with `2/4` bidirectional
+recordings. The failure is still the actual claim gate, not a bookkeeping
+issue: global target0/target1 remains below threshold for the positive
+holdouts. Next local work should diagnose the KS014 family-level signal by
+family contribution and recording, rather than spend on a neural training run.

@@ -347,6 +347,19 @@ times that recording's static unit-region distribution.
 
 Decision: residualizing static anatomical coverage increases the number of positive centered deltas, but does not create a valid transfer signal. Every positive holdout remains one target direction with `0/4` bidirectional recordings.
 
+## Family-Aggregate Recording-Centered Gate
+
+`docs/model_free_family_bidirectional_gate_recording_centered.md` combines
+predefined parent-region family aggregates with feature-level recording
+centering and the same same-recording bidirectional gate.
+
+- candidates: `0/7`
+- positive centered-delta holdouts: `4/7`
+- mean bidirectional recording fraction: `0.179`
+- decision: `no_recording_bidirectional_model_free_signal`
+
+Decision: this is the strongest local near miss so far, but still not a training trigger. `KS014` reaches centered delta `+0.080` and `2/4` bidirectional recordings, yet misses global target0 at `0.510`.
+
 ## Alternative Target Bidirectional Gates
 
 Two additional trial targets exposed by the cached IBL trials were tested

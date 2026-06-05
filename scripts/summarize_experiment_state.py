@@ -115,6 +115,9 @@ MODEL_FREE_RECORDING_BIDIRECTIONAL_UNIT_RESIDUALS_FILE = (
 )
 MODEL_FREE_RECORDING_BIDIRECTIONAL_PRIOR_FILE = "docs/model_free_recording_bidirectional_gate_prior_side.json"
 MODEL_FREE_RECORDING_BIDIRECTIONAL_FEEDBACK_FILE = "docs/model_free_recording_bidirectional_gate_feedback.json"
+MODEL_FREE_FAMILY_BIDIRECTIONAL_RECORDING_CENTERED_FILE = (
+    "docs/model_free_family_bidirectional_gate_recording_centered.json"
+)
 LOCAL_PROBE_FILES = (
     (
         "local AUC surrogate",
@@ -407,6 +410,7 @@ def render_markdown(
     model_free_recording_bidirectional_unit_residuals: dict | None = None,
     model_free_recording_bidirectional_prior: dict | None = None,
     model_free_recording_bidirectional_feedback: dict | None = None,
+    model_free_family_bidirectional_recording_centered: dict | None = None,
 ) -> str:
     summary = summarize(strict_rows, slice_rows)
     lines = [
@@ -1088,6 +1092,27 @@ def render_markdown(
             ),
             "",
         ]
+    if model_free_family_bidirectional_recording_centered is not None:
+        summary = model_free_family_bidirectional_recording_centered["summary"]
+        lines += [
+            "## Family-Aggregate Recording-Centered Gate",
+            "",
+            "`docs/model_free_family_bidirectional_gate_recording_centered.md` combines",
+            "predefined parent-region family aggregates with feature-level recording",
+            "centering and the same same-recording bidirectional gate.",
+            "",
+            f"- candidates: `{summary['n_candidates']}/{summary['n_holdouts']}`",
+            f"- positive centered-delta holdouts: `{summary['n_positive_delta_holdouts']}/{summary['n_holdouts']}`",
+            f"- mean bidirectional recording fraction: `{summary['mean_bidirectional_recording_fraction']:.3f}`",
+            f"- decision: `{summary['decision']}`",
+            "",
+            (
+                "Decision: this is the strongest local near miss so far, but still not a "
+                "training trigger. `KS014` reaches centered delta `+0.080` and `2/4` "
+                "bidirectional recordings, yet misses global target0 at `0.510`."
+            ),
+            "",
+        ]
     alternative_target_gates = [
         row for row in [
             model_free_recording_bidirectional_prior,
@@ -1191,6 +1216,9 @@ def main() -> int:
     model_free_recording_bidirectional_feedback = read_mechanism_audit(
         REPO_ROOT / MODEL_FREE_RECORDING_BIDIRECTIONAL_FEEDBACK_FILE
     )
+    model_free_family_bidirectional_recording_centered = read_mechanism_audit(
+        REPO_ROOT / MODEL_FREE_FAMILY_BIDIRECTIONAL_RECORDING_CENTERED_FILE
+    )
     args.out_md.parent.mkdir(parents=True, exist_ok=True)
     args.out_md.write_text(render_markdown(
         strict_rows,
@@ -1224,6 +1252,7 @@ def main() -> int:
         model_free_recording_bidirectional_unit_residuals,
         model_free_recording_bidirectional_prior,
         model_free_recording_bidirectional_feedback,
+        model_free_family_bidirectional_recording_centered,
     ))
     args.out_json.parent.mkdir(parents=True, exist_ok=True)
     args.out_json.write_text(json.dumps({
@@ -1288,6 +1317,9 @@ def main() -> int:
         "model_free_recording_bidirectional_unit_residuals": model_free_recording_bidirectional_unit_residuals,
         "model_free_recording_bidirectional_prior_side": model_free_recording_bidirectional_prior,
         "model_free_recording_bidirectional_feedback": model_free_recording_bidirectional_feedback,
+        "model_free_family_bidirectional_recording_centered": (
+            model_free_family_bidirectional_recording_centered
+        ),
     }, indent=2, sort_keys=True) + "\n")
     print(f"wrote {args.out_md}")
     print(f"wrote {args.out_json}")
