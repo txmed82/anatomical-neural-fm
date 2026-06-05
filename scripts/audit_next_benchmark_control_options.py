@@ -1,0 +1,1590 @@
+"""Rank remaining benchmark/control options after local negative audits."""
+from __future__ import annotations
+
+import argparse
+import json
+from pathlib import Path
+
+REPO_ROOT = Path(__file__).resolve().parent.parent
+
+
+ARTIFACTS = {
+    "shared_family": "docs/shared_family_target_control_gate.json",
+    "shared_broad_repair": "docs/shared_broad_anatomy_repair_sweep.json",
+    "iterative_manifest": "docs/shared_family_iterative_manifest_gate.json",
+    "symmetric_strict": "docs/symmetric_strict_failure_modes.json",
+    "symmetric_threshold": "docs/symmetric_threshold_sensitivity_audit.json",
+    "recording_replication": "docs/model_free_recording_replication_audit.json",
+    "derived_target_family": "docs/derived_target_family_gate.json",
+    "contextual_target_family": "docs/contextual_target_family_gate.json",
+    "wheel_target_family": "docs/wheel_target_family_gate.json",
+    "low_contrast_choice_family": "docs/low_contrast_choice_family_gate.json",
+    "low_contrast_choice_projected": "docs/low_contrast_choice_family_gate_projected_hdf5.json",
+    "low_contrast_choice_seed_sensitivity": "docs/low_contrast_choice_seed_sensitivity.json",
+    "neutral_prior_low_contrast_choice_family": "docs/neutral_prior_low_contrast_choice_family_gate.json",
+    "neutral_prior_low_contrast_choice_projected": (
+        "docs/neutral_prior_low_contrast_choice_family_gate_projected_hdf5.json"
+    ),
+    "neutral_prior_low_contrast_choice_seed_sensitivity": (
+        "docs/neutral_prior_low_contrast_choice_seed_sensitivity.json"
+    ),
+    "correct_low_contrast_choice_family": "docs/correct_low_contrast_choice_family_gate.json",
+    "correct_low_contrast_choice_projected": "docs/correct_low_contrast_choice_family_gate_projected_hdf5.json",
+    "prior_aligned_choice_family": "docs/prior_aligned_choice_family_gate.json",
+    "prior_aligned_choice_projected": "docs/prior_aligned_choice_family_gate_projected_hdf5.json",
+    "extreme_quantile_target_family": "docs/extreme_quantile_target_family_gate.json",
+    "extreme_quantile_seed_sensitivity": "docs/extreme_quantile_seed_sensitivity.json",
+    "extreme_quantile_cutoff_sensitivity": "docs/extreme_quantile_cutoff_sensitivity.json",
+    "extreme_quantile_region_specificity": "docs/extreme_quantile_region_specificity.json",
+    "extreme_quantile_region_seed_sensitivity": "docs/extreme_quantile_region_seed_sensitivity.json",
+    "extreme_quantile_interpretable_region_filter": "docs/extreme_quantile_interpretable_region_filter.json",
+    "extreme_quantile_interpretable_region_pair_scan": (
+        "docs/extreme_quantile_interpretable_region_pair_scan.json"
+    ),
+    "extreme_quantile_region_pair_seed_sensitivity": (
+        "docs/extreme_quantile_region_pair_seed_sensitivity.json"
+    ),
+    "reaction_dynamics_target_family_recording_centered": "docs/reaction_dynamics_target_family_gate.json",
+    "reaction_dynamics_target_family_counts": "docs/reaction_dynamics_target_family_gate_counts.json",
+    "reaction_dynamics_target_family_fractions": "docs/reaction_dynamics_target_family_gate_fractions.json",
+    "reaction_dynamics_target_family_unit_residuals": "docs/reaction_dynamics_target_family_gate_unit_residuals.json",
+    "signed_wheel_direction_family": "docs/signed_wheel_direction_family_gate.json",
+    "signed_wheel_direction_projected": "docs/signed_wheel_direction_family_gate_projected_hdf5.json",
+    "lateralized_family_target": "docs/lateralized_family_target_gate.json",
+    "lateralized_family_target_projected": "docs/lateralized_family_target_gate_projected_hdf5.json",
+    "composite_behavior_target": "docs/composite_behavior_target_family_gate.json",
+    "composite_behavior_target_projected": "docs/composite_behavior_target_family_gate_projected_hdf5.json",
+    "composite_behavior_target_seed_sensitivity": "docs/composite_behavior_target_seed_sensitivity.json",
+    "composite_behavior_target_l2_seed_sensitivity": "docs/composite_behavior_target_l2_seed_sensitivity.json",
+    "composite_behavior_recording_failure": "docs/composite_behavior_recording_failure_decomposition.json",
+    "composite_behavior_response_extreme": "docs/composite_behavior_response_extreme_family_gate.json",
+    "composite_behavior_response_extreme_projected": (
+        "docs/composite_behavior_response_extreme_family_gate_projected_hdf5.json"
+    ),
+    "composite_behavior_response_extreme_seed_sensitivity": (
+        "docs/composite_behavior_response_extreme_seed_sensitivity.json"
+    ),
+    "cell_type_prior_target_control": "docs/cell_type_prior_target_control_gate.json",
+    "waveform_target_control": "docs/waveform_target_control_gate.json",
+    "local_gate_meta_failures": "docs/local_gate_meta_failure_audit.json",
+    "recording_bidirectionality_prospectus": "docs/recording_bidirectionality_prospectus.json",
+    "recording_bidirectionality_prospect_manifest": (
+        "manifests/ibl_bwm_recording_bidirectionality_prospect_leads.json"
+    ),
+    "derived_target_family_prospect_leads": "docs/derived_target_family_gate_prospect_leads.json",
+    "prospect_lead_candidate_validation": "docs/prospect_lead_candidate_validation.json",
+    "prospect_lead_feature_mode_validation": "docs/prospect_lead_feature_mode_validation.json",
+    "prospect_lead_subject_stability": "docs/prospect_lead_subject_stability.json",
+    "subject_stable_local_gate_prospectus": "docs/subject_stable_local_gate_prospectus.json",
+    "subject_stable_shuffle_seed_sensitivity": "docs/subject_stable_shuffle_seed_sensitivity.json",
+    "subject_stable_broad_anatomy_mechanism": "docs/subject_stable_broad_anatomy_mechanism.json",
+    "local_cached_manifest_candidates": "docs/local_cached_manifest_candidates.json",
+    "projected_support80_shared_family": "docs/shared_family_target_control_gate_projected_support80.json",
+    "projected_support80_all_families_recording_centered": (
+        "docs/shared_family_target_control_gate_projected_support80_all_families.json"
+    ),
+    "projected_support80_all_families_fractions": (
+        "docs/shared_family_target_control_gate_projected_support80_all_families_fractions.json"
+    ),
+    "projected_support80_all_families_counts": (
+        "docs/shared_family_target_control_gate_projected_support80_all_families_counts.json"
+    ),
+    "projected_support80_all_families_unit_residuals": (
+        "docs/shared_family_target_control_gate_projected_support80_all_families_unit_residuals.json"
+    ),
+    "projected_support80_all_families_recording_zscore": (
+        "docs/shared_family_target_control_gate_projected_support80_all_families_recording_zscore.json"
+    ),
+    "external_manifest_acquisition_gap": "docs/external_manifest_acquisition_gap.json",
+    "behavior_cache_preflight": "docs/behavior_cache_preflight.json",
+    "family_alt_prior": "docs/model_free_family_bidirectional_gate_prior_side_recording_centered.json",
+    "family_alt_feedback": "docs/model_free_family_bidirectional_gate_feedback_recording_centered.json",
+    "source_target_families": "docs/model_free_source_target_pair_gate_families_recording_centered.json",
+}
+
+
+def read_json(path: Path) -> dict | None:
+    if not path.exists():
+        return None
+    return json.loads(path.read_text())
+
+
+def summary_value(payload: dict | None, key: str, default=None):
+    if payload is None:
+        return default
+    return payload.get("summary", {}).get(key, default)
+
+
+def feature_mode_summary(artifacts: dict[str, dict | None], keys: list[str]) -> dict:
+    payloads = [(key, artifacts[key]) for key in keys if artifacts.get(key) is not None]
+    return {
+        "n_modes": len(payloads),
+        "n_rows": sum(int(summary_value(payload, "n_rows", 0) or 0) for _key, payload in payloads),
+        "n_candidates": sum(int(summary_value(payload, "n_candidates", 0) or 0) for _key, payload in payloads),
+        "max_bidirectional_recording_fraction": max(
+            (float(summary_value(payload, "max_bidirectional_recording_fraction", 0.0) or 0.0) for _key, payload in payloads),
+            default=0.0,
+        ),
+    }
+
+
+def projected_feature_mode_summary(artifacts: dict[str, dict | None]) -> dict:
+    return feature_mode_summary(
+        artifacts,
+        [
+            "projected_support80_all_families_recording_centered",
+            "projected_support80_all_families_fractions",
+            "projected_support80_all_families_counts",
+            "projected_support80_all_families_unit_residuals",
+            "projected_support80_all_families_recording_zscore",
+        ],
+    )
+
+
+def reaction_feature_mode_summary(artifacts: dict[str, dict | None]) -> dict:
+    return feature_mode_summary(
+        artifacts,
+        [
+            "reaction_dynamics_target_family_recording_centered",
+            "reaction_dynamics_target_family_counts",
+            "reaction_dynamics_target_family_fractions",
+            "reaction_dynamics_target_family_unit_residuals",
+        ],
+    )
+
+
+def branch(
+    *,
+    name: str,
+    status: str,
+    priority: int,
+    evidence: list[str],
+    next_action: str,
+    gpu_trigger: str,
+) -> dict:
+    return {
+        "name": name,
+        "status": status,
+        "priority": priority,
+        "evidence": evidence,
+        "next_action": next_action,
+        "gpu_trigger": gpu_trigger,
+    }
+
+
+def build_report() -> dict:
+    artifacts = {name: read_json(REPO_ROOT / rel_path) for name, rel_path in ARTIFACTS.items()}
+    shared_family = artifacts["shared_family"]
+    shared_broad = artifacts["shared_broad_repair"]
+    iterative = artifacts["iterative_manifest"]
+    strict = artifacts["symmetric_strict"]
+    threshold = artifacts["symmetric_threshold"]
+    replication = artifacts["recording_replication"]
+    derived = artifacts["derived_target_family"]
+    contextual = artifacts["contextual_target_family"]
+    wheel = artifacts["wheel_target_family"]
+    local_manifest_candidates = artifacts["local_cached_manifest_candidates"]
+    external_acquisition = artifacts["external_manifest_acquisition_gap"]
+    behavior_cache = artifacts["behavior_cache_preflight"]
+    behavior_summary = behavior_cache.get("summary", {}) if behavior_cache is not None else {}
+    stream_counts = behavior_summary.get("stream_counts", {})
+    wheel_count = stream_counts.get("wheel", "n/a")
+    n_behavior_recordings = behavior_summary.get("n_manifest_recordings", "n/a")
+    behavior_ready = behavior_summary.get("decision") == "behavior_cache_ready"
+    wheel_candidates = summary_value(wheel, "n_candidates", None)
+    wheel_done = wheel is not None
+    signed_wheel = artifacts["signed_wheel_direction_family"]
+    signed_wheel_summary = signed_wheel.get("summary", {}) if signed_wheel is not None else {}
+    signed_wheel_projected = artifacts["signed_wheel_direction_projected"]
+    signed_wheel_projected_summary = (
+        signed_wheel_projected.get("summary", {}) if signed_wheel_projected is not None else {}
+    )
+    lateralized = artifacts["lateralized_family_target"]
+    lateralized_summary = lateralized.get("summary", {}) if lateralized is not None else {}
+    lateralized_projected = artifacts["lateralized_family_target_projected"]
+    lateralized_projected_summary = (
+        lateralized_projected.get("summary", {}) if lateralized_projected is not None else {}
+    )
+    composite_behavior = artifacts["composite_behavior_target"]
+    composite_behavior_summary = composite_behavior.get("summary", {}) if composite_behavior is not None else {}
+    composite_behavior_projected = artifacts["composite_behavior_target_projected"]
+    composite_behavior_projected_summary = (
+        composite_behavior_projected.get("summary", {}) if composite_behavior_projected is not None else {}
+    )
+    composite_behavior_seed = artifacts["composite_behavior_target_seed_sensitivity"]
+    composite_behavior_seed_summary = (
+        composite_behavior_seed.get("summary", {}) if composite_behavior_seed is not None else {}
+    )
+    composite_behavior_l2_seed = artifacts["composite_behavior_target_l2_seed_sensitivity"]
+    composite_behavior_l2_seed_summary = (
+        composite_behavior_l2_seed.get("summary", {}) if composite_behavior_l2_seed is not None else {}
+    )
+    composite_behavior_recording_failure = artifacts["composite_behavior_recording_failure"]
+    composite_behavior_recording_failure_summary = (
+        composite_behavior_recording_failure.get("summary", {})
+        if composite_behavior_recording_failure is not None
+        else {}
+    )
+    response_extreme = artifacts["composite_behavior_response_extreme"]
+    response_extreme_summary = response_extreme.get("summary", {}) if response_extreme is not None else {}
+    response_extreme_projected = artifacts["composite_behavior_response_extreme_projected"]
+    response_extreme_projected_summary = (
+        response_extreme_projected.get("summary", {}) if response_extreme_projected is not None else {}
+    )
+    response_extreme_seed = artifacts["composite_behavior_response_extreme_seed_sensitivity"]
+    response_extreme_seed_summary = (
+        response_extreme_seed.get("summary", {}) if response_extreme_seed is not None else {}
+    )
+    response_extreme_seed_robust = int(
+        response_extreme_seed_summary.get("n_robust_response_extreme_seed_candidates", 0) or 0
+    )
+    composite_behavior_seed_robust = int(
+        composite_behavior_seed_summary.get("n_robust_composite_behavior_seed_candidates", 0) or 0
+    )
+    composite_behavior_l2_seed_robust = int(
+        composite_behavior_l2_seed_summary.get("n_robust_composite_behavior_l2_seed_candidates", 0) or 0
+    )
+    low_contrast = artifacts["low_contrast_choice_family"]
+    low_contrast_summary = low_contrast.get("summary", {}) if low_contrast is not None else {}
+    low_contrast_projected = artifacts["low_contrast_choice_projected"]
+    low_contrast_projected_summary = (
+        low_contrast_projected.get("summary", {}) if low_contrast_projected is not None else {}
+    )
+    low_contrast_seed = artifacts["low_contrast_choice_seed_sensitivity"]
+    low_contrast_seed_summary = low_contrast_seed.get("summary", {}) if low_contrast_seed is not None else {}
+    low_contrast_seed_robust = int(
+        low_contrast_seed_summary.get("n_robust_low_contrast_choice_seed_candidates", 0) or 0
+    )
+    neutral_prior_low_contrast = artifacts["neutral_prior_low_contrast_choice_family"]
+    neutral_prior_low_contrast_summary = (
+        neutral_prior_low_contrast.get("summary", {}) if neutral_prior_low_contrast is not None else {}
+    )
+    neutral_prior_low_contrast_projected = artifacts["neutral_prior_low_contrast_choice_projected"]
+    neutral_prior_low_contrast_projected_summary = (
+        neutral_prior_low_contrast_projected.get("summary", {})
+        if neutral_prior_low_contrast_projected is not None
+        else {}
+    )
+    neutral_prior_low_contrast_seed = artifacts["neutral_prior_low_contrast_choice_seed_sensitivity"]
+    neutral_prior_low_contrast_seed_summary = (
+        neutral_prior_low_contrast_seed.get("summary", {}) if neutral_prior_low_contrast_seed is not None else {}
+    )
+    neutral_prior_low_contrast_seed_robust = int(
+        neutral_prior_low_contrast_seed_summary.get(
+            "n_robust_neutral_prior_low_contrast_choice_seed_candidates",
+            0,
+        )
+        or 0
+    )
+    correct_low_contrast = artifacts["correct_low_contrast_choice_family"]
+    correct_low_contrast_summary = (
+        correct_low_contrast.get("summary", {}) if correct_low_contrast is not None else {}
+    )
+    correct_low_contrast_projected = artifacts["correct_low_contrast_choice_projected"]
+    correct_low_contrast_projected_summary = (
+        correct_low_contrast_projected.get("summary", {})
+        if correct_low_contrast_projected is not None
+        else {}
+    )
+    prior_aligned = artifacts["prior_aligned_choice_family"]
+    prior_aligned_summary = prior_aligned.get("summary", {}) if prior_aligned is not None else {}
+    prior_aligned_projected = artifacts["prior_aligned_choice_projected"]
+    prior_aligned_projected_summary = (
+        prior_aligned_projected.get("summary", {}) if prior_aligned_projected is not None else {}
+    )
+    extreme_quantile = artifacts["extreme_quantile_target_family"]
+    extreme_quantile_done = extreme_quantile is not None
+    extreme_quantile_candidates = summary_value(extreme_quantile, "n_candidates", 0)
+    extreme_seed = artifacts["extreme_quantile_seed_sensitivity"]
+    extreme_seed_summary = extreme_seed.get("summary", {}) if extreme_seed is not None else {}
+    extreme_seed_robust = int(extreme_seed_summary.get("n_robust_shuffle_seed_candidates", 0) or 0)
+    extreme_cutoff = artifacts["extreme_quantile_cutoff_sensitivity"]
+    extreme_cutoff_summary = extreme_cutoff.get("summary", {}) if extreme_cutoff is not None else {}
+    extreme_region = artifacts["extreme_quantile_region_specificity"]
+    extreme_region_summary = extreme_region.get("summary", {}) if extreme_region is not None else {}
+    extreme_region_seed = artifacts["extreme_quantile_region_seed_sensitivity"]
+    extreme_region_seed_summary = extreme_region_seed.get("summary", {}) if extreme_region_seed is not None else {}
+    extreme_interpretable = artifacts["extreme_quantile_interpretable_region_filter"]
+    extreme_interpretable_summary = (
+        extreme_interpretable.get("summary", {}) if extreme_interpretable is not None else {}
+    )
+    extreme_pair = artifacts["extreme_quantile_interpretable_region_pair_scan"]
+    extreme_pair_summary = extreme_pair.get("summary", {}) if extreme_pair is not None else {}
+    extreme_pair_seed = artifacts["extreme_quantile_region_pair_seed_sensitivity"]
+    extreme_pair_seed_summary = extreme_pair_seed.get("summary", {}) if extreme_pair_seed is not None else {}
+    reaction_feature_modes = reaction_feature_mode_summary(artifacts)
+    cell_type_prior = artifacts["cell_type_prior_target_control"]
+    cell_type_prior_done = cell_type_prior is not None
+    waveform = artifacts["waveform_target_control"]
+    waveform_done = waveform is not None
+    meta_failures = artifacts["local_gate_meta_failures"]
+    meta_summary = meta_failures.get("summary", {}) if meta_failures is not None else {}
+    prospectus = artifacts["recording_bidirectionality_prospectus"]
+    prospectus_summary = prospectus.get("summary", {}) if prospectus is not None else {}
+    prospect_manifest = artifacts["recording_bidirectionality_prospect_manifest"]
+    prospect_derived_gate = artifacts["derived_target_family_prospect_leads"]
+    prospect_derived_summary = prospect_derived_gate.get("summary", {}) if prospect_derived_gate is not None else {}
+    prospect_validation = artifacts["prospect_lead_candidate_validation"]
+    prospect_validation_summary = prospect_validation.get("summary", {}) if prospect_validation is not None else {}
+    prospect_feature_validation = artifacts["prospect_lead_feature_mode_validation"]
+    prospect_feature_summary = (
+        prospect_feature_validation.get("summary", {}) if prospect_feature_validation is not None else {}
+    )
+    prospect_subject_stability = artifacts["prospect_lead_subject_stability"]
+    prospect_subject_summary = (
+        prospect_subject_stability.get("summary", {}) if prospect_subject_stability is not None else {}
+    )
+    subject_stable_prospectus = artifacts["subject_stable_local_gate_prospectus"]
+    subject_stable_summary = (
+        subject_stable_prospectus.get("summary", {}) if subject_stable_prospectus is not None else {}
+    )
+    seed_sensitivity = artifacts["subject_stable_shuffle_seed_sensitivity"]
+    seed_sensitivity_summary = seed_sensitivity.get("summary", {}) if seed_sensitivity is not None else {}
+    subject_stable_mechanism = artifacts["subject_stable_broad_anatomy_mechanism"]
+    subject_stable_mechanism_summary = (
+        subject_stable_mechanism.get("summary", {}) if subject_stable_mechanism is not None else {}
+    )
+    local_manifest_summary = local_manifest_candidates.get("summary", {}) if local_manifest_candidates is not None else {}
+    local_manifest_decision = local_manifest_summary.get("decision")
+    local_projected_panel_ready = local_manifest_decision == "local_expanded_candidate_ready_for_model_free_gate"
+    projected_support80_gate = artifacts["projected_support80_shared_family"]
+    projected_support80_candidates = summary_value(projected_support80_gate, "n_candidates", None)
+    projected_support80_done = projected_support80_gate is not None
+    projected_feature_modes = projected_feature_mode_summary(artifacts)
+    external_summary = external_acquisition.get("summary", {}) if external_acquisition is not None else {}
+    default_candidate_setting = summary_value(threshold, "strongest_default_target_candidate_setting", {}) or {}
+    default_candidate_bidir = default_candidate_setting.get("min_bidirectional_recording_fraction")
+    default_candidate_count = default_candidate_setting.get("n_candidates")
+
+    branches = [
+        branch(
+            name="bounded response-extreme A100 pilot",
+            status="recommended_next" if response_extreme_seed_robust > 0 else "secondary_after_new_target",
+            priority=0 if response_extreme_seed_robust > 0 else 79,
+            evidence=[
+                (
+                    "current-panel response-extreme gate has not been run yet"
+                    if response_extreme is None
+                    else (
+                        "current-panel response-extreme gate found "
+                        f"{response_extreme_summary.get('n_candidates', 'n/a')} candidates across "
+                        f"{response_extreme_summary.get('n_rows', 'n/a')} rows and max bidir "
+                        f"{response_extreme_summary.get('max_bidirectional_recording_fraction', 0.0):.3f}"
+                    )
+                ),
+                (
+                    "projected-panel response-extreme gate has not been run yet"
+                    if response_extreme_projected is None
+                    else (
+                        "projected-panel response-extreme gate found "
+                        f"{response_extreme_projected_summary.get('n_candidates', 'n/a')} candidates across "
+                        f"{response_extreme_projected_summary.get('n_rows', 'n/a')} rows and max bidir "
+                        f"{response_extreme_projected_summary.get('max_bidirectional_recording_fraction', 0.0):.3f}"
+                    )
+                ),
+                (
+                    "response-extreme seed sensitivity has not been run yet"
+                    if response_extreme_seed is None
+                    else (
+                        "response-extreme seed sensitivity found "
+                        f"{response_extreme_seed_robust} robust candidates; max candidate seed fraction="
+                        f"{response_extreme_seed_summary.get('max_candidate_seed_fraction', 0.0):.3f}"
+                    )
+                ),
+            ],
+            next_action=(
+                "Run a bounded A100 pilot for the two robust response-extreme broad-anatomy candidates."
+                if response_extreme_seed_robust > 0
+                else "Run response-extreme projected seed sensitivity before any GPU training."
+            ),
+            gpu_trigger=(
+                "Only rows that already cleared delta_vs_shuffle>=0, delta_vs_total>=0, "
+                "target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75 "
+                "across all shuffle seeds may launch: "
+                "post_error_response_extreme_25_75_le_1/broad_named_anatomy/CSHL045 and "
+                "post_error_response_extreme_33_67_le_1/broad_named_anatomy/NR_0019; "
+                "keep total spend under the existing $100 cap."
+            ),
+        ),
+        branch(
+            name="behavior-inclusive cache rebuild",
+            status="closed" if behavior_ready else "recommended_next",
+            priority=91 if behavior_ready else 1,
+            evidence=[
+                "current cached trial targets and shared-family controls all fail strict same-recording bidirectionality",
+                (
+                    "direct derived cached-field target gate has "
+                    f"{summary_value(derived, 'n_candidates', 'n/a')} candidates and max bidir "
+                    f"{summary_value(derived, 'max_bidirectional_recording_fraction', 0.0):.3f}"
+                ),
+                (
+                    "contextual trial-state target gate has "
+                    f"{summary_value(contextual, 'n_candidates', 'n/a')} candidates and max bidir "
+                    f"{summary_value(contextual, 'max_bidirectional_recording_fraction', 0.0):.3f}"
+                ),
+                (
+                    f"behavior-cache preflight has wheel in {wheel_count}/{n_behavior_recordings} "
+                    "matched recordings"
+                ),
+                (
+                    "strict symmetric gate has "
+                    f"{summary_value(strict, 'strict_candidates', 'n/a')} candidates and "
+                    f"{summary_value(strict, 'one_recording_short_and_global_clear_rows', 'n/a')} "
+                    "one-recording-short global-clear rows"
+                ),
+                (
+                    "threshold sensitivity only finds default-target candidates when "
+                    f"bidirectional support is relaxed to {default_candidate_bidir} "
+                    f"({default_candidate_count} candidates)"
+                ),
+            ],
+            next_action=(
+                "Cache rebuild is complete; all matched recordings now expose wheel. "
+                "Use the wheel-derived local target gate before any training."
+                if behavior_ready
+                else (
+                    "Rebuild the matched cache without --no-wheel, then define a wheel-based "
+                    "prospectively balanced target/control and run the same model-free "
+                    "true-vs-shuffle, total-baseline, global target, and same-recording "
+                    "bidirectional gate before training."
+                )
+            ),
+            gpu_trigger=(
+                "At least one local row must clear delta_vs_shuffle>=0, delta_vs_total>=0, "
+                "target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75."
+            ),
+        ),
+        branch(
+            name="wheel-derived target family gate",
+            status=(
+                "secondary_after_cache"
+                if not behavior_ready
+                else "recommended_next"
+                if not wheel_done or (wheel_candidates or 0) > 0
+                else "closed"
+            ),
+            priority=2 if not behavior_ready else (1 if not wheel_done or (wheel_candidates or 0) > 0 else 89),
+            evidence=[
+                (
+                    f"behavior-cache preflight has wheel in {wheel_count}/{n_behavior_recordings} "
+                    "matched recordings"
+                ),
+                (
+                    "wheel target family gate has not been run yet"
+                    if not wheel_done
+                    else (
+                        "wheel target family gate has "
+                        f"{summary_value(wheel, 'n_candidates', 'n/a')} candidates across "
+                        f"{summary_value(wheel, 'n_rows', 'n/a')} rows and max bidir "
+                        f"{summary_value(wheel, 'max_bidirectional_recording_fraction', 0.0):.3f}"
+                    )
+                ),
+            ],
+            next_action=(
+                "Run scripts/audit_wheel_target_family_gate.py locally against wheel_active, "
+                "wheel_displacement, and choice_aligned_wheel."
+                if not wheel_done
+                else (
+                    "If candidates are present, launch only the bounded pilot training tied to "
+                    "the passing target/family row."
+                    if (wheel_candidates or 0) > 0
+                    else "Do not spend on the tested wheel targets; move to a prospectively supported manifest."
+                )
+            ),
+            gpu_trigger=(
+                "At least one local wheel row must clear delta_vs_shuffle>=0, delta_vs_total>=0, "
+                "target0>=0.55, target1>=0.55, and bidirectional_recording_fraction>=0.75."
+            ),
+        ),
+        branch(
+            name="composite behavior target search",
+            status=(
+                "closed"
+                if (
+                    composite_behavior_projected is not None
+                    and composite_behavior_seed is not None
+                    and composite_behavior_l2_seed is not None
+                    and composite_behavior_recording_failure is not None
+                )
+                else "secondary_after_new_target"
+            ),
+            priority=80 if composite_behavior_projected is not None else 3,
+            evidence=[
+                (
+                    "current-panel composite behavior target gate has not been run yet"
+                    if composite_behavior is None
+                    else (
+                        "current-panel composite behavior target gate found "
+                        f"{composite_behavior_summary.get('n_candidates', 'n/a')} candidates across "
+                        f"{composite_behavior_summary.get('n_rows', 'n/a')} rows and max bidir "
+                        f"{composite_behavior_summary.get('max_bidirectional_recording_fraction', 0.0):.3f}"
+                    )
+                ),
+                (
+                    "projected-panel composite behavior target gate has not been run yet"
+                    if composite_behavior_projected is None
+                    else (
+                        "projected-panel composite behavior target gate found "
+                        f"{composite_behavior_projected_summary.get('n_candidates', 'n/a')} candidates across "
+                        f"{composite_behavior_projected_summary.get('n_rows', 'n/a')} rows and max bidir "
+                        f"{composite_behavior_projected_summary.get('max_bidirectional_recording_fraction', 0.0):.3f}"
+                    )
+                ),
+                (
+                    "composite behavior seed sensitivity has not been run yet"
+                    if composite_behavior_seed is None
+                    else (
+                        "composite behavior seed sensitivity found "
+                        f"{composite_behavior_seed_robust} robust candidates; max candidate seed fraction="
+                        f"{composite_behavior_seed_summary.get('max_candidate_seed_fraction', 0.0):.3f}"
+                    )
+                ),
+                (
+                    "composite behavior l2/seed sensitivity has not been run yet"
+                    if composite_behavior_l2_seed is None
+                    else (
+                        "composite behavior l2/seed sensitivity found "
+                        f"{composite_behavior_l2_seed_robust} robust candidates; max candidate seed fraction="
+                        f"{composite_behavior_l2_seed_summary.get('max_candidate_seed_fraction', 0.0):.3f}"
+                    )
+                ),
+                (
+                    "composite behavior recording failure decomposition has not been run yet"
+                    if composite_behavior_recording_failure is None
+                    else (
+                        "composite behavior recording failure decomposition found "
+                        f"{composite_behavior_recording_failure_summary.get('n_stable_bidirectional_recordings', 'n/a')}/"
+                        f"{composite_behavior_recording_failure_summary.get('n_recordings', 'n/a')} "
+                        "stable bidirectional recordings across candidate cases"
+                    )
+                ),
+            ],
+            next_action=(
+                "Do not train: post-error fast-response broad-anatomy candidates fail recording-level seed stability."
+                if (
+                    composite_behavior_projected is not None
+                    and composite_behavior_seed is not None
+                    and composite_behavior_l2_seed is not None
+                    and composite_behavior_recording_failure is not None
+                )
+                else "Run the bounded composite behavior target gate on current and projected manifests."
+            ),
+            gpu_trigger="none",
+        ),
+        branch(
+            name="lateralized family anatomy target",
+            status="closed" if lateralized_projected is not None else "secondary_after_wheel",
+            priority=81 if lateralized_projected is not None else 3,
+            evidence=[
+                (
+                    "current-panel lateralized family gate has not been run yet"
+                    if lateralized is None
+                    else (
+                        "current-panel lateralized family gate found "
+                        f"{lateralized_summary.get('n_candidates', 'n/a')} candidates across "
+                        f"{lateralized_summary.get('n_rows', 'n/a')} rows and max bidir "
+                        f"{lateralized_summary.get('max_bidirectional_recording_fraction', 0.0):.3f}"
+                    )
+                ),
+                (
+                    "projected-panel lateralized family gate has not been run yet"
+                    if lateralized_projected is None
+                    else (
+                        "projected-panel lateralized family gate found "
+                        f"{lateralized_projected_summary.get('n_candidates', 'n/a')} candidates across "
+                        f"{lateralized_projected_summary.get('n_rows', 'n/a')} rows and max bidir "
+                        f"{lateralized_projected_summary.get('max_bidirectional_recording_fraction', 0.0):.3f}"
+                    )
+                ),
+            ],
+            next_action=(
+                "Do not train: left/right family anatomy does not pass current or projected local gates."
+                if lateralized_projected is not None
+                else "Run the lateralized family gate on current and projected manifests."
+            ),
+            gpu_trigger="none",
+        ),
+        branch(
+            name="signed wheel-direction motor target",
+            status="closed" if signed_wheel_projected is not None else "secondary_after_wheel",
+            priority=82 if signed_wheel_projected is not None else 3,
+            evidence=[
+                (
+                    "current-panel signed wheel-direction gate has not been run yet"
+                    if signed_wheel is None
+                    else (
+                        "current-panel signed wheel-direction gate found "
+                        f"{signed_wheel_summary.get('n_candidates', 'n/a')} candidates across "
+                        f"{signed_wheel_summary.get('n_rows', 'n/a')} rows and max bidir "
+                        f"{signed_wheel_summary.get('max_bidirectional_recording_fraction', 0.0):.3f}"
+                    )
+                ),
+                (
+                    "projected-panel signed wheel-direction gate has not been run yet"
+                    if signed_wheel_projected is None
+                    else (
+                        "projected-panel signed wheel-direction gate found "
+                        f"{signed_wheel_projected_summary.get('n_candidates', 'n/a')} candidates across "
+                        f"{signed_wheel_projected_summary.get('n_rows', 'n/a')} rows and max bidir "
+                        f"{signed_wheel_projected_summary.get('max_bidirectional_recording_fraction', 0.0):.3f}"
+                    )
+                ),
+            ],
+            next_action=(
+                "Do not train: signed wheel-direction does not pass current or projected local gates."
+                if signed_wheel_projected is not None
+                else "Run the signed wheel-direction local gate on current and projected manifests."
+            ),
+            gpu_trigger="none",
+        ),
+        branch(
+            name="neutral-prior low-contrast choice target redesign",
+            status=(
+                "closed"
+                if neutral_prior_low_contrast_projected is not None and neutral_prior_low_contrast_seed is not None
+                else "secondary_after_new_target"
+            ),
+            priority=83 if neutral_prior_low_contrast_projected is not None else 3,
+            evidence=[
+                (
+                    "current-panel neutral-prior low-contrast choice gate has not been run yet"
+                    if neutral_prior_low_contrast is None
+                    else (
+                        "current-panel neutral-prior low-contrast choice gate found "
+                        f"{neutral_prior_low_contrast_summary.get('n_candidates', 'n/a')} candidates across "
+                        f"{neutral_prior_low_contrast_summary.get('n_rows', 'n/a')} rows and max bidir "
+                        f"{neutral_prior_low_contrast_summary.get('max_bidirectional_recording_fraction', 0.0):.3f}"
+                    )
+                ),
+                (
+                    "projected-panel neutral-prior low-contrast choice gate has not been run yet"
+                    if neutral_prior_low_contrast_projected is None
+                    else (
+                        "projected-panel neutral-prior low-contrast choice gate found "
+                        f"{neutral_prior_low_contrast_projected_summary.get('n_candidates', 'n/a')} candidates across "
+                        f"{neutral_prior_low_contrast_projected_summary.get('n_rows', 'n/a')} rows and max bidir "
+                        f"{neutral_prior_low_contrast_projected_summary.get('max_bidirectional_recording_fraction', 0.0):.3f}"
+                    )
+                ),
+                (
+                    "neutral-prior low-contrast seed sensitivity has not been run yet"
+                    if neutral_prior_low_contrast_seed is None
+                    else (
+                        "neutral-prior low-contrast seed sensitivity found "
+                        f"{neutral_prior_low_contrast_seed_robust} robust candidates; max positive seed fraction="
+                        f"{neutral_prior_low_contrast_seed_summary.get('max_positive_shuffle_delta_fraction', 0.0):.3f}"
+                    )
+                ),
+            ],
+            next_action=(
+                "Do not train: neutral-prior low-contrast choice fails projected-panel and seed-stability gates."
+                if neutral_prior_low_contrast_projected is not None and neutral_prior_low_contrast_seed is not None
+                else "Run the neutral-prior low-contrast choice local gate on current and projected manifests."
+            ),
+            gpu_trigger="none",
+        ),
+        branch(
+            name="recording-zscore anatomy representation",
+            status=(
+                "closed"
+                if artifacts["projected_support80_all_families_recording_zscore"] is not None
+                else "secondary_after_new_target"
+            ),
+            priority=84 if artifacts["projected_support80_all_families_recording_zscore"] is not None else 3,
+            evidence=[
+                (
+                    "projected support80 recording-zscore family gate has not been run yet"
+                    if artifacts["projected_support80_all_families_recording_zscore"] is None
+                    else (
+                        "projected support80 recording-zscore family gate has "
+                        f"{summary_value(artifacts['projected_support80_all_families_recording_zscore'], 'n_candidates', 'n/a')} "
+                        "candidates across "
+                        f"{summary_value(artifacts['projected_support80_all_families_recording_zscore'], 'n_rows', 'n/a')} "
+                        "rows and max bidir "
+                        f"{summary_value(artifacts['projected_support80_all_families_recording_zscore'], 'max_bidirectional_recording_fraction', 0.0):.3f}"
+                    )
+                ),
+            ],
+            next_action=(
+                "Do not train: recording-zscore anatomy features do not pass the local gate."
+                if artifacts["projected_support80_all_families_recording_zscore"] is not None
+                else "Run the shared-family projected support80 gate with --feature-mode recording_zscore."
+            ),
+            gpu_trigger="none",
+        ),
+        branch(
+            name="prior-aligned choice target redesign",
+            status="closed" if prior_aligned_projected is not None else "secondary_after_new_target",
+            priority=85 if prior_aligned_projected is not None else 3,
+            evidence=[
+                (
+                    "current-panel prior-aligned choice gate has not been run yet"
+                    if prior_aligned is None
+                    else (
+                        "current-panel prior-aligned choice gate found "
+                        f"{prior_aligned_summary.get('n_candidates', 'n/a')} candidates across "
+                        f"{prior_aligned_summary.get('n_rows', 'n/a')} rows and max bidir "
+                        f"{prior_aligned_summary.get('max_bidirectional_recording_fraction', 0.0):.3f}"
+                    )
+                ),
+                (
+                    "projected-panel prior-aligned choice gate has not been run yet"
+                    if prior_aligned_projected is None
+                    else (
+                        "projected-panel prior-aligned choice gate found "
+                        f"{prior_aligned_projected_summary.get('n_candidates', 'n/a')} candidates across "
+                        f"{prior_aligned_projected_summary.get('n_rows', 'n/a')} rows and max bidir "
+                        f"{prior_aligned_projected_summary.get('max_bidirectional_recording_fraction', 0.0):.3f}"
+                    )
+                ),
+            ],
+            next_action=(
+                "Do not train: prior-aligned choice does not pass the projected-panel local gate."
+                if prior_aligned_projected is not None
+                else "Run scripts/audit_prior_aligned_choice_family_gate.py as a prospective prior-alignment target."
+            ),
+            gpu_trigger="none",
+        ),
+        branch(
+            name="correct low-contrast choice target redesign",
+            status="closed" if correct_low_contrast_projected is not None else "secondary_after_new_target",
+            priority=86 if correct_low_contrast_projected is not None else 3,
+            evidence=[
+                (
+                    "current-panel correct low-contrast choice gate has not been run yet"
+                    if correct_low_contrast is None
+                    else (
+                        "current-panel correct low-contrast choice gate found "
+                        f"{correct_low_contrast_summary.get('n_candidates', 'n/a')} candidates across "
+                        f"{correct_low_contrast_summary.get('n_rows', 'n/a')} rows and max bidir "
+                        f"{correct_low_contrast_summary.get('max_bidirectional_recording_fraction', 0.0):.3f}"
+                    )
+                ),
+                (
+                    "projected-panel correct low-contrast choice gate has not been run yet"
+                    if correct_low_contrast_projected is None
+                    else (
+                        "projected-panel correct low-contrast choice gate found "
+                        f"{correct_low_contrast_projected_summary.get('n_candidates', 'n/a')} candidates across "
+                        f"{correct_low_contrast_projected_summary.get('n_rows', 'n/a')} rows and max bidir "
+                        f"{correct_low_contrast_projected_summary.get('max_bidirectional_recording_fraction', 0.0):.3f}"
+                    )
+                ),
+            ],
+            next_action=(
+                "Do not train: correct-only low-contrast choice removes the projected-panel candidate."
+                if correct_low_contrast_projected is not None
+                else "Run scripts/audit_correct_low_contrast_choice_family_gate.py as a stricter target redesign."
+            ),
+            gpu_trigger="none",
+        ),
+        branch(
+            name="low-contrast choice target redesign",
+            status=(
+                "recommended_next"
+                if low_contrast_projected is not None
+                and (low_contrast_projected_summary.get("n_candidates", 0) or 0) > 0
+                and low_contrast_seed is None
+                else "closed"
+                if low_contrast_seed is not None
+                else "secondary_after_new_target"
+            ),
+            priority=87 if low_contrast_seed is not None else (1 if low_contrast_projected is not None else 3),
+            evidence=[
+                (
+                    "current-panel low-contrast choice gate has not been run yet"
+                    if low_contrast is None
+                    else (
+                        "current-panel low-contrast choice gate found "
+                        f"{low_contrast_summary.get('n_candidates', 'n/a')} candidates across "
+                        f"{low_contrast_summary.get('n_rows', 'n/a')} rows and max bidir "
+                        f"{low_contrast_summary.get('max_bidirectional_recording_fraction', 0.0):.3f}"
+                    )
+                ),
+                (
+                    "projected-panel low-contrast choice gate has not been run yet"
+                    if low_contrast_projected is None
+                    else (
+                        "projected-panel low-contrast choice gate found "
+                        f"{low_contrast_projected_summary.get('n_candidates', 'n/a')} candidates across "
+                        f"{low_contrast_projected_summary.get('n_rows', 'n/a')} rows and max bidir "
+                        f"{low_contrast_projected_summary.get('max_bidirectional_recording_fraction', 0.0):.3f}"
+                    )
+                ),
+                (
+                    "low-contrast seed sensitivity has not been run yet"
+                    if low_contrast_seed is None
+                    else (
+                        "low-contrast seed sensitivity found "
+                        f"{low_contrast_seed_summary.get('n_robust_low_contrast_choice_seed_candidates', 'n/a')} "
+                        "robust candidates; max positive seed fraction="
+                        f"{low_contrast_seed_summary.get('max_positive_shuffle_delta_fraction', 0.0):.3f}"
+                    )
+                ),
+            ],
+            next_action=(
+                "Run scripts/audit_low_contrast_choice_seed_sensitivity.py before any GPU training."
+                if low_contrast_projected is not None
+                and (low_contrast_projected_summary.get("n_candidates", 0) or 0) > 0
+                and low_contrast_seed is None
+                else low_contrast_seed_summary.get(
+                    "next_action",
+                    "Run the low-contrast choice gate on the projected local manifest before training.",
+                )
+                if low_contrast_seed is not None
+                else "Run scripts/audit_low_contrast_choice_family_gate.py as a prospective target redesign."
+            ),
+            gpu_trigger=(
+                "A projected-panel low-contrast choice row must pass the unchanged local gate "
+                "and remain a strict candidate across shuffle seeds before training."
+            ),
+        ),
+        branch(
+            name="extreme-quantile behavioral target gate",
+            status=(
+                "recommended_next"
+                if extreme_quantile_done and (extreme_quantile_candidates or 0) > 0 and extreme_seed is None
+                else "closed"
+                if extreme_seed is not None
+                else "secondary_after_cache"
+            ),
+            priority=88 if extreme_seed is not None else (1 if extreme_quantile_done else 3),
+            evidence=[
+                (
+                    "extreme-quantile target family gate has not been run yet"
+                    if not extreme_quantile_done
+                    else (
+                        "extreme-quantile target family gate found "
+                        f"{summary_value(extreme_quantile, 'n_candidates', 'n/a')} candidates across "
+                        f"{summary_value(extreme_quantile, 'n_rows', 'n/a')} rows and max bidir "
+                        f"{summary_value(extreme_quantile, 'max_bidirectional_recording_fraction', 0.0):.3f}"
+                    )
+                ),
+                (
+                    "seed sensitivity has not validated the extreme-quantile candidate yet"
+                    if extreme_seed is None
+                    else (
+                        "seed sensitivity found "
+                        f"{extreme_seed_summary.get('n_robust_shuffle_seed_candidates', 'n/a')} robust candidates; "
+                        f"max positive seed fraction={extreme_seed_summary.get('max_positive_shuffle_delta_fraction', 0.0):.3f}"
+                    )
+                ),
+                (
+                    "cutoff sensitivity has not been run yet"
+                    if extreme_cutoff is None
+                    else (
+                        "cutoff sensitivity found "
+                        f"{extreme_cutoff_summary.get('n_robust_cutoff_candidates', 'n/a')} robust cutoffs; "
+                        f"best cutoff={extreme_cutoff_summary.get('best_cutoff', 'n/a')} with "
+                        f"{extreme_cutoff_summary.get('best_candidate_seeds', 'n/a')}/5 candidate seeds"
+                    )
+                ),
+                (
+                    "region specificity scan has not been run yet"
+                    if extreme_region is None
+                    else (
+                        "region specificity scan found "
+                        f"{extreme_region_summary.get('n_candidates', 'n/a')} strict parent-region candidates "
+                        f"across {extreme_region_summary.get('n_regions', 'n/a')} regions"
+                    )
+                ),
+                (
+                    "region seed sensitivity has not been run yet"
+                    if extreme_region_seed is None
+                    else (
+                        "region seed sensitivity found "
+                        f"{extreme_region_seed_summary.get('n_robust_region_seed_candidates', 'n/a')} robust candidates; "
+                        f"max positive seed fraction="
+                        f"{extreme_region_seed_summary.get('max_positive_shuffle_delta_fraction', 0.0):.3f}"
+                    )
+                ),
+                (
+                    "interpretable-region filter has not been run yet"
+                    if extreme_interpretable is None
+                    else (
+                        "interpretable-region filter retained "
+                        f"{extreme_interpretable_summary.get('n_candidates', 'n/a')} candidates and excluded "
+                        f"{extreme_interpretable_summary.get('n_excluded_candidates', 'n/a')} non-specific candidates"
+                    )
+                ),
+                (
+                    "interpretable region-pair scan has not been run yet"
+                    if extreme_pair is None
+                    else (
+                        "interpretable region-pair scan found "
+                        f"{extreme_pair_summary.get('n_candidates', 'n/a')} exploratory candidates "
+                        f"across {extreme_pair_summary.get('n_region_pairs', 'n/a')} pairs"
+                    )
+                ),
+                (
+                    "region-pair seed sensitivity has not been run yet"
+                    if extreme_pair_seed is None
+                    else (
+                        "region-pair seed sensitivity found "
+                        f"{extreme_pair_seed_summary.get('n_robust_region_pair_seed_candidates', 'n/a')} "
+                        "robust candidates; max positive seed fraction="
+                        f"{extreme_pair_seed_summary.get('max_positive_shuffle_delta_fraction', 0.0):.3f}"
+                    )
+                ),
+            ],
+            next_action=(
+                "Run scripts/audit_extreme_quantile_seed_sensitivity.py before any GPU training."
+                if extreme_quantile_done and (extreme_quantile_candidates or 0) > 0 and extreme_seed is None
+                else "Run scripts/audit_extreme_quantile_cutoff_sensitivity.py before any GPU training."
+                if extreme_seed is not None and extreme_cutoff is None
+                else "Run scripts/audit_extreme_quantile_region_seed_sensitivity.py before any GPU training."
+                if extreme_region is not None and extreme_region_seed is None
+                else "Run scripts/audit_extreme_quantile_region_pair_seed_sensitivity.py before any GPU training."
+                if extreme_pair is not None and extreme_pair_seed is None and (extreme_pair_summary.get("n_candidates", 0) or 0) > 0
+                else extreme_pair_seed_summary.get("next_action", "Keep interpretable region-pair redesign local.")
+                if extreme_pair_seed is not None
+                else extreme_pair_summary.get("next_action", "Keep interpretable region-pair scan local.")
+                if extreme_pair is not None
+                else extreme_interpretable_summary.get(
+                    "next_action",
+                    "Do not train: no interpretable parent region passes the strict local gate.",
+                )
+                if extreme_interpretable is not None
+                else extreme_region_seed_summary.get("next_action", "Keep extreme-quantile region redesign local.")
+                if extreme_region_seed is not None
+                else extreme_cutoff_summary.get("next_action", "Keep extreme-quantile cutoff redesign local.")
+                if extreme_cutoff is not None
+                else extreme_seed_summary.get("next_action", "Keep extreme-quantile redesign local.")
+                if extreme_seed is not None
+                else "Run scripts/audit_extreme_quantile_target_family_gate.py as a local target/control redesign."
+            ),
+            gpu_trigger=(
+                "A candidate must pass the unchanged local gate and remain positive across multiple "
+                "within-recording shuffle seeds before training."
+            ),
+        ),
+        branch(
+            name="new manifest with prospective bidirectional support",
+            status="recommended_next" if behavior_ready and wheel_done and reaction_feature_modes["n_modes"] and cell_type_prior_done and waveform_done and not (wheel_candidates or 0) else "secondary_after_new_target",
+            priority=1 if behavior_ready and wheel_done and reaction_feature_modes["n_modes"] and cell_type_prior_done and waveform_done and not (wheel_candidates or 0) else 2,
+            evidence=[
+                "current 28-recording manifest is feasible but not clean enough to pass the local gate",
+                (
+                    "local cached manifest candidate audit has not been run yet"
+                    if local_manifest_candidates is None
+                    else (
+                        "local cached manifest candidate audit found "
+                        f"{local_manifest_summary.get('n_new_candidate_panels', 'n/a')} new candidate panels "
+                        f"across {local_manifest_summary.get('n_local_recordings', 'n/a')} local recordings "
+                        f"({local_manifest_decision})"
+                    )
+                ),
+                (
+                    "external manifest acquisition gap audit has not been run yet"
+                    if external_acquisition is None
+                    else (
+                        "external acquisition gap audit identifies "
+                        f"{external_summary.get('missing_hdf5_recordings_for_qualified_subjects', 'n/a')} "
+                        "missing HDF5 recordings for "
+                        f"{external_summary.get('support_qualified_subjects_missing_hdf5', 'n/a')} "
+                        "support-qualified subjects, projecting "
+                        f"{external_summary.get('projected_manifest_recordings', 'n/a')} recordings across "
+                        f"{external_summary.get('projected_manifest_subjects', 'n/a')} subjects"
+                    )
+                ),
+                (
+                    "strict iterative 8-recording manifest has "
+                    f"{summary_value(iterative, 'n_candidates', 'n/a')} candidates and max bidir "
+                    f"{summary_value(iterative, 'max_bidirectional_recording_fraction', 0.0):.3f}"
+                ),
+                (
+                    "projected support80 shared-family gate has not been run yet"
+                    if not projected_support80_done
+                    else (
+                        "projected support80 shared-family gate has "
+                        f"{projected_support80_candidates} candidates across "
+                        f"{summary_value(projected_support80_gate, 'n_rows', 'n/a')} rows and max bidir "
+                        f"{summary_value(projected_support80_gate, 'max_bidirectional_recording_fraction', 0.0):.3f}"
+                    )
+                ),
+                (
+                    "projected support80 all-family feature-mode sweep has not been run yet"
+                    if projected_feature_modes["n_modes"] == 0
+                    else (
+                        "projected support80 all-family feature-mode sweep has "
+                        f"{projected_feature_modes['n_candidates']} candidates across "
+                        f"{projected_feature_modes['n_rows']} rows, "
+                        f"{projected_feature_modes['n_modes']} feature modes, and max bidir "
+                        f"{projected_feature_modes['max_bidirectional_recording_fraction']:.3f}"
+                    )
+                ),
+                (
+                    "local gate meta-failure audit has not been run yet"
+                    if meta_failures is None
+                    else (
+                        "local gate meta-failure audit has "
+                        f"{meta_summary.get('n_candidates', 'n/a')} candidates across "
+                        f"{meta_summary.get('n_rows', 'n/a')} rows; recording bidirectionality fails in "
+                        f"{meta_summary.get('failure_counts', {}).get('recording_bidirectionality', 'n/a')} rows"
+                    )
+                ),
+                (
+                    "recording bidirectionality prospectus has not been run yet"
+                    if prospectus is None
+                    else (
+                        "recording bidirectionality prospectus found "
+                        f"{prospectus_summary.get('n_prospect_recordings', 'n/a')} prospect recordings from "
+                        f"{prospectus_summary.get('n_bidirectional_observations', 'n/a')} bidirectional observations"
+                    )
+                ),
+                (
+                    "prospect-lead manifest has not been built yet"
+                    if prospect_manifest is None
+                    else (
+                        "prospect-lead manifest has "
+                        f"{prospect_manifest.get('n_recordings', 'n/a')} recordings across "
+                        f"{prospect_manifest.get('n_subjects', 'n/a')} subjects with "
+                        f"{len(prospect_manifest.get('missing_recording_ids', []))} missing local recordings"
+                    )
+                ),
+                (
+                    "prospect-lead candidate validation has not been run yet"
+                    if seed_sensitivity is None
+                    else (
+                        "subject-stable shuffle-seed sensitivity found "
+                        f"{seed_sensitivity_summary.get('n_robust_shuffle_seed_candidates', 'n/a')} robust candidates; "
+                        "max positive seed fraction="
+                        f"{seed_sensitivity_summary.get('max_positive_shuffle_delta_fraction', 'n/a')}"
+                    )
+                ),
+                "recording-subset replication selected zero stable validation rows",
+            ],
+            next_action=(
+                "A local projected-manifest gate passed; launch only the bounded pilot tied "
+                "to the passing target/family row."
+                if projected_support80_done and (projected_support80_candidates or 0) > 0
+                else "Do not launch GPU training from the projected support80 panel; its "
+                "model-free family and feature-mode gates have no candidates. Redesign the "
+                "target/control locally."
+                if projected_support80_done
+                else
+                "Run the model-free true-vs-shuffle, total-baseline, target0/target1, "
+                "and same-recording bidirectional gate on the projected support80 local "
+                "manifest before any GPU training."
+                if local_projected_panel_ready
+                else "The local cache expansion does not create a supported panel; build or fetch "
+                "the external support80 missing-HDF5 set, then rerun the local manifest "
+                "candidate audit and the same model-free gate before training."
+                if external_summary.get("decision") == "external_support80_acquisition_candidate"
+                else "The local cache expansion does not create a supported panel; build or fetch "
+                "a broader manifest only with a prospective target/family support rule, then "
+                "run the same local model-free gate before training."
+                if local_manifest_decision == "local_expansion_support_gap"
+                else (
+                    "Only build or fetch more recordings after a target/control proposal defines "
+                    "which recordings should prospectively contain target0+target1 evidence."
+                )
+            ),
+            gpu_trigger=(
+                "At least one local row on the proposed manifest must clear "
+                "delta_vs_shuffle>=0, delta_vs_total>=0, target0>=0.55, "
+                "target1>=0.55, and bidirectional_recording_fraction>=0.75 "
+                "before training."
+            ),
+        ),
+        branch(
+            name="direct cached-field derived targets",
+            status="closed",
+            priority=92,
+            evidence=[
+                (
+                    "derived target family gate has "
+                    f"{summary_value(derived, 'n_candidates', 'n/a')} candidates across "
+                    f"{summary_value(derived, 'n_rows', 'n/a')} rows"
+                ),
+                "nearest response_latency row reaches 3/4 bidirectional recordings but fails true-vs-shuffle",
+            ],
+            next_action="Do not launch GPU training from contrast_strength, response_latency, or prior_engaged.",
+            gpu_trigger="none",
+        ),
+        branch(
+            name="reaction-dynamics wheel targets",
+            status="closed" if reaction_feature_modes["n_modes"] else "recommended_next",
+            priority=90 if reaction_feature_modes["n_modes"] else 1,
+            evidence=[
+                (
+                    "reaction-dynamics target family feature-mode sweep has not been run yet"
+                    if reaction_feature_modes["n_modes"] == 0
+                    else (
+                        "reaction-dynamics target family feature-mode sweep has "
+                        f"{reaction_feature_modes['n_candidates']} candidates across "
+                        f"{reaction_feature_modes['n_rows']} rows, "
+                        f"{reaction_feature_modes['n_modes']} feature modes, and max bidir "
+                        f"{reaction_feature_modes['max_bidirectional_recording_fraction']:.3f}"
+                    )
+                ),
+                (
+                    "best recording-centered near miss is wheel_reaction_latency/broad_named_anatomy/KS014: "
+                    "target0=0.667, target1=0.715, bidir=3/4, total delta +0.003, but shuffle delta -0.001"
+                    if reaction_feature_modes["n_modes"]
+                    else "reaction dynamics should test pre-stim quiescence, post-stim speed-up, and first movement latency"
+                ),
+            ],
+            next_action=(
+                "Do not spend on reaction-dynamics wheel targets; the near miss fails true-vs-shuffle and does not replicate across feature modes."
+                if reaction_feature_modes["n_modes"]
+                else "Run scripts/audit_reaction_dynamics_target_family_gate.py across reaction target definitions before any training."
+            ),
+            gpu_trigger=(
+                "At least one local reaction-dynamics row must clear delta_vs_shuffle>=0, "
+                "delta_vs_total>=0, target0>=0.55, target1>=0.55, and "
+                "bidirectional_recording_fraction>=0.75."
+                if not reaction_feature_modes["n_modes"]
+                else "none"
+            ),
+        ),
+        branch(
+            name="cell-type prior target/control gate",
+            status="closed" if cell_type_prior_done else "recommended_next",
+            priority=90 if cell_type_prior_done else 1,
+            evidence=[
+                (
+                    "cell-type prior target/control gate has not been run yet"
+                    if not cell_type_prior_done
+                    else (
+                        "cell-type prior target/control gate has "
+                        f"{summary_value(cell_type_prior, 'n_candidates', 'n/a')} candidates across "
+                        f"{summary_value(cell_type_prior, 'n_rows', 'n/a')} rows and max bidir "
+                        f"{summary_value(cell_type_prior, 'max_bidirectional_recording_fraction', 0.0):.3f}"
+                    )
+                ),
+                (
+                    "best rows clear global target fractions but reach only 2/4 same-recording bidirectional support"
+                    if cell_type_prior_done
+                    else "project fine-region spike counts through ABC subclass priors before any cell-type-prior GPU run"
+                ),
+            ],
+            next_action=(
+                "Do not spend on broad ABC cell-class prior channels; they do not pass the local bidirectional gate."
+                if cell_type_prior_done
+                else "Run scripts/audit_cell_type_prior_target_control_gate.py locally before any cell-type-prior GPU training."
+            ),
+            gpu_trigger=(
+                "none"
+                if cell_type_prior_done
+                else (
+                    "At least one local cell-type-prior row must clear delta_vs_shuffle>=0, "
+                    "delta_vs_total>=0, target0>=0.55, target1>=0.55, and "
+                    "bidirectional_recording_fraction>=0.75."
+                )
+            ),
+        ),
+        branch(
+            name="waveform target/control gate",
+            status="closed" if waveform_done else "recommended_next",
+            priority=90 if waveform_done else 1,
+            evidence=[
+                (
+                    "waveform target/control gate has not been run yet"
+                    if not waveform_done
+                    else (
+                        "waveform target/control gate has "
+                        f"{summary_value(waveform, 'n_candidates', 'n/a')} candidates across "
+                        f"{summary_value(waveform, 'n_rows', 'n/a')} rows and max bidir "
+                        f"{summary_value(waveform, 'max_bidirectional_recording_fraction', 0.0):.3f}"
+                    )
+                ),
+                (
+                    "best depth/choice near miss clears global target fractions but reaches only 2/4 same-recording bidirectional support"
+                    if waveform_done
+                    else "test z-scored per-unit waveform channels against a within-recording shuffled waveform assignment"
+                ),
+            ],
+            next_action=(
+                "Do not spend on simple waveform-channel controls; they do not pass the local bidirectional gate."
+                if waveform_done
+                else "Run scripts/audit_waveform_target_control_gate.py locally before any waveform-only GPU training."
+            ),
+            gpu_trigger=(
+                "none"
+                if waveform_done
+                else (
+                    "At least one local waveform row must clear delta_vs_shuffle>=0, "
+                    "delta_vs_total>=0, target0>=0.55, target1>=0.55, and "
+                    "bidirectional_recording_fraction>=0.75."
+                )
+            ),
+        ),
+        branch(
+            name="local gate meta-failure synthesis",
+            status="closed" if meta_failures is not None else "recommended_next",
+            priority=90 if meta_failures is not None else 1,
+            evidence=[
+                (
+                    "local gate meta-failure audit has not been run yet"
+                    if meta_failures is None
+                    else (
+                        "meta-audit aggregates "
+                        f"{meta_summary.get('n_rows', 'n/a')} rows from "
+                        f"{meta_summary.get('n_artifacts_present', 'n/a')} artifacts with "
+                        f"{meta_summary.get('n_candidates', 'n/a')} candidates and "
+                        f"{meta_summary.get('n_one_failure_rows', 'n/a')} one-failure rows"
+                    )
+                ),
+                (
+                    "recording bidirectionality is the dominant blocker; it appears in "
+                    f"{meta_summary.get('failure_counts', {}).get('recording_bidirectionality', 'n/a')} rows"
+                    if meta_failures is not None
+                    else "aggregate closed gates to identify the next target/control redesign rule"
+                ),
+            ],
+            next_action=(
+                "Use the meta-audit redesign rule: require prospectively defined same-recording target0+target1 evidence before any GPU run."
+                if meta_failures is not None
+                else "Run scripts/audit_local_gate_meta_failures.py and update the redesign rule."
+            ),
+            gpu_trigger="none",
+        ),
+        branch(
+            name="recording bidirectionality prospectus",
+            status="closed" if prospectus is not None else "recommended_next",
+            priority=90 if prospectus is not None else 1,
+            evidence=[
+                (
+                    "recording bidirectionality prospectus has not been run yet"
+                    if prospectus is None
+                    else (
+                        "prospectus aggregates "
+                        f"{prospectus_summary.get('n_observations', 'n/a')} per-recording observations "
+                        f"with {prospectus_summary.get('n_bidirectional_observations', 'n/a')} bidirectional "
+                        f"observations across {prospectus_summary.get('recordings_with_bidirectional_support', 'n/a')} "
+                        "recordings"
+                    )
+                ),
+                (
+                    "candidate recordings are only design leads, not a GPU trigger"
+                    if prospectus is not None
+                    else "aggregate current local-gate recording rows to see whether bidirectionality is concentrated"
+                ),
+                (
+                    "prospect-lead manifest has not been built yet"
+                    if prospect_manifest is None
+                    else (
+                        "prospect-lead manifest materializes "
+                        f"{prospect_manifest.get('n_recordings', 'n/a')} recordings across "
+                        f"{prospect_manifest.get('n_subjects', 'n/a')} subjects"
+                    )
+                ),
+            ],
+            next_action=(
+                "Run the unchanged local gate on manifests/ibl_bwm_recording_bidirectionality_prospect_leads.json; treat any pass as a local redesign candidate, not a training trigger."
+                if prospect_manifest is not None
+                else prospectus_summary.get("next_action", "Use the prospectus to define the next prospective manifest rule.")
+                if prospectus is not None
+                else "Run scripts/audit_recording_bidirectionality_prospectus.py before more manifest or GPU work."
+            ),
+            gpu_trigger="none",
+        ),
+        branch(
+            name="prospect-lead derived target validation",
+            status="closed" if prospect_feature_validation is not None else "recommended_next",
+            priority=90 if prospect_feature_validation is not None else 1,
+            evidence=[
+                (
+                    "prospect-lead derived gate has not been run yet"
+                    if prospect_derived_gate is None
+                    else (
+                        "prospect-lead derived gate found "
+                        f"{prospect_derived_summary.get('n_candidates', 'n/a')} candidates across "
+                        f"{prospect_derived_summary.get('n_rows', 'n/a')} rows"
+                    )
+                ),
+                (
+                    "single-mode prospect-lead validation has not been run yet"
+                    if prospect_validation is None
+                    else (
+                        "recording-centered validation found "
+                        f"{prospect_validation_summary.get('n_validated_candidates', 'n/a')} validated candidates; "
+                        f"{prospect_validation_summary.get('n_single_recording_candidates', 'n/a')} prospect candidates "
+                        "were single-recording and "
+                        f"{prospect_validation_summary.get('n_subset_only_candidates', 'n/a')} were subset-only"
+                    )
+                ),
+                (
+                    "feature-mode prospect-lead validation has not been run yet"
+                    if prospect_feature_validation is None
+                    else (
+                        "feature-mode validation found "
+                        f"{prospect_feature_summary.get('n_validated_candidates', 'n/a')} validated candidates from "
+                        f"{prospect_feature_summary.get('n_prospect_candidates', 'n/a')} prospect candidates across "
+                        f"{prospect_feature_summary.get('n_feature_modes', 'n/a')} feature modes"
+                    )
+                ),
+                (
+                    "prospect-lead subject-stability audit has not been run yet"
+                    if prospect_subject_stability is None
+                    else (
+                        "subject-stability audit found "
+                        f"{prospect_subject_summary.get('n_same_subject_stable_candidates', 'n/a')} same-subject "
+                        "stable candidates and "
+                        f"{prospect_subject_summary.get('n_candidates_with_nonlead_failure', 'n/a')} candidates with "
+                        "same-subject non-lead failure"
+                    )
+                ),
+            ],
+            next_action=(
+                prospect_subject_summary.get("next_action", "Keep validation no-spend.")
+                if prospect_subject_stability is not None
+                else prospect_feature_summary.get("next_action", "Keep validation no-spend.")
+                if prospect_feature_validation is not None
+                else "Run scripts/audit_prospect_lead_feature_mode_validation.py before any training decision."
+            ),
+            gpu_trigger="none",
+        ),
+        branch(
+            name="subject-stable local gate prospectus",
+            status="closed" if subject_stable_prospectus is not None else "recommended_next",
+            priority=90 if subject_stable_prospectus is not None else 1,
+            evidence=[
+                (
+                    "subject-stable local-gate prospectus has not been run yet"
+                    if subject_stable_prospectus is None
+                    else (
+                        "prospectus found "
+                        f"{subject_stable_summary.get('n_subject_stable_rows', 'n/a')} subject-stable rows, "
+                        f"{subject_stable_summary.get('n_subject_stable_candidates', 'n/a')} candidates, and "
+                        f"{subject_stable_summary.get('n_subject_stable_one_failure_rows', 'n/a')} one-failure rows"
+                    )
+                ),
+                (
+                    "subject-stable failure counts unavailable"
+                    if subject_stable_prospectus is None
+                    else (
+                        "subject-stable failures are "
+                        + ", ".join(
+                            f"{name}={count}"
+                            for name, count in sorted(subject_stable_summary.get("failure_counts", {}).items())
+                        )
+                    )
+                ),
+                (
+                    "subject-stable shuffle-seed sensitivity has not been run yet"
+                    if seed_sensitivity is None
+                    else (
+                        "shuffle-seed sensitivity found "
+                        f"{seed_sensitivity_summary.get('n_robust_shuffle_seed_candidates', 'n/a')} robust candidates "
+                        "across "
+                        f"{seed_sensitivity_summary.get('n_cases', 'n/a')} subject-stable near misses"
+                    )
+                ),
+                (
+                    "subject-stable broad-anatomy mechanism audit has not been run yet"
+                    if subject_stable_mechanism is None
+                    else (
+                        "broad-anatomy mechanism audit found "
+                        f"{subject_stable_mechanism_summary.get('n_bidirectional_family_candidates', 'n/a')} "
+                        "contribution candidates but "
+                        f"{subject_stable_mechanism_summary.get('n_family_gate_candidates', 'n/a')} "
+                        "exact family-gate candidates"
+                    )
+                ),
+            ],
+            next_action=(
+                "Do not train from the current subject-stable broad-anatomy branch; exact family gates remain negative."
+                if subject_stable_mechanism is not None
+                else seed_sensitivity_summary.get("next_action", "Keep subject-stable redesign local.")
+                if seed_sensitivity is not None
+                else subject_stable_summary.get("next_action", "Keep subject-stable redesign local.")
+                if subject_stable_prospectus is not None
+                else "Run scripts/audit_subject_stable_local_gate_prospectus.py before another target/control branch."
+            ),
+            gpu_trigger="none",
+        ),
+        branch(
+            name="contextual cached trial-state targets",
+            status="closed",
+            priority=93,
+            evidence=[
+                (
+                    "contextual target family gate has "
+                    f"{summary_value(contextual, 'n_candidates', 'n/a')} candidates across "
+                    f"{summary_value(contextual, 'n_rows', 'n/a')} rows and max bidir "
+                    f"{summary_value(contextual, 'max_bidirectional_recording_fraction', 0.0):.3f}"
+                ),
+                "post_error, prior_block_switch, and prior_block_late do not clear the local gate",
+            ],
+            next_action="Do not spend on contextual trial-sequence targets from the compact cache.",
+            gpu_trigger="none",
+        ),
+        branch(
+            name="more feature-mode or l2 sweeps on shared broad anatomy",
+            status="closed",
+            priority=94,
+            evidence=[
+                (
+                    "shared broad-anatomy repair sweep has "
+                    f"{summary_value(shared_broad, 'n_candidates', 'n/a')} candidates, max bidir "
+                    f"{summary_value(shared_broad, 'max_bidirectional_recordings', 'n/a')}, and max min target margin "
+                    f"{summary_value(shared_broad, 'max_min_target_margin', 0.0):+.3f}"
+                ),
+            ],
+            next_action="Do not spend more local or GPU time on simple broad-anatomy feature/regularization repair.",
+            gpu_trigger="none",
+        ),
+        branch(
+            name="narrow existing manifest further",
+            status="closed",
+            priority=95,
+            evidence=[
+                (
+                    "iterative manifest gate has "
+                    f"{summary_value(iterative, 'n_candidates', 'n/a')} candidates and max bidir recordings "
+                    f"{summary_value(iterative, 'max_bidirectional_recordings', 'n/a')}"
+                ),
+                "2-subject manifest is too narrow for the intended cross-animal demo",
+            ],
+            next_action="Do not keep shrinking the existing cache as the primary rescue path.",
+            gpu_trigger="none",
+        ),
+        branch(
+            name="recording-subset selection from current artifacts",
+            status="closed",
+            priority=96,
+            evidence=[
+                (
+                    "recording replication audit selected "
+                    f"{summary_value(replication, 'n_selected_by_discovery_rule', 'n/a')} rows and replicated "
+                    f"{summary_value(replication, 'n_replicated_in_validation', 'n/a')}"
+                ),
+            ],
+            next_action="Do not train on selected current recordings unless a new target/control first passes locally.",
+            gpu_trigger="none",
+        ),
+        branch(
+            name="current shared-family target/control grid",
+            status="closed",
+            priority=97,
+            evidence=[
+                (
+                    "shared-family gate has "
+                    f"{summary_value(shared_family, 'n_candidates', 'n/a')} candidates across "
+                    f"{summary_value(shared_family, 'n_rows', 'n/a')} rows"
+                ),
+                "top rows are one-sided or fail baseline controls",
+            ],
+            next_action="Do not rerun the same target/family grid without a new target/control definition.",
+            gpu_trigger="none",
+        ),
+        branch(
+            name="alternative cached targets plus family aggregation",
+            status="closed",
+            priority=98,
+            evidence=[
+                (
+                    "prior_side family gate candidates="
+                    f"{summary_value(artifacts['family_alt_prior'], 'n_candidates', 'n/a')}; "
+                    "feedback family gate candidates="
+                    f"{summary_value(artifacts['family_alt_feedback'], 'n_candidates', 'n/a')}"
+                ),
+            ],
+            next_action="Do not expect prior_side or feedback alone to rescue the signal under current controls.",
+            gpu_trigger="none",
+        ),
+        branch(
+            name="source-target pair narrowing",
+            status="closed",
+            priority=99,
+            evidence=[
+                (
+                    "family source-target pair gate candidates="
+                    f"{summary_value(artifacts['source_target_families'], 'n_candidates', 'n/a')}"
+                ),
+            ],
+            next_action="Do not run a paid source-target pair sweep without a new local gate pass.",
+            gpu_trigger="none",
+        ),
+    ]
+    branches = sorted(branches, key=lambda row: row["priority"])
+    decision = (
+        "behavior_cache_rebuild_required"
+        if not behavior_ready
+        else "wheel_target_audit_required"
+        if not wheel_done
+        else "low_contrast_choice_seed_validation_required"
+        if low_contrast_projected is not None
+        and (low_contrast_projected_summary.get("n_candidates", 0) or 0) > 0
+        and low_contrast_seed is None
+        else "extreme_quantile_seed_validation_required"
+        if extreme_quantile_done and (extreme_quantile_candidates or 0) > 0 and extreme_seed is None
+        else "local_training_trigger_available"
+        if (
+            (wheel_candidates or 0) > 0
+            or (projected_support80_candidates or 0) > 0
+            or extreme_seed_robust > 0
+            or low_contrast_seed_robust > 0
+            or response_extreme_seed_robust > 0
+        )
+        else "no_local_training_trigger"
+    )
+    return {
+        "summary": {
+            "recommended_next": branches[0]["name"],
+            "closed_branches": sum(1 for row in branches if row["status"] == "closed"),
+            "gpu_training_trigger": branches[0]["gpu_trigger"],
+            "decision": decision,
+        },
+        "artifacts": ARTIFACTS,
+        "branches": branches,
+    }
+
+
+def render_markdown(report: dict) -> str:
+    summary = report["summary"]
+    lines = [
+        "# Next Benchmark/Control Options Audit",
+        "",
+        (
+            "Ranks remaining no-spend branches after the current local audits. This is "
+            "the planning gate before any new RunPod training."
+        ),
+        "",
+        f"- recommended next: `{summary['recommended_next']}`",
+        f"- closed branches: `{summary['closed_branches']}`",
+        f"- decision: `{summary['decision']}`",
+        f"- GPU trigger: {summary['gpu_training_trigger']}",
+        "",
+        "| priority | branch | status | next action |",
+        "|---:|---|---|---|",
+    ]
+    for row in report["branches"]:
+        lines.append(f"| {row['priority']} | {row['name']} | `{row['status']}` | {row['next_action']} |")
+    lines += [
+        "",
+        "## Evidence",
+        "",
+    ]
+    for row in report["branches"]:
+        lines.append(f"### {row['name']}")
+        for item in row["evidence"]:
+            lines.append(f"- {item}")
+        lines.append(f"- GPU trigger: {row['gpu_trigger']}")
+        lines.append("")
+    return "\n".join(lines)
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--out-json", type=Path, default=REPO_ROOT / "docs/next_benchmark_control_options.json")
+    parser.add_argument("--out-md", type=Path, default=REPO_ROOT / "docs/next_benchmark_control_options.md")
+    return parser.parse_args()
+
+
+def main() -> int:
+    args = parse_args()
+    report = build_report()
+    args.out_json.parent.mkdir(parents=True, exist_ok=True)
+    args.out_json.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n")
+    args.out_md.parent.mkdir(parents=True, exist_ok=True)
+    args.out_md.write_text(render_markdown(report))
+    print(f"wrote {args.out_json}")
+    print(f"wrote {args.out_md}")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

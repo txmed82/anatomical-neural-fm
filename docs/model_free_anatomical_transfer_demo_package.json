@@ -1,0 +1,70 @@
+{
+  "demo_boundaries": [
+    "This is a model-free ridge/count readout demo, not a trained transformer demo.",
+    "The positive feature is the fixed broad_named_anatomy aggregate, not the full shared parent-region feature vector.",
+    "The bounded cloud fixed-feature prediction gate has one strict candidate holdout, NR_0019; CSHL045 is aggregate-positive but fails recording-local bidirectionality.",
+    "The local and cloud train.py fixed-family arms are positive, but this still does not establish a transformer/foundation-model anatomical mechanism."
+  ],
+  "evidence_rows": [
+    {
+      "candidate_seeds": 5,
+      "family": "broad_named_anatomy",
+      "holdout": "CSHL045",
+      "max_bidirectional_recordings": 3,
+      "mean_delta_vs_shuffle": 0.05070363369040114,
+      "mean_delta_vs_total": 0.0365994538962402,
+      "mean_target0": 0.7,
+      "mean_target1": 0.8,
+      "min_bidirectional_recordings": 3,
+      "n_seeds": 5,
+      "target_mode": "post_error_response_extreme_25_75_le_1"
+    },
+    {
+      "candidate_seeds": 5,
+      "family": "broad_named_anatomy",
+      "holdout": "NR_0019",
+      "max_bidirectional_recordings": 4,
+      "mean_delta_vs_shuffle": 0.005093875038473361,
+      "mean_delta_vs_total": 0.004232071406586657,
+      "mean_target0": 0.656140350877193,
+      "mean_target1": 0.6842105263157895,
+      "min_bidirectional_recordings": 3,
+      "n_seeds": 5,
+      "target_mode": "post_error_response_extreme_33_67_le_1"
+    }
+  ],
+  "negative_controls": {
+    "a100_training": {
+      "a100_decision": "negative_training_pilot",
+      "a100_true_positive": "0/2",
+      "training_aligned_decision": "no_training_aligned_true_region_advantage",
+      "training_aligned_paid_gpu_trigger": false
+    },
+    "cloud_aligned_readout_decision": "no_training_aligned_true_region_advantage",
+    "failure_audit_decision": "local_to_training_readout_mismatch",
+    "failure_blockers": [
+      "no_full_eval_or_prediction_diagnostics",
+      "shuffled_region_outperformed_true",
+      "trained_true_region_lost_to_shared"
+    ]
+  },
+  "reproduction_commands": [
+    "uv run python scripts/audit_composite_behavior_target_family_gate.py --manifest manifests/ibl_bwm_local_cached_external_support80_projected_hdf5.json --out-json docs/composite_behavior_response_extreme_family_gate_projected_hdf5.json --out-md docs/composite_behavior_response_extreme_family_gate_projected_hdf5.md --target post_error_response_extreme_25_75_le_1 post_error_response_extreme_33_67_le_1",
+    "uv run python scripts/audit_composite_behavior_response_extreme_seed_sensitivity.py",
+    "uv run python scripts/audit_response_extreme_training_aligned_readout.py",
+    "uv run python scripts/audit_direct_broad_family_demo_readiness.py",
+    "uv run python scripts/audit_direct_broad_family_trainable_readout.py",
+    "uv run python scripts/summarize_fixed_broad_family_train_arm_panel.py",
+    "uv run python scripts/audit_fixed_broad_family_train_arm_prediction_gate.py",
+    "uv run python scripts/package_model_free_demo.py"
+  ],
+  "summary": {
+    "decision": "package_model_free_demo",
+    "model_free_demo_ready": true,
+    "next_action": "Use this as a narrow reproducible model-free demo, with the trainable fixed-feature bridge plus local/cloud train.py fixed-family arms as intermediate checks. Treat the remaining gap as the stronger transformer/foundation-model mechanism.",
+    "paid_gpu_trigger": false,
+    "supported_claim": "A narrow model-free cross-animal anatomical readout exists for post-error response-latency extremes using a fixed broad_named_anatomy aggregate.",
+    "trained_model_demo_ready": false,
+    "unsupported_claim": "A trained neural foundation-model anatomical transfer signal is not yet supported: the A100 pilot and cloud-aligned local readout were negative."
+  }
+}

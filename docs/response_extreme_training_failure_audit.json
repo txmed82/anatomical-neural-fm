@@ -1,0 +1,130 @@
+{
+  "cases": [
+    {
+      "cloud_best_metric": "eval_loss",
+      "cloud_eval_sample_n": 320,
+      "cloud_eval_trials": 276,
+      "cloud_has_eval_predictions": false,
+      "cloud_has_full_eval": false,
+      "cloud_region_auc": 0.496,
+      "cloud_region_best_auc_eval": {
+        "eval_auc": 0.4962447406708348,
+        "eval_loss": 0.691403540968895,
+        "eval_n": 320,
+        "step": 150
+      },
+      "cloud_region_best_loss_eval": {
+        "eval_auc": 0.4962447406708348,
+        "eval_loss": 0.691403540968895,
+        "eval_n": 320,
+        "step": 150
+      },
+      "cloud_region_delta_vs_shared": -0.065,
+      "cloud_shared_best_loss_eval": {
+        "eval_auc": 0.5611655066650938,
+        "eval_loss": 0.6918454725295305,
+        "eval_n": 320,
+        "step": 150
+      },
+      "cloud_shuffle_auc": 0.602,
+      "cloud_shuffle_delta_vs_shared": 0.041,
+      "cloud_train_trials": 1666,
+      "eval_sample_draws_per_trial": 1.1594202898550725,
+      "failure_modes": [
+        "trained_true_region_lost_to_shared",
+        "shuffled_region_outperformed_true",
+        "sampled_eval_loss_selection",
+        "no_full_eval_or_prediction_diagnostics",
+        "local_feature_not_training_arm"
+      ],
+      "family": "broad_named_anatomy",
+      "holdout": "CSHL045",
+      "local_bidir_range": [
+        3,
+        3
+      ],
+      "local_candidate_seeds": 5,
+      "local_mean_delta_vs_shuffle": 0.05070363369040114,
+      "local_mean_delta_vs_total": 0.0365994538962402,
+      "local_n_seeds": 5,
+      "projected_total_trials": 1942,
+      "target_alignment": "matched",
+      "target_mode": "post_error_response_extreme_25_75_le_1",
+      "training_wall_clock_s": 21.52211880683899
+    },
+    {
+      "cloud_best_metric": "eval_loss",
+      "cloud_eval_sample_n": 320,
+      "cloud_eval_trials": 228,
+      "cloud_has_eval_predictions": false,
+      "cloud_has_full_eval": false,
+      "cloud_region_auc": 0.552,
+      "cloud_region_best_auc_eval": {
+        "eval_auc": 0.5516877637130801,
+        "eval_loss": 0.6926558429375291,
+        "eval_n": 320,
+        "step": 300
+      },
+      "cloud_region_best_loss_eval": {
+        "eval_auc": 0.5202766057196437,
+        "eval_loss": 0.6922650128602982,
+        "eval_n": 320,
+        "step": 150
+      },
+      "cloud_region_delta_vs_shared": -0.037,
+      "cloud_shared_best_loss_eval": {
+        "eval_auc": 0.5886075949367089,
+        "eval_loss": 0.6919014884158969,
+        "eval_n": 320,
+        "step": 150
+      },
+      "cloud_shuffle_auc": 0.593,
+      "cloud_shuffle_delta_vs_shared": 0.004,
+      "cloud_train_trials": 2310,
+      "eval_sample_draws_per_trial": 1.4035087719298245,
+      "failure_modes": [
+        "trained_true_region_lost_to_shared",
+        "shuffled_region_outperformed_true",
+        "sampled_eval_loss_selection",
+        "no_full_eval_or_prediction_diagnostics",
+        "local_feature_not_training_arm"
+      ],
+      "family": "broad_named_anatomy",
+      "holdout": "NR_0019",
+      "local_bidir_range": [
+        3,
+        4
+      ],
+      "local_candidate_seeds": 5,
+      "local_mean_delta_vs_shuffle": 0.005093875038473361,
+      "local_mean_delta_vs_total": 0.004232071406586657,
+      "local_n_seeds": 5,
+      "projected_total_trials": 2538,
+      "target_alignment": "matched",
+      "target_mode": "post_error_response_extreme_33_67_le_1",
+      "training_wall_clock_s": 22.12096881866455
+    }
+  ],
+  "interpretation": [
+    "Response-extreme target construction transferred to cloud: cloud train+eval trials match projected local trial counts.",
+    "The local trigger was a recording-centered broad-family count feature, not the trained parent-region embedding arm.",
+    "The cloud pilot selected by sampled eval_loss and did not save full-eval predictions, so the trained output cannot be checked with the strict recording-centered paired gate.",
+    "True region labels underperformed the shared baseline in both tested cases while shuffled labels were non-negative, so more paid seeds are not justified before a local training-aligned diagnostic."
+  ],
+  "next_steps": [
+    "Run a no-spend local readout using the exact cloud feature space: parent shared-region count vector plus true/shuffled controls, not only broad_named_anatomy aggregates.",
+    "If a future GPU run is justified, require SAVE_DIAGNOSTICS=1, FULL_EVAL_ON_BEST=1, and BEST_METRIC=full_eval_centered_auc so the trained outputs can be scored by the same recording-centered gate.",
+    "Consider a model arm that exposes the local successful feature directly, such as a fixed broad-family-count readout, before returning to learned region embeddings."
+  ],
+  "summary": {
+    "blockers": [
+      "no_full_eval_or_prediction_diagnostics",
+      "shuffled_region_outperformed_true",
+      "trained_true_region_lost_to_shared"
+    ],
+    "decision": "local_to_training_readout_mismatch",
+    "n_cases": 2,
+    "next_recommended_action": "local_training_aligned_readout_diagnostic",
+    "paid_gpu_trigger": false
+  }
+}

@@ -18,8 +18,6 @@ from __future__ import annotations
 
 import sys
 from pathlib import Path
-from typing import Optional
-
 REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO_ROOT / "vendor" / "torch_brain"))
 
@@ -107,8 +105,6 @@ class AnatomicalPOYO(POYO):
         **poyo_kwargs,
     ):
         super().__init__(emb_init_scale=emb_init_scale, **poyo_kwargs)
-        if not (use_unit_emb or use_region_emb or use_cell_type_emb or use_waveform_emb):
-            raise ValueError("At least one conditioning channel must be enabled")
         self.use_unit_emb = use_unit_emb
         self.use_region_emb = use_region_emb
         self.use_cell_type_emb = use_cell_type_emb

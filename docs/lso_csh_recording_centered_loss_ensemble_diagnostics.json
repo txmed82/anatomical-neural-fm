@@ -1,0 +1,192 @@
+{
+  "available_seeds": [
+    0
+  ],
+  "ensemble_metrics": {
+    "region_only": {
+      "centered_auc": 0.47980562471706656,
+      "full_auc": 0.47902048438207334,
+      "n": 2726,
+      "recording_auc": {
+        "49e0ab27-827a-4c91-bcaa-97eea27a1b8d_probe01": {
+          "auc": 0.5056360708534622,
+          "n": 777
+        },
+        "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe00": {
+          "auc": 0.467177579835118,
+          "n": 590
+        },
+        "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe01": {
+          "auc": 0.45491803278688525,
+          "n": 590
+        },
+        "edd22318-216c-44ff-bc24-49ce8be78374_probe00": {
+          "auc": 0.4805428761055954,
+          "n": 769
+        }
+      }
+    },
+    "region_shuffle": {
+      "centered_auc": 0.5298734199254796,
+      "full_auc": 0.5116040803356897,
+      "n": 2726,
+      "recording_auc": {
+        "49e0ab27-827a-4c91-bcaa-97eea27a1b8d_probe01": {
+          "auc": 0.6000452482665921,
+          "n": 777
+        },
+        "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe00": {
+          "auc": 0.5074031081209135,
+          "n": 590
+        },
+        "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe01": {
+          "auc": 0.5200061593859566,
+          "n": 590
+        },
+        "edd22318-216c-44ff-bc24-49ce8be78374_probe00": {
+          "auc": 0.48232401901691746,
+          "n": 769
+        }
+      }
+    },
+    "shared_baseline": {
+      "centered_auc": 0.5007990149562976,
+      "full_auc": 0.5006004174356653,
+      "n": 2726,
+      "recording_auc": {
+        "49e0ab27-827a-4c91-bcaa-97eea27a1b8d_probe01": {
+          "auc": 0.5087834870443566,
+          "n": 777
+        },
+        "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe00": {
+          "auc": 0.493686629394485,
+          "n": 590
+        },
+        "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe01": {
+          "auc": 0.5028783284374112,
+          "n": 590
+        },
+        "edd22318-216c-44ff-bc24-49ce8be78374_probe00": {
+          "auc": 0.49471413672134257,
+          "n": 769
+        }
+      }
+    }
+  },
+  "ensemble_paired": {
+    "region_only_vs_shared": {
+      "improved_fraction": 0.4482758620689655,
+      "mean_true_prob_delta": -0.015887749596200058,
+      "n": 2726,
+      "recordings": {
+        "49e0ab27-827a-4c91-bcaa-97eea27a1b8d_probe01": {
+          "improved_fraction": 0.4671814671814672,
+          "n": 777
+        },
+        "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe00": {
+          "improved_fraction": 0.4135593220338983,
+          "n": 590
+        },
+        "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe01": {
+          "improved_fraction": 0.4135593220338983,
+          "n": 590
+        },
+        "edd22318-216c-44ff-bc24-49ce8be78374_probe00": {
+          "improved_fraction": 0.48244473342002603,
+          "n": 769
+        }
+      }
+    },
+    "region_only_vs_shuffle": {
+      "improved_fraction": 0.45084372707263387,
+      "mean_true_prob_delta": -0.026759946406800746,
+      "n": 2726,
+      "recordings": {
+        "49e0ab27-827a-4c91-bcaa-97eea27a1b8d_probe01": {
+          "improved_fraction": 0.4555984555984556,
+          "n": 777
+        },
+        "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe00": {
+          "improved_fraction": 0.4152542372881356,
+          "n": 590
+        },
+        "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe01": {
+          "improved_fraction": 0.4423728813559322,
+          "n": 590
+        },
+        "edd22318-216c-44ff-bc24-49ce8be78374_probe00": {
+          "improved_fraction": 0.4798439531859558,
+          "n": 769
+        }
+      }
+    },
+    "shuffle_vs_shared": {
+      "improved_fraction": 0.5432868672046955,
+      "mean_true_prob_delta": 0.010872196810600693,
+      "n": 2726,
+      "recordings": {
+        "49e0ab27-827a-4c91-bcaa-97eea27a1b8d_probe01": {
+          "improved_fraction": 0.5714285714285714,
+          "n": 777
+        },
+        "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe00": {
+          "improved_fraction": 0.576271186440678,
+          "n": 590
+        },
+        "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe01": {
+          "improved_fraction": 0.5033898305084745,
+          "n": 590
+        },
+        "edd22318-216c-44ff-bc24-49ce8be78374_probe00": {
+          "improved_fraction": 0.5201560468140443,
+          "n": 769
+        }
+      }
+    }
+  },
+  "holdout": "CSH_ZAD_019",
+  "incomplete_seeds": [],
+  "root": "runs/lso_csh_recording_centered_loss_pilot",
+  "seed_metrics": {
+    "0": {
+      "paired_region_only_vs_shuffle": {
+        "improved_fraction": 0.45084372707263387,
+        "mean_true_prob_delta": -0.026759946406800746,
+        "n": 2726,
+        "recordings": {
+          "49e0ab27-827a-4c91-bcaa-97eea27a1b8d_probe01": {
+            "improved_fraction": 0.4555984555984556,
+            "n": 777
+          },
+          "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe00": {
+            "improved_fraction": 0.4152542372881356,
+            "n": 590
+          },
+          "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe01": {
+            "improved_fraction": 0.4423728813559322,
+            "n": 590
+          },
+          "edd22318-216c-44ff-bc24-49ce8be78374_probe00": {
+            "improved_fraction": 0.4798439531859558,
+            "n": 769
+          }
+        }
+      },
+      "region_only": {
+        "centered_auc": 0.47980562471706656,
+        "full_auc": 0.47902048438207334
+      },
+      "region_shuffle": {
+        "centered_auc": 0.5298734199254796,
+        "full_auc": 0.5116040803356897
+      },
+      "shared_baseline": {
+        "centered_auc": 0.5007990149562976,
+        "full_auc": 0.5006004174356653
+      }
+    }
+  },
+  "seeds": [
+    0
+  ]
+}

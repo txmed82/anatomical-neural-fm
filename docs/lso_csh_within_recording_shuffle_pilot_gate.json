@@ -1,0 +1,32 @@
+{
+  "holdout": "CSH_ZAD_019",
+  "n_passing_seeds": 0,
+  "n_seeds": 1,
+  "paired_threshold": 0.55,
+  "pass": false,
+  "root": "runs/lso_csh_within_recording_shuffle_pilot",
+  "seed_results": [
+    {
+      "checks": {
+        "centered_auc_true_beats_shared": true,
+        "centered_auc_true_beats_shuffle": true,
+        "full_auc_true_beats_shared": false,
+        "full_auc_true_beats_shuffle": false,
+        "paired_true_beats_shuffle_threshold": false
+      },
+      "metrics": {
+        "centered_auc_region_only": 0.5165026378103562,
+        "centered_auc_region_shuffle": 0.5151021172128007,
+        "centered_auc_shared": 0.5112183114531462,
+        "full_auc_region_only": 0.5052244750496222,
+        "full_auc_region_shuffle": 0.5295377085001916,
+        "full_auc_shared": 0.5109604067277222,
+        "paired_threshold": 0.55,
+        "paired_trials": 2726,
+        "paired_true_prob_improved": 0.4482758620689655
+      },
+      "pass": false,
+      "seed": 0
+    }
+  ]
+}

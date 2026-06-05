@@ -1,0 +1,32 @@
+{
+  "dataset": "ibl_bwm",
+  "labs": [
+    "mainenlab"
+  ],
+  "n_recordings": 1,
+  "n_subjects": 1,
+  "project": "ibl_neuropixel_brainwide_01",
+  "recordings": [
+    {
+      "alignment_qc": null,
+      "insertion_id": "f06d6cd9-a6b8-49a4-90d1-7905d04c2f8b",
+      "lab": "mainenlab",
+      "n_units_meta": 818,
+      "probe_name": "probe00",
+      "qc": "PASS",
+      "session_id": "de588204-8fd6-4ce3-92da-7a6d1dcae238",
+      "start_time": "2020-10-27T17:01:22",
+      "subject_id": "ZFM-01577",
+      "task_protocol": "_iblrig_tasks_ephysChoiceWorld6.4.2"
+    }
+  ],
+  "selection": {
+    "candidate_pool_recordings": 579,
+    "candidate_pool_subjects": 143,
+    "max_per_subject": 4,
+    "min_units": 200,
+    "region_granularity": "parent",
+    "scan_limit": 1000,
+    "target": 48
+  }
+}

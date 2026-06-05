@@ -1,0 +1,35 @@
+{
+  "dataset": "ibl_bwm",
+  "n_recordings": 2,
+  "n_subjects": 2,
+  "n_units": 4,
+  "n_trials": 6,
+  "recordings": [
+    {
+      "recording_id": "rec-a_probe00",
+      "session_id": "rec-a",
+      "subject_id": "mouse-1",
+      "n_units": 3,
+      "n_regions": 2,
+      "n_trials": 4,
+      "choice_counts": {
+        "left": 1,
+        "right": 2,
+        "nogo": 1
+      }
+    },
+    {
+      "recording_id": "rec-b_probe01",
+      "session_id": "rec-b",
+      "subject_id": "mouse-2",
+      "n_units": 1,
+      "n_regions": 1,
+      "n_trials": 2,
+      "choice_counts": {
+        "left": 2,
+        "right": 0,
+        "nogo": 0
+      }
+    }
+  ]
+}

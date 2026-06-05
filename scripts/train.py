@@ -1,7 +1,7 @@
-"""Real training script: AnatomicalPOYO for IBL choice decoding (L/R) with held-out-animal eval.
+"""Real training script: AnatomicalPOYO for IBL decoding with held-out-animal eval.
 
 Sampling is trial-aligned: each training window is [stimOn_time, stimOn_time + window_len]
-from a real IBL trial; target is sign(trials.choice). Nogo trials (choice=0) skipped.
+from a real IBL trial. Targets can be animal choice or stimulus side.
 Loss is BCE-with-logits; eval reports accuracy + AUC + loss.
 
 Run on M4:
@@ -19,6 +19,8 @@ import json
 import math
 import sys
 import time
+from collections import Counter, defaultdict
+from functools import lru_cache
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -28,10 +30,17 @@ sys.path.insert(0, str(REPO_ROOT / "scripts"))
 import numpy as np  # noqa: E402
 import pandas as pd  # noqa: E402
 import torch  # noqa: E402
+import torch.nn as nn  # noqa: E402
 import torch.nn.functional as F  # noqa: E402
 
 from anatomical_poyo_smoke import (  # noqa: E402
     AnatomicalPOYO, PRIORS_PATH, TAXONOMY_PATH,
+)
+from eval_design import (  # noqa: E402
+    arm_flags,
+    build_session_vocab,
+    output_query_session_id,
+    split_recordings_by_subject,
 )
 from torch_brain.dataset import Dataset, DatasetIndex  # noqa: E402
 from torch_brain.registry import DataType, ModalitySpec  # noqa: E402
@@ -40,13 +49,87 @@ from torch_brain.utils import create_linspace_latent_tokens  # noqa: E402
 
 # --------------------------------------------------------------------- config
 
-# Choice decoding: one binary target per trial-aligned window.
+# Binary trial decoding targets available to local audits and training wrappers.
+TARGET_MODES = ("choice", "stimulus_side", "feedback", "prior_side")
+RESPONSE_EXTREME_TARGET_MODES = (
+    "post_error_response_extreme_25_75_le_1",
+    "post_error_response_extreme_33_67_le_1",
+)
+TRAIN_TARGET_MODES = TARGET_MODES + RESPONSE_EXTREME_TARGET_MODES
+RESPONSE_EXTREME_QUANTILES = {
+    "post_error_response_extreme_25_75_le_1": (25.0, 75.0),
+    "post_error_response_extreme_33_67_le_1": (33.0, 67.0),
+}
+BROAD_NAMED_ANATOMY_REGIONS = (
+    "ATN",
+    "AUDd",
+    "AUDv",
+    "BS",
+    "CA",
+    "CNU",
+    "CTXpl",
+    "CTXsp",
+    "DG",
+    "DORpm",
+    "ENTm",
+    "EPI",
+    "FRP",
+    "HB",
+    "HIP",
+    "IB",
+    "LAT",
+    "LGd",
+    "LS",
+    "LZ",
+    "MBmot",
+    "MBsen",
+    "MBsta",
+    "MED",
+    "MG",
+    "MOp",
+    "MOs",
+    "MSC",
+    "OLF",
+    "ORBm",
+    "ORBvl",
+    "PALc",
+    "PRT",
+    "PVR",
+    "RHP",
+    "RSPagl",
+    "RSPd",
+    "RSPv",
+    "SCm",
+    "SCs",
+    "SSp-bfd",
+    "SSp-ll",
+    "SSp-tr",
+    "SSp-ul",
+    "SSp-un",
+    "SSs",
+    "STRd",
+    "STRv",
+    "VENT",
+    "VISa",
+    "VISp",
+    "VISpl",
+    "VISpm",
+    "VISpor",
+    "VL",
+    "VP",
+    "VS",
+    "ZI",
+)
+FIXED_FAMILIES = {"broad_named_anatomy": BROAD_NAMED_ANATOMY_REGIONS}
 N_OUTPUT_QUERIES = 1     # single binary logit at trial-end
 
 
 def parse_args():
     p = argparse.ArgumentParser()
     p.add_argument("--data-dir", type=Path, default=REPO_ROOT / "data/brainsets/ibl_bwm")
+    p.add_argument("--manifest", type=Path, default=None,
+                   help="Optional recording manifest. When set, train/eval only use matching "
+                        "HDF5 recording ids from --data-dir.")
     p.add_argument("--priors-path", type=Path, default=PRIORS_PATH)
     p.add_argument("--taxonomy-path", type=Path, default=TAXONOMY_PATH)
     p.add_argument("--out-dir", type=Path, default=REPO_ROOT / "runs/baseline")
@@ -60,6 +143,34 @@ def parse_args():
                    help="Seed for the trial-level split (kept constant across training seeds).")
     p.add_argument("--holdout", nargs="*", default=None,
                    help="Subjects to hold out (animal mode only). If omitted, last 2 by name.")
+    p.add_argument("--output-query-mode", default="shared", choices=["shared", "session"],
+                   help="'shared' uses one trainable task query for all recordings, which is "
+                        "the primary cross-animal setting. 'session' preserves the original "
+                        "per-recording query for diagnostics.")
+    p.add_argument("--target-mode", default="choice", choices=TRAIN_TARGET_MODES,
+                   help="'choice' decodes animal L/R choice. 'stimulus_side' decodes whether "
+                        "the visual stimulus contrast was stronger on the right than left. "
+                        "'feedback' decodes correct vs error feedback. 'prior_side' decodes "
+                        "the IBL block prior side from probability_left. "
+                        "'post_error_response_extreme_*' decodes fast vs slow post-error "
+                        "response-latency extremes within each recording.")
+    p.add_argument("--region-filter", default="none", choices=["none", "shared_regions", "include_regions"],
+                   help="'shared_regions' keeps only units whose region acronym appears in both "
+                        "the train and held-out recordings for the current split. "
+                        "'include_regions' keeps only units whose mapped acronym is listed in "
+                        "--region-include.")
+    p.add_argument("--region-include", default="",
+                   help="Comma-separated region acronyms to keep after --region-granularity mapping. "
+                        "Used when --region-filter=include_regions.")
+    p.add_argument("--region-granularity", default="fine", choices=["fine", "parent", "grandparent"],
+                   help="Granularity for region embeddings and region filtering. Cell-type priors "
+                        "still use original fine acronyms with their existing ancestor fallback.")
+    p.add_argument("--region-label-control", default="none",
+                   choices=["none", "shuffle", "within_recording_shuffle"],
+                   help="'shuffle' permutes region labels across all unit tokens after vocab build. "
+                        "'within_recording_shuffle' permutes labels only within each recording, "
+                        "preserving each recording's region distribution while breaking "
+                        "anatomy-to-unit identity.")
     # Model
     p.add_argument("--dim", type=int, default=64)
     p.add_argument("--depth", type=int, default=2)
@@ -69,10 +180,42 @@ def parse_args():
     p.add_argument("--latent-step", type=float, default=0.125)
     # Ablation: which conditioning channels are on
     p.add_argument("--arm", default="baseline",
-                   choices=["baseline", "region", "cell_type", "region_ctype",
-                            "pure_anatomy", "waveform", "waveform_only"])
+                   choices=["baseline", "shared_baseline", "region", "cell_type", "region_ctype",
+                            "region_only", "cell_type_only", "pure_anatomy",
+                            "waveform", "waveform_only", "fixed_broad_family_count",
+                            "region_fixed_broad_family_auxiliary"])
+    p.add_argument("--fixed-family", default="broad_named_anatomy", choices=sorted(FIXED_FAMILIES),
+                   help="Region family used by --arm=fixed_broad_family_count.")
+    p.add_argument("--fixed-family-feature-mode", default="recording_centered",
+                   choices=["counts", "recording_centered"],
+                   help="Feature transform for --arm=fixed_broad_family_count. The default "
+                        "matches the positive local broad-family audits.")
     # Optim
     p.add_argument("--batch-size", type=int, default=4)
+    p.add_argument("--batch-sampling", default="uniform",
+                   choices=["uniform", "target_balanced", "recording_target_balanced"],
+                   help="'uniform' samples trial windows uniformly. 'target_balanced' alternates "
+                        "left/right targets within accepted training batches to reduce target-prior "
+                        "leakage. 'recording_target_balanced' draws left/right pairs from the same "
+                        "recording, which is intended for recording-centered training losses. "
+                        "Sampled eval remains uniform.")
+    p.add_argument("--loss-mode", default="bce",
+                   choices=[
+                       "bce",
+                       "recording_centered_bce",
+                       "recording_pairwise_rank",
+                       "recording_pairwise_rank_centered_bce",
+                       "recording_local_auc_surrogate",
+                   ],
+                   help="'bce' trains on raw logits. 'recording_centered_bce' subtracts each "
+                        "recording's mean logit within the accepted batch before BCE, reducing "
+                        "recording-offset shortcuts. 'recording_pairwise_rank' optimizes "
+                        "same-recording target-1 logits above target-0 logits with a logistic "
+                        "pairwise ranking loss. 'recording_pairwise_rank_centered_bce' adds "
+                        "recording-centered BCE to the pairwise rank loss to discourage "
+                        "class-direction probability shifts without recording-local ranking. "
+                        "'recording_local_auc_surrogate' is the direct recording-local AUC "
+                        "surrogate alias for the pairwise ranking term.")
     p.add_argument("--lr", type=float, default=3e-4)
     p.add_argument("--weight-decay", type=float, default=1e-4)
     p.add_argument("--max-steps", type=int, default=500)
@@ -80,6 +223,23 @@ def parse_args():
     p.add_argument("--eval-every", type=int, default=100)
     p.add_argument("--eval-batches", type=int, default=20)
     p.add_argument("--log-every", type=int, default=20)
+    p.add_argument("--best-metric", default="eval_loss",
+                   choices=["eval_loss", "eval_auc", "full_eval_auc", "full_eval_centered_auc"],
+                   help="Metric used to select best.ckpt. full_eval_* metrics score every "
+                        "held-out trial at each eval point and are best aligned with the "
+                        "anatomy-transfer demo gate.")
+    p.add_argument("--save-eval-predictions", action="store_true",
+                   help="When a new best checkpoint is found, write deterministic held-out "
+                        "trial predictions to eval_predictions.jsonl for model diagnostics.")
+    p.add_argument("--full-eval-on-best", action="store_true",
+                   help="When a new best checkpoint is found, score every held-out trial "
+                        "and log full_eval metrics for official deterministic summaries.")
+    p.add_argument("--eval-prediction-max-trials", type=int, default=0,
+                   help="Maximum eval trials to export when --save-eval-predictions is set. "
+                        "0 exports all valid eval trials.")
+    p.add_argument("--save-region-embeddings", action="store_true",
+                   help="When a new best checkpoint is found, write region embedding vectors "
+                        "to region_embeddings.jsonl for anatomical-code diagnostics.")
     return p.parse_args()
 
 
@@ -93,49 +253,115 @@ def resolve_device(name: str) -> torch.device:
     return torch.device(name)
 
 
-def arm_flags(arm: str) -> dict:
-    # All flags default False; only the ones needed are enabled per arm.
-    base = {"use_unit_emb": False, "use_region_emb": False,
-            "use_cell_type_emb": False, "use_waveform_emb": False}
-    flags_by_arm = {
-        "baseline":      {"use_unit_emb": True},
-        "region":        {"use_unit_emb": True, "use_region_emb": True},
-        "cell_type":     {"use_unit_emb": True, "use_cell_type_emb": True},
-        "region_ctype":  {"use_unit_emb": True, "use_region_emb": True, "use_cell_type_emb": True},
-        "pure_anatomy":  {"use_region_emb": True, "use_cell_type_emb": True},
-        "waveform":      {"use_unit_emb": True, "use_waveform_emb": True},
-        "waveform_only": {"use_waveform_emb": True},
-    }[arm]
-    base.update(flags_by_arm)
-    return base
-
-
 # -------------------------------------------------------- data & sampling
 
-def build_vocab(ds: Dataset):
+@lru_cache(maxsize=None)
+def _ancestor_acronyms(acronym: str) -> tuple[str, ...]:
+    from iblatlas.regions import BrainRegions
+    br = BrainRegions()
+    try:
+        ids = np.atleast_1d(br.acronym2id(acronym))
+    except Exception:
+        return ()
+    if len(ids) == 0:
+        return ()
+    try:
+        anc = br.ancestors(np.array([int(ids[0])]))
+    except Exception:
+        return ()
+    if hasattr(anc, "acronym"):
+        return tuple(str(a) for a in anc.acronym)
+    if isinstance(anc, dict) and "acronym" in anc:
+        return tuple(str(a) for a in anc["acronym"])
+    return ()
+
+
+def region_acronym_at_granularity(acronym: str, granularity: str) -> str:
+    if granularity == "fine":
+        return str(acronym)
+    ancestors = _ancestor_acronyms(str(acronym))
+    if not ancestors:
+        return str(acronym)
+    offset = {"parent": 2, "grandparent": 3}[granularity]
+    if len(ancestors) >= offset:
+        candidate = ancestors[-offset]
+        if candidate not in {"root", "grey"}:
+            return candidate
+    return str(acronym)
+
+
+def map_region_acronyms(acronyms, granularity: str) -> list[str]:
+    cache: dict[str, str] = {}
+    out: list[str] = []
+    for acronym in acronyms:
+        key = str(acronym)
+        if key not in cache:
+            cache[key] = region_acronym_at_granularity(key, granularity)
+        out.append(cache[key])
+    return out
+
+
+def manifest_recording_ids(path: Path) -> list[str]:
+    payload = json.loads(path.read_text())
+    rows = payload["recordings"] if isinstance(payload, dict) else payload
+    out: list[str] = []
+    for row in rows:
+        eid = row.get("session_id") or row.get("eid") or row.get("session")
+        probe = row.get("probe_name") or row.get("probe") or row.get("name")
+        if eid and probe:
+            out.append(f"{eid}_{probe}")
+    return out
+
+
+def select_recording_ids(ds: Dataset, manifest: Path | None, data_dir: Path | None = None) -> list[str]:
+    if manifest is None:
+        return list(ds.recording_ids)
+    requested = manifest_recording_ids(manifest)
+    available = set(ds.recording_ids)
+    selected = [rid for rid in requested if rid in available]
+    missing = sorted(set(requested) - available)
+    if missing:
+        preview = ", ".join(missing[:5])
+        suffix = "" if len(missing) <= 5 else f", ... ({len(missing)} total)"
+        location = str(data_dir) if data_dir is not None else "dataset"
+        raise SystemExit(f"Manifest recordings missing from {location}: {preview}{suffix}")
+    if not selected:
+        location = str(data_dir) if data_dir is not None else "dataset"
+        raise SystemExit(f"Manifest {manifest} did not match any recordings in {location}")
+    return selected
+
+
+def build_vocab(ds: Dataset, region_granularity: str = "fine", recording_ids: list[str] | None = None):
     """Collect global unit_ids / session_ids / region info / waveform features across all recordings."""
-    recs = {rid: ds.get_recording(rid) for rid in ds.recording_ids}
+    recording_ids = list(ds.recording_ids) if recording_ids is None else recording_ids
+    recs = {rid: ds.get_recording(rid) for rid in recording_ids}
     all_unit_ids: list[str] = []
     all_region_acronyms: list[str] = []
-    all_region_ids: list[int] = []
+    all_region_labels: list[str] = []
+    all_fine_region_acronyms: list[str] = []
+    unit_recording_ids: list[str] = []
     waveform_rows: list[np.ndarray] = []
     subject_by_rid: dict[str, str] = {}
     for rid, rec in recs.items():
         prefix = f"{rid}/"
         unit_ids = [prefix + u for u in rec.units.id.astype(str).tolist()]
         all_unit_ids.extend(unit_ids)
-        all_region_acronyms.extend(rec.units.region_acronym.astype(str).tolist())
-        all_region_ids.extend(rec.units.region_id.astype(np.int64).tolist())
+        unit_recording_ids.extend([rid] * len(unit_ids))
+        fine_acronyms = rec.units.region_acronym.astype(str).tolist()
+        region_labels = map_region_acronyms(fine_acronyms, region_granularity)
+        all_region_acronyms.extend(region_labels)
+        all_fine_region_acronyms.extend(fine_acronyms)
+        all_region_labels.extend(region_labels)
         # Per-unit waveform features: (amps, depths, peak_to_trough)
         amps = np.asarray(rec.units.amps, dtype=np.float32)
         depths = np.asarray(rec.units.depths, dtype=np.float32)
         ptt = np.asarray(rec.units.peak_to_trough, dtype=np.float32)
         waveform_rows.append(np.stack([amps, depths, ptt], axis=-1))
         subject_by_rid[rid] = str(rec.subject.id)
-    unique_region_ids = np.unique(all_region_ids)
-    region_id_to_idx = {int(r): i for i, r in enumerate(unique_region_ids)}
+    unique_region_labels = sorted(set(all_region_labels))
+    region_id_to_idx = {label: i for i, label in enumerate(unique_region_labels)}
     region_idx_per_unit = np.array(
-        [region_id_to_idx[r] for r in all_region_ids], dtype=np.int64,
+        [region_id_to_idx[r] for r in all_region_labels], dtype=np.int64,
     )
     waveform_features = np.concatenate(waveform_rows, axis=0).astype(np.float32)
     return {
@@ -144,20 +370,37 @@ def build_vocab(ds: Dataset):
         "session_ids": list(recs.keys()),
         "region_idx_per_unit": region_idx_per_unit,
         "region_acronyms": np.array(all_region_acronyms),
-        "n_regions": len(unique_region_ids),
+        "cell_type_region_acronyms": np.array(all_fine_region_acronyms),
+        "unit_recording_ids": np.array(unit_recording_ids),
+        "n_regions": len(unique_region_labels),
+        "region_granularity": region_granularity,
         "waveform_features": waveform_features,
         "subject_by_rid": subject_by_rid,
     }
 
 
-def split_recordings(subject_by_rid: dict, holdout: list[str] | None):
-    subjects = sorted(set(subject_by_rid.values()))
-    if holdout is None:
-        # default: last 2 subjects (by sorted name)
-        holdout = subjects[-2:] if len(subjects) >= 2 else subjects[-1:]
-    train_rids = [rid for rid, s in subject_by_rid.items() if s not in holdout]
-    eval_rids = [rid for rid, s in subject_by_rid.items() if s in holdout]
-    return train_rids, eval_rids, holdout
+def apply_region_label_control(vocab: dict, control: str, seed: int) -> dict:
+    if control == "none":
+        return vocab
+    if control not in {"shuffle", "within_recording_shuffle"}:
+        raise ValueError(f"unknown region label control {control!r}")
+    rng = np.random.default_rng(seed + 17_003)
+    shuffled = dict(vocab)
+    region_idx = np.asarray(vocab["region_idx_per_unit"], dtype=np.int64).copy()
+    region_acronyms = np.asarray(vocab["region_acronyms"]).copy()
+    cell_type_acronyms = np.asarray(vocab["cell_type_region_acronyms"]).copy()
+    if control == "shuffle":
+        perm = rng.permutation(len(region_idx))
+    else:
+        unit_recording_ids = np.asarray(vocab["unit_recording_ids"])
+        perm = np.arange(len(region_idx))
+        for recording_id in sorted(set(unit_recording_ids.tolist())):
+            indices = np.flatnonzero(unit_recording_ids == recording_id)
+            perm[indices] = rng.permutation(indices)
+    shuffled["region_idx_per_unit"] = region_idx[perm]
+    shuffled["region_acronyms"] = region_acronyms[perm]
+    shuffled["cell_type_region_acronyms"] = cell_type_acronyms[perm]
+    return shuffled
 
 
 def build_model(vocab, args, n_cell_types: int):
@@ -187,41 +430,270 @@ def build_model(vocab, args, n_cell_types: int):
     return model, flags
 
 
-def build_trial_samples(recs, rids: list[str], window_len: float) -> list[tuple[str, float, float]]:
+def _target_from_trial(rec, idx: int, target_mode: str) -> float | None:
+    if target_mode == "choice":
+        choice = int(np.asarray(rec.trials.choice, dtype=np.int64)[idx])
+        if choice == 0:
+            return None
+        return 0.0 if choice == -1 else 1.0
+    if target_mode == "stimulus_side":
+        left = np.asarray(rec.trials.contrast_left, dtype=np.float64)[idx]
+        right = np.asarray(rec.trials.contrast_right, dtype=np.float64)[idx]
+        left = 0.0 if not np.isfinite(left) else float(left)
+        right = 0.0 if not np.isfinite(right) else float(right)
+        if left == right:
+            return None
+        return 1.0 if right > left else 0.0
+    if target_mode == "feedback":
+        feedback = int(np.asarray(rec.trials.feedback_type, dtype=np.int64)[idx])
+        if feedback == 0:
+            return None
+        return 1.0 if feedback > 0 else 0.0
+    if target_mode == "prior_side":
+        probability_left = float(np.asarray(rec.trials.probability_left, dtype=np.float64)[idx])
+        if not np.isfinite(probability_left) or probability_left == 0.5:
+            return None
+        return 0.0 if probability_left > 0.5 else 1.0
+    raise ValueError(f"unknown target_mode {target_mode!r}")
+
+
+def _optional_trial_array(rec, name: str, n: int) -> np.ndarray:
+    if not hasattr(rec.trials, name):
+        return np.full(n, np.nan, dtype=np.float64)
+    values = np.asarray(getattr(rec.trials, name), dtype=np.float64)
+    if len(values) != n:
+        return np.full(n, np.nan, dtype=np.float64)
+    return values
+
+
+def _contrast_strength(rec, n: int) -> np.ndarray:
+    left = _optional_trial_array(rec, "contrast_left", n)
+    right = _optional_trial_array(rec, "contrast_right", n)
+    left = np.where(np.isfinite(left), left, 0.0)
+    right = np.where(np.isfinite(right), right, 0.0)
+    return np.maximum(np.abs(left), np.abs(right))
+
+
+def _response_extreme_labels(rec, target_mode: str) -> np.ndarray:
+    if target_mode not in RESPONSE_EXTREME_QUANTILES:
+        raise ValueError(f"unknown response-extreme target_mode {target_mode!r}")
+    stim_on = np.asarray(rec.trials.stim_on_times, dtype=np.float64)
+    n = len(stim_on)
+    labels = np.full(n, np.nan, dtype=np.float64)
+    response = _optional_trial_array(rec, "response_times", n)
+    feedback = _optional_trial_array(rec, "feedback_type", n)
+    strength = _contrast_strength(rec, n)
+    latency = response - stim_on
+
+    prev_feedback = np.roll(feedback, 1)
+    valid = (
+        np.isfinite(stim_on)
+        & np.isfinite(latency)
+        & (latency > 0.0)
+        & np.isfinite(prev_feedback)
+        & (prev_feedback < 0.0)
+        & np.isfinite(strength)
+        & (strength <= 1.0)
+    )
+    if n:
+        valid[0] = False
+    values = latency[valid]
+    if len(values) == 0:
+        return labels
+
+    lo, hi = np.percentile(values, RESPONSE_EXTREME_QUANTILES[target_mode])
+    labels[valid & (latency <= lo)] = 1.0
+    labels[valid & (latency >= hi)] = 0.0
+    return labels
+
+
+def build_trial_samples(
+    recs,
+    rids: list[str],
+    window_len: float,
+    target_mode: str,
+) -> list[tuple[str, float, float]]:
     """Return a flat list of (recording_id, window_start_time, choice_binary) triples.
 
     Each entry is a trial-aligned window: t0 = trials.stim_on_times, t1 = t0 + window_len.
-    Target is 0.0 for left (choice=-1) or 1.0 for right (choice=+1). Nogo (choice=0)
-    and trials with NaN stim_on_time or windows past the recording domain are skipped.
+    Target is a binary value from _target_from_trial. Invalid/no-go/equal-contrast
+    trials and trials with NaN stim_on_time or windows past the recording domain
+    are skipped.
     """
     out: list[tuple[str, float, float]] = []
     for rid in rids:
         rec = recs[rid]
         if not hasattr(rec, "trials"):
             continue
-        choice = np.asarray(rec.trials.choice, dtype=np.int64)
         stim_on = np.asarray(rec.trials.stim_on_times, dtype=np.float64)
         domain_hi = float(rec.domain.end[-1])
-        for c, t0 in zip(choice, stim_on):
-            if c == 0 or not np.isfinite(t0):
+        response_extreme_labels = (
+            _response_extreme_labels(rec, target_mode)
+            if target_mode in RESPONSE_EXTREME_TARGET_MODES
+            else None
+        )
+        for idx, t0 in enumerate(stim_on):
+            if not np.isfinite(t0):
                 continue
             if t0 + window_len > domain_hi:
                 continue
-            target = 0.0 if c == -1 else 1.0
+            if response_extreme_labels is None:
+                target = _target_from_trial(rec, idx, target_mode)
+            else:
+                target_value = response_extreme_labels[idx]
+                target = float(target_value) if np.isfinite(target_value) else None
+            if target is None:
+                continue
             out.append((rid, float(t0), target))
     return out
 
 
-def build_inputs_for_window(model, sample, rid, t0, args):
-    """Build per-window arrays. Returns a dict of np.ndarrays, or None if no spikes."""
-    n_spikes = len(sample.spikes.timestamps)
-    if n_spikes == 0:
+def trial_indices_by_target(trial_list: list[tuple[str, float, float]]) -> dict[int, list[int]]:
+    by_target: dict[int, list[int]] = defaultdict(list)
+    for idx, (_rid, _t0, target) in enumerate(trial_list):
+        by_target[int(target)].append(idx)
+    return dict(by_target)
+
+
+def trial_indices_by_recording_target(
+    trial_list: list[tuple[str, float, float]],
+) -> dict[str, dict[int, list[int]]]:
+    by_recording: dict[str, dict[int, list[int]]] = defaultdict(lambda: defaultdict(list))
+    for idx, (rid, _t0, target) in enumerate(trial_list):
+        by_recording[str(rid)][int(target)].append(idx)
+    return {
+        rid: {target: indices for target, indices in sorted(targets.items())}
+        for rid, targets in sorted(by_recording.items())
+    }
+
+
+def choose_trial_index(
+    trial_list: list[tuple[str, float, float]],
+    rng,
+    batch_sampling: str,
+    accepted_count: int,
+    target_offset: int = 0,
+    recording_id: str | None = None,
+) -> int:
+    if batch_sampling == "uniform":
+        return int(rng.integers(len(trial_list)))
+    if batch_sampling not in {"target_balanced", "recording_target_balanced"}:
+        raise ValueError(f"unknown batch_sampling {batch_sampling!r}")
+    if batch_sampling == "recording_target_balanced" and recording_id is not None:
+        by_recording = trial_indices_by_recording_target(trial_list)
+        by_target_for_recording = by_recording.get(recording_id, {})
+        if by_target_for_recording.get(0) and by_target_for_recording.get(1):
+            desired_target = int((accepted_count + target_offset) % 2)
+            choices = by_target_for_recording[desired_target]
+            return int(choices[int(rng.integers(len(choices)))])
+    by_target = trial_indices_by_target(trial_list)
+    if not by_target.get(0) or not by_target.get(1):
+        return int(rng.integers(len(trial_list)))
+    desired_target = int((accepted_count + target_offset) % 2)
+    choices = by_target[desired_target]
+    return int(choices[int(rng.integers(len(choices)))])
+
+
+def choose_recording_for_balanced_pair(
+    trial_list: list[tuple[str, float, float]],
+    rng,
+) -> str | None:
+    by_recording = trial_indices_by_recording_target(trial_list)
+    eligible = [
+        rid
+        for rid, by_target in by_recording.items()
+        if by_target.get(0) and by_target.get(1)
+    ]
+    if not eligible:
         return None
+    return str(eligible[int(rng.integers(len(eligible)))])
+
+
+def recording_region_acronyms(recs, rids: list[str], region_granularity: str = "fine") -> set[str]:
+    regions: set[str] = set()
+    for rid in rids:
+        regions.update(map_region_acronyms(
+            recs[rid].units.region_acronym.astype(str).tolist(),
+            region_granularity,
+        ))
+    return regions
+
+
+def shared_split_regions(
+    recs,
+    train_rids: list[str],
+    eval_rids: list[str],
+    region_granularity: str = "fine",
+) -> set[str]:
+    return (
+        recording_region_acronyms(recs, train_rids, region_granularity)
+        & recording_region_acronyms(recs, eval_rids, region_granularity)
+    )
+
+
+def parse_region_include(value: str) -> set[str]:
+    return {part.strip() for part in value.split(",") if part.strip()}
+
+
+def recording_diagnostics(recs, rids: list[str]) -> list[dict]:
+    rows = []
+    for rid in sorted(rids):
+        rec = recs[rid]
+        choice = np.asarray(rec.trials.choice, dtype=np.int64) if hasattr(rec, "trials") else np.array([])
+        rows.append({
+            "recording_id": rid,
+            "subject": str(rec.subject.id),
+            "n_units": int(len(rec.units.id)),
+            "n_regions": int(len(set(rec.units.region_acronym.astype(str).tolist()))),
+            "n_trials": int(len(choice)),
+            "choice_counts": {
+                "L": int((choice == -1).sum()),
+                "R": int((choice == 1).sum()),
+                "nogo": int((choice == 0).sum()),
+            },
+        })
+    return rows
+
+
+def subject_trial_counts(trials: list[tuple[str, float, float]], subject_by_rid: dict[str, str]) -> dict:
+    counts: dict[str, Counter] = defaultdict(Counter)
+    for rid, _t0, target in trials:
+        subject = subject_by_rid[rid]
+        counts[subject]["R" if target == 1.0 else "L"] += 1
+    return {
+        subject: {"L": int(counter["L"]), "R": int(counter["R"])}
+        for subject, counter in sorted(counts.items())
+    }
+
+
+def build_inputs_for_window(
+    model,
+    sample,
+    rid,
+    t0,
+    args,
+    allowed_region_acronyms: set[str] | None = None,
+    fixed_family_auxiliary_config: dict | None = None,
+):
+    """Build per-window arrays. Returns a dict of np.ndarrays, or None if no spikes."""
     prefix = f"{rid}/"
     sample_unit_ids = [prefix + u for u in sample.units.id.astype(str).tolist()]
     local_to_global = np.array(model.unit_emb.tokenizer(sample_unit_ids), dtype=np.int64)
-    input_unit_index = local_to_global[sample.spikes.unit_index]
-    input_timestamps = sample.spikes.timestamps.astype(np.float32) - t0
+
+    spike_unit_index = np.asarray(sample.spikes.unit_index, dtype=np.int64)
+    spike_timestamps = np.asarray(sample.spikes.timestamps, dtype=np.float32)
+    if allowed_region_acronyms is not None:
+        unit_regions = map_region_acronyms(sample.units.region_acronym.astype(str), args.region_granularity)
+        unit_allowed = np.array([region in allowed_region_acronyms for region in unit_regions], dtype=bool)
+        spike_mask = unit_allowed[spike_unit_index]
+        spike_unit_index = spike_unit_index[spike_mask]
+        spike_timestamps = spike_timestamps[spike_mask]
+
+    n_spikes = len(spike_timestamps)
+    if n_spikes == 0:
+        return None
+    input_unit_index = local_to_global[spike_unit_index]
+    input_timestamps = spike_timestamps - t0
     input_token_type = np.zeros(n_spikes, dtype=np.int64)
 
     latent_index, latent_timestamps = create_linspace_latent_tokens(
@@ -229,12 +701,13 @@ def build_inputs_for_window(model, sample, rid, t0, args):
         num_latents_per_step=args.num_latents,
     )
 
-    session_idx = model.session_emb.tokenizer([rid])[0]
+    query_session_id = output_query_session_id(rid, args.output_query_mode)
+    session_idx = model.session_emb.tokenizer([query_session_id])[0]
     # One output query at end-of-window (just before the response).
     output_session_index = np.array([session_idx], dtype=np.int64)
     output_timestamps = np.array([args.window_len * 0.95], dtype=np.float32)
 
-    return {
+    row = {
         "input_unit_index": input_unit_index,
         "input_timestamps": input_timestamps,
         "input_token_type": input_token_type,
@@ -243,6 +716,21 @@ def build_inputs_for_window(model, sample, rid, t0, args):
         "output_session_index": output_session_index,
         "output_timestamps": output_timestamps,
     }
+    if fixed_family_auxiliary_config is not None:
+        fixed_family_member_by_unit = fixed_family_auxiliary_config["member_by_unit"]
+        unit_is_member = np.asarray(
+            [fixed_family_member_by_unit.get(unit_id, False) for unit_id in sample_unit_ids],
+            dtype=bool,
+        )
+        count = float(np.count_nonzero(unit_is_member[spike_unit_index]))
+        center = float(fixed_family_auxiliary_config["recording_center"].get(str(rid), 0.0))
+        mean = float(fixed_family_auxiliary_config["feature_mean"])
+        std = float(fixed_family_auxiliary_config["feature_std"])
+        row["fixed_family_feature"] = np.array(
+            [(count - center - mean) / std],
+            dtype=np.float32,
+        )
+    return row
 
 
 def collate_batch(samples: list[dict], device: torch.device):
@@ -260,6 +748,11 @@ def collate_batch(samples: list[dict], device: torch.device):
     latent_timestamps = np.zeros((B, n_latent), dtype=np.float32)
     output_session_index = np.zeros((B, n_out), dtype=np.int64)
     output_timestamps = np.zeros((B, n_out), dtype=np.float32)
+    fixed_family_feature = (
+        np.zeros((B, 1), dtype=np.float32)
+        if "fixed_family_feature" in samples[0]
+        else None
+    )
     for b, s in enumerate(samples):
         n = s["input_unit_index"].shape[0]
         input_unit_index[b, :n] = s["input_unit_index"]
@@ -270,8 +763,12 @@ def collate_batch(samples: list[dict], device: torch.device):
         latent_timestamps[b] = s["latent_timestamps"]
         output_session_index[b] = s["output_session_index"]
         output_timestamps[b] = s["output_timestamps"]
-    t = lambda x, d: torch.as_tensor(x, dtype=d, device=device)
-    return {
+        if fixed_family_feature is not None:
+            fixed_family_feature[b] = s["fixed_family_feature"]
+    def t(x, d):
+        return torch.as_tensor(x, dtype=d, device=device)
+
+    batch = {
         "input_unit_index": t(input_unit_index, torch.long),
         "input_timestamps": t(input_timestamps, torch.float32),
         "input_token_type": t(input_token_type, torch.long),
@@ -281,6 +778,9 @@ def collate_batch(samples: list[dict], device: torch.device):
         "output_session_index": t(output_session_index, torch.long),
         "output_timestamps": t(output_timestamps, torch.float32),
     }
+    if fixed_family_feature is not None:
+        batch["fixed_family_feature"] = t(fixed_family_feature, torch.float32)
+    return batch
 
 
 def lr_lambda(step: int, warmup: int, total: int) -> float:
@@ -291,7 +791,38 @@ def lr_lambda(step: int, warmup: int, total: int) -> float:
     return 0.5 * (1.0 + math.cos(math.pi * min(1.0, progress)))
 
 
-def draw_batch(ds, trial_list, args, model, rng) -> tuple[dict, torch.Tensor]:
+def best_metric_initial_value(metric: str) -> float:
+    if metric == "eval_loss":
+        return float("inf")
+    if metric in {"eval_auc", "full_eval_auc", "full_eval_centered_auc"}:
+        return -float("inf")
+    raise ValueError(f"unknown best metric {metric!r}")
+
+
+def is_better_metric(metric: str, candidate: float, current: float) -> bool:
+    if math.isnan(candidate):
+        return False
+    if metric == "eval_loss":
+        return candidate < current
+    if metric in {"eval_auc", "full_eval_auc", "full_eval_centered_auc"}:
+        return candidate > current
+    raise ValueError(f"unknown best metric {metric!r}")
+
+
+def best_metric_requires_full_eval(metric: str) -> bool:
+    return metric.startswith("full_eval_")
+
+
+def draw_batch(
+    ds,
+    trial_list,
+    args,
+    model,
+    rng,
+    allowed_region_acronyms: set[str] | None = None,
+    batch_sampling: str | None = None,
+    fixed_family_auxiliary_config: dict | None = None,
+) -> tuple[dict | None, torch.Tensor | None, dict | None]:
     """Draw a batch of `batch_size` trial-aligned windows from the precomputed list.
 
     `trial_list` is the output of `build_trial_samples` — every entry is already a valid
@@ -299,23 +830,120 @@ def draw_batch(ds, trial_list, args, model, rng) -> tuple[dict, torch.Tensor]:
     """
     samples = []
     targets = []
+    recording_ids = []
     attempts = 0
+    sampling_mode = getattr(args, "batch_sampling", "uniform") if batch_sampling is None else batch_sampling
+    target_offset = int(rng.integers(2)) if sampling_mode in {"target_balanced", "recording_target_balanced"} else 0
+    pair_recording_id = None
     while len(samples) < args.batch_size and attempts < 50:
         attempts += 1
-        rid, t0, target = trial_list[rng.integers(len(trial_list))]
+        if sampling_mode == "recording_target_balanced" and len(samples) % 2 == 0:
+            pair_recording_id = choose_recording_for_balanced_pair(trial_list, rng)
+        idx = choose_trial_index(
+            trial_list,
+            rng,
+            sampling_mode,
+            accepted_count=len(samples),
+            target_offset=target_offset,
+            recording_id=pair_recording_id,
+        )
+        rid, t0, target = trial_list[idx]
         sample = ds[DatasetIndex(recording_id=rid, start=t0, end=t0 + args.window_len)]
-        inputs_np = build_inputs_for_window(model, sample, rid, t0, args)
+        inputs_np = build_inputs_for_window(
+            model,
+            sample,
+            rid,
+            t0,
+            args,
+            allowed_region_acronyms,
+            fixed_family_auxiliary_config,
+        )
         if inputs_np is None:
             continue
         samples.append(inputs_np)
         targets.append(target)
+        recording_ids.append(rid)
     if len(samples) < args.batch_size:
-        return None, None
+        return None, None, None
     batch = collate_batch(samples, device=next(model.parameters()).device)
     # (B, 1) targets to match model output shape (B, n_out=1)
     tgt = torch.as_tensor(np.array(targets, dtype=np.float32)[:, None],
                           device=batch["input_unit_index"].device)
-    return batch, tgt
+    return batch, tgt, {"recording_ids": recording_ids}
+
+
+def center_logits_by_group(logits: torch.Tensor, group_ids: list[str]) -> torch.Tensor:
+    centered = logits.clone()
+    for group_id in sorted(set(group_ids)):
+        indices = [idx for idx, value in enumerate(group_ids) if value == group_id]
+        if not indices:
+            continue
+        group_index = torch.as_tensor(indices, dtype=torch.long, device=logits.device)
+        group_logits = logits.index_select(0, group_index)
+        centered.index_copy_(0, group_index, group_logits - group_logits.mean(dim=0, keepdim=True))
+    return centered
+
+
+def training_loss(
+    logits: torch.Tensor,
+    target: torch.Tensor,
+    loss_mode: str,
+    batch_meta: dict | None,
+) -> torch.Tensor:
+    if loss_mode == "bce":
+        return F.binary_cross_entropy_with_logits(logits, target)
+    if loss_mode in {
+        "recording_centered_bce",
+        "recording_pairwise_rank",
+        "recording_pairwise_rank_centered_bce",
+        "recording_local_auc_surrogate",
+    }:
+        recording_ids = [] if batch_meta is None else list(batch_meta.get("recording_ids", []))
+        if len(recording_ids) != logits.shape[0]:
+            raise ValueError(f"{loss_mode} requires one recording id per batch row")
+        if loss_mode in {"recording_pairwise_rank", "recording_local_auc_surrogate"}:
+            return recording_pairwise_rank_loss(logits, target, recording_ids)
+        centered_logits = center_logits_by_group(logits, recording_ids)
+        if loss_mode == "recording_pairwise_rank_centered_bce":
+            return (
+                recording_pairwise_rank_loss(logits, target, recording_ids)
+                + F.binary_cross_entropy_with_logits(centered_logits, target)
+            )
+        return F.binary_cross_entropy_with_logits(centered_logits, target)
+    raise ValueError(f"unknown loss_mode {loss_mode!r}")
+
+
+def recording_pairwise_rank_loss(
+    logits: torch.Tensor,
+    target: torch.Tensor,
+    recording_ids: list[str],
+) -> torch.Tensor:
+    """Same-recording pairwise logistic ranking loss.
+
+    For each recording represented in the batch, every target-1 logit is paired
+    against every target-0 logit. The loss is invariant to adding a constant
+    offset to all logits from the same recording, and directly matches the
+    recording-centered ranking failure mode exposed by the strict gates.
+    """
+    flat_logits = logits.reshape(-1)
+    flat_target = target.reshape(-1)
+    losses = []
+    for recording_id in sorted(set(recording_ids)):
+        indices = [idx for idx, value in enumerate(recording_ids) if value == recording_id]
+        if not indices:
+            continue
+        group_index = torch.as_tensor(indices, dtype=torch.long, device=logits.device)
+        group_logits = flat_logits.index_select(0, group_index)
+        group_target = flat_target.index_select(0, group_index)
+        pos = group_logits[group_target > 0.5]
+        neg = group_logits[group_target <= 0.5]
+        if pos.numel() == 0 or neg.numel() == 0:
+            continue
+        margins = pos[:, None] - neg[None, :]
+        losses.append(F.softplus(-margins).mean())
+    if not losses:
+        return F.binary_cross_entropy_with_logits(center_logits_by_group(logits, recording_ids), target)
+    return torch.stack(losses).mean()
 
 
 def _auc(scores: np.ndarray, labels: np.ndarray) -> float:
@@ -331,17 +959,34 @@ def _auc(scores: np.ndarray, labels: np.ndarray) -> float:
     return float((sum_pos_ranks - n_pos * (n_pos + 1) / 2) / (n_pos * n_neg))
 
 
-def evaluate(model, ds, eval_trial_list, args) -> dict:
+def evaluate(
+    model,
+    ds,
+    eval_trial_list,
+    args,
+    allowed_region_acronyms: set[str] | None = None,
+    fixed_family_auxiliary_config: dict | None = None,
+    auxiliary_head: nn.Module | None = None,
+) -> dict:
     model.eval()
     all_logits = []
     all_tgts = []
     rng = np.random.default_rng(args.seed + 1000)  # deterministic eval order
     with torch.no_grad():
         for _ in range(args.eval_batches):
-            batch, tgt = draw_batch(ds, eval_trial_list, args, model, rng)
+            batch, tgt, _meta = draw_batch(
+                ds,
+                eval_trial_list,
+                args,
+                model,
+                rng,
+                allowed_region_acronyms,
+                batch_sampling="uniform",
+                fixed_family_auxiliary_config=fixed_family_auxiliary_config,
+            )
             if batch is None:
                 continue
-            out = model(**batch).squeeze(-1)  # (B, 1)
+            out = model_logits_with_optional_auxiliary(model, batch, auxiliary_head)
             all_logits.append(out.detach().float().cpu().numpy())
             all_tgts.append(tgt.detach().float().cpu().numpy())
     if not all_logits:
@@ -357,6 +1002,430 @@ def evaluate(model, ds, eval_trial_list, args) -> dict:
     model.train()
     return {"eval_loss": bce, "eval_acc": acc, "eval_auc": auc, "eval_n": len(tgts),
             "eval_n_pos": int((tgts == 1).sum()), "eval_n_neg": int((tgts == 0).sum())}
+
+
+def region_index_lookup(vocab: dict) -> dict[int, str]:
+    """Recover the mapped region acronym for each region embedding index."""
+    lookup: dict[int, str] = {}
+    for idx, acronym in zip(vocab["region_idx_per_unit"], vocab["region_acronyms"]):
+        idx_int = int(idx)
+        if idx_int not in lookup:
+            lookup[idx_int] = str(acronym)
+    return lookup
+
+
+def write_region_embeddings(model, vocab: dict, path: Path) -> int:
+    if getattr(model, "region_emb", None) is None:
+        return 0
+    lookup = region_index_lookup(vocab)
+    weights = model.region_emb.weight.detach().float().cpu().numpy()
+    rows_written = 0
+    with path.open("w") as fh:
+        for idx in sorted(lookup):
+            vec = weights[idx]
+            fh.write(json.dumps({
+                "region_idx": idx,
+                "region": lookup[idx],
+                "norm": float(np.linalg.norm(vec)),
+                "embedding": [float(x) for x in vec],
+            }) + "\n")
+            rows_written += 1
+    return rows_written
+
+
+def eval_prediction_rows(
+    model,
+    ds,
+    eval_trial_list,
+    args,
+    allowed_region_acronyms: set[str] | None,
+    subject_by_rid: dict[str, str],
+    *,
+    max_trials: int = 0,
+    fixed_family_auxiliary_config: dict | None = None,
+    auxiliary_head: nn.Module | None = None,
+) -> list[dict]:
+    """Deterministically score held-out trials one by one for diagnostics."""
+    model.eval()
+    rows = []
+    limit = None if max_trials <= 0 else max_trials
+    with torch.no_grad():
+        for rid, t0, target in eval_trial_list:
+            sample = ds[DatasetIndex(recording_id=rid, start=t0, end=t0 + args.window_len)]
+            inputs_np = build_inputs_for_window(
+                model,
+                sample,
+                rid,
+                t0,
+                args,
+                allowed_region_acronyms,
+                fixed_family_auxiliary_config,
+            )
+            if inputs_np is None:
+                continue
+            batch = collate_batch([inputs_np], device=next(model.parameters()).device)
+            logit = float(
+                model_logits_with_optional_auxiliary(model, batch, auxiliary_head)
+                .detach()
+                .float()
+                .cpu()
+                .numpy()
+                .ravel()[0]
+            )
+            prob = float(1 / (1 + math.exp(-logit)))
+            rows.append({
+                "recording_id": rid,
+                "subject": subject_by_rid.get(rid),
+                "t0": float(t0),
+                "target": int(target),
+                "logit": logit,
+                "prob": prob,
+            })
+            if limit is not None and len(rows) >= limit:
+                break
+    model.train()
+    return rows
+
+
+def metrics_from_prediction_rows(rows: list[dict], prefix: str = "full_eval") -> dict:
+    if not rows:
+        return {
+            f"{prefix}_loss": float("nan"),
+            f"{prefix}_acc": float("nan"),
+            f"{prefix}_auc": float("nan"),
+            f"{prefix}_centered_auc": float("nan"),
+            f"{prefix}_n": 0,
+            f"{prefix}_n_pos": 0,
+            f"{prefix}_n_neg": 0,
+        }
+    probs = np.asarray([float(row["prob"]) for row in rows], dtype=np.float64)
+    tgts = np.asarray([int(row["target"]) for row in rows], dtype=np.int64)
+    bce = -float(np.mean(tgts * np.log(np.clip(probs, 1e-7, 1.0)) +
+                         (1 - tgts) * np.log(np.clip(1 - probs, 1e-7, 1.0))))
+    acc = float(np.mean((probs > 0.5) == tgts.astype(bool)))
+    return {
+        f"{prefix}_loss": bce,
+        f"{prefix}_acc": acc,
+        f"{prefix}_auc": _auc(probs, tgts),
+        f"{prefix}_centered_auc": recording_centered_auc_from_prediction_rows(rows),
+        f"{prefix}_n": int(len(tgts)),
+        f"{prefix}_n_pos": int((tgts == 1).sum()),
+        f"{prefix}_n_neg": int((tgts == 0).sum()),
+    }
+
+
+def recording_centered_auc_from_prediction_rows(rows: list[dict]) -> float:
+    rows_by_recording: dict[str, list[dict]] = defaultdict(list)
+    for row in rows:
+        rows_by_recording[str(row.get("recording_id", "__all__"))].append(row)
+    scores = []
+    labels = []
+    for recording_rows in rows_by_recording.values():
+        probs = np.asarray([float(row["prob"]) for row in recording_rows], dtype=np.float64)
+        centered = probs - float(np.mean(probs))
+        scores.extend(float(x) for x in centered)
+        labels.extend(int(row["target"]) for row in recording_rows)
+    if not scores:
+        return float("nan")
+    return _auc(np.asarray(scores, dtype=np.float64), np.asarray(labels, dtype=np.int64))
+
+
+def write_eval_prediction_rows(rows: list[dict], path: Path) -> int:
+    with path.open("w") as fh:
+        for row in rows:
+            fh.write(json.dumps(row) + "\n")
+    return len(rows)
+
+
+def split_model_batch(batch: dict) -> tuple[dict, torch.Tensor | None]:
+    model_batch = dict(batch)
+    fixed_family_feature = model_batch.pop("fixed_family_feature", None)
+    return model_batch, fixed_family_feature
+
+
+def model_logits_with_optional_auxiliary(
+    model,
+    batch: dict,
+    auxiliary_head: nn.Module | None,
+) -> torch.Tensor:
+    model_batch, fixed_family_feature = split_model_batch(batch)
+    logits = model(**model_batch).squeeze(-1)
+    if auxiliary_head is not None:
+        if fixed_family_feature is None:
+            raise ValueError("auxiliary fixed-family arm requires fixed_family_feature in the batch")
+        logits = logits + auxiliary_head(fixed_family_feature)
+    return logits
+
+
+def fixed_family_regions(family: str) -> set[str]:
+    if family not in FIXED_FAMILIES:
+        raise ValueError(f"unknown fixed family {family!r}")
+    return set(FIXED_FAMILIES[family])
+
+
+def fixed_family_membership_by_unit(vocab: dict, family: str) -> dict[str, bool]:
+    members = fixed_family_regions(family)
+    return {
+        str(unit_id): str(region) in members
+        for unit_id, region in zip(vocab["all_unit_ids"], vocab["region_acronyms"])
+    }
+
+
+def fixed_family_count_feature_matrix(
+    ds,
+    vocab: dict,
+    trials: list[tuple[str, float, float]],
+    *,
+    family: str,
+    window_len: float,
+) -> tuple[np.ndarray, np.ndarray, list[str], list[float]]:
+    member_by_unit = fixed_family_membership_by_unit(vocab, family)
+    features = np.zeros((len(trials), 1), dtype=np.float32)
+    targets = np.zeros(len(trials), dtype=np.int64)
+    recording_ids: list[str] = []
+    starts: list[float] = []
+    for row_idx, (rid, t0, target) in enumerate(trials):
+        sample = ds[DatasetIndex(recording_id=rid, start=t0, end=t0 + window_len)]
+        prefix = f"{rid}/"
+        sample_unit_ids = [prefix + unit for unit in sample.units.id.astype(str).tolist()]
+        unit_is_member = np.asarray([member_by_unit.get(unit_id, False) for unit_id in sample_unit_ids], dtype=bool)
+        spike_units = np.asarray(sample.spikes.unit_index, dtype=np.int64)
+        if spike_units.size:
+            features[row_idx, 0] = float(np.count_nonzero(unit_is_member[spike_units]))
+        targets[row_idx] = int(target)
+        recording_ids.append(str(rid))
+        starts.append(float(t0))
+    return features, targets, recording_ids, starts
+
+
+def recording_feature_means(features: np.ndarray, recording_ids: list[str]) -> dict[str, float]:
+    means = {}
+    for rid in sorted(set(recording_ids)):
+        mask = np.asarray([value == rid for value in recording_ids], dtype=bool)
+        if np.any(mask):
+            means[str(rid)] = float(features[mask, 0].mean())
+    return means
+
+
+def build_fixed_family_auxiliary_configs(
+    *,
+    ds,
+    vocab: dict,
+    train_trials: list[tuple[str, float, float]],
+    eval_trials: list[tuple[str, float, float]],
+    family: str,
+    window_len: float,
+) -> tuple[dict, dict]:
+    train_x_raw, _train_y, train_recordings, _train_starts = fixed_family_count_feature_matrix(
+        ds,
+        vocab,
+        train_trials,
+        family=family,
+        window_len=window_len,
+    )
+    eval_x_raw, _eval_y, eval_recordings, _eval_starts = fixed_family_count_feature_matrix(
+        ds,
+        vocab,
+        eval_trials,
+        family=family,
+        window_len=window_len,
+    )
+    train_recording_center = recording_feature_means(train_x_raw, train_recordings)
+    eval_recording_center = recording_feature_means(eval_x_raw, eval_recordings)
+    train_centered = train_x_raw.astype(np.float64).copy()
+    for rid, center in train_recording_center.items():
+        mask = np.asarray([value == rid for value in train_recordings], dtype=bool)
+        train_centered[mask, 0] -= center
+    feature_mean = float(train_centered[:, 0].mean()) if len(train_centered) else 0.0
+    feature_std = float(train_centered[:, 0].std()) if len(train_centered) else 1.0
+    if feature_std < 1e-6:
+        feature_std = 1.0
+    base = {
+        "member_by_unit": fixed_family_membership_by_unit(vocab, family),
+        "feature_mean": feature_mean,
+        "feature_std": feature_std,
+        "family": family,
+        "feature_mode": "recording_centered_zscore",
+    }
+    return (
+        {**base, "recording_center": train_recording_center},
+        {**base, "recording_center": eval_recording_center},
+    )
+
+
+def transform_fixed_family_features(
+    features: np.ndarray,
+    recording_ids: list[str],
+    feature_mode: str,
+) -> np.ndarray:
+    if feature_mode == "counts":
+        return features.astype(np.float64)
+    if feature_mode == "recording_centered":
+        out = features.astype(np.float64).copy()
+        for rid in sorted(set(recording_ids)):
+            mask = np.asarray([value == rid for value in recording_ids], dtype=bool)
+            if np.any(mask):
+                out[mask] -= out[mask].mean(axis=0, keepdims=True)
+        return out
+    raise ValueError(f"unknown fixed family feature mode {feature_mode!r}")
+
+
+def zscore_fixed_train_eval(train_x: np.ndarray, eval_x: np.ndarray) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+    mean = train_x.mean(axis=0, keepdims=True)
+    std = train_x.std(axis=0, keepdims=True)
+    std[std < 1e-6] = 1.0
+    return (train_x - mean) / std, (eval_x - mean) / std, mean, std
+
+
+def fit_fixed_logistic(
+    train_x: np.ndarray,
+    train_y: np.ndarray,
+    *,
+    seed: int,
+    steps: int,
+    lr: float,
+    l2: float,
+) -> dict:
+    train_z, _eval_z, mean, std = zscore_fixed_train_eval(train_x.astype(np.float64), train_x.astype(np.float64))
+    design = np.concatenate([train_z, np.ones((train_z.shape[0], 1), dtype=np.float64)], axis=1)
+    rng = np.random.default_rng(seed)
+    weights = rng.normal(0.0, 0.01, size=design.shape[1])
+    y = train_y.astype(np.float64)
+    losses: list[float] = []
+    for _ in range(steps):
+        logits = np.clip(design @ weights, -40.0, 40.0)
+        probs = 1.0 / (1.0 + np.exp(-logits))
+        bce = -float(np.mean(y * np.log(np.clip(probs, 1e-7, 1.0)) + (1.0 - y) * np.log(np.clip(1.0 - probs, 1e-7, 1.0))))
+        losses.append(bce)
+        grad = design.T @ (probs - y) / len(y)
+        grad[:-1] += l2 * weights[:-1] / len(y)
+        weights -= lr * grad
+    return {"weights": weights, "mean": mean.ravel(), "std": std.ravel(), "losses": losses}
+
+
+def fixed_logistic_scores(model_state: dict, x: np.ndarray) -> np.ndarray:
+    mean = np.asarray(model_state["mean"], dtype=np.float64).reshape(1, -1)
+    std = np.asarray(model_state["std"], dtype=np.float64).reshape(1, -1)
+    weights = np.asarray(model_state["weights"], dtype=np.float64)
+    z = (x.astype(np.float64) - mean) / std
+    design = np.concatenate([z, np.ones((z.shape[0], 1), dtype=np.float64)], axis=1)
+    return design @ weights
+
+
+def prediction_rows_from_fixed_scores(
+    scores: np.ndarray,
+    y: np.ndarray,
+    recording_ids: list[str],
+    starts: list[float],
+    subject_by_rid: dict[str, str],
+) -> list[dict]:
+    rows = []
+    for score, target, rid, t0 in zip(scores, y, recording_ids, starts):
+        logit = float(score)
+        prob = float(1.0 / (1.0 + math.exp(-max(-40.0, min(40.0, logit)))))
+        rows.append({
+            "recording_id": rid,
+            "subject": subject_by_rid.get(rid),
+            "t0": float(t0),
+            "target": int(target),
+            "logit": logit,
+            "prob": prob,
+        })
+    return rows
+
+
+def run_fixed_broad_family_count_arm(
+    *,
+    args,
+    ds,
+    vocab: dict,
+    train_trials: list[tuple[str, float, float]],
+    eval_trials: list[tuple[str, float, float]],
+    log,
+) -> int:
+    t_start = time.time()
+    if args.fixed_family != "broad_named_anatomy":
+        log({"event": "fatal", "msg": "fixed_broad_family_count currently supports broad_named_anatomy only"})
+        return 1
+    train_x_raw, train_y, train_recordings, _train_starts = fixed_family_count_feature_matrix(
+        ds,
+        vocab,
+        train_trials,
+        family=args.fixed_family,
+        window_len=args.window_len,
+    )
+    eval_x_raw, eval_y, eval_recordings, eval_starts = fixed_family_count_feature_matrix(
+        ds,
+        vocab,
+        eval_trials,
+        family=args.fixed_family,
+        window_len=args.window_len,
+    )
+    train_x = transform_fixed_family_features(train_x_raw, train_recordings, args.fixed_family_feature_mode)
+    eval_x = transform_fixed_family_features(eval_x_raw, eval_recordings, args.fixed_family_feature_mode)
+    model_state = fit_fixed_logistic(
+        train_x,
+        train_y,
+        seed=args.seed,
+        steps=args.max_steps,
+        lr=args.lr,
+        l2=args.weight_decay,
+    )
+    train_scores = fixed_logistic_scores(model_state, train_x)
+    eval_scores = fixed_logistic_scores(model_state, eval_x)
+    train_rows = prediction_rows_from_fixed_scores(train_scores, train_y, train_recordings, _train_starts, vocab["subject_by_rid"])
+    eval_rows = prediction_rows_from_fixed_scores(eval_scores, eval_y, eval_recordings, eval_starts, vocab["subject_by_rid"])
+    train_metrics = metrics_from_prediction_rows(train_rows, prefix="train")
+    eval_metrics = metrics_from_prediction_rows(eval_rows, prefix="eval")
+    full_eval_metrics = metrics_from_prediction_rows(eval_rows, prefix="full_eval")
+    best_metric_value = float({**eval_metrics, **full_eval_metrics}[args.best_metric])
+    ckpt = {
+        "step": args.max_steps,
+        "args": vars(args),
+        "state_dict": {
+            "weights": [float(value) for value in np.asarray(model_state["weights"]).ravel()],
+            "mean": [float(value) for value in np.asarray(model_state["mean"]).ravel()],
+            "std": [float(value) for value in np.asarray(model_state["std"]).ravel()],
+        },
+        "family": args.fixed_family,
+        "feature_mode": args.fixed_family_feature_mode,
+        "eval": eval_metrics,
+    }
+    torch.save(ckpt, args.out_dir / "best.ckpt")
+    torch.save(ckpt, args.out_dir / "last.ckpt")
+    write_eval_prediction_rows(eval_rows, args.out_dir / "eval_predictions.jsonl")
+    summary = {
+        "arm": args.arm,
+        "family": args.fixed_family,
+        "feature_mode": args.fixed_family_feature_mode,
+        "region_label_control": args.region_label_control,
+        "n_train": int(len(train_y)),
+        "n_eval": int(len(eval_y)),
+        "train_auc": train_metrics["train_auc"],
+        "eval_auc": eval_metrics["eval_auc"],
+        "eval_centered_auc": full_eval_metrics["full_eval_centered_auc"],
+        "best_metric": args.best_metric,
+        "best_metric_value": best_metric_value,
+    }
+    (args.out_dir / "fixed_family_summary.json").write_text(json.dumps(summary, indent=2, sort_keys=True) + "\n")
+    log({"event": "model", "arm": args.arm, "n_params": int(len(model_state["weights"])), "fixed_family": args.fixed_family})
+    if model_state["losses"]:
+        log({"event": "train", "step": args.max_steps, "loss": float(model_state["losses"][-1]), "train_auc": train_metrics["train_auc"]})
+    log({"event": "eval", "step": args.max_steps, **eval_metrics})
+    log({"event": "full_eval", "step": args.max_steps, **full_eval_metrics})
+    log({"event": "ckpt_best", "step": args.max_steps, "best_metric": args.best_metric, "best_metric_value": best_metric_value, "eval_auc": eval_metrics["eval_auc"]})
+    log({"event": "eval_predictions_saved", "step": args.max_steps, "rows": len(eval_rows), "path": str(args.out_dir / "eval_predictions.jsonl")})
+    done_record = {
+        "event": "done",
+        "wall_clock_s": time.time() - t_start,
+        "best_metric": args.best_metric,
+        "best_metric_value": best_metric_value,
+        "fixed_family_summary": str(args.out_dir / "fixed_family_summary.json"),
+    }
+    if args.best_metric == "eval_loss":
+        done_record["best_eval_loss"] = best_metric_value
+    log(done_record)
+    return 0
 
 
 def main():
@@ -378,18 +1447,27 @@ def main():
          "device": str(device)})
 
     ds = Dataset(dataset_dir=args.data_dir, keep_files_open=True)
-    vocab = build_vocab(ds)
+    selected_recording_ids = select_recording_ids(ds, args.manifest, args.data_dir)
+    vocab = build_vocab(ds, args.region_granularity, selected_recording_ids)
+    vocab = apply_region_label_control(vocab, args.region_label_control, args.seed)
 
     if args.split_mode == "animal":
-        train_rids, eval_rids, holdout = split_recordings(vocab["subject_by_rid"], args.holdout)
-        train_trials = build_trial_samples(vocab["recs"], train_rids, args.window_len)
-        eval_trials = build_trial_samples(vocab["recs"], eval_rids, args.window_len)
-        split_info = {"split_mode": "animal", "holdout_subjects": holdout,
+        animal_split = split_recordings_by_subject(vocab["subject_by_rid"], args.holdout)
+        train_rids = animal_split.train_rids
+        eval_rids = animal_split.eval_rids
+        train_trials = build_trial_samples(vocab["recs"], train_rids, args.window_len, args.target_mode)
+        eval_trials = build_trial_samples(vocab["recs"], eval_rids, args.window_len, args.target_mode)
+        split_info = {"split_mode": "animal",
+                      "holdout_subjects": animal_split.holdout_subjects,
+                      "train_subjects": animal_split.train_subjects,
+                      "eval_subjects": animal_split.eval_subjects,
                       "n_train_rids": len(train_rids), "n_eval_rids": len(eval_rids)}
     else:
         # Within-animal: all recordings in both splits, trials shuffled 80/20
         all_rids = list(vocab["recs"].keys())
-        all_trials = build_trial_samples(vocab["recs"], all_rids, args.window_len)
+        train_rids = all_rids
+        eval_rids = all_rids
+        all_trials = build_trial_samples(vocab["recs"], all_rids, args.window_len, args.target_mode)
         split_rng = np.random.default_rng(args.split_seed)
         perm = split_rng.permutation(len(all_trials))
         n_train = int(len(all_trials) * 0.8)
@@ -402,26 +1480,74 @@ def main():
     n_train_right = sum(1 for *_, t in train_trials if t == 1.0)
     n_eval_left = sum(1 for *_, t in eval_trials if t == 0.0)
     n_eval_right = sum(1 for *_, t in eval_trials if t == 1.0)
-    log({"event": "split", "n_recordings": len(ds.recording_ids),
+    allowed_region_acronyms = None
+    include_regions = parse_region_include(args.region_include)
+    region_filter_info = {"region_filter": args.region_filter, "region_include": sorted(include_regions)}
+    if args.region_filter == "shared_regions":
+        allowed_region_acronyms = shared_split_regions(
+            vocab["recs"], train_rids, eval_rids, args.region_granularity,
+        )
+        region_filter_info.update({
+            "n_allowed_regions": len(allowed_region_acronyms),
+            "allowed_regions": sorted(allowed_region_acronyms),
+        })
+    elif args.region_filter == "include_regions":
+        if not include_regions:
+            log({"event": "fatal", "msg": "--region-filter=include_regions requires --region-include"})
+            return 1
+        allowed_region_acronyms = include_regions
+        region_filter_info.update({
+            "n_allowed_regions": len(allowed_region_acronyms),
+            "allowed_regions": sorted(allowed_region_acronyms),
+        })
+    log({"event": "split", "n_recordings": len(selected_recording_ids),
+         "data_recordings_available": len(ds.recording_ids),
+         "manifest": str(args.manifest) if args.manifest else None,
          **split_info,
+         **region_filter_info,
+         "region_granularity": args.region_granularity,
+         "region_label_control": args.region_label_control,
+         "target_mode": args.target_mode,
          "n_train_trials": len(train_trials),
          "n_eval_trials": len(eval_trials),
          "train_class_balance": {"L": n_train_left, "R": n_train_right},
-         "eval_class_balance": {"L": n_eval_left, "R": n_eval_right}})
+         "eval_class_balance": {"L": n_eval_left, "R": n_eval_right},
+         "train_subject_trial_counts": subject_trial_counts(train_trials, vocab["subject_by_rid"]),
+         "eval_subject_trial_counts": subject_trial_counts(eval_trials, vocab["subject_by_rid"]),
+         "train_recordings": recording_diagnostics(vocab["recs"], train_rids),
+         "eval_recordings": recording_diagnostics(vocab["recs"], eval_rids)})
     if not train_trials or not eval_trials:
         log({"event": "fatal", "msg": "no trials available in train or eval split"})
         return 1
 
-    priors_df = pd.read_parquet(args.priors_path)
-    taxonomy = pd.read_parquet(args.taxonomy_path)["subclass"].tolist()
-    n_cell_types = len(taxonomy)
-    model, flags = build_model(vocab, args, n_cell_types)
+    if args.arm == "fixed_broad_family_count":
+        result = run_fixed_broad_family_count_arm(
+            args=args,
+            ds=ds,
+            vocab=vocab,
+            train_trials=train_trials,
+            eval_trials=eval_trials,
+            log=log,
+        )
+        log_fh.close()
+        return result
+
+    flags = arm_flags(args.arm)
+    priors_df = None
+    taxonomy: list[str] = []
+    if flags["use_cell_type_emb"]:
+        priors_df = pd.read_parquet(args.priors_path)
+        taxonomy = pd.read_parquet(args.taxonomy_path)["subclass"].tolist()
+    model, flags = build_model(vocab, args, len(taxonomy))
     model.unit_emb.initialize_vocab(vocab["all_unit_ids"])
-    model.session_emb.initialize_vocab(vocab["session_ids"])
+    model.session_emb.initialize_vocab(
+        build_session_vocab(vocab["session_ids"], args.output_query_mode)
+    )
     model.register_unit_anatomy(vocab["all_unit_ids"], vocab["region_idx_per_unit"])
     if flags["use_cell_type_emb"]:
+        assert priors_df is not None
         model.register_unit_cell_types(
-            vocab["all_unit_ids"], vocab["region_acronyms"], priors_df, taxonomy,
+            vocab["all_unit_ids"], vocab["cell_type_region_acronyms"], priors_df, taxonomy,
         )
     if flags["use_waveform_emb"]:
         model.register_unit_waveform_features(
@@ -430,23 +1556,61 @@ def main():
     n_params = sum(p.numel() for p in model.parameters())
     log({"event": "model", "arm": args.arm, "n_params": n_params, **flags})
     model = model.to(device)
+    auxiliary_head = None
+    train_fixed_family_auxiliary_config = None
+    eval_fixed_family_auxiliary_config = None
+    if args.arm == "region_fixed_broad_family_auxiliary":
+        if args.fixed_family != "broad_named_anatomy":
+            log({"event": "fatal", "msg": "auxiliary fixed-family arm currently supports broad_named_anatomy only"})
+            return 1
+        auxiliary_head = nn.Linear(1, 1).to(device)
+        train_fixed_family_auxiliary_config, eval_fixed_family_auxiliary_config = build_fixed_family_auxiliary_configs(
+            ds=ds,
+            vocab=vocab,
+            train_trials=train_trials,
+            eval_trials=eval_trials,
+            family=args.fixed_family,
+            window_len=args.window_len,
+        )
+        n_params += sum(p.numel() for p in auxiliary_head.parameters())
+        log({
+            "event": "auxiliary_model",
+            "arm": args.arm,
+            "fixed_family": args.fixed_family,
+            "fixed_family_feature_mode": train_fixed_family_auxiliary_config["feature_mode"],
+            "fixed_family_feature_mean": train_fixed_family_auxiliary_config["feature_mean"],
+            "fixed_family_feature_std": train_fixed_family_auxiliary_config["feature_std"],
+            "n_aux_params": sum(p.numel() for p in auxiliary_head.parameters()),
+            "n_params_with_auxiliary": n_params,
+        })
 
-    optimizer = torch.optim.AdamW(model.parameters(), lr=args.lr, weight_decay=args.weight_decay)
+    params = list(model.parameters())
+    if auxiliary_head is not None:
+        params.extend(auxiliary_head.parameters())
+    optimizer = torch.optim.AdamW(params, lr=args.lr, weight_decay=args.weight_decay)
     scheduler = torch.optim.lr_scheduler.LambdaLR(
         optimizer, lambda s: lr_lambda(s, args.warmup_steps, args.max_steps),
     )
 
-    best_eval = float("inf")
+    best_eval = best_metric_initial_value(args.best_metric)
     losses = []
     t_start = time.time()
     model.train()
     for step in range(1, args.max_steps + 1):
-        batch, target = draw_batch(ds, train_trials, args, model, rng)
+        batch, target, batch_meta = draw_batch(
+            ds,
+            train_trials,
+            args,
+            model,
+            rng,
+            allowed_region_acronyms,
+            fixed_family_auxiliary_config=train_fixed_family_auxiliary_config,
+        )
         if batch is None:
             log({"event": "skip_step", "step": step, "reason": "no_valid_samples"})
             continue
-        out = model(**batch).squeeze(-1)  # (B, 1)
-        loss = F.binary_cross_entropy_with_logits(out, target)
+        out = model_logits_with_optional_auxiliary(model, batch, auxiliary_head)
+        loss = training_loss(out, target, args.loss_mode, batch_meta)
         optimizer.zero_grad()
         loss.backward()
         gnorm = torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
@@ -464,22 +1628,96 @@ def main():
                  "lr": optimizer.param_groups[0]["lr"]})
 
         if step % args.eval_every == 0 or step == args.max_steps:
-            eval_metrics = evaluate(model, ds, eval_trials, args)
+            eval_metrics = evaluate(
+                model,
+                ds,
+                eval_trials,
+                args,
+                allowed_region_acronyms,
+                eval_fixed_family_auxiliary_config,
+                auxiliary_head,
+            )
             log({"event": "eval", "step": step, **eval_metrics})
-            if eval_metrics["eval_loss"] < best_eval:
-                best_eval = eval_metrics["eval_loss"]
+            prediction_rows = None
+            full_eval_metrics = None
+            full_eval_selection = best_metric_requires_full_eval(args.best_metric)
+            if full_eval_selection:
+                prediction_rows = eval_prediction_rows(
+                    model,
+                    ds,
+                    eval_trials,
+                    args,
+                    allowed_region_acronyms,
+                    vocab["subject_by_rid"],
+                    max_trials=0,
+                    fixed_family_auxiliary_config=eval_fixed_family_auxiliary_config,
+                    auxiliary_head=auxiliary_head,
+                )
+                full_eval_metrics = metrics_from_prediction_rows(prediction_rows)
+                log({"event": "full_eval", "step": step, **full_eval_metrics})
+            metric_values = {**eval_metrics, **(full_eval_metrics or {})}
+            candidate_metric = float(metric_values[args.best_metric])
+            if is_better_metric(args.best_metric, candidate_metric, best_eval):
+                best_eval = candidate_metric
                 ckpt = {"step": step, "args": vars(args), "state_dict": model.state_dict(),
+                        "auxiliary_state_dict": None if auxiliary_head is None else auxiliary_head.state_dict(),
                         "vocab_unit_ids": vocab["all_unit_ids"],
                         "vocab_session_ids": vocab["session_ids"],
                         "eval": eval_metrics}
                 torch.save(ckpt, args.out_dir / "best.ckpt")
-                log({"event": "ckpt_best", "step": step, "eval_loss": best_eval,
+                log({"event": "ckpt_best", "step": step,
+                     "best_metric": args.best_metric, "best_metric_value": best_eval,
+                     "eval_loss": eval_metrics["eval_loss"],
                      "eval_acc": eval_metrics["eval_acc"], "eval_auc": eval_metrics["eval_auc"]})
+                if args.save_eval_predictions or args.full_eval_on_best:
+                    if prediction_rows is None:
+                        prediction_rows = eval_prediction_rows(
+                            model,
+                            ds,
+                            eval_trials,
+                            args,
+                            allowed_region_acronyms,
+                            vocab["subject_by_rid"],
+                            max_trials=0 if args.full_eval_on_best else args.eval_prediction_max_trials,
+                            fixed_family_auxiliary_config=eval_fixed_family_auxiliary_config,
+                            auxiliary_head=auxiliary_head,
+                        )
+                if args.full_eval_on_best and not full_eval_selection:
+                    assert prediction_rows is not None
+                    log({"event": "full_eval", "step": step, **metrics_from_prediction_rows(prediction_rows)})
+                if args.save_eval_predictions:
+                    assert prediction_rows is not None
+                    rows_to_write = prediction_rows
+                    if args.eval_prediction_max_trials > 0:
+                        rows_to_write = rows_to_write[:args.eval_prediction_max_trials]
+                    n_pred_rows = write_eval_prediction_rows(rows_to_write, args.out_dir / "eval_predictions.jsonl")
+                    log({"event": "eval_predictions_saved", "step": step, "rows": n_pred_rows,
+                         "path": str(args.out_dir / "eval_predictions.jsonl")})
+                if args.save_region_embeddings:
+                    n_region_rows = write_region_embeddings(
+                        model,
+                        vocab,
+                        args.out_dir / "region_embeddings.jsonl",
+                    )
+                    log({"event": "region_embeddings_saved", "step": step, "rows": n_region_rows,
+                         "path": str(args.out_dir / "region_embeddings.jsonl")})
 
     # Save last
-    torch.save({"step": step, "args": vars(args), "state_dict": model.state_dict()},
-               args.out_dir / "last.ckpt")
-    log({"event": "done", "wall_clock_s": time.time() - t_start, "best_eval_loss": best_eval})
+    torch.save({
+        "step": step,
+        "args": vars(args),
+        "state_dict": model.state_dict(),
+        "auxiliary_state_dict": None if auxiliary_head is None else auxiliary_head.state_dict(),
+    }, args.out_dir / "last.ckpt")
+    done_record = {
+        "event": "done",
+        "wall_clock_s": time.time() - t_start,
+        "best_metric": args.best_metric,
+        "best_metric_value": best_eval,
+    }
+    if args.best_metric == "eval_loss":
+        done_record["best_eval_loss"] = best_eval
+    log(done_record)
     log_fh.close()
     return 0
 

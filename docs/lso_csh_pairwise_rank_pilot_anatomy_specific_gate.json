@@ -1,0 +1,72 @@
+{
+  "arms": [
+    "shared_baseline",
+    "region_only",
+    "region_shuffle"
+  ],
+  "checks": {
+    "bidirectional_target_classes": false,
+    "positive_centered_delta": false,
+    "positive_specificity_gap": true,
+    "recording_permutation": false,
+    "recording_support": false
+  },
+  "holdout": "CSH_ZAD_019",
+  "metrics": {
+    "bidirectional_recording_classifications": {
+      "downward_probability_shift": 4
+    },
+    "centered_auc_delta_vs_shuffle": -0.01394671492495736,
+    "centered_auc_region_only": 0.47972972237698924,
+    "centered_auc_region_shuffle": 0.4936764373019466,
+    "full_auc_delta_vs_shuffle": -3.0741807988288183e-05,
+    "full_auc_region_only": 0.4735759197513668,
+    "full_auc_region_shuffle": 0.4736066615593551,
+    "n_recordings": 4,
+    "paired_shuffle_vs_shared": 0.4482758620689655,
+    "paired_specificity_gap": 0.10344827586206895,
+    "paired_true_vs_shuffle": 0.5517241379310345,
+    "recording_deltas": {
+      "49e0ab27-827a-4c91-bcaa-97eea27a1b8d_probe01": -0.0272886972491716,
+      "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe00": 0.05297071922676011,
+      "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe01": -0.019413910736283513,
+      "edd22318-216c-44ff-bc24-49ce8be78374_probe00": -0.021221335789459395
+    },
+    "recording_sign_flip": {
+      "n_recordings": 4,
+      "null_distribution": [
+        -0.030223665750418655,
+        -0.020516710382276898,
+        -0.019612997855688957,
+        -0.016579317125832854,
+        -0.0099060424875472,
+        -0.006872361757691098,
+        -0.005968649231103157,
+        -0.0037383061370385995,
+        0.0037383061370385995,
+        0.005968649231103157,
+        0.006872361757691098,
+        0.0099060424875472,
+        0.016579317125832854,
+        0.019612997855688957,
+        0.020516710382276898,
+        0.030223665750418655
+      ],
+      "observed_mean_delta": -0.0037383061370385995,
+      "one_sided_p": 0.5625
+    },
+    "recording_support_fraction": 0.25,
+    "recordings_positive": 1,
+    "target0_true_class_improved": 1.0,
+    "target1_true_class_improved": 0.0
+  },
+  "pass": false,
+  "root": "runs/lso_csh_pairwise_rank_pilot",
+  "thresholds": {
+    "alpha": 0.05,
+    "min_centered_delta": 0.01,
+    "min_recording_support_fraction": 0.75,
+    "min_specificity_gap": 0.0,
+    "min_target_class_improvement": 0.55
+  }
+}

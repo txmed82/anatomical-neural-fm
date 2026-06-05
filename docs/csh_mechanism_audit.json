@@ -1,0 +1,232 @@
+{
+  "carriers": [
+    "PRT",
+    "CA",
+    "VP",
+    "MOp",
+    "DG",
+    "mfbc"
+  ],
+  "embedding_summary": {
+    "carriers": {
+      "CA": {
+        "cosine": 0.993574249798988,
+        "l2_distance": 0.019947200651311083,
+        "norm_delta": -0.0022692084312438965,
+        "present": true,
+        "shuffle_norm": 0.17595238983631134,
+        "true_norm": 0.17368318140506744
+      },
+      "DG": {
+        "cosine": 0.9922739334379819,
+        "l2_distance": 0.0251031109768422,
+        "norm_delta": 0.00040684640407562256,
+        "present": true,
+        "shuffle_norm": 0.20171526074409485,
+        "true_norm": 0.20212210714817047
+      },
+      "MOp": {
+        "cosine": 0.9854544578596905,
+        "l2_distance": 0.038983046514121676,
+        "norm_delta": -0.003973469138145447,
+        "present": true,
+        "shuffle_norm": 0.22936271131038666,
+        "true_norm": 0.2253892421722412
+      },
+      "PRT": {
+        "cosine": 0.9973342474293545,
+        "l2_distance": 0.0143493630265912,
+        "norm_delta": -0.0010689347982406616,
+        "present": true,
+        "shuffle_norm": 0.19650959968566895,
+        "true_norm": 0.19544066488742828
+      },
+      "VP": {
+        "cosine": 0.9883356743190154,
+        "l2_distance": 0.030231910079819256,
+        "norm_delta": 0.001247122883796692,
+        "present": true,
+        "shuffle_norm": 0.19714310765266418,
+        "true_norm": 0.19839023053646088
+      },
+      "mfbc": {
+        "cosine": 0.9949680202782738,
+        "l2_distance": 0.018426874701325275,
+        "norm_delta": -0.000634998083114624,
+        "present": true,
+        "shuffle_norm": 0.1838909536600113,
+        "true_norm": 0.18325595557689667
+      }
+    },
+    "mean_abs_norm_delta": 0.001600096623102824,
+    "mean_carrier_cosine": 0.9919900971872174,
+    "mean_carrier_l2_distance": 0.024506917658335115
+  },
+  "global": {
+    "paired_shuffle_vs_shared": {
+      "improved_fraction": 0.5517241379310345,
+      "mean_abs_prob_delta": 0.020944932417390066,
+      "mean_true_prob_delta": 0.0029774272660246163,
+      "n": 2726
+    },
+    "paired_true_vs_shuffle": {
+      "improved_fraction": 0.4482758620689655,
+      "mean_abs_prob_delta": 0.018970650600588827,
+      "mean_true_prob_delta": -0.002746968179940993,
+      "n": 2726
+    },
+    "specificity_gap": -0.10344827586206895
+  },
+  "holdout": "CSH_ZAD_019",
+  "interpretation": {
+    "carrier_embeddings_separated": false,
+    "carrier_rich_negative_recordings": [
+      "49e0ab27-827a-4c91-bcaa-97eea27a1b8d_probe01",
+      "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe00",
+      "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe01",
+      "edd22318-216c-44ff-bc24-49ce8be78374_probe00"
+    ],
+    "decision": "no_mechanism_found",
+    "negative_recordings": [
+      "49e0ab27-827a-4c91-bcaa-97eea27a1b8d_probe01",
+      "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe00",
+      "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe01",
+      "edd22318-216c-44ff-bc24-49ce8be78374_probe00"
+    ],
+    "shuffle_control_specificity": false,
+    "true_beats_shuffle_paired": false
+  },
+  "recordings": {
+    "49e0ab27-827a-4c91-bcaa-97eea27a1b8d_probe01": {
+      "carrier": {
+        "carrier_counts": {
+          "CA": 265,
+          "DG": 56,
+          "PRT": 414,
+          "mfbc": 8
+        },
+        "carrier_unit_fraction": 0.7870762711864406,
+        "carrier_units": 743,
+        "n_units": 944
+      },
+      "n_trials": 777,
+      "paired_shuffle_vs_shared": {
+        "improved_fraction": 0.5328185328185329,
+        "mean_abs_prob_delta": 0.01516227899092561,
+        "mean_true_prob_delta": 0.0011117682139387994,
+        "n": 777
+      },
+      "paired_true_vs_shared": {
+        "improved_fraction": 0.5328185328185329,
+        "mean_abs_prob_delta": 0.012283996290393144,
+        "mean_true_prob_delta": 0.0008805180876319477,
+        "n": 777
+      },
+      "paired_true_vs_shuffle": {
+        "improved_fraction": 0.4671814671814672,
+        "mean_abs_prob_delta": 0.0030307689693611912,
+        "mean_true_prob_delta": -0.0002312501263068519,
+        "n": 777
+      },
+      "target1_fraction": 0.4671814671814672
+    },
+    "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe00": {
+      "carrier": {
+        "carrier_counts": {
+          "CA": 215,
+          "DG": 103,
+          "MOp": 467,
+          "mfbc": 20
+        },
+        "carrier_unit_fraction": 0.6862745098039216,
+        "carrier_units": 805,
+        "n_units": 1173
+      },
+      "n_trials": 590,
+      "paired_shuffle_vs_shared": {
+        "improved_fraction": 0.5864406779661017,
+        "mean_abs_prob_delta": 0.04501868702444893,
+        "mean_true_prob_delta": 0.008255093882199669,
+        "n": 590
+      },
+      "paired_true_vs_shared": {
+        "improved_fraction": 0.48135593220338985,
+        "mean_abs_prob_delta": 0.006274950126803874,
+        "mean_true_prob_delta": -0.0005009269253554424,
+        "n": 590
+      },
+      "paired_true_vs_shuffle": {
+        "improved_fraction": 0.4135593220338983,
+        "mean_abs_prob_delta": 0.05005741084783997,
+        "mean_true_prob_delta": -0.008756020807555113,
+        "n": 590
+      },
+      "target1_fraction": 0.4135593220338983
+    },
+    "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe01": {
+      "carrier": {
+        "carrier_counts": {
+          "MOp": 10,
+          "VP": 335,
+          "mfbc": 1
+        },
+        "carrier_unit_fraction": 0.4119047619047619,
+        "carrier_units": 346,
+        "n_units": 840
+      },
+      "n_trials": 590,
+      "paired_shuffle_vs_shared": {
+        "improved_fraction": 0.5864406779661017,
+        "mean_abs_prob_delta": 0.017739617967629216,
+        "mean_true_prob_delta": 0.0034295474457913745,
+        "n": 590
+      },
+      "paired_true_vs_shared": {
+        "improved_fraction": 0.5169491525423728,
+        "mean_abs_prob_delta": 0.004253836018614145,
+        "mean_true_prob_delta": 0.0003915151514413024,
+        "n": 590
+      },
+      "paired_true_vs_shuffle": {
+        "improved_fraction": 0.4135593220338983,
+        "mean_abs_prob_delta": 0.016984148900726897,
+        "mean_true_prob_delta": -0.0030380322943500725,
+        "n": 590
+      },
+      "target1_fraction": 0.4135593220338983
+    },
+    "edd22318-216c-44ff-bc24-49ce8be78374_probe00": {
+      "carrier": {
+        "carrier_counts": {
+          "PRT": 25,
+          "mfbc": 123
+        },
+        "carrier_unit_fraction": 0.24382207578253706,
+        "carrier_units": 148,
+        "n_units": 607
+      },
+      "n_trials": 769,
+      "paired_shuffle_vs_shared": {
+        "improved_fraction": 0.517555266579974,
+        "mean_abs_prob_delta": 0.010776846617074145,
+        "mean_true_prob_delta": 0.0004664297027801568,
+        "n": 769
+      },
+      "paired_true_vs_shared": {
+        "improved_fraction": 0.4967490247074122,
+        "mean_abs_prob_delta": 0.004295264098058933,
+        "mean_true_prob_delta": 1.1211783073182288e-05,
+        "n": 769
+      },
+      "paired_true_vs_shuffle": {
+        "improved_fraction": 0.48244473342002603,
+        "mean_abs_prob_delta": 0.012749760463403186,
+        "mean_true_prob_delta": -0.00045521791970697453,
+        "n": 769
+      },
+      "target1_fraction": 0.48244473342002603
+    }
+  },
+  "root": "/Users/colin/Desktop/Projects/anatomical-neural-fm/runs/lso_csh_recording_centered_gate_pilot",
+  "seed": 0
+}

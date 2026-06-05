@@ -1,0 +1,368 @@
+{
+  "case": {
+    "holdout": "CSH_ZAD_019",
+    "region": "root",
+    "target_mode": "response_latency_extreme"
+  },
+  "robust_region_seed_candidates": [],
+  "rows": [
+    {
+      "holdout": "CSH_ZAD_019",
+      "max_bidirectional_recordings": 3,
+      "max_centered_delta_vs_shuffle": 0.13590268350192403,
+      "mean_centered_delta_vs_shuffle": 0.07917300370525364,
+      "mean_centered_delta_vs_total": 0.01856964958303131,
+      "mean_target0": 0.5380191693290736,
+      "mean_target1": 0.5546325878594249,
+      "min_bidirectional_recordings": 1,
+      "min_centered_delta_vs_shuffle": 0.04828568220559559,
+      "n_candidate_seeds": 1,
+      "n_positive_shuffle_delta_seeds": 5,
+      "n_seeds": 5,
+      "positive_shuffle_delta_fraction": 1.0,
+      "region": "root",
+      "robust_region_seed_candidate": false,
+      "seed_rows": [
+        {
+          "bidirectional_recording_fraction": 0.75,
+          "centered_delta_vs_shuffle": 0.13590268350192403,
+          "centered_delta_vs_total": 0.01856964958303131,
+          "decision": "candidate",
+          "eval_auc": 0.6285814900631832,
+          "eval_centered_auc": 0.6285814900631832,
+          "eval_nonzero_fraction": 0.4776357827476038,
+          "holdout": "CSH_ZAD_019",
+          "n_bidirectional_recordings": 3,
+          "n_recordings": 4,
+          "paired_improved_vs_shuffle": 0.6062300319488818,
+          "paired_improved_vs_total": 0.5431309904153354,
+          "path": "docs/extreme_quantile_region_specificity.json",
+          "recording_target_rows": [
+            {
+              "improved_fraction": 0.4745762711864407,
+              "mean_true_class_delta": -0.01165754665962125,
+              "n_trials": 354,
+              "recording": "49e0ab27-827a-4c91-bcaa-97eea27a1b8d_probe01",
+              "target0_improved": 0.4745762711864407,
+              "target1_fraction": 0.5,
+              "target1_improved": 0.4745762711864407
+            },
+            {
+              "improved_fraction": 0.6777777777777778,
+              "mean_true_class_delta": 0.015844241553100918,
+              "n_trials": 270,
+              "recording": "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe00",
+              "target0_improved": 0.7333333333333333,
+              "target1_fraction": 0.5,
+              "target1_improved": 0.6222222222222222
+            },
+            {
+              "improved_fraction": 0.5962962962962963,
+              "mean_true_class_delta": 0.018295366544543147,
+              "n_trials": 270,
+              "recording": "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe01",
+              "target0_improved": 0.6074074074074074,
+              "target1_fraction": 0.5,
+              "target1_improved": 0.5851851851851851
+            },
+            {
+              "improved_fraction": 0.6899441340782123,
+              "mean_true_class_delta": 0.13824233174364783,
+              "n_trials": 358,
+              "recording": "edd22318-216c-44ff-bc24-49ce8be78374_probe00",
+              "target0_improved": 0.7039106145251397,
+              "target1_fraction": 0.5,
+              "target1_improved": 0.6759776536312849
+            }
+          ],
+          "region": "root",
+          "seed": 0,
+          "shuffle_centered_auc": 0.4926788065612592,
+          "target0_improved_vs_shuffle": 0.6246006389776357,
+          "target0_improved_vs_total": 0.6741214057507987,
+          "target1_improved_vs_shuffle": 0.5878594249201278,
+          "target1_improved_vs_total": 0.41214057507987223,
+          "target_mode": "response_latency_extreme",
+          "total_centered_auc": 0.6100118404801519,
+          "train_auc": 0.7872150238307281,
+          "train_nonzero_fraction": 0.18100539811066127
+        },
+        {
+          "bidirectional_recording_fraction": 0.5,
+          "centered_delta_vs_shuffle": 0.05644642693096791,
+          "centered_delta_vs_total": 0.01856964958303131,
+          "decision": "reject: target0",
+          "eval_auc": 0.6285814900631832,
+          "eval_centered_auc": 0.6285814900631832,
+          "eval_nonzero_fraction": 0.4776357827476038,
+          "holdout": "CSH_ZAD_019",
+          "n_bidirectional_recordings": 2,
+          "n_recordings": 4,
+          "paired_improved_vs_shuffle": 0.5375399361022364,
+          "paired_improved_vs_total": 0.5431309904153354,
+          "path": "docs/extreme_quantile_region_specificity_seed_1.json",
+          "recording_target_rows": [
+            {
+              "improved_fraction": 0.3954802259887006,
+              "mean_true_class_delta": -0.0763168328436664,
+              "n_trials": 354,
+              "recording": "49e0ab27-827a-4c91-bcaa-97eea27a1b8d_probe01",
+              "target0_improved": 0.384180790960452,
+              "target1_fraction": 0.5,
+              "target1_improved": 0.4067796610169492
+            },
+            {
+              "improved_fraction": 0.6407407407407407,
+              "mean_true_class_delta": 0.016128969631345996,
+              "n_trials": 270,
+              "recording": "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe00",
+              "target0_improved": 0.6444444444444445,
+              "target1_fraction": 0.5,
+              "target1_improved": 0.6370370370370371
+            },
+            {
+              "improved_fraction": 0.35555555555555557,
+              "mean_true_class_delta": -0.04136404258336025,
+              "n_trials": 270,
+              "recording": "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe01",
+              "target0_improved": 0.3851851851851852,
+              "target1_fraction": 0.5,
+              "target1_improved": 0.32592592592592595
+            },
+            {
+              "improved_fraction": 0.7374301675977654,
+              "mean_true_class_delta": 0.1413201764704641,
+              "n_trials": 358,
+              "recording": "edd22318-216c-44ff-bc24-49ce8be78374_probe00",
+              "target0_improved": 0.7262569832402235,
+              "target1_fraction": 0.5,
+              "target1_improved": 0.7486033519553073
+            }
+          ],
+          "region": "root",
+          "seed": 1,
+          "shuffle_centered_auc": 0.5721350631322153,
+          "target0_improved_vs_shuffle": 0.5383386581469649,
+          "target0_improved_vs_total": 0.6741214057507987,
+          "target1_improved_vs_shuffle": 0.536741214057508,
+          "target1_improved_vs_total": 0.41214057507987223,
+          "target_mode": "response_latency_extreme",
+          "total_centered_auc": 0.6100118404801519,
+          "train_auc": 0.7872150238307281,
+          "train_nonzero_fraction": 0.18100539811066127
+        },
+        {
+          "bidirectional_recording_fraction": 0.25,
+          "centered_delta_vs_shuffle": 0.08888270779532292,
+          "centered_delta_vs_total": 0.01856964958303131,
+          "decision": "reject: recording bidirectionality",
+          "eval_auc": 0.6285814900631832,
+          "eval_centered_auc": 0.6285814900631832,
+          "eval_nonzero_fraction": 0.4776357827476038,
+          "holdout": "CSH_ZAD_019",
+          "n_bidirectional_recordings": 1,
+          "n_recordings": 4,
+          "paired_improved_vs_shuffle": 0.5567092651757188,
+          "paired_improved_vs_total": 0.5431309904153354,
+          "path": "docs/extreme_quantile_region_specificity_seed_2.json",
+          "recording_target_rows": [
+            {
+              "improved_fraction": 0.519774011299435,
+              "mean_true_class_delta": 0.015161864959279415,
+              "n_trials": 354,
+              "recording": "49e0ab27-827a-4c91-bcaa-97eea27a1b8d_probe01",
+              "target0_improved": 0.5310734463276836,
+              "target1_fraction": 0.5,
+              "target1_improved": 0.5084745762711864
+            },
+            {
+              "improved_fraction": 0.5481481481481482,
+              "mean_true_class_delta": 0.003526226780839526,
+              "n_trials": 270,
+              "recording": "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe00",
+              "target0_improved": 0.5037037037037037,
+              "target1_fraction": 0.5,
+              "target1_improved": 0.5925925925925926
+            },
+            {
+              "improved_fraction": 0.37407407407407406,
+              "mean_true_class_delta": -0.03471146515002138,
+              "n_trials": 270,
+              "recording": "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe01",
+              "target0_improved": 0.37777777777777777,
+              "target1_fraction": 0.5,
+              "target1_improved": 0.37037037037037035
+            },
+            {
+              "improved_fraction": 0.7374301675977654,
+              "mean_true_class_delta": 0.12962654421691613,
+              "n_trials": 358,
+              "recording": "edd22318-216c-44ff-bc24-49ce8be78374_probe00",
+              "target0_improved": 0.7486033519553073,
+              "target1_fraction": 0.5,
+              "target1_improved": 0.7262569832402235
+            }
+          ],
+          "region": "root",
+          "seed": 2,
+          "shuffle_centered_auc": 0.5396987822678603,
+          "target0_improved_vs_shuffle": 0.5543130990415336,
+          "target0_improved_vs_total": 0.6741214057507987,
+          "target1_improved_vs_shuffle": 0.5591054313099042,
+          "target1_improved_vs_total": 0.41214057507987223,
+          "target_mode": "response_latency_extreme",
+          "total_centered_auc": 0.6100118404801519,
+          "train_auc": 0.7872150238307281,
+          "train_nonzero_fraction": 0.18100539811066127
+        },
+        {
+          "bidirectional_recording_fraction": 0.25,
+          "centered_delta_vs_shuffle": 0.06634751809245776,
+          "centered_delta_vs_total": 0.01856964958303131,
+          "decision": "reject: target1",
+          "eval_auc": 0.6285814900631832,
+          "eval_centered_auc": 0.6285814900631832,
+          "eval_nonzero_fraction": 0.4776357827476038,
+          "holdout": "CSH_ZAD_019",
+          "n_bidirectional_recordings": 1,
+          "n_recordings": 4,
+          "paired_improved_vs_shuffle": 0.5503194888178914,
+          "paired_improved_vs_total": 0.5431309904153354,
+          "path": "docs/extreme_quantile_region_specificity_seed_3.json",
+          "recording_target_rows": [
+            {
+              "improved_fraction": 0.53954802259887,
+              "mean_true_class_delta": 0.014365002888096659,
+              "n_trials": 354,
+              "recording": "49e0ab27-827a-4c91-bcaa-97eea27a1b8d_probe01",
+              "target0_improved": 0.5310734463276836,
+              "target1_fraction": 0.5,
+              "target1_improved": 0.5480225988700564
+            },
+            {
+              "improved_fraction": 0.6444444444444445,
+              "mean_true_class_delta": 0.007540422074458795,
+              "n_trials": 270,
+              "recording": "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe00",
+              "target0_improved": 0.7037037037037037,
+              "target1_fraction": 0.5,
+              "target1_improved": 0.5851851851851851
+            },
+            {
+              "improved_fraction": 0.5851851851851851,
+              "mean_true_class_delta": 0.01885373660700866,
+              "n_trials": 270,
+              "recording": "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe01",
+              "target0_improved": 0.5481481481481482,
+              "target1_fraction": 0.5,
+              "target1_improved": 0.6222222222222222
+            },
+            {
+              "improved_fraction": 0.46368715083798884,
+              "mean_true_class_delta": -0.03900229725445646,
+              "n_trials": 358,
+              "recording": "edd22318-216c-44ff-bc24-49ce8be78374_probe00",
+              "target0_improved": 0.4581005586592179,
+              "target1_fraction": 0.5,
+              "target1_improved": 0.4692737430167598
+            }
+          ],
+          "region": "root",
+          "seed": 3,
+          "shuffle_centered_auc": 0.5622339719707254,
+          "target0_improved_vs_shuffle": 0.5511182108626198,
+          "target0_improved_vs_total": 0.6741214057507987,
+          "target1_improved_vs_shuffle": 0.549520766773163,
+          "target1_improved_vs_total": 0.41214057507987223,
+          "target_mode": "response_latency_extreme",
+          "total_centered_auc": 0.6100118404801519,
+          "train_auc": 0.7872150238307281,
+          "train_nonzero_fraction": 0.18100539811066127
+        },
+        {
+          "bidirectional_recording_fraction": 0.25,
+          "centered_delta_vs_shuffle": 0.04828568220559559,
+          "centered_delta_vs_total": 0.01856964958303131,
+          "decision": "reject: target0",
+          "eval_auc": 0.6285814900631832,
+          "eval_centered_auc": 0.6285814900631832,
+          "eval_nonzero_fraction": 0.4776357827476038,
+          "holdout": "CSH_ZAD_019",
+          "n_bidirectional_recordings": 1,
+          "n_recordings": 4,
+          "paired_improved_vs_shuffle": 0.48083067092651754,
+          "paired_improved_vs_total": 0.5431309904153354,
+          "path": "docs/extreme_quantile_region_specificity_seed_4.json",
+          "recording_target_rows": [
+            {
+              "improved_fraction": 0.4887005649717514,
+              "mean_true_class_delta": 0.014790356907883861,
+              "n_trials": 354,
+              "recording": "49e0ab27-827a-4c91-bcaa-97eea27a1b8d_probe01",
+              "target0_improved": 0.5028248587570622,
+              "target1_fraction": 0.5,
+              "target1_improved": 0.4745762711864407
+            },
+            {
+              "improved_fraction": 0.6481481481481481,
+              "mean_true_class_delta": 0.023293028171053682,
+              "n_trials": 270,
+              "recording": "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe00",
+              "target0_improved": 0.6222222222222222,
+              "target1_fraction": 0.5,
+              "target1_improved": 0.674074074074074
+            },
+            {
+              "improved_fraction": 0.4666666666666667,
+              "mean_true_class_delta": -0.01300768776560838,
+              "n_trials": 270,
+              "recording": "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe01",
+              "target0_improved": 0.37777777777777777,
+              "target1_fraction": 0.5,
+              "target1_improved": 0.5555555555555556
+            },
+            {
+              "improved_fraction": 0.3575418994413408,
+              "mean_true_class_delta": -0.2775964054744715,
+              "n_trials": 358,
+              "recording": "edd22318-216c-44ff-bc24-49ce8be78374_probe00",
+              "target0_improved": 0.22346368715083798,
+              "target1_fraction": 0.5,
+              "target1_improved": 0.49162011173184356
+            }
+          ],
+          "region": "root",
+          "seed": 4,
+          "shuffle_centered_auc": 0.5802958078575876,
+          "target0_improved_vs_shuffle": 0.4217252396166134,
+          "target0_improved_vs_total": 0.6741214057507987,
+          "target1_improved_vs_shuffle": 0.5399361022364217,
+          "target1_improved_vs_total": 0.41214057507987223,
+          "target_mode": "response_latency_extreme",
+          "total_centered_auc": 0.6100118404801519,
+          "train_auc": 0.7872150238307281,
+          "train_nonzero_fraction": 0.18100539811066127
+        }
+      ],
+      "target_mode": "response_latency_extreme"
+    }
+  ],
+  "summary": {
+    "decision": "no_extreme_quantile_region_seed_candidate",
+    "gpu_training_ready": false,
+    "max_positive_shuffle_delta_fraction": 1.0,
+    "n_cases": 1,
+    "n_robust_region_seed_candidates": 0,
+    "next_action": "Do not train: the coarse root-region row beats shuffle across seeds, but target and recording bidirectionality do not remain stable."
+  },
+  "thresholds": {
+    "min_positive_seed_fraction": 0.8,
+    "seeds": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ]
+  }
+}

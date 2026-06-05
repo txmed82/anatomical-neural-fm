@@ -1,0 +1,76 @@
+{
+  "holdout": "CSH_ZAD_019",
+  "n_passing_seeds": 0,
+  "n_seeds": 3,
+  "paired_threshold": 0.55,
+  "pass": false,
+  "root": "runs/lso_csh_target_balanced_pilot",
+  "seed_results": [
+    {
+      "checks": {
+        "centered_auc_true_beats_shared": false,
+        "centered_auc_true_beats_shuffle": false,
+        "full_auc_true_beats_shared": true,
+        "full_auc_true_beats_shuffle": true,
+        "paired_true_beats_shuffle_threshold": true
+      },
+      "metrics": {
+        "centered_auc_region_only": 0.47267461346937356,
+        "centered_auc_region_shuffle": 0.47416164641153324,
+        "centered_auc_shared": 0.4781477434968834,
+        "full_auc_region_only": 0.4899863321377581,
+        "full_auc_region_shuffle": 0.4715183950273357,
+        "full_auc_shared": 0.47833926768116447,
+        "paired_threshold": 0.55,
+        "paired_trials": 2726,
+        "paired_true_prob_improved": 0.5572267057960382
+      },
+      "pass": false,
+      "seed": 0
+    },
+    {
+      "checks": {
+        "centered_auc_true_beats_shared": false,
+        "centered_auc_true_beats_shuffle": true,
+        "full_auc_true_beats_shared": true,
+        "full_auc_true_beats_shuffle": true,
+        "paired_true_beats_shuffle_threshold": false
+      },
+      "metrics": {
+        "centered_auc_region_only": 0.4935942777797124,
+        "centered_auc_region_shuffle": 0.4852673285858551,
+        "centered_auc_shared": 0.4952026456454365,
+        "full_auc_region_only": 0.5069879122122785,
+        "full_auc_region_shuffle": 0.49293591339624615,
+        "full_auc_shared": 0.49493222655569874,
+        "paired_threshold": 0.55,
+        "paired_trials": 2726,
+        "paired_true_prob_improved": 0.5084372707263389
+      },
+      "pass": false,
+      "seed": 1
+    },
+    {
+      "checks": {
+        "centered_auc_true_beats_shared": false,
+        "centered_auc_true_beats_shuffle": false,
+        "full_auc_true_beats_shared": false,
+        "full_auc_true_beats_shuffle": false,
+        "paired_true_beats_shuffle_threshold": false
+      },
+      "metrics": {
+        "centered_auc_region_only": null,
+        "centered_auc_region_shuffle": null,
+        "centered_auc_shared": 0.48076052512449075,
+        "full_auc_region_only": null,
+        "full_auc_region_shuffle": null,
+        "full_auc_shared": 0.4807028502280879,
+        "paired_threshold": 0.55,
+        "paired_trials": null,
+        "paired_true_prob_improved": null
+      },
+      "pass": false,
+      "seed": 2
+    }
+  ]
+}

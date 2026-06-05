@@ -1,0 +1,149 @@
+{
+  "dataset": "ibl_bwm",
+  "labs": [
+    "angelakilab",
+    "churchlandlab_ucla"
+  ],
+  "n_recordings": 8,
+  "n_subjects": 2,
+  "project": "ibl_neuropixel_brainwide_01",
+  "recordings": [
+    {
+      "alignment_qc": 0.7947510094212651,
+      "insertion_id": "c893c0a3-5597-49cf-baa1-60efdfdef542",
+      "lab": "angelakilab",
+      "n_units_meta": 743,
+      "probe_name": "probe01",
+      "qc": "PASS",
+      "session_id": "b182b754-3c3e-4942-8144-6ee790926b58",
+      "start_time": "2020-01-21T15:25:45",
+      "subject_id": "NYU-12",
+      "task_protocol": "_iblrig_tasks_ephysChoiceWorld6.2.5"
+    },
+    {
+      "alignment_qc": 0.9606467358145211,
+      "insertion_id": "17fa2600-6349-4b6f-a7e4-d8ea5558fa12",
+      "lab": "churchlandlab_ucla",
+      "n_units_meta": 917,
+      "probe_name": "probe00",
+      "qc": "PASS",
+      "session_id": "3f71aa98-08c6-4e79-b4c8-00eae4f03eff",
+      "start_time": "2023-08-25T14:36:44",
+      "subject_id": "MFD_06",
+      "task_protocol": "_iblrig_tasks_ephysChoiceWorld"
+    },
+    {
+      "alignment_qc": 0.765625,
+      "insertion_id": "1e176f17-d00f-49bb-87ff-26d237b525f1",
+      "lab": "angelakilab",
+      "n_units_meta": 478,
+      "probe_name": "probe00",
+      "qc": "PASS",
+      "session_id": "a8a8af78-16de-4841-ab07-fde4b5281a03",
+      "start_time": "2020-01-22T15:39:54",
+      "subject_id": "NYU-12",
+      "task_protocol": "_iblrig_tasks_ephysChoiceWorld6.2.5"
+    },
+    {
+      "alignment_qc": 0.8239524702939337,
+      "insertion_id": "730770d6-617a-4ada-95db-a48521befda5",
+      "lab": "churchlandlab_ucla",
+      "n_units_meta": 759,
+      "probe_name": "probe00",
+      "qc": "PASS",
+      "session_id": "6899a67d-2e53-4215-a52a-c7021b5da5d4",
+      "start_time": "2023-08-29T12:48:38.326259",
+      "subject_id": "MFD_06",
+      "task_protocol": "_iblrig_tasks_ephysChoiceWorld"
+    },
+    {
+      "alignment_qc": 0.8479318734793188,
+      "insertion_id": "701026df-e170-4ca7-88aa-eb0b95ef6ba1",
+      "lab": "angelakilab",
+      "n_units_meta": 429,
+      "probe_name": "probe01",
+      "qc": "PASS",
+      "session_id": "a8a8af78-16de-4841-ab07-fde4b5281a03",
+      "start_time": "2020-01-22T15:39:54",
+      "subject_id": "NYU-12",
+      "task_protocol": "_iblrig_tasks_ephysChoiceWorld6.2.5"
+    },
+    {
+      "alignment_qc": 0.9306833114323259,
+      "insertion_id": "38e9e5b8-db29-4158-a09d-cc1de4a1365a",
+      "lab": "churchlandlab_ucla",
+      "n_units_meta": 593,
+      "probe_name": "probe00",
+      "qc": "PASS",
+      "session_id": "a1782f4f-86b0-480c-a7f2-3d8f1ab482ab",
+      "start_time": "2023-08-24T14:00:19.754812",
+      "subject_id": "MFD_06",
+      "task_protocol": "_iblrig_tasks_ephysChoiceWorld"
+    },
+    {
+      "alignment_qc": 0.8047210300429185,
+      "insertion_id": "d213e786-4b1c-477d-a710-766d69fa1ac1",
+      "lab": "angelakilab",
+      "n_units_meta": 233,
+      "probe_name": "probe00",
+      "qc": "PASS",
+      "session_id": "032ffcdf-7692-40b3-b9ff-8def1fc18b2e",
+      "start_time": "2020-01-23T14:56:31",
+      "subject_id": "NYU-12",
+      "task_protocol": "_iblrig_tasks_ephysChoiceWorld6.2.5"
+    },
+    {
+      "alignment_qc": 0.972313777191826,
+      "insertion_id": "069c2674-80b0-44b4-a3d9-28337512967f",
+      "lab": "churchlandlab_ucla",
+      "n_units_meta": 563,
+      "probe_name": "probe00",
+      "qc": "PASS",
+      "session_id": "35eeb752-8f4f-4040-9714-ba0f5b7ccdfe",
+      "start_time": "2023-08-22T16:40:39",
+      "subject_id": "MFD_06",
+      "task_protocol": "_iblrig_tasks_ephysChoiceWorld"
+    }
+  ],
+  "selection": {
+    "candidate_pool_recordings": 579,
+    "candidate_pool_subjects": 143,
+    "max_per_subject": 4,
+    "min_units": 200,
+    "region_granularity": "parent",
+    "scan_limit": 1000,
+    "target": 48,
+    "filter_min_support": 0.8,
+    "pre_filter_recordings": 28,
+    "pre_filter_subjects": 7,
+    "optimized_support_subset": {
+      "min_support": 0.8,
+      "min_subjects": 6,
+      "pass_count": 6,
+      "subject_count": 7,
+      "pass_frac": 0.8571428571428571,
+      "min_unit_support_frac": 0.6575512740832815,
+      "total_units": 27365
+    }
+  },
+  "region_support": {
+    "MFD_06": {
+      "cached_recordings": 4,
+      "n_units": 5207,
+      "n_region_families": 27,
+      "unit_support_frac": 0.9865565584789706,
+      "top_supported": 8,
+      "top_total": 8,
+      "missing_top": []
+    },
+    "NYU-12": {
+      "cached_recordings": 4,
+      "n_units": 4255,
+      "n_region_families": 31,
+      "unit_support_frac": 0.8850763807285547,
+      "top_supported": 8,
+      "top_total": 8,
+      "missing_top": []
+    }
+  }
+}

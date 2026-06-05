@@ -1,0 +1,202 @@
+{
+  "evidence_rows": [
+    {
+      "arm": "pure_anatomy",
+      "holdout": "CSH_ZAD_019",
+      "mean_auc": null,
+      "mean_delta_vs_shared": 0.002,
+      "n_seeds": 1,
+      "positive_seeds": 1,
+      "seed_deltas": [
+        0.002
+      ],
+      "source": "matched seed0 screen"
+    },
+    {
+      "arm": "region_only",
+      "holdout": "CSH_ZAD_019",
+      "mean_auc": null,
+      "mean_delta_vs_shared": 0.029,
+      "n_seeds": 1,
+      "positive_seeds": 1,
+      "seed_deltas": [
+        0.029
+      ],
+      "source": "matched seed0 screen"
+    },
+    {
+      "arm": "pure_anatomy",
+      "holdout": "CSH_ZAD_019",
+      "mean_auc": 0.528,
+      "mean_delta_vs_shared": 0.04,
+      "n_seeds": 2,
+      "positive_seeds": 2,
+      "seed_deltas": [
+        0.048,
+        0.032
+      ],
+      "source": "matched seeds1-2 confirmation"
+    },
+    {
+      "arm": "region_only",
+      "holdout": "CSH_ZAD_019",
+      "mean_auc": 0.537,
+      "mean_delta_vs_shared": 0.049,
+      "n_seeds": 2,
+      "positive_seeds": 2,
+      "seed_deltas": [
+        0.054,
+        0.044
+      ],
+      "source": "matched seeds1-2 confirmation"
+    },
+    {
+      "arm": "pure_anatomy",
+      "holdout": "CSH_ZAD_019",
+      "mean_auc": 0.528,
+      "mean_delta_vs_shared": 0.027333333333333334,
+      "n_seeds": 3,
+      "positive_seeds": 3,
+      "seed_deltas": [
+        0.002,
+        0.048,
+        0.032
+      ],
+      "source": "matched seed0 + seeds1-2"
+    },
+    {
+      "arm": "region_only",
+      "holdout": "CSH_ZAD_019",
+      "mean_auc": 0.537,
+      "mean_delta_vs_shared": 0.042333333333333334,
+      "n_seeds": 3,
+      "positive_seeds": 3,
+      "seed_deltas": [
+        0.029,
+        0.054,
+        0.044
+      ],
+      "source": "matched seed0 + seeds1-2"
+    },
+    {
+      "arm": "region_only",
+      "holdout": "CSH_ZAD_019",
+      "mean_auc": 0.548,
+      "mean_delta_vs_shared": 0.042,
+      "n_seeds": 3,
+      "positive_seeds": 3,
+      "seed_deltas": [
+        0.029,
+        0.054,
+        0.044
+      ],
+      "source": "fine region shuffle control"
+    },
+    {
+      "arm": "region_shuffle",
+      "holdout": "CSH_ZAD_019",
+      "mean_auc": 0.494,
+      "mean_delta_vs_shared": -0.012,
+      "n_seeds": 3,
+      "positive_seeds": 1,
+      "seed_deltas": [
+        0.001,
+        -0.036,
+        0.0
+      ],
+      "source": "fine region shuffle control"
+    },
+    {
+      "arm": "region_only",
+      "holdout": "CSH_ZAD_019",
+      "mean_auc": 0.544,
+      "mean_delta_vs_shared": 0.038,
+      "n_seeds": 3,
+      "positive_seeds": 3,
+      "seed_deltas": [
+        0.014,
+        0.045,
+        0.056
+      ],
+      "source": "shared-parent shuffle control"
+    },
+    {
+      "arm": "region_shuffle",
+      "holdout": "CSH_ZAD_019",
+      "mean_auc": 0.494,
+      "mean_delta_vs_shared": -0.012,
+      "n_seeds": 3,
+      "positive_seeds": 1,
+      "seed_deltas": [
+        -0.008,
+        -0.03,
+        0.003
+      ],
+      "source": "shared-parent shuffle control"
+    }
+  ],
+  "holdout": "CSH_ZAD_019",
+  "manifest": {
+    "holdout_labs": [
+      "zadorlab"
+    ],
+    "holdout_probes": [
+      "probe00",
+      "probe01"
+    ],
+    "holdout_recordings": 4,
+    "holdout_units_meta": 2426,
+    "n_recordings": 28,
+    "n_subjects": 7,
+    "path": "manifests/ibl_bwm_region_matched_support80_best6.json"
+  },
+  "shared_parent_split": {
+    "allowed_regions": [
+      "BS",
+      "CA",
+      "DG",
+      "IB",
+      "LAT",
+      "LZ",
+      "MBmot",
+      "MOp",
+      "PRT",
+      "RSPagl",
+      "RSPd",
+      "VENT",
+      "VL",
+      "VP",
+      "VS",
+      "cc",
+      "fxs",
+      "hc",
+      "mfbc",
+      "root",
+      "void"
+    ],
+    "eval_class_balance": {
+      "L": 1504,
+      "R": 1222
+    },
+    "eval_subjects": [
+      "CSH_ZAD_019"
+    ],
+    "n_allowed_regions": 21,
+    "n_eval_trials": 2726,
+    "n_train_trials": 13015,
+    "region_filter": "shared_regions",
+    "region_granularity": "parent",
+    "train_class_balance": {
+      "L": 6688,
+      "R": 6327
+    },
+    "train_subjects": [
+      "KS014",
+      "MFD_06",
+      "NR_0019",
+      "NYU-12",
+      "SWC_038",
+      "SWC_043"
+    ]
+  }
+}

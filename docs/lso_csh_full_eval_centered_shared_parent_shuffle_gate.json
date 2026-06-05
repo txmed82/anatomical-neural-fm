@@ -1,0 +1,76 @@
+{
+  "holdout": "CSH_ZAD_019",
+  "n_passing_seeds": 1,
+  "n_seeds": 3,
+  "paired_threshold": 0.55,
+  "pass": false,
+  "root": "runs/lso_csh_full_eval_centered_shared_parent_shuffle",
+  "seed_results": [
+    {
+      "checks": {
+        "centered_auc_true_beats_shared": true,
+        "centered_auc_true_beats_shuffle": true,
+        "full_auc_true_beats_shared": false,
+        "full_auc_true_beats_shuffle": false,
+        "paired_true_beats_shuffle_threshold": false
+      },
+      "metrics": {
+        "centered_auc_region_only": 0.5165031819131525,
+        "centered_auc_region_shuffle": 0.5142288322248145,
+        "centered_auc_shared": 0.5112172232475537,
+        "full_auc_region_only": 0.5052244750496222,
+        "full_auc_region_shuffle": 0.5131710963888986,
+        "full_auc_shared": 0.5109604067277222,
+        "paired_threshold": 0.55,
+        "paired_trials": 2726,
+        "paired_true_prob_improved": 0.5132061628760088
+      },
+      "pass": false,
+      "seed": 0
+    },
+    {
+      "checks": {
+        "centered_auc_true_beats_shared": true,
+        "centered_auc_true_beats_shuffle": true,
+        "full_auc_true_beats_shared": false,
+        "full_auc_true_beats_shuffle": false,
+        "paired_true_beats_shuffle_threshold": false
+      },
+      "metrics": {
+        "centered_auc_region_only": 0.5232092488769718,
+        "centered_auc_region_shuffle": 0.5080516331789532,
+        "centered_auc_shared": 0.513771785875962,
+        "full_auc_region_only": 0.5090353710345789,
+        "full_auc_region_shuffle": 0.5209631925340391,
+        "full_auc_shared": 0.5133822082738447,
+        "paired_threshold": 0.55,
+        "paired_trials": 2726,
+        "paired_true_prob_improved": 0.4856933235509905
+      },
+      "pass": false,
+      "seed": 1
+    },
+    {
+      "checks": {
+        "centered_auc_true_beats_shared": true,
+        "centered_auc_true_beats_shuffle": true,
+        "full_auc_true_beats_shared": true,
+        "full_auc_true_beats_shuffle": true,
+        "paired_true_beats_shuffle_threshold": true
+      },
+      "metrics": {
+        "centered_auc_region_only": 0.5123625596336665,
+        "centered_auc_region_shuffle": 0.48110820681129646,
+        "centered_auc_shared": 0.4791962295852631,
+        "full_auc_region_only": 0.5054997910645262,
+        "full_auc_region_shuffle": 0.47064238952536824,
+        "full_auc_shared": 0.47952486767419994,
+        "paired_threshold": 0.55,
+        "paired_trials": 2726,
+        "paired_true_prob_improved": 0.5517241379310345
+      },
+      "pass": true,
+      "seed": 2
+    }
+  ]
+}

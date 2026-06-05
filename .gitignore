@@ -21,6 +21,7 @@ venv/
 .idea/
 *.swp
 .DS_Store
+ContextPool/
 
 # Data — never commit raw or processed datasets
 data/
@@ -43,6 +44,7 @@ lightning_logs/
 *.pt
 *.pth
 *.safetensors
+manifests/*.local.json
 
 # Local config / secrets
 .env

@@ -13,8 +13,6 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
-import pandas as pd
-
 from abc_atlas_access.abc_atlas_cache.abc_project_cache import AbcProjectCache
 
 CACHE_DIR = Path("data/abc_atlas_cache")
@@ -79,7 +77,7 @@ def main() -> int:
     taxonomy_path = OUT_DIR / "subclass_taxonomy.parquet"
     taxonomy.to_parquet(taxonomy_path, index=False)
     print(f"\nWrote {taxonomy_path}")
-    print(f"  top 10 subclasses by total cells:")
+    print("  top 10 subclasses by total cells:")
     for row in taxonomy.head(10).itertuples():
         print(f"    {row.subclass:50s}  {int(row.count):>10,}")
 

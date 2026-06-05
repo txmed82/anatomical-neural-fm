@@ -29,7 +29,7 @@ def main() -> int:
 
     eid = None
     insertions = []
-    print(f"\nSearching for a session with probe insertions (scanning first 50)...")
+    print("\nSearching for a session with probe insertions (scanning first 50)...")
     for candidate in eids[:50]:
         ins = one.alyx.rest("insertions", "list", session=candidate)
         if ins:

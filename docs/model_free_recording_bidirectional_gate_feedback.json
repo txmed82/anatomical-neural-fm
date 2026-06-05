@@ -1,0 +1,1335 @@
+{
+  "holdouts": [
+    {
+      "holdout": "CSH_ZAD_019",
+      "n_eval_trials": 3119,
+      "n_regions": 79,
+      "n_train_trials": 14763,
+      "recording_bidirectional": {
+        "bidirectional_recording_fraction": 0.0,
+        "bidirectional_recordings": [],
+        "n_bidirectional_recordings": 0,
+        "n_evaluable_recordings": 4
+      },
+      "recording_bidirectional_decision": "reject: centered delta",
+      "recording_target_rows": [
+        {
+          "improved_fraction": 0.16063348416289594,
+          "mean_true_class_delta": -1.5167326222549373,
+          "n_trials": 884,
+          "recording": "49e0ab27-827a-4c91-bcaa-97eea27a1b8d_probe01",
+          "target0_improved": 1.0,
+          "target1_fraction": 0.8393665158371041,
+          "target1_improved": 0.0
+        },
+        {
+          "improved_fraction": 0.16517857142857142,
+          "mean_true_class_delta": -1.329874113568377,
+          "n_trials": 672,
+          "recording": "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe00",
+          "target0_improved": 1.0,
+          "target1_fraction": 0.8348214285714286,
+          "target1_improved": 0.0
+        },
+        {
+          "improved_fraction": 0.2261904761904762,
+          "mean_true_class_delta": -0.4727337129817212,
+          "n_trials": 672,
+          "recording": "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe01",
+          "target0_improved": 0.990990990990991,
+          "target1_fraction": 0.8348214285714286,
+          "target1_improved": 0.0748663101604278
+        },
+        {
+          "improved_fraction": 0.16049382716049382,
+          "mean_true_class_delta": -3.709795180104133,
+          "n_trials": 891,
+          "recording": "edd22318-216c-44ff-bc24-49ce8be78374_probe00",
+          "target0_improved": 1.0,
+          "target1_fraction": 0.8395061728395061,
+          "target1_improved": 0.0
+        }
+      ],
+      "region_granularity": "parent",
+      "summary": {
+        "decision": "no_model_free_true_region_advantage",
+        "delta_centered_auc": -0.02742312072032893,
+        "n_recordings": 4,
+        "paired_true_vs_shuffle": {
+          "improved_fraction": 0.17569733889067007,
+          "mean_true_class_delta": -1.8780287281140793,
+          "target0_improved_fraction": 0.9980276134122288,
+          "target1_improved_fraction": 0.016079632465543645
+        },
+        "recordings_positive_true_minus_shuffle": 2
+      },
+      "target_delta_summary": {
+        "target0": {
+          "improved_fraction": 0.9980276134122288,
+          "mean_true_class_delta": 2.5601049746728544,
+          "n_trials": 507
+        },
+        "target1": {
+          "improved_fraction": 0.016079632465543645,
+          "mean_true_class_delta": -2.739488830454422,
+          "n_trials": 2612
+        }
+      },
+      "target_mode": "feedback",
+      "top_region_weights": {
+        "negative": [
+          {
+            "region": "P-sen",
+            "weight": -0.284536984037212
+          },
+          {
+            "region": "PVR",
+            "weight": -0.25768836553768004
+          },
+          {
+            "region": "MG",
+            "weight": -0.21493697513732946
+          },
+          {
+            "region": "SSs",
+            "weight": -0.20732088042396846
+          },
+          {
+            "region": "In",
+            "weight": -0.1355369818496125
+          },
+          {
+            "region": "ORBm",
+            "weight": -0.13418497262597542
+          },
+          {
+            "region": "hc",
+            "weight": -0.11417891379742784
+          },
+          {
+            "region": "mfbc",
+            "weight": -0.10607415429650083
+          },
+          {
+            "region": "fiber tracts",
+            "weight": -0.08797171674274608
+          },
+          {
+            "region": "AUDv",
+            "weight": -0.07624509890547038
+          },
+          {
+            "region": "MBsta",
+            "weight": -0.07259691110777683
+          },
+          {
+            "region": "fa",
+            "weight": -0.057994477843087075
+          }
+        ],
+        "positive": [
+          {
+            "region": "P-mot",
+            "weight": 0.35899644207890263
+          },
+          {
+            "region": "HB",
+            "weight": 0.31384278334650334
+          },
+          {
+            "region": "PALc",
+            "weight": 0.2563697787704826
+          },
+          {
+            "region": "SCm",
+            "weight": 0.1947739242509816
+          },
+          {
+            "region": "AUDd",
+            "weight": 0.17393242340427328
+          },
+          {
+            "region": "CNU",
+            "weight": 0.16990604896262887
+          },
+          {
+            "region": "VP",
+            "weight": 0.1665163172836604
+          },
+          {
+            "region": "SSp-bfd",
+            "weight": 0.1654982631430185
+          },
+          {
+            "region": "IB",
+            "weight": 0.157376833439974
+          },
+          {
+            "region": "ORBvl",
+            "weight": 0.13702402687341234
+          },
+          {
+            "region": "PRT",
+            "weight": 0.13214931037494826
+          },
+          {
+            "region": "CA",
+            "weight": 0.12637240047367002
+          }
+        ]
+      },
+      "train_subjects": [
+        "KS014",
+        "MFD_06",
+        "NR_0019",
+        "NYU-12",
+        "SWC_038",
+        "SWC_043"
+      ]
+    },
+    {
+      "holdout": "KS014",
+      "n_eval_trials": 2403,
+      "n_regions": 79,
+      "n_train_trials": 15479,
+      "recording_bidirectional": {
+        "bidirectional_recording_fraction": 0.0,
+        "bidirectional_recordings": [],
+        "n_bidirectional_recordings": 0,
+        "n_evaluable_recordings": 4
+      },
+      "recording_bidirectional_decision": "reject: centered delta",
+      "recording_target_rows": [
+        {
+          "improved_fraction": 0.8286252354048964,
+          "mean_true_class_delta": 0.7723536606418577,
+          "n_trials": 531,
+          "recording": "16693458-0801-4d35-a3f1-9115c7e5acfd_probe00",
+          "target0_improved": 0.0,
+          "target1_fraction": 0.8286252354048964,
+          "target1_improved": 1.0
+        },
+        {
+          "improved_fraction": 0.1713747645951036,
+          "mean_true_class_delta": -0.8762423742660865,
+          "n_trials": 531,
+          "recording": "16693458-0801-4d35-a3f1-9115c7e5acfd_probe01",
+          "target0_improved": 1.0,
+          "target1_fraction": 0.8286252354048964,
+          "target1_improved": 0.0
+        },
+        {
+          "improved_fraction": 0.7932618683001531,
+          "mean_true_class_delta": 0.15667025431867573,
+          "n_trials": 653,
+          "recording": "b9c205c3-feac-485b-a89d-afc96d9cb280_probe00",
+          "target0_improved": 0.010101010101010102,
+          "target1_fraction": 0.8483920367534457,
+          "target1_improved": 0.9332129963898917
+        },
+        {
+          "improved_fraction": 0.13372093023255813,
+          "mean_true_class_delta": -1.3680173128876805,
+          "n_trials": 688,
+          "recording": "e1931de1-cf7b-49af-af33-2ade15e8abe7_probe00",
+          "target0_improved": 1.0,
+          "target1_fraction": 0.8662790697674418,
+          "target1_improved": 0.0
+        }
+      ],
+      "region_granularity": "parent",
+      "summary": {
+        "decision": "no_model_free_true_region_advantage",
+        "delta_centered_auc": -0.11826886250478746,
+        "n_recordings": 4,
+        "paired_true_vs_shuffle": {
+          "improved_fraction": 0.47482313774448603,
+          "mean_true_class_delta": -0.3720579035085703,
+          "target0_improved_fraction": 0.4932975871313673,
+          "target1_improved_fraction": 0.4714285714285714
+        },
+        "recordings_positive_true_minus_shuffle": 1
+      },
+      "target_delta_summary": {
+        "target0": {
+          "improved_fraction": 0.4932975871313673,
+          "mean_true_class_delta": 0.3551819200161267,
+          "n_trials": 373
+        },
+        "target1": {
+          "improved_fraction": 0.4714285714285714,
+          "mean_true_class_delta": -0.5056837430035023,
+          "n_trials": 2030
+        }
+      },
+      "target_mode": "feedback",
+      "top_region_weights": {
+        "negative": [
+          {
+            "region": "P-sen",
+            "weight": -0.26663998873320915
+          },
+          {
+            "region": "PVR",
+            "weight": -0.2294922516982103
+          },
+          {
+            "region": "EPI",
+            "weight": -0.21244731056878075
+          },
+          {
+            "region": "SSs",
+            "weight": -0.20454035082503425
+          },
+          {
+            "region": "ORBm",
+            "weight": -0.14408028223313374
+          },
+          {
+            "region": "hc",
+            "weight": -0.1373759965240704
+          },
+          {
+            "region": "RSPd",
+            "weight": -0.13447611420022199
+          },
+          {
+            "region": "In",
+            "weight": -0.13286256851762437
+          },
+          {
+            "region": "ATN",
+            "weight": -0.11962168110025281
+          },
+          {
+            "region": "MG",
+            "weight": -0.11641658158595228
+          },
+          {
+            "region": "fiber tracts",
+            "weight": -0.09494990948969934
+          },
+          {
+            "region": "AUDv",
+            "weight": -0.07541884875981068
+          }
+        ],
+        "positive": [
+          {
+            "region": "P-mot",
+            "weight": 0.3476218335714414
+          },
+          {
+            "region": "HB",
+            "weight": 0.28928038811867407
+          },
+          {
+            "region": "PALc",
+            "weight": 0.25158370876281827
+          },
+          {
+            "region": "VENT",
+            "weight": 0.23502905958432932
+          },
+          {
+            "region": "MOp",
+            "weight": 0.2099840782611987
+          },
+          {
+            "region": "RHP",
+            "weight": 0.18215178154500022
+          },
+          {
+            "region": "AUDd",
+            "weight": 0.17239794113587784
+          },
+          {
+            "region": "SSp-bfd",
+            "weight": 0.16713435786233016
+          },
+          {
+            "region": "CNU",
+            "weight": 0.16425250638182515
+          },
+          {
+            "region": "MED",
+            "weight": 0.16174552568941225
+          },
+          {
+            "region": "ORBvl",
+            "weight": 0.13991068661650302
+          },
+          {
+            "region": "LGd",
+            "weight": 0.13898625801629721
+          }
+        ]
+      },
+      "train_subjects": [
+        "CSH_ZAD_019",
+        "MFD_06",
+        "NR_0019",
+        "NYU-12",
+        "SWC_038",
+        "SWC_043"
+      ]
+    },
+    {
+      "holdout": "MFD_06",
+      "n_eval_trials": 2577,
+      "n_regions": 79,
+      "n_train_trials": 15305,
+      "recording_bidirectional": {
+        "bidirectional_recording_fraction": 0.0,
+        "bidirectional_recordings": [],
+        "n_bidirectional_recordings": 0,
+        "n_evaluable_recordings": 4
+      },
+      "recording_bidirectional_decision": "reject: global target1",
+      "recording_target_rows": [
+        {
+          "improved_fraction": 0.6692913385826772,
+          "mean_true_class_delta": 0.14112668633302547,
+          "n_trials": 762,
+          "recording": "35eeb752-8f4f-4040-9714-ba0f5b7ccdfe_probe00",
+          "target0_improved": 0.28169014084507044,
+          "target1_fraction": 0.8136482939632546,
+          "target1_improved": 0.7580645161290323
+        },
+        {
+          "improved_fraction": 0.19047619047619047,
+          "mean_true_class_delta": -15.208899918495252,
+          "n_trials": 672,
+          "recording": "3f71aa98-08c6-4e79-b4c8-00eae4f03eff_probe00",
+          "target0_improved": 1.0,
+          "target1_fraction": 0.8095238095238095,
+          "target1_improved": 0.0
+        },
+        {
+          "improved_fraction": 0.3208955223880597,
+          "mean_true_class_delta": -0.17523749107508188,
+          "n_trials": 402,
+          "recording": "6899a67d-2e53-4215-a52a-c7021b5da5d4_probe00",
+          "target0_improved": 1.0,
+          "target1_fraction": 0.6791044776119403,
+          "target1_improved": 0.0
+        },
+        {
+          "improved_fraction": 0.8097165991902834,
+          "mean_true_class_delta": 2.1498214433814096,
+          "n_trials": 741,
+          "recording": "a1782f4f-86b0-480c-a7f2-3d8f1ab482ab_probe00",
+          "target0_improved": 0.0,
+          "target1_fraction": 0.8097165991902834,
+          "target1_improved": 1.0
+        }
+      ],
+      "region_granularity": "parent",
+      "summary": {
+        "decision": "weak_model_free_true_region_advantage",
+        "delta_centered_auc": 0.04077983236058835,
+        "n_recordings": 4,
+        "paired_true_vs_shuffle": {
+          "improved_fraction": 0.5304617772603802,
+          "mean_true_class_delta": -3.33343810326333,
+          "target0_improved_fraction": 0.55,
+          "target1_improved_fraction": 0.5252822778595975
+        },
+        "recordings_positive_true_minus_shuffle": 1
+      },
+      "target_delta_summary": {
+        "target0": {
+          "improved_fraction": 0.55,
+          "mean_true_class_delta": 5.712147182343762,
+          "n_trials": 540
+        },
+        "target1": {
+          "improved_fraction": 0.5252822778595975,
+          "mean_true_class_delta": -5.731384128902913,
+          "n_trials": 2037
+        }
+      },
+      "target_mode": "feedback",
+      "top_region_weights": {
+        "negative": [
+          {
+            "region": "void",
+            "weight": -0.25903290106165633
+          },
+          {
+            "region": "SSs",
+            "weight": -0.23288045731784304
+          },
+          {
+            "region": "PVR",
+            "weight": -0.22597045219431644
+          },
+          {
+            "region": "MBsta",
+            "weight": -0.17268476651998352
+          },
+          {
+            "region": "RSPd",
+            "weight": -0.1473241283519592
+          },
+          {
+            "region": "In",
+            "weight": -0.14689512296893809
+          },
+          {
+            "region": "EPI",
+            "weight": -0.14374048761724123
+          },
+          {
+            "region": "ORBm",
+            "weight": -0.14191826764335397
+          },
+          {
+            "region": "ATN",
+            "weight": -0.11658668441809868
+          },
+          {
+            "region": "hc",
+            "weight": -0.11165657172461613
+          },
+          {
+            "region": "mfbc",
+            "weight": -0.10205602649805673
+          },
+          {
+            "region": "fiber tracts",
+            "weight": -0.10098209836914367
+          }
+        ],
+        "positive": [
+          {
+            "region": "HB",
+            "weight": 0.3237447289116593
+          },
+          {
+            "region": "MOp",
+            "weight": 0.26954644798024907
+          },
+          {
+            "region": "ENTm",
+            "weight": 0.25777760521601467
+          },
+          {
+            "region": "SCm",
+            "weight": 0.25344441846624366
+          },
+          {
+            "region": "SSp-bfd",
+            "weight": 0.25030900892538477
+          },
+          {
+            "region": "PRT",
+            "weight": 0.24068411184037308
+          },
+          {
+            "region": "LZ",
+            "weight": 0.23312649046642062
+          },
+          {
+            "region": "PALc",
+            "weight": 0.228670502404337
+          },
+          {
+            "region": "MED",
+            "weight": 0.20074491902097114
+          },
+          {
+            "region": "VENT",
+            "weight": 0.18612835497443164
+          },
+          {
+            "region": "cc",
+            "weight": 0.17671314444537822
+          },
+          {
+            "region": "AUDd",
+            "weight": 0.17528956320979322
+          }
+        ]
+      },
+      "train_subjects": [
+        "CSH_ZAD_019",
+        "KS014",
+        "NR_0019",
+        "NYU-12",
+        "SWC_038",
+        "SWC_043"
+      ]
+    },
+    {
+      "holdout": "NR_0019",
+      "n_eval_trials": 2756,
+      "n_regions": 79,
+      "n_train_trials": 15126,
+      "recording_bidirectional": {
+        "bidirectional_recording_fraction": 0.0,
+        "bidirectional_recordings": [],
+        "n_bidirectional_recordings": 0,
+        "n_evaluable_recordings": 4
+      },
+      "recording_bidirectional_decision": "reject: global target0",
+      "recording_target_rows": [
+        {
+          "improved_fraction": 0.6288888888888889,
+          "mean_true_class_delta": 0.06102135970897965,
+          "n_trials": 900,
+          "recording": "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe00",
+          "target0_improved": 0.17391304347826086,
+          "target1_fraction": 0.8722222222222222,
+          "target1_improved": 0.6955414012738853
+        },
+        {
+          "improved_fraction": 0.8722222222222222,
+          "mean_true_class_delta": 0.294921300322076,
+          "n_trials": 900,
+          "recording": "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe01",
+          "target0_improved": 0.0,
+          "target1_fraction": 0.8722222222222222,
+          "target1_improved": 1.0
+        },
+        {
+          "improved_fraction": 0.8786610878661087,
+          "mean_true_class_delta": 1.7359083234872323,
+          "n_trials": 478,
+          "recording": "b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe00",
+          "target0_improved": 0.0,
+          "target1_fraction": 0.8786610878661087,
+          "target1_improved": 1.0
+        },
+        {
+          "improved_fraction": 0.8786610878661087,
+          "mean_true_class_delta": 0.7153010076743057,
+          "n_trials": 478,
+          "recording": "b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe01",
+          "target0_improved": 0.0,
+          "target1_fraction": 0.8786610878661087,
+          "target1_improved": 1.0
+        }
+      ],
+      "region_granularity": "parent",
+      "summary": {
+        "decision": "weak_model_free_true_region_advantage",
+        "delta_centered_auc": 0.09495958554193751,
+        "n_recordings": 4,
+        "paired_true_vs_shuffle": {
+          "improved_fraction": 0.7949927431059507,
+          "mean_true_class_delta": 0.541373894892295,
+          "target0_improved_fraction": 0.057803468208092484,
+          "target1_improved_fraction": 0.9008298755186722
+        },
+        "recordings_positive_true_minus_shuffle": 2
+      },
+      "target_delta_summary": {
+        "target0": {
+          "improved_fraction": 0.057803468208092484,
+          "mean_true_class_delta": -0.6525139566595807,
+          "n_trials": 346
+        },
+        "target1": {
+          "improved_fraction": 0.9008298755186722,
+          "mean_true_class_delta": 0.7127785407997428,
+          "n_trials": 2410
+        }
+      },
+      "target_mode": "feedback",
+      "top_region_weights": {
+        "negative": [
+          {
+            "region": "P-sen",
+            "weight": -0.2794878017821498
+          },
+          {
+            "region": "PVR",
+            "weight": -0.24910367512495915
+          },
+          {
+            "region": "SSs",
+            "weight": -0.21865380033704554
+          },
+          {
+            "region": "EPI",
+            "weight": -0.20247054569864842
+          },
+          {
+            "region": "RSPd",
+            "weight": -0.1497973991294005
+          },
+          {
+            "region": "In",
+            "weight": -0.14637416743811163
+          },
+          {
+            "region": "ORBm",
+            "weight": -0.13384878231450506
+          },
+          {
+            "region": "MG",
+            "weight": -0.13220708046857582
+          },
+          {
+            "region": "ATN",
+            "weight": -0.11906974677836915
+          },
+          {
+            "region": "fiber tracts",
+            "weight": -0.0947955983907595
+          },
+          {
+            "region": "hc",
+            "weight": -0.0874104616186392
+          },
+          {
+            "region": "MBsta",
+            "weight": -0.08569483643480759
+          }
+        ],
+        "positive": [
+          {
+            "region": "P-mot",
+            "weight": 0.3555929118469494
+          },
+          {
+            "region": "HB",
+            "weight": 0.31073872212590276
+          },
+          {
+            "region": "LZ",
+            "weight": 0.23491261912036998
+          },
+          {
+            "region": "VENT",
+            "weight": 0.22472157463152012
+          },
+          {
+            "region": "PALc",
+            "weight": 0.2104613897572835
+          },
+          {
+            "region": "MOp",
+            "weight": 0.2074436131899631
+          },
+          {
+            "region": "SSp-bfd",
+            "weight": 0.18564451052784778
+          },
+          {
+            "region": "AUDd",
+            "weight": 0.17770847845976842
+          },
+          {
+            "region": "MED",
+            "weight": 0.1699259705512498
+          },
+          {
+            "region": "VS",
+            "weight": 0.1620800941738191
+          },
+          {
+            "region": "SCm",
+            "weight": 0.15721730481586146
+          },
+          {
+            "region": "LGd",
+            "weight": 0.1405949328783788
+          }
+        ]
+      },
+      "train_subjects": [
+        "CSH_ZAD_019",
+        "KS014",
+        "MFD_06",
+        "NYU-12",
+        "SWC_038",
+        "SWC_043"
+      ]
+    },
+    {
+      "holdout": "NYU-12",
+      "n_eval_trials": 2125,
+      "n_regions": 79,
+      "n_train_trials": 15757,
+      "recording_bidirectional": {
+        "bidirectional_recording_fraction": 0.0,
+        "bidirectional_recordings": [],
+        "n_bidirectional_recordings": 0,
+        "n_evaluable_recordings": 4
+      },
+      "recording_bidirectional_decision": "reject: centered delta",
+      "recording_target_rows": [
+        {
+          "improved_fraction": 0.1927710843373494,
+          "mean_true_class_delta": -1.909050757237459,
+          "n_trials": 581,
+          "recording": "032ffcdf-7692-40b3-b9ff-8def1fc18b2e_probe00",
+          "target0_improved": 1.0,
+          "target1_fraction": 0.8072289156626506,
+          "target1_improved": 0.0
+        },
+        {
+          "improved_fraction": 0.8363636363636363,
+          "mean_true_class_delta": 0.3533995447988753,
+          "n_trials": 550,
+          "recording": "a8a8af78-16de-4841-ab07-fde4b5281a03_probe00",
+          "target0_improved": 0.03488372093023256,
+          "target1_fraction": 0.8436363636363636,
+          "target1_improved": 0.9849137931034483
+        },
+        {
+          "improved_fraction": 0.8436363636363636,
+          "mean_true_class_delta": 0.39641078361989945,
+          "n_trials": 550,
+          "recording": "a8a8af78-16de-4841-ab07-fde4b5281a03_probe01",
+          "target0_improved": 0.0,
+          "target1_fraction": 0.8436363636363636,
+          "target1_improved": 1.0
+        },
+        {
+          "improved_fraction": 0.8265765765765766,
+          "mean_true_class_delta": 0.9421845140765535,
+          "n_trials": 444,
+          "recording": "b182b754-3c3e-4942-8144-6ee790926b58_probe01",
+          "target0_improved": 0.0,
+          "target1_fraction": 0.831081081081081,
+          "target1_improved": 0.994579945799458
+        }
+      ],
+      "region_granularity": "parent",
+      "summary": {
+        "decision": "no_model_free_true_region_advantage",
+        "delta_centered_auc": -0.019124786669905358,
+        "n_recordings": 4,
+        "paired_true_vs_shuffle": {
+          "improved_fraction": 0.660235294117647,
+          "mean_true_class_delta": -0.1310272400351284,
+          "target0_improved_fraction": 0.3203342618384401,
+          "target1_improved_fraction": 0.7293318233295584
+        },
+        "recordings_positive_true_minus_shuffle": 1
+      },
+      "target_delta_summary": {
+        "target0": {
+          "improved_fraction": 0.3203342618384401,
+          "mean_true_class_delta": 0.43570871991028326,
+          "n_trials": 359
+        },
+        "target1": {
+          "improved_fraction": 0.7293318233295584,
+          "mean_true_class_delta": -0.24623573925392953,
+          "n_trials": 1766
+        }
+      },
+      "target_mode": "feedback",
+      "top_region_weights": {
+        "negative": [
+          {
+            "region": "PVR",
+            "weight": -0.20808910598369632
+          },
+          {
+            "region": "SSs",
+            "weight": -0.19830685994621164
+          },
+          {
+            "region": "EPI",
+            "weight": -0.18024645098514216
+          },
+          {
+            "region": "RSPd",
+            "weight": -0.15312152942992396
+          },
+          {
+            "region": "ORBm",
+            "weight": -0.15047574838296537
+          },
+          {
+            "region": "In",
+            "weight": -0.13727062312432328
+          },
+          {
+            "region": "mfbc",
+            "weight": -0.13710746222813372
+          },
+          {
+            "region": "fiber tracts",
+            "weight": -0.12639931315610092
+          },
+          {
+            "region": "ATN",
+            "weight": -0.11811419364819965
+          },
+          {
+            "region": "cVIIIn",
+            "weight": -0.11201428874029423
+          },
+          {
+            "region": "P-sen",
+            "weight": -0.0960510846186686
+          },
+          {
+            "region": "AUDv",
+            "weight": -0.08978400888377297
+          }
+        ],
+        "positive": [
+          {
+            "region": "P-mot",
+            "weight": 0.3755285306002168
+          },
+          {
+            "region": "MOp",
+            "weight": 0.2890509096357868
+          },
+          {
+            "region": "PALc",
+            "weight": 0.2643087288026013
+          },
+          {
+            "region": "SCm",
+            "weight": 0.23461575170879503
+          },
+          {
+            "region": "VENT",
+            "weight": 0.2259831580246498
+          },
+          {
+            "region": "SSp-bfd",
+            "weight": 0.22239144367166588
+          },
+          {
+            "region": "cc",
+            "weight": 0.19756390267999271
+          },
+          {
+            "region": "VS",
+            "weight": 0.19048706026045448
+          },
+          {
+            "region": "MED",
+            "weight": 0.18609112217979984
+          },
+          {
+            "region": "PRT",
+            "weight": 0.18368548726815362
+          },
+          {
+            "region": "AUDd",
+            "weight": 0.1762953020459199
+          },
+          {
+            "region": "CNU",
+            "weight": 0.16965077753835361
+          }
+        ]
+      },
+      "train_subjects": [
+        "CSH_ZAD_019",
+        "KS014",
+        "MFD_06",
+        "NR_0019",
+        "SWC_038",
+        "SWC_043"
+      ]
+    },
+    {
+      "holdout": "SWC_038",
+      "n_eval_trials": 2767,
+      "n_regions": 79,
+      "n_train_trials": 15115,
+      "recording_bidirectional": {
+        "bidirectional_recording_fraction": 0.0,
+        "bidirectional_recordings": [],
+        "n_bidirectional_recordings": 0,
+        "n_evaluable_recordings": 4
+      },
+      "recording_bidirectional_decision": "reject: global target0",
+      "recording_target_rows": [
+        {
+          "improved_fraction": 0.7508650519031141,
+          "mean_true_class_delta": 0.43221981203761883,
+          "n_trials": 867,
+          "recording": "03063955-2523-47bd-ae57-f7489dd40f15_probe01",
+          "target0_improved": 0.0,
+          "target1_fraction": 0.7508650519031141,
+          "target1_improved": 1.0
+        },
+        {
+          "improved_fraction": 0.6784565916398714,
+          "mean_true_class_delta": 20.502084320503723,
+          "n_trials": 622,
+          "recording": "1e45d992-c356-40e1-9be1-a506d944896f_probe01",
+          "target0_improved": 0.0,
+          "target1_fraction": 0.6784565916398714,
+          "target1_improved": 1.0
+        },
+        {
+          "improved_fraction": 0.3698630136986301,
+          "mean_true_class_delta": -0.04926875487284926,
+          "n_trials": 511,
+          "recording": "41872d7f-75cb-4445-bb1a-132b354c44f0_probe01",
+          "target0_improved": 1.0,
+          "target1_fraction": 0.6301369863013698,
+          "target1_improved": 0.0
+        },
+        {
+          "improved_fraction": 0.7235984354628422,
+          "mean_true_class_delta": 24.507535798534107,
+          "n_trials": 767,
+          "recording": "4d8c7767-981c-4347-8e5e-5d5fffe38534_probe01",
+          "target0_improved": 0.0,
+          "target1_fraction": 0.7235984354628422,
+          "target1_improved": 1.0
+        }
+      ],
+      "region_granularity": "parent",
+      "summary": {
+        "decision": "weak_model_free_true_region_advantage",
+        "delta_centered_auc": 0.05055958321564202,
+        "n_recordings": 4,
+        "paired_true_vs_shuffle": {
+          "improved_fraction": 0.6566678713408023,
+          "mean_true_class_delta": 11.528418738028755,
+          "target0_improved_fraction": 0.23133414932680538,
+          "target1_improved_fraction": 0.8348717948717949
+        },
+        "recordings_positive_true_minus_shuffle": 1
+      },
+      "target_delta_summary": {
+        "target0": {
+          "improved_fraction": 0.23133414932680538,
+          "mean_true_class_delta": -17.024579797505716,
+          "n_trials": 817
+        },
+        "target1": {
+          "improved_fraction": 0.8348717948717949,
+          "mean_true_class_delta": 23.491392996250124,
+          "n_trials": 1950
+        }
+      },
+      "target_mode": "feedback",
+      "top_region_weights": {
+        "negative": [
+          {
+            "region": "P-sen",
+            "weight": -0.28805354392884713
+          },
+          {
+            "region": "EPI",
+            "weight": -0.262515534243935
+          },
+          {
+            "region": "PVR",
+            "weight": -0.2440365961880184
+          },
+          {
+            "region": "STRv",
+            "weight": -0.21783095291863386
+          },
+          {
+            "region": "SSs",
+            "weight": -0.21069127841009183
+          },
+          {
+            "region": "mfbc",
+            "weight": -0.14310119625130294
+          },
+          {
+            "region": "ATN",
+            "weight": -0.13086646387275055
+          },
+          {
+            "region": "In",
+            "weight": -0.12872276647652345
+          },
+          {
+            "region": "fiber tracts",
+            "weight": -0.12049242699658246
+          },
+          {
+            "region": "RSPd",
+            "weight": -0.11410250000288917
+          },
+          {
+            "region": "MBsta",
+            "weight": -0.09726084428565655
+          },
+          {
+            "region": "VISa",
+            "weight": -0.07523659695509394
+          }
+        ],
+        "positive": [
+          {
+            "region": "P-mot",
+            "weight": 0.3470172466409628
+          },
+          {
+            "region": "HB",
+            "weight": 0.32879052958667004
+          },
+          {
+            "region": "VENT",
+            "weight": 0.2617612591535376
+          },
+          {
+            "region": "PALc",
+            "weight": 0.2535313407906654
+          },
+          {
+            "region": "MOs",
+            "weight": 0.22552984079451802
+          },
+          {
+            "region": "MOp",
+            "weight": 0.22529772638366907
+          },
+          {
+            "region": "AUDd",
+            "weight": 0.1849628777316491
+          },
+          {
+            "region": "SCm",
+            "weight": 0.17660392882432438
+          },
+          {
+            "region": "CNU",
+            "weight": 0.16756115497224028
+          },
+          {
+            "region": "CTXpl",
+            "weight": 0.15452418480952565
+          },
+          {
+            "region": "VS",
+            "weight": 0.1527532206219523
+          },
+          {
+            "region": "cc",
+            "weight": 0.14079682144541428
+          }
+        ]
+      },
+      "train_subjects": [
+        "CSH_ZAD_019",
+        "KS014",
+        "MFD_06",
+        "NR_0019",
+        "NYU-12",
+        "SWC_043"
+      ]
+    },
+    {
+      "holdout": "SWC_043",
+      "n_eval_trials": 2135,
+      "n_regions": 79,
+      "n_train_trials": 15747,
+      "recording_bidirectional": {
+        "bidirectional_recording_fraction": 0.0,
+        "bidirectional_recordings": [],
+        "n_bidirectional_recordings": 0,
+        "n_evaluable_recordings": 4
+      },
+      "recording_bidirectional_decision": "reject: global target0",
+      "recording_target_rows": [
+        {
+          "improved_fraction": 0.8374291115311909,
+          "mean_true_class_delta": 0.43879785316916314,
+          "n_trials": 529,
+          "recording": "4ecb5d24-f5cc-402c-be28-9d0f7cb14b3a_probe00",
+          "target0_improved": 0.0,
+          "target1_fraction": 0.8374291115311909,
+          "target1_improved": 1.0
+        },
+        {
+          "improved_fraction": 0.867513611615245,
+          "mean_true_class_delta": 0.7381549319030565,
+          "n_trials": 551,
+          "recording": "6f09ba7e-e3ce-44b0-932b-c003fb44fb89_probe01",
+          "target0_improved": 0.0,
+          "target1_fraction": 0.867513611615245,
+          "target1_improved": 1.0
+        },
+        {
+          "improved_fraction": 0.7893700787401575,
+          "mean_true_class_delta": 7.3297448181697975,
+          "n_trials": 508,
+          "recording": "6fb1e12c-883b-46d1-a745-473cde3232c8_probe00",
+          "target0_improved": 0.0,
+          "target1_fraction": 0.7893700787401575,
+          "target1_improved": 1.0
+        },
+        {
+          "improved_fraction": 0.7970749542961609,
+          "mean_true_class_delta": 0.7769951527128297,
+          "n_trials": 547,
+          "recording": "88d24c31-52e4-49cc-9f32-6adbeb9eba87_probe00",
+          "target0_improved": 0.0,
+          "target1_fraction": 0.7970749542961609,
+          "target1_improved": 1.0
+        }
+      ],
+      "region_granularity": "parent",
+      "summary": {
+        "decision": "weak_model_free_true_region_advantage",
+        "delta_centered_auc": 0.04260930705558219,
+        "n_recordings": 4,
+        "paired_true_vs_shuffle": {
+          "improved_fraction": 0.8234192037470726,
+          "mean_true_class_delta": 2.242329811695197,
+          "target0_improved_fraction": 0.0,
+          "target1_improved_fraction": 1.0
+        },
+        "recordings_positive_true_minus_shuffle": 4
+      },
+      "target_delta_summary": {
+        "target0": {
+          "improved_fraction": 0.0,
+          "mean_true_class_delta": -4.292934912833465,
+          "n_trials": 377
+        },
+        "target1": {
+          "improved_fraction": 1.0,
+          "mean_true_class_delta": 3.643805807797191,
+          "n_trials": 1758
+        }
+      },
+      "target_mode": "feedback",
+      "top_region_weights": {
+        "negative": [
+          {
+            "region": "P-sen",
+            "weight": -0.27676208786803064
+          },
+          {
+            "region": "EPI",
+            "weight": -0.251109487915258
+          },
+          {
+            "region": "STRd",
+            "weight": -0.21879451335902417
+          },
+          {
+            "region": "RSPd",
+            "weight": -0.14109906809727996
+          },
+          {
+            "region": "ORBm",
+            "weight": -0.12781968787714865
+          },
+          {
+            "region": "ATN",
+            "weight": -0.12691480536855893
+          },
+          {
+            "region": "mfbc",
+            "weight": -0.11557200529724408
+          },
+          {
+            "region": "hc",
+            "weight": -0.11516485863992686
+          },
+          {
+            "region": "MBsta",
+            "weight": -0.08686677704809981
+          },
+          {
+            "region": "mfbse",
+            "weight": -0.06623617806251354
+          },
+          {
+            "region": "VL",
+            "weight": -0.04541209199126607
+          },
+          {
+            "region": "scp",
+            "weight": -0.03637213980927619
+          }
+        ],
+        "positive": [
+          {
+            "region": "P-mot",
+            "weight": 0.3454636209685747
+          },
+          {
+            "region": "HB",
+            "weight": 0.3108019031582525
+          },
+          {
+            "region": "MOp",
+            "weight": 0.27960760238547233
+          },
+          {
+            "region": "VENT",
+            "weight": 0.23544425790472798
+          },
+          {
+            "region": "cc",
+            "weight": 0.20311603905727602
+          },
+          {
+            "region": "SCm",
+            "weight": 0.14919363701287278
+          },
+          {
+            "region": "ORBvl",
+            "weight": 0.13202504847295105
+          },
+          {
+            "region": "VS",
+            "weight": 0.1314991319686572
+          },
+          {
+            "region": "CTXpl",
+            "weight": 0.1191428152804139
+          },
+          {
+            "region": "SSp-un",
+            "weight": 0.11653348155086667
+          },
+          {
+            "region": "MED",
+            "weight": 0.11595755173364537
+          },
+          {
+            "region": "BS",
+            "weight": 0.1124143660915338
+          }
+        ]
+      },
+      "train_subjects": [
+        "CSH_ZAD_019",
+        "KS014",
+        "MFD_06",
+        "NR_0019",
+        "NYU-12",
+        "SWC_038"
+      ]
+    }
+  ],
+  "manifest": "/Users/colin/Desktop/Projects/anatomical-neural-fm/manifests/ibl_bwm_region_matched_candidates_s3_present_support80_hdf5_scored.json",
+  "region_granularity": "parent",
+  "summary": {
+    "candidate_holdouts": [],
+    "decision": "no_recording_bidirectional_model_free_signal",
+    "mean_bidirectional_recording_fraction": 0.0,
+    "n_candidates": 0,
+    "n_holdouts": 7,
+    "n_positive_delta_holdouts": 4,
+    "positive_delta_holdouts": [
+      "MFD_06",
+      "NR_0019",
+      "SWC_038",
+      "SWC_043"
+    ]
+  },
+  "target_mode": "feedback",
+  "thresholds": {
+    "min_bidirectional_recording_fraction": 0.75,
+    "min_centered_delta": 0.01,
+    "min_target_improvement": 0.55
+  }
+}

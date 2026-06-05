@@ -1,0 +1,222 @@
+{
+  "carriers": [
+    "PRT",
+    "CA",
+    "VP",
+    "MOp",
+    "DG",
+    "mfbc"
+  ],
+  "embedding_summary": {
+    "carriers": {
+      "CA": {
+        "cosine": 0.9724532485343463,
+        "l2_distance": 0.040830559364357255,
+        "norm_delta": -0.004301130771636963,
+        "present": true,
+        "shuffle_norm": 0.17515036463737488,
+        "true_norm": 0.17084923386573792
+      },
+      "DG": {
+        "cosine": 0.989535577052476,
+        "l2_distance": 0.029594140125164658,
+        "norm_delta": 0.0012971609830856323,
+        "present": true,
+        "shuffle_norm": 0.20372167229652405,
+        "true_norm": 0.20501883327960968
+      },
+      "MOp": {
+        "cosine": 0.9849216316808557,
+        "l2_distance": 0.03923278613025957,
+        "norm_delta": -0.0013615041971206665,
+        "present": true,
+        "shuffle_norm": 0.22646689414978027,
+        "true_norm": 0.2251053899526596
+      },
+      "PRT": {
+        "cosine": 0.9922950115113655,
+        "l2_distance": 0.02452223872704498,
+        "norm_delta": 0.0018297582864761353,
+        "present": true,
+        "shuffle_norm": 0.19607840478420258,
+        "true_norm": 0.1979081630706787
+      },
+      "VP": {
+        "cosine": 0.9756998221189832,
+        "l2_distance": 0.043959987732460806,
+        "norm_delta": 0.0005812644958496094,
+        "present": true,
+        "shuffle_norm": 0.19909797608852386,
+        "true_norm": 0.19967924058437347
+      },
+      "mfbc": {
+        "cosine": 0.9824065128145,
+        "l2_distance": 0.034869693025005026,
+        "norm_delta": -0.0006551593542098999,
+        "present": true,
+        "shuffle_norm": 0.1861855387687683,
+        "true_norm": 0.1855303794145584
+      }
+    },
+    "mean_abs_norm_delta": 0.0016709963480631511,
+    "mean_carrier_cosine": 0.9828853006187545,
+    "mean_carrier_l2_distance": 0.035501567517382045
+  },
+  "global": {
+    "paired_shuffle_vs_shared": {
+      "improved_fraction": 0.4482758620689655,
+      "mean_abs_prob_delta": 0.11565732460567267,
+      "mean_true_prob_delta": -0.014673679332201607,
+      "n": 2726
+    },
+    "paired_true_vs_shuffle": {
+      "improved_fraction": 0.5517241379310345,
+      "mean_abs_prob_delta": 0.2472954490856922,
+      "mean_true_prob_delta": 0.027534724361818426,
+      "n": 2726
+    },
+    "specificity_gap": 0.10344827586206895
+  },
+  "holdout": "CSH_ZAD_019",
+  "interpretation": {
+    "carrier_embeddings_separated": false,
+    "carrier_rich_negative_recordings": [],
+    "decision": "candidate_mechanism",
+    "negative_recordings": [],
+    "shuffle_control_specificity": true,
+    "true_beats_shuffle_paired": true
+  },
+  "recordings": {
+    "49e0ab27-827a-4c91-bcaa-97eea27a1b8d_probe01": {
+      "carrier": {
+        "carrier_counts": {
+          "CA": 265,
+          "DG": 56,
+          "PRT": 414,
+          "mfbc": 8
+        },
+        "carrier_unit_fraction": 0.7870762711864406,
+        "carrier_units": 743,
+        "n_units": 944
+      },
+      "n_trials": 777,
+      "paired_shuffle_vs_shared": {
+        "improved_fraction": 0.4671814671814672,
+        "mean_abs_prob_delta": 0.10540998909992175,
+        "mean_true_prob_delta": -0.006545357628152045,
+        "n": 777
+      },
+      "paired_true_vs_shared": {
+        "improved_fraction": 0.5328185328185329,
+        "mean_abs_prob_delta": 0.13030584156926167,
+        "mean_true_prob_delta": 0.008460108434364176,
+        "n": 777
+      },
+      "paired_true_vs_shuffle": {
+        "improved_fraction": 0.5328185328185329,
+        "mean_abs_prob_delta": 0.23571583066918342,
+        "mean_true_prob_delta": 0.015005466062516216,
+        "n": 777
+      },
+      "target1_fraction": 0.4671814671814672
+    },
+    "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe00": {
+      "carrier": {
+        "carrier_counts": {
+          "CA": 215,
+          "DG": 103,
+          "MOp": 467,
+          "mfbc": 20
+        },
+        "carrier_unit_fraction": 0.6862745098039216,
+        "carrier_units": 805,
+        "n_units": 1173
+      },
+      "n_trials": 590,
+      "paired_shuffle_vs_shared": {
+        "improved_fraction": 0.4135593220338983,
+        "mean_abs_prob_delta": 0.10025145734823654,
+        "mean_true_prob_delta": -0.01793557010465138,
+        "n": 590
+      },
+      "paired_true_vs_shared": {
+        "improved_fraction": 0.5864406779661017,
+        "mean_abs_prob_delta": 0.13181279710439572,
+        "mean_true_prob_delta": 0.022896181705179527,
+        "n": 590
+      },
+      "paired_true_vs_shuffle": {
+        "improved_fraction": 0.5864406779661017,
+        "mean_abs_prob_delta": 0.23206425445263226,
+        "mean_true_prob_delta": 0.04083175180983091,
+        "n": 590
+      },
+      "target1_fraction": 0.4135593220338983
+    },
+    "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe01": {
+      "carrier": {
+        "carrier_counts": {
+          "MOp": 10,
+          "VP": 335,
+          "mfbc": 1
+        },
+        "carrier_unit_fraction": 0.4119047619047619,
+        "carrier_units": 346,
+        "n_units": 840
+      },
+      "n_trials": 590,
+      "paired_shuffle_vs_shared": {
+        "improved_fraction": 0.4135593220338983,
+        "mean_abs_prob_delta": 0.21951055118448398,
+        "mean_true_prob_delta": -0.038749978005702915,
+        "n": 590
+      },
+      "paired_true_vs_shared": {
+        "improved_fraction": 0.5864406779661017,
+        "mean_abs_prob_delta": 0.11490501868710698,
+        "mean_true_prob_delta": 0.018747251432875416,
+        "n": 590
+      },
+      "paired_true_vs_shuffle": {
+        "improved_fraction": 0.5864406779661017,
+        "mean_abs_prob_delta": 0.33441556987159093,
+        "mean_true_prob_delta": 0.05749722943857834,
+        "n": 590
+      },
+      "target1_fraction": 0.4135593220338983
+    },
+    "edd22318-216c-44ff-bc24-49ce8be78374_probe00": {
+      "carrier": {
+        "carrier_counts": {
+          "PRT": 25,
+          "mfbc": 123
+        },
+        "carrier_unit_fraction": 0.24382207578253706,
+        "carrier_units": 148,
+        "n_units": 607
+      },
+      "n_trials": 769,
+      "paired_shuffle_vs_shared": {
+        "improved_fraction": 0.48244473342002603,
+        "mean_abs_prob_delta": 0.05815178193773657,
+        "mean_true_prob_delta": -0.001911877239789873,
+        "n": 769
+      },
+      "paired_true_vs_shared": {
+        "improved_fraction": 0.517555266579974,
+        "mean_abs_prob_delta": 0.14568839677013046,
+        "mean_true_prob_delta": 0.005092430358624255,
+        "n": 769
+      },
+      "paired_true_vs_shuffle": {
+        "improved_fraction": 0.517555266579974,
+        "mean_abs_prob_delta": 0.20384017870786703,
+        "mean_true_prob_delta": 0.007004307598414128,
+        "n": 769
+      },
+      "target1_fraction": 0.48244473342002603
+    }
+  },
+  "root": "runs/lso_csh_pairwise_rank_pilot",
+  "seed": 0
+}

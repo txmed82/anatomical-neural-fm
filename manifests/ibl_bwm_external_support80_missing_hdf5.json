@@ -1,0 +1,101 @@
+{
+  "dataset": "ibl_bwm",
+  "labs": [
+    "churchlandlab",
+    "mainenlab"
+  ],
+  "n_recordings": 7,
+  "n_subjects": 2,
+  "project": "anatomical-neural-fm",
+  "recordings": [
+    {
+      "alignment_qc": 0.8139344262295082,
+      "insertion_id": "e070023a-2a5d-4398-ad66-f9ed5d517ad1",
+      "lab": "churchlandlab",
+      "n_units_meta": 610,
+      "probe_name": "probe01",
+      "qc": "PASS",
+      "session_id": "7939711b-8b4d-4251-b698-b97c1eaa846e",
+      "start_time": "2020-02-28T10:07:18",
+      "subject_id": "CSHL045",
+      "task_protocol": "_iblrig_tasks_ephysChoiceWorld6.4.0"
+    },
+    {
+      "alignment_qc": 0.9131578947368421,
+      "insertion_id": "53b58cc3-8d88-4257-aa63-48da088f2091",
+      "lab": "churchlandlab",
+      "n_units_meta": 383,
+      "probe_name": "probe01",
+      "qc": "PASS",
+      "session_id": "dfd8e7df-dc51-4589-b6ca-7baccfeb94b4",
+      "start_time": "2020-02-25T09:53:24",
+      "subject_id": "CSHL045",
+      "task_protocol": "_iblrig_tasks_ephysChoiceWorld6.2.5"
+    },
+    {
+      "alignment_qc": 0.9554579673776662,
+      "insertion_id": "61ed1a53-2f33-4a83-82ba-ec7dfa65bf60",
+      "lab": "mainenlab",
+      "n_units_meta": 797,
+      "probe_name": "probe01",
+      "qc": "PASS",
+      "session_id": "5d6aa933-4b00-4e99-ae2d-5003657592e9",
+      "start_time": "2020-10-29T15:38:41",
+      "subject_id": "ZFM-01577",
+      "task_protocol": "_iblrig_tasks_ephysChoiceWorld6.4.2"
+    },
+    {
+      "alignment_qc": 0.9145658263305322,
+      "insertion_id": "00a824c0-e060-495f-9ebc-79c82fef4c67",
+      "lab": "churchlandlab",
+      "n_units_meta": 365,
+      "probe_name": "probe00",
+      "qc": "PASS",
+      "session_id": "fa704052-147e-46f6-b190-a65b837e605e",
+      "start_time": "2020-02-26T14:48:55",
+      "subject_id": "CSHL045",
+      "task_protocol": "_iblrig_tasks_ephysChoiceWorld6.2.5"
+    },
+    {
+      "alignment_qc": 1.0,
+      "insertion_id": "bbf6a51e-2999-4982-803f-8769db095dd2",
+      "lab": "mainenlab",
+      "n_units_meta": 576,
+      "probe_name": "probe00",
+      "qc": "PASS",
+      "session_id": "63f3dbc1-1a5f-44e5-98dd-ce25cd2b7871",
+      "start_time": "2020-10-30T16:41:20.275756",
+      "subject_id": "ZFM-01577",
+      "task_protocol": "_iblrig_tasks_ephysChoiceWorld6.4.2"
+    },
+    {
+      "alignment_qc": 0.8625,
+      "insertion_id": "5e84c8e7-236f-4a64-a944-dc4a17c64f1d",
+      "lab": "churchlandlab",
+      "n_units_meta": 320,
+      "probe_name": "probe01",
+      "qc": "PASS",
+      "session_id": "034e726f-b35f-41e0-8d6c-a22cc32391fb",
+      "start_time": "2020-02-24T14:41:02",
+      "subject_id": "CSHL045",
+      "task_protocol": "_iblrig_tasks_ephysChoiceWorld6.2.5"
+    },
+    {
+      "alignment_qc": 0.871841155234657,
+      "insertion_id": "b78b3c42-eee5-47c6-9717-743b78c0b721",
+      "lab": "mainenlab",
+      "n_units_meta": 554,
+      "probe_name": "probe00",
+      "qc": "PASS",
+      "session_id": "09b2c4d1-058d-4c84-9fd4-97530f85baf6",
+      "start_time": "2020-10-28T15:04:48",
+      "subject_id": "ZFM-01577",
+      "task_protocol": "_iblrig_tasks_ephysChoiceWorld6.4.2"
+    }
+  ],
+  "selection": {
+    "label": "external_support80_missing_hdf5",
+    "note": "Support-qualified broad-manifest recordings missing from local HDF5 cache.",
+    "source_manifest": "/Users/colin/Desktop/Projects/anatomical-neural-fm/manifests/ibl_bwm_region_matched_candidates_s3_present_scored.json"
+  }
+}

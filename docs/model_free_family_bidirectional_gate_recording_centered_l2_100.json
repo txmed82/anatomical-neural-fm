@@ -1,0 +1,1660 @@
+{
+  "feature_mode": "recording_centered",
+  "holdouts": [
+    {
+      "family_definitions": {
+        "basal_ganglia": [
+          "CNU",
+          "PALc",
+          "STRd",
+          "STRv",
+          "VS"
+        ],
+        "brainstem_interbrain": [
+          "BS",
+          "HB",
+          "IB",
+          "LZ",
+          "ZI"
+        ],
+        "broad_named_anatomy": [
+          "ATN",
+          "AUDd",
+          "AUDv",
+          "BS",
+          "CA",
+          "CNU",
+          "CTXpl",
+          "CTXsp",
+          "DG",
+          "DORpm",
+          "ENTm",
+          "EPI",
+          "FRP",
+          "HB",
+          "HIP",
+          "IB",
+          "LAT",
+          "LGd",
+          "LS",
+          "LZ",
+          "MBmot",
+          "MBsen",
+          "MBsta",
+          "MED",
+          "MG",
+          "MOp",
+          "MOs",
+          "MSC",
+          "OLF",
+          "ORBm",
+          "ORBvl",
+          "PALc",
+          "PRT",
+          "PVR",
+          "RHP",
+          "RSPagl",
+          "RSPd",
+          "RSPv",
+          "SCm",
+          "SCs",
+          "SSp-bfd",
+          "SSp-ll",
+          "SSp-tr",
+          "SSp-ul",
+          "SSp-un",
+          "SSs",
+          "STRd",
+          "STRv",
+          "VENT",
+          "VISa",
+          "VISp",
+          "VISpl",
+          "VISpm",
+          "VISpor",
+          "VL",
+          "VP",
+          "VS",
+          "ZI"
+        ],
+        "cortical_auditory": [
+          "AUDd",
+          "AUDv"
+        ],
+        "cortical_retrosplenial": [
+          "RSPagl",
+          "RSPd",
+          "RSPv"
+        ],
+        "cortical_sensorimotor": [
+          "MOp",
+          "MOs",
+          "SSp-bfd",
+          "SSp-ll",
+          "SSp-tr",
+          "SSp-ul",
+          "SSp-un",
+          "SSs"
+        ],
+        "cortical_visual": [
+          "VISa",
+          "VISp",
+          "VISpl",
+          "VISpm",
+          "VISpor"
+        ],
+        "fiber_tracts": [
+          "cc",
+          "cett",
+          "eps",
+          "epsc",
+          "fa",
+          "fiber tracts",
+          "fxs",
+          "hc",
+          "lfbst",
+          "mfbc",
+          "mfbse",
+          "scp"
+        ],
+        "hippocampal_formation": [
+          "CA",
+          "DG",
+          "ENTm",
+          "HIP",
+          "RHP"
+        ],
+        "midbrain": [
+          "MBmot",
+          "MBsen",
+          "MBsta",
+          "SCm",
+          "SCs",
+          "P-mot",
+          "P-sen"
+        ],
+        "thalamic": [
+          "ATN",
+          "DORpm",
+          "LAT",
+          "LGd",
+          "MED",
+          "MG",
+          "PRT",
+          "VENT",
+          "VL",
+          "VP"
+        ]
+      },
+      "family_names": [
+        "cortical_visual",
+        "cortical_auditory",
+        "cortical_sensorimotor",
+        "cortical_retrosplenial",
+        "hippocampal_formation",
+        "thalamic",
+        "midbrain",
+        "basal_ganglia",
+        "brainstem_interbrain",
+        "fiber_tracts",
+        "broad_named_anatomy"
+      ],
+      "feature_mode": "recording_centered",
+      "holdout": "CSH_ZAD_019",
+      "n_eval_trials": 2726,
+      "n_families": 11,
+      "n_parent_regions": 79,
+      "n_train_trials": 13015,
+      "recording_bidirectional": {
+        "bidirectional_recording_fraction": 0.25,
+        "bidirectional_recordings": [
+          "edd22318-216c-44ff-bc24-49ce8be78374_probe00"
+        ],
+        "n_bidirectional_recordings": 1,
+        "n_evaluable_recordings": 4
+      },
+      "recording_bidirectional_decision": "reject: global target0",
+      "recording_target_rows": [
+        {
+          "improved_fraction": 0.444015444015444,
+          "mean_true_class_delta": -0.008159470692855381,
+          "n_trials": 777,
+          "recording": "49e0ab27-827a-4c91-bcaa-97eea27a1b8d_probe01",
+          "target0_improved": 0.40096618357487923,
+          "target1_fraction": 0.4671814671814672,
+          "target1_improved": 0.4931129476584022
+        },
+        {
+          "improved_fraction": 0.5135593220338983,
+          "mean_true_class_delta": 0.0008935317536878456,
+          "n_trials": 590,
+          "recording": "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe00",
+          "target0_improved": 0.5144508670520231,
+          "target1_fraction": 0.4135593220338983,
+          "target1_improved": 0.5122950819672131
+        },
+        {
+          "improved_fraction": 0.49830508474576274,
+          "mean_true_class_delta": 0.00347199278914219,
+          "n_trials": 590,
+          "recording": "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe01",
+          "target0_improved": 0.4595375722543353,
+          "target1_fraction": 0.4135593220338983,
+          "target1_improved": 0.5532786885245902
+        },
+        {
+          "improved_fraction": 0.5929778933680104,
+          "mean_true_class_delta": 0.028016145706468747,
+          "n_trials": 769,
+          "recording": "edd22318-216c-44ff-bc24-49ce8be78374_probe00",
+          "target0_improved": 0.5954773869346733,
+          "target1_fraction": 0.48244473342002603,
+          "target1_improved": 0.5902964959568733
+        }
+      ],
+      "region_granularity": "parent",
+      "summary": {
+        "decision": "weak_model_free_true_region_advantage",
+        "delta_centered_auc": 0.013522042692481806,
+        "n_recordings": 4,
+        "paired_true_vs_shuffle": {
+          "improved_fraction": 0.5128393250183418,
+          "mean_true_class_delta": 0.006522438297944079,
+          "target0_improved_fraction": 0.4920212765957447,
+          "target1_improved_fraction": 0.5384615384615384
+        },
+        "recordings_positive_true_minus_shuffle": 3
+      },
+      "target_mode": "stimulus_side",
+      "train_subjects": [
+        "KS014",
+        "MFD_06",
+        "NR_0019",
+        "NYU-12",
+        "SWC_038",
+        "SWC_043"
+      ]
+    },
+    {
+      "family_definitions": {
+        "basal_ganglia": [
+          "CNU",
+          "PALc",
+          "STRd",
+          "STRv",
+          "VS"
+        ],
+        "brainstem_interbrain": [
+          "BS",
+          "HB",
+          "IB",
+          "LZ",
+          "ZI"
+        ],
+        "broad_named_anatomy": [
+          "ATN",
+          "AUDd",
+          "AUDv",
+          "BS",
+          "CA",
+          "CNU",
+          "CTXpl",
+          "CTXsp",
+          "DG",
+          "DORpm",
+          "ENTm",
+          "EPI",
+          "FRP",
+          "HB",
+          "HIP",
+          "IB",
+          "LAT",
+          "LGd",
+          "LS",
+          "LZ",
+          "MBmot",
+          "MBsen",
+          "MBsta",
+          "MED",
+          "MG",
+          "MOp",
+          "MOs",
+          "MSC",
+          "OLF",
+          "ORBm",
+          "ORBvl",
+          "PALc",
+          "PRT",
+          "PVR",
+          "RHP",
+          "RSPagl",
+          "RSPd",
+          "RSPv",
+          "SCm",
+          "SCs",
+          "SSp-bfd",
+          "SSp-ll",
+          "SSp-tr",
+          "SSp-ul",
+          "SSp-un",
+          "SSs",
+          "STRd",
+          "STRv",
+          "VENT",
+          "VISa",
+          "VISp",
+          "VISpl",
+          "VISpm",
+          "VISpor",
+          "VL",
+          "VP",
+          "VS",
+          "ZI"
+        ],
+        "cortical_auditory": [
+          "AUDd",
+          "AUDv"
+        ],
+        "cortical_retrosplenial": [
+          "RSPagl",
+          "RSPd",
+          "RSPv"
+        ],
+        "cortical_sensorimotor": [
+          "MOp",
+          "MOs",
+          "SSp-bfd",
+          "SSp-ll",
+          "SSp-tr",
+          "SSp-ul",
+          "SSp-un",
+          "SSs"
+        ],
+        "cortical_visual": [
+          "VISa",
+          "VISp",
+          "VISpl",
+          "VISpm",
+          "VISpor"
+        ],
+        "fiber_tracts": [
+          "cc",
+          "cett",
+          "eps",
+          "epsc",
+          "fa",
+          "fiber tracts",
+          "fxs",
+          "hc",
+          "lfbst",
+          "mfbc",
+          "mfbse",
+          "scp"
+        ],
+        "hippocampal_formation": [
+          "CA",
+          "DG",
+          "ENTm",
+          "HIP",
+          "RHP"
+        ],
+        "midbrain": [
+          "MBmot",
+          "MBsen",
+          "MBsta",
+          "SCm",
+          "SCs",
+          "P-mot",
+          "P-sen"
+        ],
+        "thalamic": [
+          "ATN",
+          "DORpm",
+          "LAT",
+          "LGd",
+          "MED",
+          "MG",
+          "PRT",
+          "VENT",
+          "VL",
+          "VP"
+        ]
+      },
+      "family_names": [
+        "cortical_visual",
+        "cortical_auditory",
+        "cortical_sensorimotor",
+        "cortical_retrosplenial",
+        "hippocampal_formation",
+        "thalamic",
+        "midbrain",
+        "basal_ganglia",
+        "brainstem_interbrain",
+        "fiber_tracts",
+        "broad_named_anatomy"
+      ],
+      "feature_mode": "recording_centered",
+      "holdout": "KS014",
+      "n_eval_trials": 2127,
+      "n_families": 11,
+      "n_parent_regions": 79,
+      "n_train_trials": 13614,
+      "recording_bidirectional": {
+        "bidirectional_recording_fraction": 0.5,
+        "bidirectional_recordings": [
+          "16693458-0801-4d35-a3f1-9115c7e5acfd_probe01",
+          "e1931de1-cf7b-49af-af33-2ade15e8abe7_probe00"
+        ],
+        "n_bidirectional_recordings": 2,
+        "n_evaluable_recordings": 4
+      },
+      "recording_bidirectional_decision": "reject: global target0",
+      "recording_target_rows": [
+        {
+          "improved_fraction": 0.5212765957446809,
+          "mean_true_class_delta": 0.0033475481572971884,
+          "n_trials": 470,
+          "recording": "16693458-0801-4d35-a3f1-9115c7e5acfd_probe00",
+          "target0_improved": 0.44933920704845814,
+          "target1_fraction": 0.5170212765957447,
+          "target1_improved": 0.588477366255144
+        },
+        {
+          "improved_fraction": 0.5829787234042553,
+          "mean_true_class_delta": 0.06932674787110599,
+          "n_trials": 470,
+          "recording": "16693458-0801-4d35-a3f1-9115c7e5acfd_probe01",
+          "target0_improved": 0.6079295154185022,
+          "target1_fraction": 0.5170212765957447,
+          "target1_improved": 0.5596707818930041
+        },
+        {
+          "improved_fraction": 0.44501718213058417,
+          "mean_true_class_delta": -0.02429650853356951,
+          "n_trials": 582,
+          "recording": "b9c205c3-feac-485b-a89d-afc96d9cb280_probe00",
+          "target0_improved": 0.35826771653543305,
+          "target1_fraction": 0.563573883161512,
+          "target1_improved": 0.5121951219512195
+        },
+        {
+          "improved_fraction": 0.5768595041322314,
+          "mean_true_class_delta": 0.008300734949090774,
+          "n_trials": 605,
+          "recording": "e1931de1-cf7b-49af-af33-2ade15e8abe7_probe00",
+          "target0_improved": 0.5786516853932584,
+          "target1_fraction": 0.4115702479338843,
+          "target1_improved": 0.5742971887550201
+        }
+      ],
+      "region_granularity": "parent",
+      "summary": {
+        "decision": "weak_model_free_true_region_advantage",
+        "delta_centered_auc": 0.07795889064146727,
+        "n_recordings": 4,
+        "paired_true_vs_shuffle": {
+          "improved_fraction": 0.5298542548189938,
+          "mean_true_class_delta": 0.011771648242130676,
+          "target0_improved_fraction": 0.5046992481203008,
+          "target1_improved_fraction": 0.555032925682032
+        },
+        "recordings_positive_true_minus_shuffle": 3
+      },
+      "target_mode": "stimulus_side",
+      "train_subjects": [
+        "CSH_ZAD_019",
+        "MFD_06",
+        "NR_0019",
+        "NYU-12",
+        "SWC_038",
+        "SWC_043"
+      ]
+    },
+    {
+      "family_definitions": {
+        "basal_ganglia": [
+          "CNU",
+          "PALc",
+          "STRd",
+          "STRv",
+          "VS"
+        ],
+        "brainstem_interbrain": [
+          "BS",
+          "HB",
+          "IB",
+          "LZ",
+          "ZI"
+        ],
+        "broad_named_anatomy": [
+          "ATN",
+          "AUDd",
+          "AUDv",
+          "BS",
+          "CA",
+          "CNU",
+          "CTXpl",
+          "CTXsp",
+          "DG",
+          "DORpm",
+          "ENTm",
+          "EPI",
+          "FRP",
+          "HB",
+          "HIP",
+          "IB",
+          "LAT",
+          "LGd",
+          "LS",
+          "LZ",
+          "MBmot",
+          "MBsen",
+          "MBsta",
+          "MED",
+          "MG",
+          "MOp",
+          "MOs",
+          "MSC",
+          "OLF",
+          "ORBm",
+          "ORBvl",
+          "PALc",
+          "PRT",
+          "PVR",
+          "RHP",
+          "RSPagl",
+          "RSPd",
+          "RSPv",
+          "SCm",
+          "SCs",
+          "SSp-bfd",
+          "SSp-ll",
+          "SSp-tr",
+          "SSp-ul",
+          "SSp-un",
+          "SSs",
+          "STRd",
+          "STRv",
+          "VENT",
+          "VISa",
+          "VISp",
+          "VISpl",
+          "VISpm",
+          "VISpor",
+          "VL",
+          "VP",
+          "VS",
+          "ZI"
+        ],
+        "cortical_auditory": [
+          "AUDd",
+          "AUDv"
+        ],
+        "cortical_retrosplenial": [
+          "RSPagl",
+          "RSPd",
+          "RSPv"
+        ],
+        "cortical_sensorimotor": [
+          "MOp",
+          "MOs",
+          "SSp-bfd",
+          "SSp-ll",
+          "SSp-tr",
+          "SSp-ul",
+          "SSp-un",
+          "SSs"
+        ],
+        "cortical_visual": [
+          "VISa",
+          "VISp",
+          "VISpl",
+          "VISpm",
+          "VISpor"
+        ],
+        "fiber_tracts": [
+          "cc",
+          "cett",
+          "eps",
+          "epsc",
+          "fa",
+          "fiber tracts",
+          "fxs",
+          "hc",
+          "lfbst",
+          "mfbc",
+          "mfbse",
+          "scp"
+        ],
+        "hippocampal_formation": [
+          "CA",
+          "DG",
+          "ENTm",
+          "HIP",
+          "RHP"
+        ],
+        "midbrain": [
+          "MBmot",
+          "MBsen",
+          "MBsta",
+          "SCm",
+          "SCs",
+          "P-mot",
+          "P-sen"
+        ],
+        "thalamic": [
+          "ATN",
+          "DORpm",
+          "LAT",
+          "LGd",
+          "MED",
+          "MG",
+          "PRT",
+          "VENT",
+          "VL",
+          "VP"
+        ]
+      },
+      "family_names": [
+        "cortical_visual",
+        "cortical_auditory",
+        "cortical_sensorimotor",
+        "cortical_retrosplenial",
+        "hippocampal_formation",
+        "thalamic",
+        "midbrain",
+        "basal_ganglia",
+        "brainstem_interbrain",
+        "fiber_tracts",
+        "broad_named_anatomy"
+      ],
+      "feature_mode": "recording_centered",
+      "holdout": "MFD_06",
+      "n_eval_trials": 2265,
+      "n_families": 11,
+      "n_parent_regions": 79,
+      "n_train_trials": 13476,
+      "recording_bidirectional": {
+        "bidirectional_recording_fraction": 0.25,
+        "bidirectional_recordings": [
+          "6899a67d-2e53-4215-a52a-c7021b5da5d4_probe00"
+        ],
+        "n_bidirectional_recordings": 1,
+        "n_evaluable_recordings": 4
+      },
+      "recording_bidirectional_decision": "reject: global target1",
+      "recording_target_rows": [
+        {
+          "improved_fraction": 0.5484848484848485,
+          "mean_true_class_delta": 0.009803903221068708,
+          "n_trials": 660,
+          "recording": "35eeb752-8f4f-4040-9714-ba0f5b7ccdfe_probe00",
+          "target0_improved": 0.4808259587020649,
+          "target1_fraction": 0.4863636363636364,
+          "target1_improved": 0.6199376947040498
+        },
+        {
+          "improved_fraction": 0.5,
+          "mean_true_class_delta": -0.011170304587184514,
+          "n_trials": 590,
+          "recording": "3f71aa98-08c6-4e79-b4c8-00eae4f03eff_probe00",
+          "target0_improved": 0.6589595375722543,
+          "target1_fraction": 0.4135593220338983,
+          "target1_improved": 0.27459016393442626
+        },
+        {
+          "improved_fraction": 0.6456043956043956,
+          "mean_true_class_delta": 0.014021159706759576,
+          "n_trials": 364,
+          "recording": "6899a67d-2e53-4215-a52a-c7021b5da5d4_probe00",
+          "target0_improved": 0.6288659793814433,
+          "target1_fraction": 0.46703296703296704,
+          "target1_improved": 0.6647058823529411
+        },
+        {
+          "improved_fraction": 0.49001536098310294,
+          "mean_true_class_delta": -0.005577778748477704,
+          "n_trials": 651,
+          "recording": "a1782f4f-86b0-480c-a7f2-3d8f1ab482ab_probe00",
+          "target0_improved": 0.5116959064327485,
+          "target1_fraction": 0.47465437788018433,
+          "target1_improved": 0.46601941747572817
+        }
+      ],
+      "region_granularity": "parent",
+      "summary": {
+        "decision": "weak_model_free_true_region_advantage",
+        "delta_centered_auc": 0.0271682340647858,
+        "n_recordings": 4,
+        "paired_true_vs_shuffle": {
+          "improved_fraction": 0.5346578366445917,
+          "mean_true_class_delta": 0.0005972029083743864,
+          "target0_improved_fraction": 0.5634725634725635,
+          "target1_improved_fraction": 0.5009578544061303
+        },
+        "recordings_positive_true_minus_shuffle": 3
+      },
+      "target_mode": "stimulus_side",
+      "train_subjects": [
+        "CSH_ZAD_019",
+        "KS014",
+        "NR_0019",
+        "NYU-12",
+        "SWC_038",
+        "SWC_043"
+      ]
+    },
+    {
+      "family_definitions": {
+        "basal_ganglia": [
+          "CNU",
+          "PALc",
+          "STRd",
+          "STRv",
+          "VS"
+        ],
+        "brainstem_interbrain": [
+          "BS",
+          "HB",
+          "IB",
+          "LZ",
+          "ZI"
+        ],
+        "broad_named_anatomy": [
+          "ATN",
+          "AUDd",
+          "AUDv",
+          "BS",
+          "CA",
+          "CNU",
+          "CTXpl",
+          "CTXsp",
+          "DG",
+          "DORpm",
+          "ENTm",
+          "EPI",
+          "FRP",
+          "HB",
+          "HIP",
+          "IB",
+          "LAT",
+          "LGd",
+          "LS",
+          "LZ",
+          "MBmot",
+          "MBsen",
+          "MBsta",
+          "MED",
+          "MG",
+          "MOp",
+          "MOs",
+          "MSC",
+          "OLF",
+          "ORBm",
+          "ORBvl",
+          "PALc",
+          "PRT",
+          "PVR",
+          "RHP",
+          "RSPagl",
+          "RSPd",
+          "RSPv",
+          "SCm",
+          "SCs",
+          "SSp-bfd",
+          "SSp-ll",
+          "SSp-tr",
+          "SSp-ul",
+          "SSp-un",
+          "SSs",
+          "STRd",
+          "STRv",
+          "VENT",
+          "VISa",
+          "VISp",
+          "VISpl",
+          "VISpm",
+          "VISpor",
+          "VL",
+          "VP",
+          "VS",
+          "ZI"
+        ],
+        "cortical_auditory": [
+          "AUDd",
+          "AUDv"
+        ],
+        "cortical_retrosplenial": [
+          "RSPagl",
+          "RSPd",
+          "RSPv"
+        ],
+        "cortical_sensorimotor": [
+          "MOp",
+          "MOs",
+          "SSp-bfd",
+          "SSp-ll",
+          "SSp-tr",
+          "SSp-ul",
+          "SSp-un",
+          "SSs"
+        ],
+        "cortical_visual": [
+          "VISa",
+          "VISp",
+          "VISpl",
+          "VISpm",
+          "VISpor"
+        ],
+        "fiber_tracts": [
+          "cc",
+          "cett",
+          "eps",
+          "epsc",
+          "fa",
+          "fiber tracts",
+          "fxs",
+          "hc",
+          "lfbst",
+          "mfbc",
+          "mfbse",
+          "scp"
+        ],
+        "hippocampal_formation": [
+          "CA",
+          "DG",
+          "ENTm",
+          "HIP",
+          "RHP"
+        ],
+        "midbrain": [
+          "MBmot",
+          "MBsen",
+          "MBsta",
+          "SCm",
+          "SCs",
+          "P-mot",
+          "P-sen"
+        ],
+        "thalamic": [
+          "ATN",
+          "DORpm",
+          "LAT",
+          "LGd",
+          "MED",
+          "MG",
+          "PRT",
+          "VENT",
+          "VL",
+          "VP"
+        ]
+      },
+      "family_names": [
+        "cortical_visual",
+        "cortical_auditory",
+        "cortical_sensorimotor",
+        "cortical_retrosplenial",
+        "hippocampal_formation",
+        "thalamic",
+        "midbrain",
+        "basal_ganglia",
+        "brainstem_interbrain",
+        "fiber_tracts",
+        "broad_named_anatomy"
+      ],
+      "feature_mode": "recording_centered",
+      "holdout": "NR_0019",
+      "n_eval_trials": 2424,
+      "n_families": 11,
+      "n_parent_regions": 79,
+      "n_train_trials": 13317,
+      "recording_bidirectional": {
+        "bidirectional_recording_fraction": 0.0,
+        "bidirectional_recordings": [],
+        "n_bidirectional_recordings": 0,
+        "n_evaluable_recordings": 4
+      },
+      "recording_bidirectional_decision": "reject: centered delta",
+      "recording_target_rows": [
+        {
+          "improved_fraction": 0.49746835443037973,
+          "mean_true_class_delta": -0.00046761601475421707,
+          "n_trials": 790,
+          "recording": "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe00",
+          "target0_improved": 0.43291139240506327,
+          "target1_fraction": 0.5,
+          "target1_improved": 0.5620253164556962
+        },
+        {
+          "improved_fraction": 0.4518987341772152,
+          "mean_true_class_delta": -0.0029348341642193906,
+          "n_trials": 790,
+          "recording": "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe01",
+          "target0_improved": 0.4936708860759494,
+          "target1_fraction": 0.5,
+          "target1_improved": 0.41012658227848103
+        },
+        {
+          "improved_fraction": 0.4549763033175355,
+          "mean_true_class_delta": -0.0031712406504607756,
+          "n_trials": 422,
+          "recording": "b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe00",
+          "target0_improved": 0.4504950495049505,
+          "target1_fraction": 0.5213270142180095,
+          "target1_improved": 0.4590909090909091
+        },
+        {
+          "improved_fraction": 0.45734597156398105,
+          "mean_true_class_delta": -0.002990259981424968,
+          "n_trials": 422,
+          "recording": "b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe01",
+          "target0_improved": 0.4752475247524752,
+          "target1_fraction": 0.5213270142180095,
+          "target1_improved": 0.4409090909090909
+        }
+      ],
+      "region_granularity": "parent",
+      "summary": {
+        "decision": "no_model_free_true_region_advantage",
+        "delta_centered_auc": -0.04944029088532087,
+        "n_recordings": 4,
+        "paired_true_vs_shuffle": {
+          "improved_fraction": 0.4682343234323432,
+          "mean_true_class_delta": -0.00218155483005154,
+          "target0_improved_fraction": 0.4631490787269682,
+          "target1_improved_fraction": 0.47317073170731705
+        },
+        "recordings_positive_true_minus_shuffle": 0
+      },
+      "target_mode": "stimulus_side",
+      "train_subjects": [
+        "CSH_ZAD_019",
+        "KS014",
+        "MFD_06",
+        "NYU-12",
+        "SWC_038",
+        "SWC_043"
+      ]
+    },
+    {
+      "family_definitions": {
+        "basal_ganglia": [
+          "CNU",
+          "PALc",
+          "STRd",
+          "STRv",
+          "VS"
+        ],
+        "brainstem_interbrain": [
+          "BS",
+          "HB",
+          "IB",
+          "LZ",
+          "ZI"
+        ],
+        "broad_named_anatomy": [
+          "ATN",
+          "AUDd",
+          "AUDv",
+          "BS",
+          "CA",
+          "CNU",
+          "CTXpl",
+          "CTXsp",
+          "DG",
+          "DORpm",
+          "ENTm",
+          "EPI",
+          "FRP",
+          "HB",
+          "HIP",
+          "IB",
+          "LAT",
+          "LGd",
+          "LS",
+          "LZ",
+          "MBmot",
+          "MBsen",
+          "MBsta",
+          "MED",
+          "MG",
+          "MOp",
+          "MOs",
+          "MSC",
+          "OLF",
+          "ORBm",
+          "ORBvl",
+          "PALc",
+          "PRT",
+          "PVR",
+          "RHP",
+          "RSPagl",
+          "RSPd",
+          "RSPv",
+          "SCm",
+          "SCs",
+          "SSp-bfd",
+          "SSp-ll",
+          "SSp-tr",
+          "SSp-ul",
+          "SSp-un",
+          "SSs",
+          "STRd",
+          "STRv",
+          "VENT",
+          "VISa",
+          "VISp",
+          "VISpl",
+          "VISpm",
+          "VISpor",
+          "VL",
+          "VP",
+          "VS",
+          "ZI"
+        ],
+        "cortical_auditory": [
+          "AUDd",
+          "AUDv"
+        ],
+        "cortical_retrosplenial": [
+          "RSPagl",
+          "RSPd",
+          "RSPv"
+        ],
+        "cortical_sensorimotor": [
+          "MOp",
+          "MOs",
+          "SSp-bfd",
+          "SSp-ll",
+          "SSp-tr",
+          "SSp-ul",
+          "SSp-un",
+          "SSs"
+        ],
+        "cortical_visual": [
+          "VISa",
+          "VISp",
+          "VISpl",
+          "VISpm",
+          "VISpor"
+        ],
+        "fiber_tracts": [
+          "cc",
+          "cett",
+          "eps",
+          "epsc",
+          "fa",
+          "fiber tracts",
+          "fxs",
+          "hc",
+          "lfbst",
+          "mfbc",
+          "mfbse",
+          "scp"
+        ],
+        "hippocampal_formation": [
+          "CA",
+          "DG",
+          "ENTm",
+          "HIP",
+          "RHP"
+        ],
+        "midbrain": [
+          "MBmot",
+          "MBsen",
+          "MBsta",
+          "SCm",
+          "SCs",
+          "P-mot",
+          "P-sen"
+        ],
+        "thalamic": [
+          "ATN",
+          "DORpm",
+          "LAT",
+          "LGd",
+          "MED",
+          "MG",
+          "PRT",
+          "VENT",
+          "VL",
+          "VP"
+        ]
+      },
+      "family_names": [
+        "cortical_visual",
+        "cortical_auditory",
+        "cortical_sensorimotor",
+        "cortical_retrosplenial",
+        "hippocampal_formation",
+        "thalamic",
+        "midbrain",
+        "basal_ganglia",
+        "brainstem_interbrain",
+        "fiber_tracts",
+        "broad_named_anatomy"
+      ],
+      "feature_mode": "recording_centered",
+      "holdout": "NYU-12",
+      "n_eval_trials": 1875,
+      "n_families": 11,
+      "n_parent_regions": 79,
+      "n_train_trials": 13866,
+      "recording_bidirectional": {
+        "bidirectional_recording_fraction": 0.0,
+        "bidirectional_recordings": [],
+        "n_bidirectional_recordings": 0,
+        "n_evaluable_recordings": 4
+      },
+      "recording_bidirectional_decision": "reject: centered delta",
+      "recording_target_rows": [
+        {
+          "improved_fraction": 0.4980392156862745,
+          "mean_true_class_delta": 0.0054828232198526625,
+          "n_trials": 510,
+          "recording": "032ffcdf-7692-40b3-b9ff-8def1fc18b2e_probe00",
+          "target0_improved": 0.40893470790378006,
+          "target1_fraction": 0.4294117647058823,
+          "target1_improved": 0.6164383561643836
+        },
+        {
+          "improved_fraction": 0.4524793388429752,
+          "mean_true_class_delta": -0.004541389109158605,
+          "n_trials": 484,
+          "recording": "a8a8af78-16de-4841-ab07-fde4b5281a03_probe00",
+          "target0_improved": 0.38,
+          "target1_fraction": 0.4834710743801653,
+          "target1_improved": 0.5299145299145299
+        },
+        {
+          "improved_fraction": 0.5165289256198347,
+          "mean_true_class_delta": -0.002142734180888704,
+          "n_trials": 484,
+          "recording": "a8a8af78-16de-4841-ab07-fde4b5281a03_probe01",
+          "target0_improved": 0.62,
+          "target1_fraction": 0.4834710743801653,
+          "target1_improved": 0.405982905982906
+        },
+        {
+          "improved_fraction": 0.5037783375314862,
+          "mean_true_class_delta": 0.0028065768683995713,
+          "n_trials": 397,
+          "recording": "b182b754-3c3e-4942-8144-6ee790926b58_probe01",
+          "target0_improved": 0.554945054945055,
+          "target1_fraction": 0.5415617128463476,
+          "target1_improved": 0.4604651162790698
+        }
+      ],
+      "region_granularity": "parent",
+      "summary": {
+        "decision": "weak_model_free_true_region_advantage",
+        "delta_centered_auc": 0.0021523484411710703,
+        "n_recordings": 4,
+        "paired_true_vs_shuffle": {
+          "improved_fraction": 0.4922666666666667,
+          "mean_true_class_delta": 0.00036017876613151495,
+          "target0_improved_fraction": 0.4830421377183967,
+          "target1_improved_fraction": 0.5022172949002217
+        },
+        "recordings_positive_true_minus_shuffle": 2
+      },
+      "target_mode": "stimulus_side",
+      "train_subjects": [
+        "CSH_ZAD_019",
+        "KS014",
+        "MFD_06",
+        "NR_0019",
+        "SWC_038",
+        "SWC_043"
+      ]
+    },
+    {
+      "family_definitions": {
+        "basal_ganglia": [
+          "CNU",
+          "PALc",
+          "STRd",
+          "STRv",
+          "VS"
+        ],
+        "brainstem_interbrain": [
+          "BS",
+          "HB",
+          "IB",
+          "LZ",
+          "ZI"
+        ],
+        "broad_named_anatomy": [
+          "ATN",
+          "AUDd",
+          "AUDv",
+          "BS",
+          "CA",
+          "CNU",
+          "CTXpl",
+          "CTXsp",
+          "DG",
+          "DORpm",
+          "ENTm",
+          "EPI",
+          "FRP",
+          "HB",
+          "HIP",
+          "IB",
+          "LAT",
+          "LGd",
+          "LS",
+          "LZ",
+          "MBmot",
+          "MBsen",
+          "MBsta",
+          "MED",
+          "MG",
+          "MOp",
+          "MOs",
+          "MSC",
+          "OLF",
+          "ORBm",
+          "ORBvl",
+          "PALc",
+          "PRT",
+          "PVR",
+          "RHP",
+          "RSPagl",
+          "RSPd",
+          "RSPv",
+          "SCm",
+          "SCs",
+          "SSp-bfd",
+          "SSp-ll",
+          "SSp-tr",
+          "SSp-ul",
+          "SSp-un",
+          "SSs",
+          "STRd",
+          "STRv",
+          "VENT",
+          "VISa",
+          "VISp",
+          "VISpl",
+          "VISpm",
+          "VISpor",
+          "VL",
+          "VP",
+          "VS",
+          "ZI"
+        ],
+        "cortical_auditory": [
+          "AUDd",
+          "AUDv"
+        ],
+        "cortical_retrosplenial": [
+          "RSPagl",
+          "RSPd",
+          "RSPv"
+        ],
+        "cortical_sensorimotor": [
+          "MOp",
+          "MOs",
+          "SSp-bfd",
+          "SSp-ll",
+          "SSp-tr",
+          "SSp-ul",
+          "SSp-un",
+          "SSs"
+        ],
+        "cortical_visual": [
+          "VISa",
+          "VISp",
+          "VISpl",
+          "VISpm",
+          "VISpor"
+        ],
+        "fiber_tracts": [
+          "cc",
+          "cett",
+          "eps",
+          "epsc",
+          "fa",
+          "fiber tracts",
+          "fxs",
+          "hc",
+          "lfbst",
+          "mfbc",
+          "mfbse",
+          "scp"
+        ],
+        "hippocampal_formation": [
+          "CA",
+          "DG",
+          "ENTm",
+          "HIP",
+          "RHP"
+        ],
+        "midbrain": [
+          "MBmot",
+          "MBsen",
+          "MBsta",
+          "SCm",
+          "SCs",
+          "P-mot",
+          "P-sen"
+        ],
+        "thalamic": [
+          "ATN",
+          "DORpm",
+          "LAT",
+          "LGd",
+          "MED",
+          "MG",
+          "PRT",
+          "VENT",
+          "VL",
+          "VP"
+        ]
+      },
+      "family_names": [
+        "cortical_visual",
+        "cortical_auditory",
+        "cortical_sensorimotor",
+        "cortical_retrosplenial",
+        "hippocampal_formation",
+        "thalamic",
+        "midbrain",
+        "basal_ganglia",
+        "brainstem_interbrain",
+        "fiber_tracts",
+        "broad_named_anatomy"
+      ],
+      "feature_mode": "recording_centered",
+      "holdout": "SWC_038",
+      "n_eval_trials": 2436,
+      "n_families": 11,
+      "n_parent_regions": 79,
+      "n_train_trials": 13305,
+      "recording_bidirectional": {
+        "bidirectional_recording_fraction": 0.25,
+        "bidirectional_recordings": [
+          "03063955-2523-47bd-ae57-f7489dd40f15_probe01"
+        ],
+        "n_bidirectional_recordings": 1,
+        "n_evaluable_recordings": 4
+      },
+      "recording_bidirectional_decision": "reject: centered delta",
+      "recording_target_rows": [
+        {
+          "improved_fraction": 0.5960526315789474,
+          "mean_true_class_delta": 0.017011147409425907,
+          "n_trials": 760,
+          "recording": "03063955-2523-47bd-ae57-f7489dd40f15_probe01",
+          "target0_improved": 0.610705596107056,
+          "target1_fraction": 0.45921052631578946,
+          "target1_improved": 0.5787965616045845
+        },
+        {
+          "improved_fraction": 0.48816029143898,
+          "mean_true_class_delta": -0.009448259691282237,
+          "n_trials": 549,
+          "recording": "1e45d992-c356-40e1-9be1-a506d944896f_probe01",
+          "target0_improved": 0.4703703703703704,
+          "target1_fraction": 0.5081967213114754,
+          "target1_improved": 0.5053763440860215
+        },
+        {
+          "improved_fraction": 0.5308370044052864,
+          "mean_true_class_delta": 0.0003294112530314026,
+          "n_trials": 454,
+          "recording": "41872d7f-75cb-4445-bb1a-132b354c44f0_probe01",
+          "target0_improved": 0.4788732394366197,
+          "target1_fraction": 0.5308370044052864,
+          "target1_improved": 0.5767634854771784
+        },
+        {
+          "improved_fraction": 0.4635958395245171,
+          "mean_true_class_delta": -0.022969030862321736,
+          "n_trials": 673,
+          "recording": "4d8c7767-981c-4347-8e5e-5d5fffe38534_probe01",
+          "target0_improved": 0.42178770949720673,
+          "target1_fraction": 0.46805349182763745,
+          "target1_improved": 0.5111111111111111
+        }
+      ],
+      "region_granularity": "parent",
+      "summary": {
+        "decision": "no_model_free_true_region_advantage",
+        "delta_centered_auc": -0.00687953328728097,
+        "n_recordings": 4,
+        "paired_true_vs_shuffle": {
+          "improved_fraction": 0.5229885057471264,
+          "mean_true_class_delta": -0.003106415271271152,
+          "target0_improved_fraction": 0.5039936102236422,
+          "target1_improved_fraction": 0.5430743243243243
+        },
+        "recordings_positive_true_minus_shuffle": 2
+      },
+      "target_mode": "stimulus_side",
+      "train_subjects": [
+        "CSH_ZAD_019",
+        "KS014",
+        "MFD_06",
+        "NR_0019",
+        "NYU-12",
+        "SWC_043"
+      ]
+    },
+    {
+      "family_definitions": {
+        "basal_ganglia": [
+          "CNU",
+          "PALc",
+          "STRd",
+          "STRv",
+          "VS"
+        ],
+        "brainstem_interbrain": [
+          "BS",
+          "HB",
+          "IB",
+          "LZ",
+          "ZI"
+        ],
+        "broad_named_anatomy": [
+          "ATN",
+          "AUDd",
+          "AUDv",
+          "BS",
+          "CA",
+          "CNU",
+          "CTXpl",
+          "CTXsp",
+          "DG",
+          "DORpm",
+          "ENTm",
+          "EPI",
+          "FRP",
+          "HB",
+          "HIP",
+          "IB",
+          "LAT",
+          "LGd",
+          "LS",
+          "LZ",
+          "MBmot",
+          "MBsen",
+          "MBsta",
+          "MED",
+          "MG",
+          "MOp",
+          "MOs",
+          "MSC",
+          "OLF",
+          "ORBm",
+          "ORBvl",
+          "PALc",
+          "PRT",
+          "PVR",
+          "RHP",
+          "RSPagl",
+          "RSPd",
+          "RSPv",
+          "SCm",
+          "SCs",
+          "SSp-bfd",
+          "SSp-ll",
+          "SSp-tr",
+          "SSp-ul",
+          "SSp-un",
+          "SSs",
+          "STRd",
+          "STRv",
+          "VENT",
+          "VISa",
+          "VISp",
+          "VISpl",
+          "VISpm",
+          "VISpor",
+          "VL",
+          "VP",
+          "VS",
+          "ZI"
+        ],
+        "cortical_auditory": [
+          "AUDd",
+          "AUDv"
+        ],
+        "cortical_retrosplenial": [
+          "RSPagl",
+          "RSPd",
+          "RSPv"
+        ],
+        "cortical_sensorimotor": [
+          "MOp",
+          "MOs",
+          "SSp-bfd",
+          "SSp-ll",
+          "SSp-tr",
+          "SSp-ul",
+          "SSp-un",
+          "SSs"
+        ],
+        "cortical_visual": [
+          "VISa",
+          "VISp",
+          "VISpl",
+          "VISpm",
+          "VISpor"
+        ],
+        "fiber_tracts": [
+          "cc",
+          "cett",
+          "eps",
+          "epsc",
+          "fa",
+          "fiber tracts",
+          "fxs",
+          "hc",
+          "lfbst",
+          "mfbc",
+          "mfbse",
+          "scp"
+        ],
+        "hippocampal_formation": [
+          "CA",
+          "DG",
+          "ENTm",
+          "HIP",
+          "RHP"
+        ],
+        "midbrain": [
+          "MBmot",
+          "MBsen",
+          "MBsta",
+          "SCm",
+          "SCs",
+          "P-mot",
+          "P-sen"
+        ],
+        "thalamic": [
+          "ATN",
+          "DORpm",
+          "LAT",
+          "LGd",
+          "MED",
+          "MG",
+          "PRT",
+          "VENT",
+          "VL",
+          "VP"
+        ]
+      },
+      "family_names": [
+        "cortical_visual",
+        "cortical_auditory",
+        "cortical_sensorimotor",
+        "cortical_retrosplenial",
+        "hippocampal_formation",
+        "thalamic",
+        "midbrain",
+        "basal_ganglia",
+        "brainstem_interbrain",
+        "fiber_tracts",
+        "broad_named_anatomy"
+      ],
+      "feature_mode": "recording_centered",
+      "holdout": "SWC_043",
+      "n_eval_trials": 1888,
+      "n_families": 11,
+      "n_parent_regions": 79,
+      "n_train_trials": 13853,
+      "recording_bidirectional": {
+        "bidirectional_recording_fraction": 0.0,
+        "bidirectional_recordings": [],
+        "n_bidirectional_recordings": 0,
+        "n_evaluable_recordings": 4
+      },
+      "recording_bidirectional_decision": "reject: centered delta",
+      "recording_target_rows": [
+        {
+          "improved_fraction": 0.41914893617021276,
+          "mean_true_class_delta": -0.0073729296874094795,
+          "n_trials": 470,
+          "recording": "4ecb5d24-f5cc-402c-be28-9d0f7cb14b3a_probe00",
+          "target0_improved": 0.41841004184100417,
+          "target1_fraction": 0.49148936170212765,
+          "target1_improved": 0.4199134199134199
+        },
+        {
+          "improved_fraction": 0.5319587628865979,
+          "mean_true_class_delta": 0.0027895796971769003,
+          "n_trials": 485,
+          "recording": "6f09ba7e-e3ce-44b0-932b-c003fb44fb89_probe01",
+          "target0_improved": 0.5018315018315018,
+          "target1_fraction": 0.43711340206185567,
+          "target1_improved": 0.5707547169811321
+        },
+        {
+          "improved_fraction": 0.43902439024390244,
+          "mean_true_class_delta": -0.02002035563500518,
+          "n_trials": 451,
+          "recording": "6fb1e12c-883b-46d1-a745-473cde3232c8_probe00",
+          "target0_improved": 0.35714285714285715,
+          "target1_fraction": 0.5033259423503326,
+          "target1_improved": 0.5198237885462555
+        },
+        {
+          "improved_fraction": 0.4087136929460581,
+          "mean_true_class_delta": -0.008942101241493581,
+          "n_trials": 482,
+          "recording": "88d24c31-52e4-49cc-9f32-6adbeb9eba87_probe00",
+          "target0_improved": 0.3790322580645161,
+          "target1_fraction": 0.4854771784232365,
+          "target1_improved": 0.44017094017094016
+        }
+      ],
+      "region_granularity": "parent",
+      "summary": {
+        "decision": "no_model_free_true_region_advantage",
+        "delta_centered_auc": -0.035496033887330025,
+        "n_recordings": 4,
+        "paired_true_vs_shuffle": {
+          "improved_fraction": 0.4502118644067797,
+          "mean_true_class_delta": -0.00818411228270069,
+          "target0_improved_fraction": 0.4176829268292683,
+          "target1_improved_fraction": 0.4856194690265487
+        },
+        "recordings_positive_true_minus_shuffle": 1
+      },
+      "target_mode": "stimulus_side",
+      "train_subjects": [
+        "CSH_ZAD_019",
+        "KS014",
+        "MFD_06",
+        "NR_0019",
+        "NYU-12",
+        "SWC_038"
+      ]
+    }
+  ],
+  "manifest": "/Users/colin/Desktop/Projects/anatomical-neural-fm/manifests/ibl_bwm_region_matched_candidates_s3_present_support80_hdf5_scored.json",
+  "region_granularity": "parent",
+  "summary": {
+    "candidate_holdouts": [],
+    "decision": "no_recording_bidirectional_model_free_signal",
+    "mean_bidirectional_recording_fraction": 0.17857142857142858,
+    "n_candidates": 0,
+    "n_holdouts": 7,
+    "n_positive_delta_holdouts": 4,
+    "positive_delta_holdouts": [
+      "CSH_ZAD_019",
+      "KS014",
+      "MFD_06",
+      "NYU-12"
+    ]
+  },
+  "target_mode": "stimulus_side",
+  "thresholds": {
+    "min_bidirectional_recording_fraction": 0.75,
+    "min_centered_delta": 0.01,
+    "min_target_improvement": 0.55
+  }
+}

@@ -1,0 +1,2810 @@
+{
+  "decision": "At least one manifest has basic target balance and shared family support. Use its strongest target/family combinations for the next local model-free control redesign before any GPU launch.",
+  "manifests": [
+    {
+      "anatomy": {
+        "n_families_all_subjects_pass": 4,
+        "n_families_with_units": 11,
+        "top_families": [
+          {
+            "all_subjects_pass": true,
+            "family": "broad_named_anatomy",
+            "min_subject_units": 2447,
+            "subject_support": [
+              {
+                "passes": true,
+                "recordings_with_min_units": 4,
+                "subject": "CSH_ZAD_019",
+                "units": 3120
+              },
+              {
+                "passes": true,
+                "recordings_with_min_units": 4,
+                "subject": "KS014",
+                "units": 3002
+              },
+              {
+                "passes": true,
+                "recordings_with_min_units": 4,
+                "subject": "MFD_06",
+                "units": 2516
+              },
+              {
+                "passes": true,
+                "recordings_with_min_units": 4,
+                "subject": "NR_0019",
+                "units": 2447
+              },
+              {
+                "passes": true,
+                "recordings_with_min_units": 4,
+                "subject": "NYU-12",
+                "units": 3738
+              },
+              {
+                "passes": true,
+                "recordings_with_min_units": 4,
+                "subject": "SWC_038",
+                "units": 3711
+              },
+              {
+                "passes": true,
+                "recordings_with_min_units": 4,
+                "subject": "SWC_043",
+                "units": 4262
+              }
+            ],
+            "subjects_passing": 7,
+            "total_units": 22796
+          },
+          {
+            "all_subjects_pass": true,
+            "family": "thalamic",
+            "min_subject_units": 121,
+            "subject_support": [
+              {
+                "passes": true,
+                "recordings_with_min_units": 4,
+                "subject": "CSH_ZAD_019",
+                "units": 1383
+              },
+              {
+                "passes": true,
+                "recordings_with_min_units": 1,
+                "subject": "KS014",
+                "units": 121
+              },
+              {
+                "passes": true,
+                "recordings_with_min_units": 1,
+                "subject": "MFD_06",
+                "units": 310
+              },
+              {
+                "passes": true,
+                "recordings_with_min_units": 2,
+                "subject": "NR_0019",
+                "units": 897
+              },
+              {
+                "passes": true,
+                "recordings_with_min_units": 1,
+                "subject": "NYU-12",
+                "units": 506
+              },
+              {
+                "passes": true,
+                "recordings_with_min_units": 1,
+                "subject": "SWC_038",
+                "units": 146
+              },
+              {
+                "passes": true,
+                "recordings_with_min_units": 1,
+                "subject": "SWC_043",
+                "units": 807
+              }
+            ],
+            "subjects_passing": 7,
+            "total_units": 4170
+          },
+          {
+            "all_subjects_pass": true,
+            "family": "hippocampal_formation",
+            "min_subject_units": 86,
+            "subject_support": [
+              {
+                "passes": true,
+                "recordings_with_min_units": 3,
+                "subject": "CSH_ZAD_019",
+                "units": 695
+              },
+              {
+                "passes": true,
+                "recordings_with_min_units": 2,
+                "subject": "KS014",
+                "units": 139
+              },
+              {
+                "passes": true,
+                "recordings_with_min_units": 3,
+                "subject": "MFD_06",
+                "units": 913
+              },
+              {
+                "passes": true,
+                "recordings_with_min_units": 1,
+                "subject": "NR_0019",
+                "units": 220
+              },
+              {
+                "passes": true,
+                "recordings_with_min_units": 3,
+                "subject": "NYU-12",
+                "units": 1644
+              },
+              {
+                "passes": true,
+                "recordings_with_min_units": 1,
+                "subject": "SWC_038",
+                "units": 86
+              },
+              {
+                "passes": true,
+                "recordings_with_min_units": 1,
+                "subject": "SWC_043",
+                "units": 602
+              }
+            ],
+            "subjects_passing": 7,
+            "total_units": 4299
+          },
+          {
+            "all_subjects_pass": true,
+            "family": "fiber_tracts",
+            "min_subject_units": 56,
+            "subject_support": [
+              {
+                "passes": true,
+                "recordings_with_min_units": 4,
+                "subject": "CSH_ZAD_019",
+                "units": 411
+              },
+              {
+                "passes": true,
+                "recordings_with_min_units": 1,
+                "subject": "KS014",
+                "units": 84
+              },
+              {
+                "passes": true,
+                "recordings_with_min_units": 1,
+                "subject": "MFD_06",
+                "units": 106
+              },
+              {
+                "passes": true,
+                "recordings_with_min_units": 1,
+                "subject": "NR_0019",
+                "units": 56
+              },
+              {
+                "passes": true,
+                "recordings_with_min_units": 2,
+                "subject": "NYU-12",
+                "units": 120
+              },
+              {
+                "passes": true,
+                "recordings_with_min_units": 2,
+                "subject": "SWC_038",
+                "units": 131
+              },
+              {
+                "passes": true,
+                "recordings_with_min_units": 3,
+                "subject": "SWC_043",
+                "units": 500
+              }
+            ],
+            "subjects_passing": 7,
+            "total_units": 1408
+          },
+          {
+            "all_subjects_pass": false,
+            "family": "brainstem_interbrain",
+            "min_subject_units": 0,
+            "subject_support": [
+              {
+                "passes": true,
+                "recordings_with_min_units": 2,
+                "subject": "CSH_ZAD_019",
+                "units": 105
+              },
+              {
+                "passes": true,
+                "recordings_with_min_units": 1,
+                "subject": "KS014",
+                "units": 69
+              },
+              {
+                "passes": true,
+                "recordings_with_min_units": 2,
+                "subject": "MFD_06",
+                "units": 381
+              },
+              {
+                "passes": true,
+                "recordings_with_min_units": 2,
+                "subject": "NR_0019",
+                "units": 343
+              },
+              {
+                "passes": true,
+                "recordings_with_min_units": 3,
+                "subject": "NYU-12",
+                "units": 539
+              },
+              {
+                "passes": false,
+                "recordings_with_min_units": 0,
+                "subject": "SWC_038",
+                "units": 0
+              },
+              {
+                "passes": true,
+                "recordings_with_min_units": 1,
+                "subject": "SWC_043",
+                "units": 118
+              }
+            ],
+            "subjects_passing": 6,
+            "total_units": 1555
+          },
+          {
+            "all_subjects_pass": false,
+            "family": "midbrain",
+            "min_subject_units": 0,
+            "subject_support": [
+              {
+                "passes": true,
+                "recordings_with_min_units": 1,
+                "subject": "CSH_ZAD_019",
+                "units": 80
+              },
+              {
+                "passes": true,
+                "recordings_with_min_units": 4,
+                "subject": "KS014",
+                "units": 2173
+              },
+              {
+                "passes": true,
+                "recordings_with_min_units": 2,
+                "subject": "MFD_06",
+                "units": 2013
+              },
+              {
+                "passes": true,
+                "recordings_with_min_units": 2,
+                "subject": "NR_0019",
+                "units": 445
+              },
+              {
+                "passes": true,
+                "recordings_with_min_units": 2,
+                "subject": "NYU-12",
+                "units": 914
+              },
+              {
+                "passes": false,
+                "recordings_with_min_units": 0,
+                "subject": "SWC_038",
+                "units": 0
+              },
+              {
+                "passes": false,
+                "recordings_with_min_units": 0,
+                "subject": "SWC_043",
+                "units": 0
+              }
+            ],
+            "subjects_passing": 5,
+            "total_units": 5625
+          },
+          {
+            "all_subjects_pass": false,
+            "family": "cortical_sensorimotor",
+            "min_subject_units": 0,
+            "subject_support": [
+              {
+                "passes": true,
+                "recordings_with_min_units": 1,
+                "subject": "CSH_ZAD_019",
+                "units": 477
+              },
+              {
+                "passes": false,
+                "recordings_with_min_units": 0,
+                "subject": "KS014",
+                "units": 0
+              },
+              {
+                "passes": false,
+                "recordings_with_min_units": 0,
+                "subject": "MFD_06",
+                "units": 0
+              },
+              {
+                "passes": true,
+                "recordings_with_min_units": 1,
+                "subject": "NR_0019",
+                "units": 446
+              },
+              {
+                "passes": false,
+                "recordings_with_min_units": 0,
+                "subject": "NYU-12",
+                "units": 0
+              },
+              {
+                "passes": true,
+                "recordings_with_min_units": 3,
+                "subject": "SWC_038",
+                "units": 1674
+              },
+              {
+                "passes": true,
+                "recordings_with_min_units": 2,
+                "subject": "SWC_043",
+                "units": 788
+              }
+            ],
+            "subjects_passing": 4,
+            "total_units": 3385
+          },
+          {
+            "all_subjects_pass": false,
+            "family": "cortical_visual",
+            "min_subject_units": 0,
+            "subject_support": [
+              {
+                "passes": false,
+                "recordings_with_min_units": 0,
+                "subject": "CSH_ZAD_019",
+                "units": 0
+              },
+              {
+                "passes": true,
+                "recordings_with_min_units": 1,
+                "subject": "KS014",
+                "units": 82
+              },
+              {
+                "passes": true,
+                "recordings_with_min_units": 1,
+                "subject": "MFD_06",
+                "units": 91
+              },
+              {
+                "passes": false,
+                "recordings_with_min_units": 0,
+                "subject": "NR_0019",
+                "units": 3
+              },
+              {
+                "passes": true,
+                "recordings_with_min_units": 2,
+                "subject": "NYU-12",
+                "units": 400
+              },
+              {
+                "passes": true,
+                "recordings_with_min_units": 1,
+                "subject": "SWC_038",
+                "units": 75
+              },
+              {
+                "passes": false,
+                "recordings_with_min_units": 0,
+                "subject": "SWC_043",
+                "units": 0
+              }
+            ],
+            "subjects_passing": 4,
+            "total_units": 651
+          },
+          {
+            "all_subjects_pass": false,
+            "family": "basal_ganglia",
+            "min_subject_units": 0,
+            "subject_support": [
+              {
+                "passes": false,
+                "recordings_with_min_units": 0,
+                "subject": "CSH_ZAD_019",
+                "units": 28
+              },
+              {
+                "passes": false,
+                "recordings_with_min_units": 0,
+                "subject": "KS014",
+                "units": 0
+              },
+              {
+                "passes": false,
+                "recordings_with_min_units": 0,
+                "subject": "MFD_06",
+                "units": 0
+              },
+              {
+                "passes": true,
+                "recordings_with_min_units": 1,
+                "subject": "NR_0019",
+                "units": 36
+              },
+              {
+                "passes": false,
+                "recordings_with_min_units": 0,
+                "subject": "NYU-12",
+                "units": 0
+              },
+              {
+                "passes": true,
+                "recordings_with_min_units": 2,
+                "subject": "SWC_038",
+                "units": 1057
+              },
+              {
+                "passes": true,
+                "recordings_with_min_units": 2,
+                "subject": "SWC_043",
+                "units": 900
+              }
+            ],
+            "subjects_passing": 3,
+            "total_units": 2021
+          },
+          {
+            "all_subjects_pass": false,
+            "family": "cortical_retrosplenial",
+            "min_subject_units": 0,
+            "subject_support": [
+              {
+                "passes": true,
+                "recordings_with_min_units": 1,
+                "subject": "CSH_ZAD_019",
+                "units": 227
+              },
+              {
+                "passes": true,
+                "recordings_with_min_units": 1,
+                "subject": "KS014",
+                "units": 418
+              },
+              {
+                "passes": false,
+                "recordings_with_min_units": 0,
+                "subject": "MFD_06",
+                "units": 0
+              },
+              {
+                "passes": true,
+                "recordings_with_min_units": 1,
+                "subject": "NR_0019",
+                "units": 57
+              },
+              {
+                "passes": false,
+                "recordings_with_min_units": 0,
+                "subject": "NYU-12",
+                "units": 0
+              },
+              {
+                "passes": false,
+                "recordings_with_min_units": 0,
+                "subject": "SWC_038",
+                "units": 0
+              },
+              {
+                "passes": false,
+                "recordings_with_min_units": 0,
+                "subject": "SWC_043",
+                "units": 0
+              }
+            ],
+            "subjects_passing": 3,
+            "total_units": 702
+          },
+          {
+            "all_subjects_pass": false,
+            "family": "cortical_auditory",
+            "min_subject_units": 0,
+            "subject_support": [
+              {
+                "passes": false,
+                "recordings_with_min_units": 0,
+                "subject": "CSH_ZAD_019",
+                "units": 0
+              },
+              {
+                "passes": false,
+                "recordings_with_min_units": 0,
+                "subject": "KS014",
+                "units": 0
+              },
+              {
+                "passes": false,
+                "recordings_with_min_units": 0,
+                "subject": "MFD_06",
+                "units": 0
+              },
+              {
+                "passes": false,
+                "recordings_with_min_units": 0,
+                "subject": "NR_0019",
+                "units": 0
+              },
+              {
+                "passes": false,
+                "recordings_with_min_units": 0,
+                "subject": "NYU-12",
+                "units": 0
+              },
+              {
+                "passes": false,
+                "recordings_with_min_units": 0,
+                "subject": "SWC_038",
+                "units": 0
+              },
+              {
+                "passes": true,
+                "recordings_with_min_units": 1,
+                "subject": "SWC_043",
+                "units": 39
+              }
+            ],
+            "subjects_passing": 1,
+            "total_units": 39
+          }
+        ]
+      },
+      "decision": "manifest_has_target_and_family_feasibility",
+      "label": "support80_hdf5_scored",
+      "manifest": "/Users/colin/Desktop/Projects/anatomical-neural-fm/manifests/ibl_bwm_region_matched_candidates_s3_present_support80_hdf5_scored.json",
+      "n_recordings": 28,
+      "n_subjects": 7,
+      "promotable_targets": [
+        "choice",
+        "stimulus_side",
+        "feedback",
+        "prior_side"
+      ],
+      "target_modes": {
+        "choice": {
+          "recording_rows": [
+            {
+              "balance_fraction": 0.31524249422632794,
+              "eligible": true,
+              "min_class": 273,
+              "n_trials": 866,
+              "recording": "03063955-2523-47bd-ae57-f7489dd40f15_probe01",
+              "subject": "SWC_038",
+              "target0": 273,
+              "target1": 593,
+              "target1_fraction": 0.684757505773672
+            },
+            {
+              "balance_fraction": 0.5,
+              "eligible": true,
+              "min_class": 290,
+              "n_trials": 580,
+              "recording": "032ffcdf-7692-40b3-b9ff-8def1fc18b2e_probe00",
+              "subject": "NYU-12",
+              "target0": 290,
+              "target1": 290,
+              "target1_fraction": 0.5
+            },
+            {
+              "balance_fraction": 0.4425612052730697,
+              "eligible": true,
+              "min_class": 235,
+              "n_trials": 531,
+              "recording": "16693458-0801-4d35-a3f1-9115c7e5acfd_probe00",
+              "subject": "KS014",
+              "target0": 296,
+              "target1": 235,
+              "target1_fraction": 0.4425612052730697
+            },
+            {
+              "balance_fraction": 0.4425612052730697,
+              "eligible": true,
+              "min_class": 235,
+              "n_trials": 531,
+              "recording": "16693458-0801-4d35-a3f1-9115c7e5acfd_probe01",
+              "subject": "KS014",
+              "target0": 296,
+              "target1": 235,
+              "target1_fraction": 0.4425612052730697
+            },
+            {
+              "balance_fraction": 0.39672131147540984,
+              "eligible": true,
+              "min_class": 242,
+              "n_trials": 610,
+              "recording": "1e45d992-c356-40e1-9be1-a506d944896f_probe01",
+              "subject": "SWC_038",
+              "target0": 242,
+              "target1": 368,
+              "target1_fraction": 0.6032786885245902
+            },
+            {
+              "balance_fraction": 0.38713910761154857,
+              "eligible": true,
+              "min_class": 295,
+              "n_trials": 762,
+              "recording": "35eeb752-8f4f-4040-9714-ba0f5b7ccdfe_probe00",
+              "subject": "MFD_06",
+              "target0": 467,
+              "target1": 295,
+              "target1_fraction": 0.38713910761154857
+            },
+            {
+              "balance_fraction": 0.46865671641791046,
+              "eligible": true,
+              "min_class": 314,
+              "n_trials": 670,
+              "recording": "3f71aa98-08c6-4e79-b4c8-00eae4f03eff_probe00",
+              "subject": "MFD_06",
+              "target0": 356,
+              "target1": 314,
+              "target1_fraction": 0.46865671641791046
+            },
+            {
+              "balance_fraction": 0.4418145956607495,
+              "eligible": true,
+              "min_class": 224,
+              "n_trials": 507,
+              "recording": "41872d7f-75cb-4445-bb1a-132b354c44f0_probe01",
+              "subject": "SWC_038",
+              "target0": 283,
+              "target1": 224,
+              "target1_fraction": 0.4418145956607495
+            },
+            {
+              "balance_fraction": 0.47165532879818595,
+              "eligible": true,
+              "min_class": 416,
+              "n_trials": 882,
+              "recording": "49e0ab27-827a-4c91-bcaa-97eea27a1b8d_probe01",
+              "subject": "CSH_ZAD_019",
+              "target0": 466,
+              "target1": 416,
+              "target1_fraction": 0.47165532879818595
+            },
+            {
+              "balance_fraction": 0.3185378590078329,
+              "eligible": true,
+              "min_class": 244,
+              "n_trials": 766,
+              "recording": "4d8c7767-981c-4347-8e5e-5d5fffe38534_probe01",
+              "subject": "SWC_038",
+              "target0": 244,
+              "target1": 522,
+              "target1_fraction": 0.6814621409921671
+            },
+            {
+              "balance_fraction": 0.44106463878326996,
+              "eligible": true,
+              "min_class": 232,
+              "n_trials": 526,
+              "recording": "4ecb5d24-f5cc-402c-be28-9d0f7cb14b3a_probe00",
+              "subject": "SWC_043",
+              "target0": 232,
+              "target1": 294,
+              "target1_fraction": 0.55893536121673
+            },
+            {
+              "balance_fraction": 0.48125937031484256,
+              "eligible": true,
+              "min_class": 321,
+              "n_trials": 667,
+              "recording": "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe00",
+              "subject": "CSH_ZAD_019",
+              "target0": 346,
+              "target1": 321,
+              "target1_fraction": 0.48125937031484256
+            },
+            {
+              "balance_fraction": 0.48125937031484256,
+              "eligible": true,
+              "min_class": 321,
+              "n_trials": 667,
+              "recording": "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe01",
+              "subject": "CSH_ZAD_019",
+              "target0": 346,
+              "target1": 321,
+              "target1_fraction": 0.48125937031484256
+            },
+            {
+              "balance_fraction": 0.4222222222222222,
+              "eligible": true,
+              "min_class": 380,
+              "n_trials": 900,
+              "recording": "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe00",
+              "subject": "NR_0019",
+              "target0": 520,
+              "target1": 380,
+              "target1_fraction": 0.4222222222222222
+            },
+            {
+              "balance_fraction": 0.4222222222222222,
+              "eligible": true,
+              "min_class": 380,
+              "n_trials": 900,
+              "recording": "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe01",
+              "subject": "NR_0019",
+              "target0": 520,
+              "target1": 380,
+              "target1_fraction": 0.4222222222222222
+            },
+            {
+              "balance_fraction": 0.45144356955380577,
+              "eligible": true,
+              "min_class": 172,
+              "n_trials": 381,
+              "recording": "6899a67d-2e53-4215-a52a-c7021b5da5d4_probe00",
+              "subject": "MFD_06",
+              "target0": 209,
+              "target1": 172,
+              "target1_fraction": 0.45144356955380577
+            },
+            {
+              "balance_fraction": 0.3679417122040073,
+              "eligible": true,
+              "min_class": 202,
+              "n_trials": 549,
+              "recording": "6f09ba7e-e3ce-44b0-932b-c003fb44fb89_probe01",
+              "subject": "SWC_043",
+              "target0": 202,
+              "target1": 347,
+              "target1_fraction": 0.6320582877959927
+            },
+            {
+              "balance_fraction": 0.47731755424063116,
+              "eligible": true,
+              "min_class": 242,
+              "n_trials": 507,
+              "recording": "6fb1e12c-883b-46d1-a745-473cde3232c8_probe00",
+              "subject": "SWC_043",
+              "target0": 242,
+              "target1": 265,
+              "target1_fraction": 0.5226824457593688
+            },
+            {
+              "balance_fraction": 0.4908424908424908,
+              "eligible": true,
+              "min_class": 268,
+              "n_trials": 546,
+              "recording": "88d24c31-52e4-49cc-9f32-6adbeb9eba87_probe00",
+              "subject": "SWC_043",
+              "target0": 268,
+              "target1": 278,
+              "target1_fraction": 0.5091575091575091
+            },
+            {
+              "balance_fraction": 0.407557354925776,
+              "eligible": true,
+              "min_class": 302,
+              "n_trials": 741,
+              "recording": "a1782f4f-86b0-480c-a7f2-3d8f1ab482ab_probe00",
+              "subject": "MFD_06",
+              "target0": 439,
+              "target1": 302,
+              "target1_fraction": 0.407557354925776
+            },
+            {
+              "balance_fraction": 0.44155844155844154,
+              "eligible": true,
+              "min_class": 238,
+              "n_trials": 539,
+              "recording": "a8a8af78-16de-4841-ab07-fde4b5281a03_probe00",
+              "subject": "NYU-12",
+              "target0": 238,
+              "target1": 301,
+              "target1_fraction": 0.5584415584415584
+            },
+            {
+              "balance_fraction": 0.44155844155844154,
+              "eligible": true,
+              "min_class": 238,
+              "n_trials": 539,
+              "recording": "a8a8af78-16de-4841-ab07-fde4b5281a03_probe01",
+              "subject": "NYU-12",
+              "target0": 238,
+              "target1": 301,
+              "target1_fraction": 0.5584415584415584
+            },
+            {
+              "balance_fraction": 0.44036697247706424,
+              "eligible": true,
+              "min_class": 192,
+              "n_trials": 436,
+              "recording": "b182b754-3c3e-4942-8144-6ee790926b58_probe01",
+              "subject": "NYU-12",
+              "target0": 244,
+              "target1": 192,
+              "target1_fraction": 0.44036697247706424
+            },
+            {
+              "balance_fraction": 0.4171907756813417,
+              "eligible": true,
+              "min_class": 199,
+              "n_trials": 477,
+              "recording": "b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe00",
+              "subject": "NR_0019",
+              "target0": 278,
+              "target1": 199,
+              "target1_fraction": 0.4171907756813417
+            },
+            {
+              "balance_fraction": 0.4171907756813417,
+              "eligible": true,
+              "min_class": 199,
+              "n_trials": 477,
+              "recording": "b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe01",
+              "subject": "NR_0019",
+              "target0": 278,
+              "target1": 199,
+              "target1_fraction": 0.4171907756813417
+            },
+            {
+              "balance_fraction": 0.46401225114854516,
+              "eligible": true,
+              "min_class": 303,
+              "n_trials": 653,
+              "recording": "b9c205c3-feac-485b-a89d-afc96d9cb280_probe00",
+              "subject": "KS014",
+              "target0": 350,
+              "target1": 303,
+              "target1_fraction": 0.46401225114854516
+            },
+            {
+              "balance_fraction": 0.39504373177842567,
+              "eligible": true,
+              "min_class": 271,
+              "n_trials": 686,
+              "recording": "e1931de1-cf7b-49af-af33-2ade15e8abe7_probe00",
+              "subject": "KS014",
+              "target0": 271,
+              "target1": 415,
+              "target1_fraction": 0.6049562682215743
+            },
+            {
+              "balance_fraction": 0.46629213483146065,
+              "eligible": true,
+              "min_class": 415,
+              "n_trials": 890,
+              "recording": "edd22318-216c-44ff-bc24-49ce8be78374_probe00",
+              "subject": "CSH_ZAD_019",
+              "target0": 415,
+              "target1": 475,
+              "target1_fraction": 0.5337078651685393
+            }
+          ],
+          "summary": {
+            "all_subjects_pass_recording_floor": true,
+            "eligible_recordings": 28,
+            "n_recordings": 28,
+            "n_subjects": 7,
+            "subject_rows": [
+              {
+                "eligible_recordings": 4,
+                "mean_balance_fraction": 0.4751165510648329,
+                "n_recordings": 4,
+                "n_trials": 3106,
+                "passes_recording_floor": true,
+                "subject": "CSH_ZAD_019",
+                "target0": 1573,
+                "target1": 1533
+              },
+              {
+                "eligible_recordings": 4,
+                "mean_balance_fraction": 0.4360445983682776,
+                "n_recordings": 4,
+                "n_trials": 2401,
+                "passes_recording_floor": true,
+                "subject": "KS014",
+                "target0": 1213,
+                "target1": 1188
+              },
+              {
+                "eligible_recordings": 4,
+                "mean_balance_fraction": 0.4286991871272602,
+                "n_recordings": 4,
+                "n_trials": 2554,
+                "passes_recording_floor": true,
+                "subject": "MFD_06",
+                "target0": 1471,
+                "target1": 1083
+              },
+              {
+                "eligible_recordings": 4,
+                "mean_balance_fraction": 0.41970649895178197,
+                "n_recordings": 4,
+                "n_trials": 2754,
+                "passes_recording_floor": true,
+                "subject": "NR_0019",
+                "target0": 1596,
+                "target1": 1158
+              },
+              {
+                "eligible_recordings": 4,
+                "mean_balance_fraction": 0.4558709638984868,
+                "n_recordings": 4,
+                "n_trials": 2094,
+                "passes_recording_floor": true,
+                "subject": "NYU-12",
+                "target0": 1010,
+                "target1": 1084
+              },
+              {
+                "eligible_recordings": 4,
+                "mean_balance_fraction": 0.36807906509258004,
+                "n_recordings": 4,
+                "n_trials": 2749,
+                "passes_recording_floor": true,
+                "subject": "SWC_038",
+                "target0": 1042,
+                "target1": 1707
+              },
+              {
+                "eligible_recordings": 4,
+                "mean_balance_fraction": 0.44429159901759985,
+                "n_recordings": 4,
+                "n_trials": 2128,
+                "passes_recording_floor": true,
+                "subject": "SWC_043",
+                "target0": 944,
+                "target1": 1184
+              }
+            ],
+            "subjects_passing_recording_floor": 7
+          }
+        },
+        "feedback": {
+          "recording_rows": [
+            {
+              "balance_fraction": 0.2491349480968858,
+              "eligible": true,
+              "min_class": 216,
+              "n_trials": 867,
+              "recording": "03063955-2523-47bd-ae57-f7489dd40f15_probe01",
+              "subject": "SWC_038",
+              "target0": 216,
+              "target1": 651,
+              "target1_fraction": 0.7508650519031141
+            },
+            {
+              "balance_fraction": 0.1927710843373494,
+              "eligible": true,
+              "min_class": 112,
+              "n_trials": 581,
+              "recording": "032ffcdf-7692-40b3-b9ff-8def1fc18b2e_probe00",
+              "subject": "NYU-12",
+              "target0": 112,
+              "target1": 469,
+              "target1_fraction": 0.8072289156626506
+            },
+            {
+              "balance_fraction": 0.1713747645951036,
+              "eligible": true,
+              "min_class": 91,
+              "n_trials": 531,
+              "recording": "16693458-0801-4d35-a3f1-9115c7e5acfd_probe00",
+              "subject": "KS014",
+              "target0": 91,
+              "target1": 440,
+              "target1_fraction": 0.8286252354048964
+            },
+            {
+              "balance_fraction": 0.1713747645951036,
+              "eligible": true,
+              "min_class": 91,
+              "n_trials": 531,
+              "recording": "16693458-0801-4d35-a3f1-9115c7e5acfd_probe01",
+              "subject": "KS014",
+              "target0": 91,
+              "target1": 440,
+              "target1_fraction": 0.8286252354048964
+            },
+            {
+              "balance_fraction": 0.3215434083601286,
+              "eligible": true,
+              "min_class": 200,
+              "n_trials": 622,
+              "recording": "1e45d992-c356-40e1-9be1-a506d944896f_probe01",
+              "subject": "SWC_038",
+              "target0": 200,
+              "target1": 422,
+              "target1_fraction": 0.6784565916398714
+            },
+            {
+              "balance_fraction": 0.18635170603674542,
+              "eligible": true,
+              "min_class": 142,
+              "n_trials": 762,
+              "recording": "35eeb752-8f4f-4040-9714-ba0f5b7ccdfe_probe00",
+              "subject": "MFD_06",
+              "target0": 142,
+              "target1": 620,
+              "target1_fraction": 0.8136482939632546
+            },
+            {
+              "balance_fraction": 0.19047619047619047,
+              "eligible": true,
+              "min_class": 128,
+              "n_trials": 672,
+              "recording": "3f71aa98-08c6-4e79-b4c8-00eae4f03eff_probe00",
+              "subject": "MFD_06",
+              "target0": 128,
+              "target1": 544,
+              "target1_fraction": 0.8095238095238095
+            },
+            {
+              "balance_fraction": 0.3698630136986301,
+              "eligible": true,
+              "min_class": 189,
+              "n_trials": 511,
+              "recording": "41872d7f-75cb-4445-bb1a-132b354c44f0_probe01",
+              "subject": "SWC_038",
+              "target0": 189,
+              "target1": 322,
+              "target1_fraction": 0.6301369863013698
+            },
+            {
+              "balance_fraction": 0.16063348416289594,
+              "eligible": true,
+              "min_class": 142,
+              "n_trials": 884,
+              "recording": "49e0ab27-827a-4c91-bcaa-97eea27a1b8d_probe01",
+              "subject": "CSH_ZAD_019",
+              "target0": 142,
+              "target1": 742,
+              "target1_fraction": 0.8393665158371041
+            },
+            {
+              "balance_fraction": 0.27640156453715775,
+              "eligible": true,
+              "min_class": 212,
+              "n_trials": 767,
+              "recording": "4d8c7767-981c-4347-8e5e-5d5fffe38534_probe01",
+              "subject": "SWC_038",
+              "target0": 212,
+              "target1": 555,
+              "target1_fraction": 0.7235984354628422
+            },
+            {
+              "balance_fraction": 0.16257088846880907,
+              "eligible": true,
+              "min_class": 86,
+              "n_trials": 529,
+              "recording": "4ecb5d24-f5cc-402c-be28-9d0f7cb14b3a_probe00",
+              "subject": "SWC_043",
+              "target0": 86,
+              "target1": 443,
+              "target1_fraction": 0.8374291115311909
+            },
+            {
+              "balance_fraction": 0.16517857142857142,
+              "eligible": true,
+              "min_class": 111,
+              "n_trials": 672,
+              "recording": "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe00",
+              "subject": "CSH_ZAD_019",
+              "target0": 111,
+              "target1": 561,
+              "target1_fraction": 0.8348214285714286
+            },
+            {
+              "balance_fraction": 0.16517857142857142,
+              "eligible": true,
+              "min_class": 111,
+              "n_trials": 672,
+              "recording": "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe01",
+              "subject": "CSH_ZAD_019",
+              "target0": 111,
+              "target1": 561,
+              "target1_fraction": 0.8348214285714286
+            },
+            {
+              "balance_fraction": 0.12777777777777777,
+              "eligible": true,
+              "min_class": 115,
+              "n_trials": 900,
+              "recording": "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe00",
+              "subject": "NR_0019",
+              "target0": 115,
+              "target1": 785,
+              "target1_fraction": 0.8722222222222222
+            },
+            {
+              "balance_fraction": 0.12777777777777777,
+              "eligible": true,
+              "min_class": 115,
+              "n_trials": 900,
+              "recording": "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe01",
+              "subject": "NR_0019",
+              "target0": 115,
+              "target1": 785,
+              "target1_fraction": 0.8722222222222222
+            },
+            {
+              "balance_fraction": 0.3208955223880597,
+              "eligible": true,
+              "min_class": 129,
+              "n_trials": 402,
+              "recording": "6899a67d-2e53-4215-a52a-c7021b5da5d4_probe00",
+              "subject": "MFD_06",
+              "target0": 129,
+              "target1": 273,
+              "target1_fraction": 0.6791044776119403
+            },
+            {
+              "balance_fraction": 0.132486388384755,
+              "eligible": true,
+              "min_class": 73,
+              "n_trials": 551,
+              "recording": "6f09ba7e-e3ce-44b0-932b-c003fb44fb89_probe01",
+              "subject": "SWC_043",
+              "target0": 73,
+              "target1": 478,
+              "target1_fraction": 0.867513611615245
+            },
+            {
+              "balance_fraction": 0.2106299212598425,
+              "eligible": true,
+              "min_class": 107,
+              "n_trials": 508,
+              "recording": "6fb1e12c-883b-46d1-a745-473cde3232c8_probe00",
+              "subject": "SWC_043",
+              "target0": 107,
+              "target1": 401,
+              "target1_fraction": 0.7893700787401575
+            },
+            {
+              "balance_fraction": 0.20292504570383912,
+              "eligible": true,
+              "min_class": 111,
+              "n_trials": 547,
+              "recording": "88d24c31-52e4-49cc-9f32-6adbeb9eba87_probe00",
+              "subject": "SWC_043",
+              "target0": 111,
+              "target1": 436,
+              "target1_fraction": 0.7970749542961609
+            },
+            {
+              "balance_fraction": 0.1902834008097166,
+              "eligible": true,
+              "min_class": 141,
+              "n_trials": 741,
+              "recording": "a1782f4f-86b0-480c-a7f2-3d8f1ab482ab_probe00",
+              "subject": "MFD_06",
+              "target0": 141,
+              "target1": 600,
+              "target1_fraction": 0.8097165991902834
+            },
+            {
+              "balance_fraction": 0.15636363636363637,
+              "eligible": true,
+              "min_class": 86,
+              "n_trials": 550,
+              "recording": "a8a8af78-16de-4841-ab07-fde4b5281a03_probe00",
+              "subject": "NYU-12",
+              "target0": 86,
+              "target1": 464,
+              "target1_fraction": 0.8436363636363636
+            },
+            {
+              "balance_fraction": 0.15636363636363637,
+              "eligible": true,
+              "min_class": 86,
+              "n_trials": 550,
+              "recording": "a8a8af78-16de-4841-ab07-fde4b5281a03_probe01",
+              "subject": "NYU-12",
+              "target0": 86,
+              "target1": 464,
+              "target1_fraction": 0.8436363636363636
+            },
+            {
+              "balance_fraction": 0.16891891891891891,
+              "eligible": true,
+              "min_class": 75,
+              "n_trials": 444,
+              "recording": "b182b754-3c3e-4942-8144-6ee790926b58_probe01",
+              "subject": "NYU-12",
+              "target0": 75,
+              "target1": 369,
+              "target1_fraction": 0.831081081081081
+            },
+            {
+              "balance_fraction": 0.12133891213389121,
+              "eligible": true,
+              "min_class": 58,
+              "n_trials": 478,
+              "recording": "b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe00",
+              "subject": "NR_0019",
+              "target0": 58,
+              "target1": 420,
+              "target1_fraction": 0.8786610878661087
+            },
+            {
+              "balance_fraction": 0.12133891213389121,
+              "eligible": true,
+              "min_class": 58,
+              "n_trials": 478,
+              "recording": "b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe01",
+              "subject": "NR_0019",
+              "target0": 58,
+              "target1": 420,
+              "target1_fraction": 0.8786610878661087
+            },
+            {
+              "balance_fraction": 0.15160796324655437,
+              "eligible": true,
+              "min_class": 99,
+              "n_trials": 653,
+              "recording": "b9c205c3-feac-485b-a89d-afc96d9cb280_probe00",
+              "subject": "KS014",
+              "target0": 99,
+              "target1": 554,
+              "target1_fraction": 0.8483920367534457
+            },
+            {
+              "balance_fraction": 0.13372093023255813,
+              "eligible": true,
+              "min_class": 92,
+              "n_trials": 688,
+              "recording": "e1931de1-cf7b-49af-af33-2ade15e8abe7_probe00",
+              "subject": "KS014",
+              "target0": 92,
+              "target1": 596,
+              "target1_fraction": 0.8662790697674418
+            },
+            {
+              "balance_fraction": 0.16049382716049382,
+              "eligible": true,
+              "min_class": 143,
+              "n_trials": 891,
+              "recording": "edd22318-216c-44ff-bc24-49ce8be78374_probe00",
+              "subject": "CSH_ZAD_019",
+              "target0": 143,
+              "target1": 748,
+              "target1_fraction": 0.8395061728395061
+            }
+          ],
+          "summary": {
+            "all_subjects_pass_recording_floor": true,
+            "eligible_recordings": 28,
+            "n_recordings": 28,
+            "n_subjects": 7,
+            "subject_rows": [
+              {
+                "eligible_recordings": 4,
+                "mean_balance_fraction": 0.16287111354513317,
+                "n_recordings": 4,
+                "n_trials": 3119,
+                "passes_recording_floor": true,
+                "subject": "CSH_ZAD_019",
+                "target0": 507,
+                "target1": 2612
+              },
+              {
+                "eligible_recordings": 4,
+                "mean_balance_fraction": 0.15701960566732992,
+                "n_recordings": 4,
+                "n_trials": 2403,
+                "passes_recording_floor": true,
+                "subject": "KS014",
+                "target0": 373,
+                "target1": 2030
+              },
+              {
+                "eligible_recordings": 4,
+                "mean_balance_fraction": 0.22200170492767804,
+                "n_recordings": 4,
+                "n_trials": 2577,
+                "passes_recording_floor": true,
+                "subject": "MFD_06",
+                "target0": 540,
+                "target1": 2037
+              },
+              {
+                "eligible_recordings": 4,
+                "mean_balance_fraction": 0.12455834495583448,
+                "n_recordings": 4,
+                "n_trials": 2756,
+                "passes_recording_floor": true,
+                "subject": "NR_0019",
+                "target0": 346,
+                "target1": 2410
+              },
+              {
+                "eligible_recordings": 4,
+                "mean_balance_fraction": 0.16860431899588524,
+                "n_recordings": 4,
+                "n_trials": 2125,
+                "passes_recording_floor": true,
+                "subject": "NYU-12",
+                "target0": 359,
+                "target1": 1766
+              },
+              {
+                "eligible_recordings": 4,
+                "mean_balance_fraction": 0.30423573367320056,
+                "n_recordings": 4,
+                "n_trials": 2767,
+                "passes_recording_floor": true,
+                "subject": "SWC_038",
+                "target0": 817,
+                "target1": 1950
+              },
+              {
+                "eligible_recordings": 4,
+                "mean_balance_fraction": 0.17715306095431144,
+                "n_recordings": 4,
+                "n_trials": 2135,
+                "passes_recording_floor": true,
+                "subject": "SWC_043",
+                "target0": 377,
+                "target1": 1758
+              }
+            ],
+            "subjects_passing_recording_floor": 7
+          }
+        },
+        "prior_side": {
+          "recording_rows": [
+            {
+              "balance_fraction": 0.4594594594594595,
+              "eligible": true,
+              "min_class": 357,
+              "n_trials": 777,
+              "recording": "03063955-2523-47bd-ae57-f7489dd40f15_probe01",
+              "subject": "SWC_038",
+              "target0": 420,
+              "target1": 357,
+              "target1_fraction": 0.4594594594594595
+            },
+            {
+              "balance_fraction": 0.38085539714867617,
+              "eligible": true,
+              "min_class": 187,
+              "n_trials": 491,
+              "recording": "032ffcdf-7692-40b3-b9ff-8def1fc18b2e_probe00",
+              "subject": "NYU-12",
+              "target0": 304,
+              "target1": 187,
+              "target1_fraction": 0.38085539714867617
+            },
+            {
+              "balance_fraction": 0.46258503401360546,
+              "eligible": true,
+              "min_class": 204,
+              "n_trials": 441,
+              "recording": "16693458-0801-4d35-a3f1-9115c7e5acfd_probe00",
+              "subject": "KS014",
+              "target0": 204,
+              "target1": 237,
+              "target1_fraction": 0.5374149659863946
+            },
+            {
+              "balance_fraction": 0.46258503401360546,
+              "eligible": true,
+              "min_class": 204,
+              "n_trials": 441,
+              "recording": "16693458-0801-4d35-a3f1-9115c7e5acfd_probe01",
+              "subject": "KS014",
+              "target0": 204,
+              "target1": 237,
+              "target1_fraction": 0.5374149659863946
+            },
+            {
+              "balance_fraction": 0.47368421052631576,
+              "eligible": true,
+              "min_class": 252,
+              "n_trials": 532,
+              "recording": "1e45d992-c356-40e1-9be1-a506d944896f_probe01",
+              "subject": "SWC_038",
+              "target0": 252,
+              "target1": 280,
+              "target1_fraction": 0.5263157894736842
+            },
+            {
+              "balance_fraction": 0.4806547619047619,
+              "eligible": true,
+              "min_class": 323,
+              "n_trials": 672,
+              "recording": "35eeb752-8f4f-4040-9714-ba0f5b7ccdfe_probe00",
+              "subject": "MFD_06",
+              "target0": 349,
+              "target1": 323,
+              "target1_fraction": 0.4806547619047619
+            },
+            {
+              "balance_fraction": 0.35738831615120276,
+              "eligible": true,
+              "min_class": 208,
+              "n_trials": 582,
+              "recording": "3f71aa98-08c6-4e79-b4c8-00eae4f03eff_probe00",
+              "subject": "MFD_06",
+              "target0": 374,
+              "target1": 208,
+              "target1_fraction": 0.35738831615120276
+            },
+            {
+              "balance_fraction": 0.43705463182897863,
+              "eligible": true,
+              "min_class": 184,
+              "n_trials": 421,
+              "recording": "41872d7f-75cb-4445-bb1a-132b354c44f0_probe01",
+              "subject": "SWC_038",
+              "target0": 184,
+              "target1": 237,
+              "target1_fraction": 0.5629453681710214
+            },
+            {
+              "balance_fraction": 0.47103274559193953,
+              "eligible": true,
+              "min_class": 374,
+              "n_trials": 794,
+              "recording": "49e0ab27-827a-4c91-bcaa-97eea27a1b8d_probe01",
+              "subject": "CSH_ZAD_019",
+              "target0": 420,
+              "target1": 374,
+              "target1_fraction": 0.47103274559193953
+            },
+            {
+              "balance_fraction": 0.4756277695716396,
+              "eligible": true,
+              "min_class": 322,
+              "n_trials": 677,
+              "recording": "4d8c7767-981c-4347-8e5e-5d5fffe38534_probe01",
+              "subject": "SWC_038",
+              "target0": 355,
+              "target1": 322,
+              "target1_fraction": 0.4756277695716396
+            },
+            {
+              "balance_fraction": 0.46697038724373574,
+              "eligible": true,
+              "min_class": 205,
+              "n_trials": 439,
+              "recording": "4ecb5d24-f5cc-402c-be28-9d0f7cb14b3a_probe00",
+              "subject": "SWC_043",
+              "target0": 234,
+              "target1": 205,
+              "target1_fraction": 0.46697038724373574
+            },
+            {
+              "balance_fraction": 0.35738831615120276,
+              "eligible": true,
+              "min_class": 208,
+              "n_trials": 582,
+              "recording": "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe00",
+              "subject": "CSH_ZAD_019",
+              "target0": 374,
+              "target1": 208,
+              "target1_fraction": 0.35738831615120276
+            },
+            {
+              "balance_fraction": 0.35738831615120276,
+              "eligible": true,
+              "min_class": 208,
+              "n_trials": 582,
+              "recording": "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe01",
+              "subject": "CSH_ZAD_019",
+              "target0": 374,
+              "target1": 208,
+              "target1_fraction": 0.35738831615120276
+            },
+            {
+              "balance_fraction": 0.4777777777777778,
+              "eligible": true,
+              "min_class": 387,
+              "n_trials": 810,
+              "recording": "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe00",
+              "subject": "NR_0019",
+              "target0": 387,
+              "target1": 423,
+              "target1_fraction": 0.5222222222222223
+            },
+            {
+              "balance_fraction": 0.4777777777777778,
+              "eligible": true,
+              "min_class": 387,
+              "n_trials": 810,
+              "recording": "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe01",
+              "subject": "NR_0019",
+              "target0": 387,
+              "target1": 423,
+              "target1_fraction": 0.5222222222222223
+            },
+            {
+              "balance_fraction": 0.47435897435897434,
+              "eligible": true,
+              "min_class": 148,
+              "n_trials": 312,
+              "recording": "6899a67d-2e53-4215-a52a-c7021b5da5d4_probe00",
+              "subject": "MFD_06",
+              "target0": 164,
+              "target1": 148,
+              "target1_fraction": 0.47435897435897434
+            },
+            {
+              "balance_fraction": 0.40130151843817785,
+              "eligible": true,
+              "min_class": 185,
+              "n_trials": 461,
+              "recording": "6f09ba7e-e3ce-44b0-932b-c003fb44fb89_probe01",
+              "subject": "SWC_043",
+              "target0": 276,
+              "target1": 185,
+              "target1_fraction": 0.40130151843817785
+            },
+            {
+              "balance_fraction": 0.4904306220095694,
+              "eligible": true,
+              "min_class": 205,
+              "n_trials": 418,
+              "recording": "6fb1e12c-883b-46d1-a745-473cde3232c8_probe00",
+              "subject": "SWC_043",
+              "target0": 213,
+              "target1": 205,
+              "target1_fraction": 0.4904306220095694
+            },
+            {
+              "balance_fraction": 0.4485776805251641,
+              "eligible": true,
+              "min_class": 205,
+              "n_trials": 457,
+              "recording": "88d24c31-52e4-49cc-9f32-6adbeb9eba87_probe00",
+              "subject": "SWC_043",
+              "target0": 252,
+              "target1": 205,
+              "target1_fraction": 0.4485776805251641
+            },
+            {
+              "balance_fraction": 0.48540706605222733,
+              "eligible": true,
+              "min_class": 316,
+              "n_trials": 651,
+              "recording": "a1782f4f-86b0-480c-a7f2-3d8f1ab482ab_probe00",
+              "subject": "MFD_06",
+              "target0": 335,
+              "target1": 316,
+              "target1_fraction": 0.48540706605222733
+            },
+            {
+              "balance_fraction": 0.44565217391304346,
+              "eligible": true,
+              "min_class": 205,
+              "n_trials": 460,
+              "recording": "a8a8af78-16de-4841-ab07-fde4b5281a03_probe00",
+              "subject": "NYU-12",
+              "target0": 255,
+              "target1": 205,
+              "target1_fraction": 0.44565217391304346
+            },
+            {
+              "balance_fraction": 0.44565217391304346,
+              "eligible": true,
+              "min_class": 205,
+              "n_trials": 460,
+              "recording": "a8a8af78-16de-4841-ab07-fde4b5281a03_probe01",
+              "subject": "NYU-12",
+              "target0": 255,
+              "target1": 205,
+              "target1_fraction": 0.44565217391304346
+            },
+            {
+              "balance_fraction": 0.4293785310734463,
+              "eligible": true,
+              "min_class": 152,
+              "n_trials": 354,
+              "recording": "b182b754-3c3e-4942-8144-6ee790926b58_probe01",
+              "subject": "NYU-12",
+              "target0": 152,
+              "target1": 202,
+              "target1_fraction": 0.5706214689265536
+            },
+            {
+              "balance_fraction": 0.47164948453608246,
+              "eligible": true,
+              "min_class": 183,
+              "n_trials": 388,
+              "recording": "b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe00",
+              "subject": "NR_0019",
+              "target0": 183,
+              "target1": 205,
+              "target1_fraction": 0.5283505154639175
+            },
+            {
+              "balance_fraction": 0.47164948453608246,
+              "eligible": true,
+              "min_class": 183,
+              "n_trials": 388,
+              "recording": "b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe01",
+              "subject": "NR_0019",
+              "target0": 183,
+              "target1": 205,
+              "target1_fraction": 0.5283505154639175
+            },
+            {
+              "balance_fraction": 0.3907637655417407,
+              "eligible": true,
+              "min_class": 220,
+              "n_trials": 563,
+              "recording": "b9c205c3-feac-485b-a89d-afc96d9cb280_probe00",
+              "subject": "KS014",
+              "target0": 220,
+              "target1": 343,
+              "target1_fraction": 0.6092362344582594
+            },
+            {
+              "balance_fraction": 0.34782608695652173,
+              "eligible": true,
+              "min_class": 208,
+              "n_trials": 598,
+              "recording": "e1931de1-cf7b-49af-af33-2ade15e8abe7_probe00",
+              "subject": "KS014",
+              "target0": 390,
+              "target1": 208,
+              "target1_fraction": 0.34782608695652173
+            },
+            {
+              "balance_fraction": 0.4893882646691635,
+              "eligible": true,
+              "min_class": 392,
+              "n_trials": 801,
+              "recording": "edd22318-216c-44ff-bc24-49ce8be78374_probe00",
+              "subject": "CSH_ZAD_019",
+              "target0": 409,
+              "target1": 392,
+              "target1_fraction": 0.4893882646691635
+            }
+          ],
+          "summary": {
+            "all_subjects_pass_recording_floor": true,
+            "eligible_recordings": 28,
+            "n_recordings": 28,
+            "n_subjects": 7,
+            "subject_rows": [
+              {
+                "eligible_recordings": 4,
+                "mean_balance_fraction": 0.4187994106408771,
+                "n_recordings": 4,
+                "n_trials": 2759,
+                "passes_recording_floor": true,
+                "subject": "CSH_ZAD_019",
+                "target0": 1577,
+                "target1": 1182
+              },
+              {
+                "eligible_recordings": 4,
+                "mean_balance_fraction": 0.41593998013136835,
+                "n_recordings": 4,
+                "n_trials": 2043,
+                "passes_recording_floor": true,
+                "subject": "KS014",
+                "target0": 1018,
+                "target1": 1025
+              },
+              {
+                "eligible_recordings": 4,
+                "mean_balance_fraction": 0.44945227961679163,
+                "n_recordings": 4,
+                "n_trials": 2217,
+                "passes_recording_floor": true,
+                "subject": "MFD_06",
+                "target0": 1222,
+                "target1": 995
+              },
+              {
+                "eligible_recordings": 4,
+                "mean_balance_fraction": 0.4747136311569301,
+                "n_recordings": 4,
+                "n_trials": 2396,
+                "passes_recording_floor": true,
+                "subject": "NR_0019",
+                "target0": 1140,
+                "target1": 1256
+              },
+              {
+                "eligible_recordings": 4,
+                "mean_balance_fraction": 0.42538456901205235,
+                "n_recordings": 4,
+                "n_trials": 1765,
+                "passes_recording_floor": true,
+                "subject": "NYU-12",
+                "target0": 966,
+                "target1": 799
+              },
+              {
+                "eligible_recordings": 4,
+                "mean_balance_fraction": 0.46145651784659836,
+                "n_recordings": 4,
+                "n_trials": 2407,
+                "passes_recording_floor": true,
+                "subject": "SWC_038",
+                "target0": 1211,
+                "target1": 1196
+              },
+              {
+                "eligible_recordings": 4,
+                "mean_balance_fraction": 0.45182005205416176,
+                "n_recordings": 4,
+                "n_trials": 1775,
+                "passes_recording_floor": true,
+                "subject": "SWC_043",
+                "target0": 975,
+                "target1": 800
+              }
+            ],
+            "subjects_passing_recording_floor": 7
+          }
+        },
+        "stimulus_side": {
+          "recording_rows": [
+            {
+              "balance_fraction": 0.45921052631578946,
+              "eligible": true,
+              "min_class": 349,
+              "n_trials": 760,
+              "recording": "03063955-2523-47bd-ae57-f7489dd40f15_probe01",
+              "subject": "SWC_038",
+              "target0": 411,
+              "target1": 349,
+              "target1_fraction": 0.45921052631578946
+            },
+            {
+              "balance_fraction": 0.4294117647058823,
+              "eligible": true,
+              "min_class": 219,
+              "n_trials": 510,
+              "recording": "032ffcdf-7692-40b3-b9ff-8def1fc18b2e_probe00",
+              "subject": "NYU-12",
+              "target0": 291,
+              "target1": 219,
+              "target1_fraction": 0.4294117647058823
+            },
+            {
+              "balance_fraction": 0.4829787234042553,
+              "eligible": true,
+              "min_class": 227,
+              "n_trials": 470,
+              "recording": "16693458-0801-4d35-a3f1-9115c7e5acfd_probe00",
+              "subject": "KS014",
+              "target0": 227,
+              "target1": 243,
+              "target1_fraction": 0.5170212765957447
+            },
+            {
+              "balance_fraction": 0.4829787234042553,
+              "eligible": true,
+              "min_class": 227,
+              "n_trials": 470,
+              "recording": "16693458-0801-4d35-a3f1-9115c7e5acfd_probe01",
+              "subject": "KS014",
+              "target0": 227,
+              "target1": 243,
+              "target1_fraction": 0.5170212765957447
+            },
+            {
+              "balance_fraction": 0.4918032786885246,
+              "eligible": true,
+              "min_class": 270,
+              "n_trials": 549,
+              "recording": "1e45d992-c356-40e1-9be1-a506d944896f_probe01",
+              "subject": "SWC_038",
+              "target0": 270,
+              "target1": 279,
+              "target1_fraction": 0.5081967213114754
+            },
+            {
+              "balance_fraction": 0.4863636363636364,
+              "eligible": true,
+              "min_class": 321,
+              "n_trials": 660,
+              "recording": "35eeb752-8f4f-4040-9714-ba0f5b7ccdfe_probe00",
+              "subject": "MFD_06",
+              "target0": 339,
+              "target1": 321,
+              "target1_fraction": 0.4863636363636364
+            },
+            {
+              "balance_fraction": 0.4135593220338983,
+              "eligible": true,
+              "min_class": 244,
+              "n_trials": 590,
+              "recording": "3f71aa98-08c6-4e79-b4c8-00eae4f03eff_probe00",
+              "subject": "MFD_06",
+              "target0": 346,
+              "target1": 244,
+              "target1_fraction": 0.4135593220338983
+            },
+            {
+              "balance_fraction": 0.46916299559471364,
+              "eligible": true,
+              "min_class": 213,
+              "n_trials": 454,
+              "recording": "41872d7f-75cb-4445-bb1a-132b354c44f0_probe01",
+              "subject": "SWC_038",
+              "target0": 213,
+              "target1": 241,
+              "target1_fraction": 0.5308370044052864
+            },
+            {
+              "balance_fraction": 0.4671814671814672,
+              "eligible": true,
+              "min_class": 363,
+              "n_trials": 777,
+              "recording": "49e0ab27-827a-4c91-bcaa-97eea27a1b8d_probe01",
+              "subject": "CSH_ZAD_019",
+              "target0": 414,
+              "target1": 363,
+              "target1_fraction": 0.4671814671814672
+            },
+            {
+              "balance_fraction": 0.46805349182763745,
+              "eligible": true,
+              "min_class": 315,
+              "n_trials": 673,
+              "recording": "4d8c7767-981c-4347-8e5e-5d5fffe38534_probe01",
+              "subject": "SWC_038",
+              "target0": 358,
+              "target1": 315,
+              "target1_fraction": 0.46805349182763745
+            },
+            {
+              "balance_fraction": 0.49148936170212765,
+              "eligible": true,
+              "min_class": 231,
+              "n_trials": 470,
+              "recording": "4ecb5d24-f5cc-402c-be28-9d0f7cb14b3a_probe00",
+              "subject": "SWC_043",
+              "target0": 239,
+              "target1": 231,
+              "target1_fraction": 0.49148936170212765
+            },
+            {
+              "balance_fraction": 0.4135593220338983,
+              "eligible": true,
+              "min_class": 244,
+              "n_trials": 590,
+              "recording": "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe00",
+              "subject": "CSH_ZAD_019",
+              "target0": 346,
+              "target1": 244,
+              "target1_fraction": 0.4135593220338983
+            },
+            {
+              "balance_fraction": 0.4135593220338983,
+              "eligible": true,
+              "min_class": 244,
+              "n_trials": 590,
+              "recording": "5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe01",
+              "subject": "CSH_ZAD_019",
+              "target0": 346,
+              "target1": 244,
+              "target1_fraction": 0.4135593220338983
+            },
+            {
+              "balance_fraction": 0.5,
+              "eligible": true,
+              "min_class": 395,
+              "n_trials": 790,
+              "recording": "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe00",
+              "subject": "NR_0019",
+              "target0": 395,
+              "target1": 395,
+              "target1_fraction": 0.5
+            },
+            {
+              "balance_fraction": 0.5,
+              "eligible": true,
+              "min_class": 395,
+              "n_trials": 790,
+              "recording": "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe01",
+              "subject": "NR_0019",
+              "target0": 395,
+              "target1": 395,
+              "target1_fraction": 0.5
+            },
+            {
+              "balance_fraction": 0.46703296703296704,
+              "eligible": true,
+              "min_class": 170,
+              "n_trials": 364,
+              "recording": "6899a67d-2e53-4215-a52a-c7021b5da5d4_probe00",
+              "subject": "MFD_06",
+              "target0": 194,
+              "target1": 170,
+              "target1_fraction": 0.46703296703296704
+            },
+            {
+              "balance_fraction": 0.43711340206185567,
+              "eligible": true,
+              "min_class": 212,
+              "n_trials": 485,
+              "recording": "6f09ba7e-e3ce-44b0-932b-c003fb44fb89_probe01",
+              "subject": "SWC_043",
+              "target0": 273,
+              "target1": 212,
+              "target1_fraction": 0.43711340206185567
+            },
+            {
+              "balance_fraction": 0.49667405764966743,
+              "eligible": true,
+              "min_class": 224,
+              "n_trials": 451,
+              "recording": "6fb1e12c-883b-46d1-a745-473cde3232c8_probe00",
+              "subject": "SWC_043",
+              "target0": 224,
+              "target1": 227,
+              "target1_fraction": 0.5033259423503326
+            },
+            {
+              "balance_fraction": 0.4854771784232365,
+              "eligible": true,
+              "min_class": 234,
+              "n_trials": 482,
+              "recording": "88d24c31-52e4-49cc-9f32-6adbeb9eba87_probe00",
+              "subject": "SWC_043",
+              "target0": 248,
+              "target1": 234,
+              "target1_fraction": 0.4854771784232365
+            },
+            {
+              "balance_fraction": 0.47465437788018433,
+              "eligible": true,
+              "min_class": 309,
+              "n_trials": 651,
+              "recording": "a1782f4f-86b0-480c-a7f2-3d8f1ab482ab_probe00",
+              "subject": "MFD_06",
+              "target0": 342,
+              "target1": 309,
+              "target1_fraction": 0.47465437788018433
+            },
+            {
+              "balance_fraction": 0.4834710743801653,
+              "eligible": true,
+              "min_class": 234,
+              "n_trials": 484,
+              "recording": "a8a8af78-16de-4841-ab07-fde4b5281a03_probe00",
+              "subject": "NYU-12",
+              "target0": 250,
+              "target1": 234,
+              "target1_fraction": 0.4834710743801653
+            },
+            {
+              "balance_fraction": 0.4834710743801653,
+              "eligible": true,
+              "min_class": 234,
+              "n_trials": 484,
+              "recording": "a8a8af78-16de-4841-ab07-fde4b5281a03_probe01",
+              "subject": "NYU-12",
+              "target0": 250,
+              "target1": 234,
+              "target1_fraction": 0.4834710743801653
+            },
+            {
+              "balance_fraction": 0.45843828715365237,
+              "eligible": true,
+              "min_class": 182,
+              "n_trials": 397,
+              "recording": "b182b754-3c3e-4942-8144-6ee790926b58_probe01",
+              "subject": "NYU-12",
+              "target0": 182,
+              "target1": 215,
+              "target1_fraction": 0.5415617128463476
+            },
+            {
+              "balance_fraction": 0.4786729857819905,
+              "eligible": true,
+              "min_class": 202,
+              "n_trials": 422,
+              "recording": "b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe00",
+              "subject": "NR_0019",
+              "target0": 202,
+              "target1": 220,
+              "target1_fraction": 0.5213270142180095
+            },
+            {
+              "balance_fraction": 0.4786729857819905,
+              "eligible": true,
+              "min_class": 202,
+              "n_trials": 422,
+              "recording": "b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe01",
+              "subject": "NR_0019",
+              "target0": 202,
+              "target1": 220,
+              "target1_fraction": 0.5213270142180095
+            },
+            {
+              "balance_fraction": 0.436426116838488,
+              "eligible": true,
+              "min_class": 254,
+              "n_trials": 582,
+              "recording": "b9c205c3-feac-485b-a89d-afc96d9cb280_probe00",
+              "subject": "KS014",
+              "target0": 254,
+              "target1": 328,
+              "target1_fraction": 0.563573883161512
+            },
+            {
+              "balance_fraction": 0.4115702479338843,
+              "eligible": true,
+              "min_class": 249,
+              "n_trials": 605,
+              "recording": "e1931de1-cf7b-49af-af33-2ade15e8abe7_probe00",
+              "subject": "KS014",
+              "target0": 356,
+              "target1": 249,
+              "target1_fraction": 0.4115702479338843
+            },
+            {
+              "balance_fraction": 0.48244473342002603,
+              "eligible": true,
+              "min_class": 371,
+              "n_trials": 769,
+              "recording": "edd22318-216c-44ff-bc24-49ce8be78374_probe00",
+              "subject": "CSH_ZAD_019",
+              "target0": 398,
+              "target1": 371,
+              "target1_fraction": 0.48244473342002603
+            }
+          ],
+          "summary": {
+            "all_subjects_pass_recording_floor": true,
+            "eligible_recordings": 28,
+            "n_recordings": 28,
+            "n_subjects": 7,
+            "subject_rows": [
+              {
+                "eligible_recordings": 4,
+                "mean_balance_fraction": 0.4441862111673225,
+                "n_recordings": 4,
+                "n_trials": 2726,
+                "passes_recording_floor": true,
+                "subject": "CSH_ZAD_019",
+                "target0": 1504,
+                "target1": 1222
+              },
+              {
+                "eligible_recordings": 4,
+                "mean_balance_fraction": 0.4534884528952207,
+                "n_recordings": 4,
+                "n_trials": 2127,
+                "passes_recording_floor": true,
+                "subject": "KS014",
+                "target0": 1064,
+                "target1": 1063
+              },
+              {
+                "eligible_recordings": 4,
+                "mean_balance_fraction": 0.4604025758276715,
+                "n_recordings": 4,
+                "n_trials": 2265,
+                "passes_recording_floor": true,
+                "subject": "MFD_06",
+                "target0": 1221,
+                "target1": 1044
+              },
+              {
+                "eligible_recordings": 4,
+                "mean_balance_fraction": 0.48933649289099523,
+                "n_recordings": 4,
+                "n_trials": 2424,
+                "passes_recording_floor": true,
+                "subject": "NR_0019",
+                "target0": 1194,
+                "target1": 1230
+              },
+              {
+                "eligible_recordings": 4,
+                "mean_balance_fraction": 0.4636980501549663,
+                "n_recordings": 4,
+                "n_trials": 1875,
+                "passes_recording_floor": true,
+                "subject": "NYU-12",
+                "target0": 973,
+                "target1": 902
+              },
+              {
+                "eligible_recordings": 4,
+                "mean_balance_fraction": 0.4720575731066663,
+                "n_recordings": 4,
+                "n_trials": 2436,
+                "passes_recording_floor": true,
+                "subject": "SWC_038",
+                "target0": 1252,
+                "target1": 1184
+              },
+              {
+                "eligible_recordings": 4,
+                "mean_balance_fraction": 0.4776884999592218,
+                "n_recordings": 4,
+                "n_trials": 1888,
+                "passes_recording_floor": true,
+                "subject": "SWC_043",
+                "target0": 984,
+                "target1": 904
+              }
+            ],
+            "subjects_passing_recording_floor": 7
+          }
+        }
+      }
+    },
+    {
+      "anatomy": {
+        "n_families_all_subjects_pass": 7,
+        "n_families_with_units": 7,
+        "top_families": [
+          {
+            "all_subjects_pass": true,
+            "family": "broad_named_anatomy",
+            "min_subject_units": 2516,
+            "subject_support": [
+              {
+                "passes": true,
+                "recordings_with_min_units": 4,
+                "subject": "MFD_06",
+                "units": 2516
+              },
+              {
+                "passes": true,
+                "recordings_with_min_units": 4,
+                "subject": "NYU-12",
+                "units": 3738
+              }
+            ],
+            "subjects_passing": 2,
+            "total_units": 6254
+          },
+          {
+            "all_subjects_pass": true,
+            "family": "midbrain",
+            "min_subject_units": 914,
+            "subject_support": [
+              {
+                "passes": true,
+                "recordings_with_min_units": 2,
+                "subject": "MFD_06",
+                "units": 2013
+              },
+              {
+                "passes": true,
+                "recordings_with_min_units": 2,
+                "subject": "NYU-12",
+                "units": 914
+              }
+            ],
+            "subjects_passing": 2,
+            "total_units": 2927
+          },
+          {
+            "all_subjects_pass": true,
+            "family": "hippocampal_formation",
+            "min_subject_units": 913,
+            "subject_support": [
+              {
+                "passes": true,
+                "recordings_with_min_units": 3,
+                "subject": "MFD_06",
+                "units": 913
+              },
+              {
+                "passes": true,
+                "recordings_with_min_units": 3,
+                "subject": "NYU-12",
+                "units": 1644
+              }
+            ],
+            "subjects_passing": 2,
+            "total_units": 2557
+          },
+          {
+            "all_subjects_pass": true,
+            "family": "brainstem_interbrain",
+            "min_subject_units": 381,
+            "subject_support": [
+              {
+                "passes": true,
+                "recordings_with_min_units": 2,
+                "subject": "MFD_06",
+                "units": 381
+              },
+              {
+                "passes": true,
+                "recordings_with_min_units": 3,
+                "subject": "NYU-12",
+                "units": 539
+              }
+            ],
+            "subjects_passing": 2,
+            "total_units": 920
+          },
+          {
+            "all_subjects_pass": true,
+            "family": "thalamic",
+            "min_subject_units": 310,
+            "subject_support": [
+              {
+                "passes": true,
+                "recordings_with_min_units": 1,
+                "subject": "MFD_06",
+                "units": 310
+              },
+              {
+                "passes": true,
+                "recordings_with_min_units": 1,
+                "subject": "NYU-12",
+                "units": 506
+              }
+            ],
+            "subjects_passing": 2,
+            "total_units": 816
+          },
+          {
+            "all_subjects_pass": true,
+            "family": "fiber_tracts",
+            "min_subject_units": 106,
+            "subject_support": [
+              {
+                "passes": true,
+                "recordings_with_min_units": 1,
+                "subject": "MFD_06",
+                "units": 106
+              },
+              {
+                "passes": true,
+                "recordings_with_min_units": 2,
+                "subject": "NYU-12",
+                "units": 120
+              }
+            ],
+            "subjects_passing": 2,
+            "total_units": 226
+          },
+          {
+            "all_subjects_pass": true,
+            "family": "cortical_visual",
+            "min_subject_units": 91,
+            "subject_support": [
+              {
+                "passes": true,
+                "recordings_with_min_units": 1,
+                "subject": "MFD_06",
+                "units": 91
+              },
+              {
+                "passes": true,
+                "recordings_with_min_units": 2,
+                "subject": "NYU-12",
+                "units": 400
+              }
+            ],
+            "subjects_passing": 2,
+            "total_units": 491
+          }
+        ]
+      },
+      "decision": "manifest_has_target_and_family_feasibility",
+      "label": "support80_hdf5_iterative_pass",
+      "manifest": "/Users/colin/Desktop/Projects/anatomical-neural-fm/manifests/ibl_bwm_region_matched_candidates_s3_present_support80_hdf5_iterative_pass.json",
+      "n_recordings": 8,
+      "n_subjects": 2,
+      "promotable_targets": [
+        "choice",
+        "stimulus_side",
+        "feedback",
+        "prior_side"
+      ],
+      "target_modes": {
+        "choice": {
+          "recording_rows": [
+            {
+              "balance_fraction": 0.5,
+              "eligible": true,
+              "min_class": 290,
+              "n_trials": 580,
+              "recording": "032ffcdf-7692-40b3-b9ff-8def1fc18b2e_probe00",
+              "subject": "NYU-12",
+              "target0": 290,
+              "target1": 290,
+              "target1_fraction": 0.5
+            },
+            {
+              "balance_fraction": 0.38713910761154857,
+              "eligible": true,
+              "min_class": 295,
+              "n_trials": 762,
+              "recording": "35eeb752-8f4f-4040-9714-ba0f5b7ccdfe_probe00",
+              "subject": "MFD_06",
+              "target0": 467,
+              "target1": 295,
+              "target1_fraction": 0.38713910761154857
+            },
+            {
+              "balance_fraction": 0.46865671641791046,
+              "eligible": true,
+              "min_class": 314,
+              "n_trials": 670,
+              "recording": "3f71aa98-08c6-4e79-b4c8-00eae4f03eff_probe00",
+              "subject": "MFD_06",
+              "target0": 356,
+              "target1": 314,
+              "target1_fraction": 0.46865671641791046
+            },
+            {
+              "balance_fraction": 0.45144356955380577,
+              "eligible": true,
+              "min_class": 172,
+              "n_trials": 381,
+              "recording": "6899a67d-2e53-4215-a52a-c7021b5da5d4_probe00",
+              "subject": "MFD_06",
+              "target0": 209,
+              "target1": 172,
+              "target1_fraction": 0.45144356955380577
+            },
+            {
+              "balance_fraction": 0.407557354925776,
+              "eligible": true,
+              "min_class": 302,
+              "n_trials": 741,
+              "recording": "a1782f4f-86b0-480c-a7f2-3d8f1ab482ab_probe00",
+              "subject": "MFD_06",
+              "target0": 439,
+              "target1": 302,
+              "target1_fraction": 0.407557354925776
+            },
+            {
+              "balance_fraction": 0.44155844155844154,
+              "eligible": true,
+              "min_class": 238,
+              "n_trials": 539,
+              "recording": "a8a8af78-16de-4841-ab07-fde4b5281a03_probe00",
+              "subject": "NYU-12",
+              "target0": 238,
+              "target1": 301,
+              "target1_fraction": 0.5584415584415584
+            },
+            {
+              "balance_fraction": 0.44155844155844154,
+              "eligible": true,
+              "min_class": 238,
+              "n_trials": 539,
+              "recording": "a8a8af78-16de-4841-ab07-fde4b5281a03_probe01",
+              "subject": "NYU-12",
+              "target0": 238,
+              "target1": 301,
+              "target1_fraction": 0.5584415584415584
+            },
+            {
+              "balance_fraction": 0.44036697247706424,
+              "eligible": true,
+              "min_class": 192,
+              "n_trials": 436,
+              "recording": "b182b754-3c3e-4942-8144-6ee790926b58_probe01",
+              "subject": "NYU-12",
+              "target0": 244,
+              "target1": 192,
+              "target1_fraction": 0.44036697247706424
+            }
+          ],
+          "summary": {
+            "all_subjects_pass_recording_floor": true,
+            "eligible_recordings": 8,
+            "n_recordings": 8,
+            "n_subjects": 2,
+            "subject_rows": [
+              {
+                "eligible_recordings": 4,
+                "mean_balance_fraction": 0.4286991871272602,
+                "n_recordings": 4,
+                "n_trials": 2554,
+                "passes_recording_floor": true,
+                "subject": "MFD_06",
+                "target0": 1471,
+                "target1": 1083
+              },
+              {
+                "eligible_recordings": 4,
+                "mean_balance_fraction": 0.4558709638984868,
+                "n_recordings": 4,
+                "n_trials": 2094,
+                "passes_recording_floor": true,
+                "subject": "NYU-12",
+                "target0": 1010,
+                "target1": 1084
+              }
+            ],
+            "subjects_passing_recording_floor": 2
+          }
+        },
+        "feedback": {
+          "recording_rows": [
+            {
+              "balance_fraction": 0.1927710843373494,
+              "eligible": true,
+              "min_class": 112,
+              "n_trials": 581,
+              "recording": "032ffcdf-7692-40b3-b9ff-8def1fc18b2e_probe00",
+              "subject": "NYU-12",
+              "target0": 112,
+              "target1": 469,
+              "target1_fraction": 0.8072289156626506
+            },
+            {
+              "balance_fraction": 0.18635170603674542,
+              "eligible": true,
+              "min_class": 142,
+              "n_trials": 762,
+              "recording": "35eeb752-8f4f-4040-9714-ba0f5b7ccdfe_probe00",
+              "subject": "MFD_06",
+              "target0": 142,
+              "target1": 620,
+              "target1_fraction": 0.8136482939632546
+            },
+            {
+              "balance_fraction": 0.19047619047619047,
+              "eligible": true,
+              "min_class": 128,
+              "n_trials": 672,
+              "recording": "3f71aa98-08c6-4e79-b4c8-00eae4f03eff_probe00",
+              "subject": "MFD_06",
+              "target0": 128,
+              "target1": 544,
+              "target1_fraction": 0.8095238095238095
+            },
+            {
+              "balance_fraction": 0.3208955223880597,
+              "eligible": true,
+              "min_class": 129,
+              "n_trials": 402,
+              "recording": "6899a67d-2e53-4215-a52a-c7021b5da5d4_probe00",
+              "subject": "MFD_06",
+              "target0": 129,
+              "target1": 273,
+              "target1_fraction": 0.6791044776119403
+            },
+            {
+              "balance_fraction": 0.1902834008097166,
+              "eligible": true,
+              "min_class": 141,
+              "n_trials": 741,
+              "recording": "a1782f4f-86b0-480c-a7f2-3d8f1ab482ab_probe00",
+              "subject": "MFD_06",
+              "target0": 141,
+              "target1": 600,
+              "target1_fraction": 0.8097165991902834
+            },
+            {
+              "balance_fraction": 0.15636363636363637,
+              "eligible": true,
+              "min_class": 86,
+              "n_trials": 550,
+              "recording": "a8a8af78-16de-4841-ab07-fde4b5281a03_probe00",
+              "subject": "NYU-12",
+              "target0": 86,
+              "target1": 464,
+              "target1_fraction": 0.8436363636363636
+            },
+            {
+              "balance_fraction": 0.15636363636363637,
+              "eligible": true,
+              "min_class": 86,
+              "n_trials": 550,
+              "recording": "a8a8af78-16de-4841-ab07-fde4b5281a03_probe01",
+              "subject": "NYU-12",
+              "target0": 86,
+              "target1": 464,
+              "target1_fraction": 0.8436363636363636
+            },
+            {
+              "balance_fraction": 0.16891891891891891,
+              "eligible": true,
+              "min_class": 75,
+              "n_trials": 444,
+              "recording": "b182b754-3c3e-4942-8144-6ee790926b58_probe01",
+              "subject": "NYU-12",
+              "target0": 75,
+              "target1": 369,
+              "target1_fraction": 0.831081081081081
+            }
+          ],
+          "summary": {
+            "all_subjects_pass_recording_floor": true,
+            "eligible_recordings": 8,
+            "n_recordings": 8,
+            "n_subjects": 2,
+            "subject_rows": [
+              {
+                "eligible_recordings": 4,
+                "mean_balance_fraction": 0.22200170492767804,
+                "n_recordings": 4,
+                "n_trials": 2577,
+                "passes_recording_floor": true,
+                "subject": "MFD_06",
+                "target0": 540,
+                "target1": 2037
+              },
+              {
+                "eligible_recordings": 4,
+                "mean_balance_fraction": 0.16860431899588524,
+                "n_recordings": 4,
+                "n_trials": 2125,
+                "passes_recording_floor": true,
+                "subject": "NYU-12",
+                "target0": 359,
+                "target1": 1766
+              }
+            ],
+            "subjects_passing_recording_floor": 2
+          }
+        },
+        "prior_side": {
+          "recording_rows": [
+            {
+              "balance_fraction": 0.38085539714867617,
+              "eligible": true,
+              "min_class": 187,
+              "n_trials": 491,
+              "recording": "032ffcdf-7692-40b3-b9ff-8def1fc18b2e_probe00",
+              "subject": "NYU-12",
+              "target0": 304,
+              "target1": 187,
+              "target1_fraction": 0.38085539714867617
+            },
+            {
+              "balance_fraction": 0.4806547619047619,
+              "eligible": true,
+              "min_class": 323,
+              "n_trials": 672,
+              "recording": "35eeb752-8f4f-4040-9714-ba0f5b7ccdfe_probe00",
+              "subject": "MFD_06",
+              "target0": 349,
+              "target1": 323,
+              "target1_fraction": 0.4806547619047619
+            },
+            {
+              "balance_fraction": 0.35738831615120276,
+              "eligible": true,
+              "min_class": 208,
+              "n_trials": 582,
+              "recording": "3f71aa98-08c6-4e79-b4c8-00eae4f03eff_probe00",
+              "subject": "MFD_06",
+              "target0": 374,
+              "target1": 208,
+              "target1_fraction": 0.35738831615120276
+            },
+            {
+              "balance_fraction": 0.47435897435897434,
+              "eligible": true,
+              "min_class": 148,
+              "n_trials": 312,
+              "recording": "6899a67d-2e53-4215-a52a-c7021b5da5d4_probe00",
+              "subject": "MFD_06",
+              "target0": 164,
+              "target1": 148,
+              "target1_fraction": 0.47435897435897434
+            },
+            {
+              "balance_fraction": 0.48540706605222733,
+              "eligible": true,
+              "min_class": 316,
+              "n_trials": 651,
+              "recording": "a1782f4f-86b0-480c-a7f2-3d8f1ab482ab_probe00",
+              "subject": "MFD_06",
+              "target0": 335,
+              "target1": 316,
+              "target1_fraction": 0.48540706605222733
+            },
+            {
+              "balance_fraction": 0.44565217391304346,
+              "eligible": true,
+              "min_class": 205,
+              "n_trials": 460,
+              "recording": "a8a8af78-16de-4841-ab07-fde4b5281a03_probe00",
+              "subject": "NYU-12",
+              "target0": 255,
+              "target1": 205,
+              "target1_fraction": 0.44565217391304346
+            },
+            {
+              "balance_fraction": 0.44565217391304346,
+              "eligible": true,
+              "min_class": 205,
+              "n_trials": 460,
+              "recording": "a8a8af78-16de-4841-ab07-fde4b5281a03_probe01",
+              "subject": "NYU-12",
+              "target0": 255,
+              "target1": 205,
+              "target1_fraction": 0.44565217391304346
+            },
+            {
+              "balance_fraction": 0.4293785310734463,
+              "eligible": true,
+              "min_class": 152,
+              "n_trials": 354,
+              "recording": "b182b754-3c3e-4942-8144-6ee790926b58_probe01",
+              "subject": "NYU-12",
+              "target0": 152,
+              "target1": 202,
+              "target1_fraction": 0.5706214689265536
+            }
+          ],
+          "summary": {
+            "all_subjects_pass_recording_floor": true,
+            "eligible_recordings": 8,
+            "n_recordings": 8,
+            "n_subjects": 2,
+            "subject_rows": [
+              {
+                "eligible_recordings": 4,
+                "mean_balance_fraction": 0.44945227961679163,
+                "n_recordings": 4,
+                "n_trials": 2217,
+                "passes_recording_floor": true,
+                "subject": "MFD_06",
+                "target0": 1222,
+                "target1": 995
+              },
+              {
+                "eligible_recordings": 4,
+                "mean_balance_fraction": 0.42538456901205235,
+                "n_recordings": 4,
+                "n_trials": 1765,
+                "passes_recording_floor": true,
+                "subject": "NYU-12",
+                "target0": 966,
+                "target1": 799
+              }
+            ],
+            "subjects_passing_recording_floor": 2
+          }
+        },
+        "stimulus_side": {
+          "recording_rows": [
+            {
+              "balance_fraction": 0.4294117647058823,
+              "eligible": true,
+              "min_class": 219,
+              "n_trials": 510,
+              "recording": "032ffcdf-7692-40b3-b9ff-8def1fc18b2e_probe00",
+              "subject": "NYU-12",
+              "target0": 291,
+              "target1": 219,
+              "target1_fraction": 0.4294117647058823
+            },
+            {
+              "balance_fraction": 0.4863636363636364,
+              "eligible": true,
+              "min_class": 321,
+              "n_trials": 660,
+              "recording": "35eeb752-8f4f-4040-9714-ba0f5b7ccdfe_probe00",
+              "subject": "MFD_06",
+              "target0": 339,
+              "target1": 321,
+              "target1_fraction": 0.4863636363636364
+            },
+            {
+              "balance_fraction": 0.4135593220338983,
+              "eligible": true,
+              "min_class": 244,
+              "n_trials": 590,
+              "recording": "3f71aa98-08c6-4e79-b4c8-00eae4f03eff_probe00",
+              "subject": "MFD_06",
+              "target0": 346,
+              "target1": 244,
+              "target1_fraction": 0.4135593220338983
+            },
+            {
+              "balance_fraction": 0.46703296703296704,
+              "eligible": true,
+              "min_class": 170,
+              "n_trials": 364,
+              "recording": "6899a67d-2e53-4215-a52a-c7021b5da5d4_probe00",
+              "subject": "MFD_06",
+              "target0": 194,
+              "target1": 170,
+              "target1_fraction": 0.46703296703296704
+            },
+            {
+              "balance_fraction": 0.47465437788018433,
+              "eligible": true,
+              "min_class": 309,
+              "n_trials": 651,
+              "recording": "a1782f4f-86b0-480c-a7f2-3d8f1ab482ab_probe00",
+              "subject": "MFD_06",
+              "target0": 342,
+              "target1": 309,
+              "target1_fraction": 0.47465437788018433
+            },
+            {
+              "balance_fraction": 0.4834710743801653,
+              "eligible": true,
+              "min_class": 234,
+              "n_trials": 484,
+              "recording": "a8a8af78-16de-4841-ab07-fde4b5281a03_probe00",
+              "subject": "NYU-12",
+              "target0": 250,
+              "target1": 234,
+              "target1_fraction": 0.4834710743801653
+            },
+            {
+              "balance_fraction": 0.4834710743801653,
+              "eligible": true,
+              "min_class": 234,
+              "n_trials": 484,
+              "recording": "a8a8af78-16de-4841-ab07-fde4b5281a03_probe01",
+              "subject": "NYU-12",
+              "target0": 250,
+              "target1": 234,
+              "target1_fraction": 0.4834710743801653
+            },
+            {
+              "balance_fraction": 0.45843828715365237,
+              "eligible": true,
+              "min_class": 182,
+              "n_trials": 397,
+              "recording": "b182b754-3c3e-4942-8144-6ee790926b58_probe01",
+              "subject": "NYU-12",
+              "target0": 182,
+              "target1": 215,
+              "target1_fraction": 0.5415617128463476
+            }
+          ],
+          "summary": {
+            "all_subjects_pass_recording_floor": true,
+            "eligible_recordings": 8,
+            "n_recordings": 8,
+            "n_subjects": 2,
+            "subject_rows": [
+              {
+                "eligible_recordings": 4,
+                "mean_balance_fraction": 0.4604025758276715,
+                "n_recordings": 4,
+                "n_trials": 2265,
+                "passes_recording_floor": true,
+                "subject": "MFD_06",
+                "target0": 1221,
+                "target1": 1044
+              },
+              {
+                "eligible_recordings": 4,
+                "mean_balance_fraction": 0.4636980501549663,
+                "n_recordings": 4,
+                "n_trials": 1875,
+                "passes_recording_floor": true,
+                "subject": "NYU-12",
+                "target0": 973,
+                "target1": 902
+              }
+            ],
+            "subjects_passing_recording_floor": 2
+          }
+        }
+      }
+    }
+  ],
+  "thresholds": {
+    "min_class_trials": 40,
+    "min_family_recordings_per_subject": 1,
+    "min_family_units": 25,
+    "min_recordings_per_subject": 2,
+    "window_len": 1.0
+  }
+}

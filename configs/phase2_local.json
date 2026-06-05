@@ -1,0 +1,21 @@
+{
+  "description": "Apple Silicon phase-2 sanity sweeps before RunPod scaling.",
+  "device": "mps",
+  "output_query_mode": "shared",
+  "within_animal": {
+    "split_mode": "trial",
+    "arms": ["baseline", "pure_anatomy", "waveform_only"],
+    "seeds": [0, 1],
+    "max_steps": 300,
+    "eval_every": 100,
+    "eval_batches": 30
+  },
+  "cross_animal": {
+    "split_mode": "animal",
+    "arms": ["pure_anatomy", "waveform_only"],
+    "seeds": [0, 1],
+    "max_steps": 300,
+    "eval_every": 100,
+    "eval_batches": 30
+  }
+}

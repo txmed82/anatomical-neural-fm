@@ -1,0 +1,169 @@
+{
+  "holdout": [
+    "KS014"
+  ],
+  "l2": 10.0,
+  "n_eval_recordings": 4,
+  "n_eval_trials": 2127,
+  "n_regions": 79,
+  "n_train_recordings": 24,
+  "n_train_trials": 13614,
+  "region_granularity": "parent",
+  "regions": [
+    "ATN",
+    "AUDd",
+    "AUDv",
+    "BS",
+    "CA",
+    "CNU",
+    "CTXpl",
+    "CTXsp",
+    "DG",
+    "DORpm",
+    "ENTm",
+    "EPI",
+    "FRP",
+    "HB",
+    "HIP",
+    "IB",
+    "IIIn",
+    "IIn",
+    "In",
+    "LAT",
+    "LGd",
+    "LS",
+    "LZ",
+    "MBmot",
+    "MBsen",
+    "MBsta",
+    "MED",
+    "MG",
+    "MOp",
+    "MOs",
+    "MSC",
+    "OLF",
+    "ORBm",
+    "ORBvl",
+    "P-mot",
+    "P-sen",
+    "PALc",
+    "PRT",
+    "PVR",
+    "RHP",
+    "RSPagl",
+    "RSPd",
+    "RSPv",
+    "SCm",
+    "SCs",
+    "SSp-bfd",
+    "SSp-ll",
+    "SSp-tr",
+    "SSp-ul",
+    "SSp-un",
+    "SSs",
+    "STRd",
+    "STRv",
+    "VENT",
+    "VISa",
+    "VISp",
+    "VISpl",
+    "VISpm",
+    "VISpor",
+    "VL",
+    "VP",
+    "VS",
+    "Vn",
+    "ZI",
+    "cVIIIn",
+    "cc",
+    "cett",
+    "eps",
+    "epsc",
+    "fa",
+    "fiber tracts",
+    "fxs",
+    "hc",
+    "lfbst",
+    "mfbc",
+    "mfbse",
+    "root",
+    "scp",
+    "void"
+  ],
+  "seed": 0,
+  "summary": {
+    "decision": "weak_model_free_true_region_advantage",
+    "deltas": {
+      "true_minus_shuffle_auc": 0.062787790265881,
+      "true_minus_shuffle_centered_auc": 0.029768388515974853,
+      "true_minus_total_auc": 0.056027592499593215,
+      "true_minus_total_centered_auc": 0.0503831898655388
+    },
+    "metrics": {
+      "region_shuffle": {
+        "eval_auc": 0.502076864315068,
+        "eval_centered_auc": 0.5583378719611823,
+        "per_recording_auc": {
+          "16693458-0801-4d35-a3f1-9115c7e5acfd_probe00": 0.49457043925962185,
+          "16693458-0801-4d35-a3f1-9115c7e5acfd_probe01": 0.5674117583074999,
+          "b9c205c3-feac-485b-a89d-afc96d9cb280_probe00": 0.6716679469944306,
+          "e1931de1-cf7b-49af-af33-2ade15e8abe7_probe00": 0.5619331257614728
+        },
+        "train_auc": 0.6000332928074731
+      },
+      "region_true": {
+        "eval_auc": 0.564864654580949,
+        "eval_centered_auc": 0.5881062604771572,
+        "per_recording_auc": {
+          "16693458-0801-4d35-a3f1-9115c7e5acfd_probe00": 0.5653088232628125,
+          "16693458-0801-4d35-a3f1-9115c7e5acfd_probe01": 0.5369373289099182,
+          "b9c205c3-feac-485b-a89d-afc96d9cb280_probe00": 0.5773478010370655,
+          "e1931de1-cf7b-49af-af33-2ade15e8abe7_probe00": 0.6653016560624521
+        },
+        "train_auc": 0.6113782409008023
+      },
+      "total_spikes": {
+        "eval_auc": 0.5088370620813558,
+        "eval_centered_auc": 0.5377230706116184,
+        "per_recording_auc": {
+          "16693458-0801-4d35-a3f1-9115c7e5acfd_probe00": 0.4884973078805678,
+          "16693458-0801-4d35-a3f1-9115c7e5acfd_probe01": 0.41375247004224,
+          "b9c205c3-feac-485b-a89d-afc96d9cb280_probe00": 0.6476017860572306,
+          "e1931de1-cf7b-49af-af33-2ade15e8abe7_probe00": 0.609403907765895
+        },
+        "train_auc": 0.5147811456463425
+      }
+    },
+    "n_recordings": 4,
+    "paired_true_vs_shuffle": {
+      "improved_fraction": 0.5425481899388811,
+      "mean_true_class_delta": 0.13328494963097937,
+      "target0_improved_fraction": 0.5469924812030075,
+      "target1_improved_fraction": 0.5380997177798683
+    },
+    "paired_true_vs_total": {
+      "improved_fraction": 0.5491302303714152,
+      "mean_true_class_delta": 0.21894739397180452,
+      "target0_improved_fraction": 0.4483082706766917,
+      "target1_improved_fraction": 0.6500470366886171
+    },
+    "recording_deltas_true_minus_shuffle": {
+      "16693458-0801-4d35-a3f1-9115c7e5acfd_probe00": 0.07073838400319066,
+      "16693458-0801-4d35-a3f1-9115c7e5acfd_probe01": -0.030474429397581715,
+      "b9c205c3-feac-485b-a89d-afc96d9cb280_probe00": -0.09432014595736504,
+      "e1931de1-cf7b-49af-af33-2ade15e8abe7_probe00": 0.10336853030097926
+    },
+    "recording_support_fraction": 0.5,
+    "recordings_positive_true_minus_shuffle": 2
+  },
+  "target_mode": "stimulus_side",
+  "train_subjects": [
+    "CSH_ZAD_019",
+    "MFD_06",
+    "NR_0019",
+    "NYU-12",
+    "SWC_038",
+    "SWC_043"
+  ],
+  "window_len": 1.0
+}

@@ -20,7 +20,8 @@ def load_run(run_dir: Path) -> dict | None:
     log_path = run_dir / "log.jsonl"
     if not log_path.exists():
         return None
-    best = None
+    best_auc = None
+    best_loss = None
     final = None
     with open(log_path) as fh:
         for line in fh:
@@ -28,11 +29,18 @@ def load_run(run_dir: Path) -> dict | None:
                 rec = json.loads(line)
             except Exception:
                 continue
-            if rec.get("event") == "ckpt_best":
-                best = rec  # last ckpt_best is the best
+            if rec.get("event") == "eval":
+                auc = rec.get("eval_auc")
+                if isinstance(auc, (int, float)) and not math.isnan(auc):
+                    if best_auc is None or auc > best_auc.get("eval_auc", float("-inf")):
+                        best_auc = rec
+                loss = rec.get("eval_loss")
+                if isinstance(loss, (int, float)) and not math.isnan(loss):
+                    if best_loss is None or loss < best_loss.get("eval_loss", float("inf")):
+                        best_loss = rec
             elif rec.get("event") == "done":
                 final = rec
-    return {"best": best, "final": final}
+    return {"best": best_auc, "best_loss": best_loss, "final": final}
 
 
 def main() -> int:

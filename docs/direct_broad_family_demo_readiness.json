@@ -1,0 +1,51 @@
+{
+  "interpretation": [
+    "The fixed broad_named_anatomy aggregate remains the only positive response-extreme evidence.",
+    "The learned parent-region embedding pilot and the shared parent-region ridge readout are both negative.",
+    "A demo can currently claim only a narrow model-free cross-animal anatomical readout, not a trained anatomical foundation-model transfer signal."
+  ],
+  "local_model_free_rows": [
+    {
+      "candidate_seeds": 5,
+      "family": "broad_named_anatomy",
+      "holdout": "CSHL045",
+      "max_bidirectional_recordings": 3,
+      "mean_delta_vs_shuffle": 0.05070363369040114,
+      "mean_delta_vs_total": 0.0365994538962402,
+      "mean_target0": 0.7,
+      "mean_target1": 0.8,
+      "min_bidirectional_recordings": 3,
+      "n_seeds": 5,
+      "target_mode": "post_error_response_extreme_25_75_le_1"
+    },
+    {
+      "candidate_seeds": 5,
+      "family": "broad_named_anatomy",
+      "holdout": "NR_0019",
+      "max_bidirectional_recordings": 4,
+      "mean_delta_vs_shuffle": 0.005093875038473361,
+      "mean_delta_vs_total": 0.004232071406586657,
+      "mean_target0": 0.656140350877193,
+      "mean_target1": 0.6842105263157895,
+      "min_bidirectional_recordings": 3,
+      "n_seeds": 5,
+      "target_mode": "post_error_response_extreme_33_67_le_1"
+    }
+  ],
+  "negative_training_evidence": {
+    "a100_decision": "negative_training_pilot",
+    "a100_true_positive": "0/2",
+    "training_aligned_decision": "no_training_aligned_true_region_advantage",
+    "training_aligned_paid_gpu_trigger": false
+  },
+  "summary": {
+    "decision": "model_free_demo_only",
+    "model_free_demo_ready": true,
+    "n_model_free_demo_rows": 2,
+    "n_robust_local_rows": 2,
+    "next_action": "Package the result as a narrow model-free cross-animal anatomical readout, or implement a direct fixed broad-family-count model arm before any new GPU run.",
+    "trained_model_demo_ready": false,
+    "trained_negative": true,
+    "training_aligned_negative": true
+  }
+}
