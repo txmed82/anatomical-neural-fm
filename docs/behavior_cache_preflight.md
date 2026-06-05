@@ -5,8 +5,8 @@ No-spend preflight for the next branch after cached trial targets failed.
 - manifest recordings: `28`
 - present files: `28`
 - missing files: `0`
-- required stream coverage: `wheel=7/28`
-- recordings needing behavior rebuild: `21`
+- required stream coverage: `wheel=14/28`
+- recordings needing behavior rebuild: `14`
 - decision: `behavior_cache_rebuild_required`
 
 ## Build Plan
@@ -34,15 +34,15 @@ Candidate behavior targets to test first:
 
 | recording | missing streams |
 |---|---|
-| a8a8af78-16de-4841-ab07-fde4b5281a03_probe00 | wheel |
-| 6899a67d-2e53-4215-a52a-c7021b5da5d4_probe00 | wheel |
-| e1931de1-cf7b-49af-af33-2ade15e8abe7_probe00 | wheel |
-| 6fb1e12c-883b-46d1-a745-473cde3232c8_probe00 | wheel |
-| 1e45d992-c356-40e1-9be1-a506d944896f_probe01 | wheel |
-| b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe00 | wheel |
-| 5adab0b7-dfd0-467d-b09d-43cb7ca5d59c_probe01 | wheel |
 | a8a8af78-16de-4841-ab07-fde4b5281a03_probe01 | wheel |
 | a1782f4f-86b0-480c-a7f2-3d8f1ab482ab_probe00 | wheel |
 | b9c205c3-feac-485b-a89d-afc96d9cb280_probe00 | wheel |
 | 88d24c31-52e4-49cc-9f32-6adbeb9eba87_probe00 | wheel |
 | 03063955-2523-47bd-ae57-f7489dd40f15_probe01 | wheel |
+| 63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe01 | wheel |
+| 49e0ab27-827a-4c91-bcaa-97eea27a1b8d_probe01 | wheel |
+| 032ffcdf-7692-40b3-b9ff-8def1fc18b2e_probe00 | wheel |
+| 35eeb752-8f4f-4040-9714-ba0f5b7ccdfe_probe00 | wheel |
+| 16693458-0801-4d35-a3f1-9115c7e5acfd_probe01 | wheel |
+| 6f09ba7e-e3ce-44b0-932b-c003fb44fb89_probe01 | wheel |
+| 41872d7f-75cb-4445-bb1a-132b354c44f0_probe01 | wheel |
