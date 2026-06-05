@@ -1020,6 +1020,28 @@ auditing region-label distribution, per-region trial contrast, and whether the
 current `region_shuffle` control is creating an easier nuisance partition under
 the centered objective.
 
+Shuffle-win audit: `scripts/audit_shuffle_win_modes.py` compares the centered,
+target-balanced, and recording-centered-loss CSH prediction artifacts in
+`docs/csh_shuffle_win_mode_audit.{json,md}`. The centered and target-balanced
+runs do not show a shuffle separation win: true labels are slightly above
+shuffle on centered AUC (`+0.006` and `+0.009`) and slightly above shuffle on
+centered target separation, but the effect is tiny. The recording-centered-loss
+run is different: shuffle beats true on centered AUC by `+0.050`, and shuffle
+creates a much stronger within-recording target separation than true labels
+(`true-minus-shuffle centered separation = -0.0096`). The largest single
+recording driver is `49e0ab27-827a-4c91-bcaa-97eea27a1b8d_probe01`
+(`-0.0307` true-minus-shuffle centered separation). This argues that the next
+step is not another loss tweak. It is to redesign the anatomical control and/or
+region vocabulary so shuffled labels cannot accidentally create an easier
+target-correlated partition than the true parent labels.
+
+Next no-spend design target: audit region-label assignments for the CSH heldout
+and training recordings against target contrast, then replace simple unit-level
+region shuffling with a stricter negative control that preserves recording,
+region counts, and any per-recording target/region exposure structure. A
+credible next GPU run should only happen after this control audit explains why
+the current `region_shuffle` can win.
+
 After cleanup, run:
 
 ```bash

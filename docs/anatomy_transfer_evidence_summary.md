@@ -62,3 +62,13 @@ regions `0.530`; paired true-vs-shuffle was `0.451`; recording support was
 `0/4`. This rules out broadening the recording-centered-loss variant. The next
 no-spend analysis should explain why shuffled parent labels win under this
 objective before another training run.
+
+Shuffle-win audit result: `docs/csh_shuffle_win_mode_audit.md` shows the
+recording-centered loss failure is specifically a shuffled-label separation
+win. In that run, true-minus-shuffle centered target separation is `-0.0096`,
+with the biggest negative recording at
+`49e0ab27-827a-4c91-bcaa-97eea27a1b8d_probe01`. The original centered and
+target-balanced runs have small positive true-minus-shuffle centered separation,
+so this is not just a reporting artifact. Before another GPU run, redesign the
+negative control or region vocabulary so shuffled labels cannot create an
+easier target-correlated partition than true labels.
