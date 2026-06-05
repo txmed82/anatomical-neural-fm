@@ -51,3 +51,19 @@ def test_analyze_reports_seed_ensemble_and_recording_paired_metrics(tmp_path) ->
     assert paired["n"] == 4
     assert paired["recordings"]["rec_a"]["improved_fraction"] == 1.0
     assert paired["recordings"]["rec_b"]["improved_fraction"] == 0.0
+
+
+def test_analyze_defaults_to_complete_prediction_seeds(tmp_path) -> None:
+    rows = [
+        {"recording_id": "rec_a", "t0": 0.0, "target": 0, "prob": 0.40},
+        {"recording_id": "rec_a", "t0": 1.0, "target": 1, "prob": 0.60},
+    ]
+    for arm in ("shared_baseline", "region_only", "region_shuffle"):
+        write_predictions(tmp_path, "mouse_a", arm, 0, rows)
+    write_predictions(tmp_path, "mouse_a", "shared_baseline", 1, rows)
+
+    result = analyze(tmp_path, "mouse_a")
+
+    assert result["available_seeds"] == [0, 1]
+    assert result["seeds"] == [0]
+    assert result["incomplete_seeds"] == [1]

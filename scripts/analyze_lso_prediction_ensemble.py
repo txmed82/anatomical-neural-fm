@@ -31,6 +31,10 @@ def read_prediction_rows(root: Path, holdout: str, arm: str, seed: int) -> list[
         return [json.loads(line) for line in fh]
 
 
+def prediction_path(root: Path, holdout: str, arm: str, seed: int) -> Path:
+    return root / f"holdout_{holdout}" / f"cloud_choice_{arm}_seed{seed}" / "eval_predictions.jsonl"
+
+
 def available_seeds(root: Path, holdout: str) -> list[int]:
     holdout_dir = root / f"holdout_{holdout}"
     seeds: set[int] = set()
@@ -40,6 +44,14 @@ def available_seeds(root: Path, holdout: str) -> list[int]:
             if run_dir.is_dir():
                 seeds.add(int(run_dir.name.removeprefix(prefix)))
     return sorted(seeds)
+
+
+def complete_seeds(root: Path, holdout: str) -> list[int]:
+    return [
+        seed
+        for seed in available_seeds(root, holdout)
+        if all(prediction_path(root, holdout, arm, seed).exists() for arm in ARMS)
+    ]
 
 
 def prediction_key(row: dict) -> tuple[str, float, int]:
@@ -132,7 +144,10 @@ def per_recording_auc(rows: list[dict]) -> dict[str, dict]:
 
 
 def analyze(root: Path, holdout: str, seeds: list[int] | None = None) -> dict:
-    selected_seeds = seeds if seeds is not None else available_seeds(root, holdout)
+    all_seeds = available_seeds(root, holdout)
+    selected_seeds = seeds if seeds is not None else complete_seeds(root, holdout)
+    if not selected_seeds:
+        raise ValueError(f"No complete prediction seeds found for holdout {holdout!r} in {root}")
     rows = {
         arm: {seed: read_prediction_rows(root, holdout, arm, seed) for seed in selected_seeds}
         for arm in ARMS
@@ -155,6 +170,8 @@ def analyze(root: Path, holdout: str, seeds: list[int] | None = None) -> dict:
         "root": str(root),
         "holdout": holdout,
         "seeds": selected_seeds,
+        "available_seeds": all_seeds,
+        "incomplete_seeds": [seed for seed in all_seeds if seed not in selected_seeds],
         "seed_metrics": seed_metrics,
         "ensemble_metrics": {
             arm: {

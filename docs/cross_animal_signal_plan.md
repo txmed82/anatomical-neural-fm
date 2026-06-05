@@ -951,6 +951,19 @@ terminated with follow-up preflight showing `active_pods: 0`. The launcher guard
 was fixed so stale S3 log timestamps cannot indefinitely extend the provisioning
 deadline.
 
+Target-balanced decision update: a subsequent resume completed seed 1
+`region_only` and `region_shuffle`, plus seed 2 `shared_baseline`. The standard
+gate remains false with `n_passing_seeds=0/3`; seeds 0 and 1 both fail
+centered-AUC true-vs-shared, so finishing seed 2 cannot make this pilot pass.
+The complete-seed ensemble (`seeds=[0,1]`, incomplete seed 2 omitted) is
+directionally better than the original target-balanced per-seed table but still
+not demo-grade: `region_only` full AUC is `0.505` vs `0.490` shuffle, centered
+AUC is `0.492` vs `0.483` shuffle, paired true-vs-shuffle is `0.516`, and the
+anatomy-specific gate fails on centered-delta threshold (`+0.009` vs required
+`+0.010`) and recording sign-flip (`p=0.125`). Stop spending on this exact
+target-balanced variant; the next implementation change should attack
+recording/subject-prior leakage more directly rather than complete seed 2.
+
 After cleanup, run:
 
 ```bash

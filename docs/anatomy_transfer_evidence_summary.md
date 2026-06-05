@@ -39,3 +39,11 @@ and the held-out RunPod wrappers expose the same control through
 left/right targets while keeping sampled eval uniform. Use it first on a bounded
 single CSH_ZAD_019 pilot with full held-out-trial diagnostics; broaden only if
 the anatomy-specific permutation gate improves.
+
+Target-balanced pilot result: partial CSH_ZAD_019 artifacts are enough to rule
+out this exact variant. Seeds 0 and 1 both fail centered-AUC true-vs-shared, so
+seed 2 cannot rescue the three-seed gate. The two-complete-seed ensemble has
+positive true-vs-shuffle centered delta (`+0.009`) and specificity gap
+(`+0.051`), but still fails the strict anatomy-specific gate because the
+centered delta is below `+0.010` and the recording sign-flip p-value is `0.125`.
+Do not spend more on the same target-balanced run.
