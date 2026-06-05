@@ -405,6 +405,20 @@ centering and the same same-recording bidirectional gate.
 
 Decision: this is the strongest local near miss so far, but still not a training trigger. `KS014` reaches centered delta `+0.080` and `2/4` bidirectional recordings, yet misses global target0 at `0.510`.
 
+## Family-Aggregate L2 Sensitivity
+
+The strongest family-aggregate near-miss gate was rerun across ridge
+regularization strengths to check whether the local decision is an
+artifact of the default `l2=10` setting.
+
+| l2 | candidates | positive deltas | mean bidir rec frac | decision |
+|---:|---:|---:|---:|---|
+| 1 | 0/7 | 4/7 | 0.179 | `no_recording_bidirectional_model_free_signal` |
+| 10 | 0/7 | 4/7 | 0.179 | `no_recording_bidirectional_model_free_signal` |
+| 100 | 0/7 | 4/7 | 0.179 | `no_recording_bidirectional_model_free_signal` |
+
+Decision: the family near miss is not a ridge-regularization artifact. The candidate count, positive-delta count, and mean bidirectional recording fraction are unchanged across the tested l2 range.
+
 ## KS014 Family Near-Miss Mechanism
 
 `docs/model_free_family_ks014_near_miss_mechanism.md` decomposes the

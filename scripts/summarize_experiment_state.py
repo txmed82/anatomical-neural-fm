@@ -127,6 +127,12 @@ MODEL_FREE_SOURCE_TARGET_PAIR_FAMILIES_RECORDING_CENTERED_FILE = (
 MODEL_FREE_FAMILY_BIDIRECTIONAL_RECORDING_CENTERED_FILE = (
     "docs/model_free_family_bidirectional_gate_recording_centered.json"
 )
+MODEL_FREE_FAMILY_BIDIRECTIONAL_RECORDING_CENTERED_L2_1_FILE = (
+    "docs/model_free_family_bidirectional_gate_recording_centered_l2_1.json"
+)
+MODEL_FREE_FAMILY_BIDIRECTIONAL_RECORDING_CENTERED_L2_100_FILE = (
+    "docs/model_free_family_bidirectional_gate_recording_centered_l2_100.json"
+)
 MODEL_FREE_FAMILY_BIDIRECTIONAL_PRIOR_RECORDING_CENTERED_FILE = (
     "docs/model_free_family_bidirectional_gate_prior_side_recording_centered.json"
 )
@@ -430,6 +436,8 @@ def render_markdown(
     model_free_source_target_pair_recording_centered: dict | None = None,
     model_free_source_target_pair_families_recording_centered: dict | None = None,
     model_free_family_bidirectional_recording_centered: dict | None = None,
+    model_free_family_bidirectional_recording_centered_l2_1: dict | None = None,
+    model_free_family_bidirectional_recording_centered_l2_100: dict | None = None,
     model_free_family_bidirectional_prior_recording_centered: dict | None = None,
     model_free_family_bidirectional_feedback_recording_centered: dict | None = None,
     model_free_family_ks014_near_miss: dict | None = None,
@@ -1216,6 +1224,40 @@ def render_markdown(
             ),
             "",
         ]
+    family_l2_rows = [
+        ("1", model_free_family_bidirectional_recording_centered_l2_1),
+        ("10", model_free_family_bidirectional_recording_centered),
+        ("100", model_free_family_bidirectional_recording_centered_l2_100),
+    ]
+    family_l2_rows = [(label, row) for label, row in family_l2_rows if row is not None]
+    if len(family_l2_rows) >= 2:
+        lines += [
+            "## Family-Aggregate L2 Sensitivity",
+            "",
+            "The strongest family-aggregate near-miss gate was rerun across ridge",
+            "regularization strengths to check whether the local decision is an",
+            "artifact of the default `l2=10` setting.",
+            "",
+            "| l2 | candidates | positive deltas | mean bidir rec frac | decision |",
+            "|---:|---:|---:|---:|---|",
+        ]
+        for label, row in family_l2_rows:
+            summary = row["summary"]
+            lines.append(
+                f"| {label} | {summary['n_candidates']}/{summary['n_holdouts']} | "
+                f"{summary['n_positive_delta_holdouts']}/{summary['n_holdouts']} | "
+                f"{summary['mean_bidirectional_recording_fraction']:.3f} | "
+                f"`{summary['decision']}` |"
+            )
+        lines += [
+            "",
+            (
+                "Decision: the family near miss is not a ridge-regularization artifact. "
+                "The candidate count, positive-delta count, and mean bidirectional "
+                "recording fraction are unchanged across the tested l2 range."
+            ),
+            "",
+        ]
     if model_free_family_ks014_near_miss is not None:
         top_rows = model_free_family_ks014_near_miss.get("family_rows", [])[:5]
         lines += [
@@ -1395,6 +1437,12 @@ def main() -> int:
     model_free_family_bidirectional_recording_centered = read_mechanism_audit(
         REPO_ROOT / MODEL_FREE_FAMILY_BIDIRECTIONAL_RECORDING_CENTERED_FILE
     )
+    model_free_family_bidirectional_recording_centered_l2_1 = read_mechanism_audit(
+        REPO_ROOT / MODEL_FREE_FAMILY_BIDIRECTIONAL_RECORDING_CENTERED_L2_1_FILE
+    )
+    model_free_family_bidirectional_recording_centered_l2_100 = read_mechanism_audit(
+        REPO_ROOT / MODEL_FREE_FAMILY_BIDIRECTIONAL_RECORDING_CENTERED_L2_100_FILE
+    )
     model_free_family_bidirectional_prior_recording_centered = read_mechanism_audit(
         REPO_ROOT / MODEL_FREE_FAMILY_BIDIRECTIONAL_PRIOR_RECORDING_CENTERED_FILE
     )
@@ -1441,6 +1489,8 @@ def main() -> int:
         model_free_source_target_pair_recording_centered,
         model_free_source_target_pair_families_recording_centered,
         model_free_family_bidirectional_recording_centered,
+        model_free_family_bidirectional_recording_centered_l2_1,
+        model_free_family_bidirectional_recording_centered_l2_100,
         model_free_family_bidirectional_prior_recording_centered,
         model_free_family_bidirectional_feedback_recording_centered,
         model_free_family_ks014_near_miss,
@@ -1517,6 +1567,12 @@ def main() -> int:
         ),
         "model_free_family_bidirectional_recording_centered": (
             model_free_family_bidirectional_recording_centered
+        ),
+        "model_free_family_bidirectional_recording_centered_l2_1": (
+            model_free_family_bidirectional_recording_centered_l2_1
+        ),
+        "model_free_family_bidirectional_recording_centered_l2_100": (
+            model_free_family_bidirectional_recording_centered_l2_100
         ),
         "model_free_family_bidirectional_prior_side_recording_centered": (
             model_free_family_bidirectional_prior_recording_centered

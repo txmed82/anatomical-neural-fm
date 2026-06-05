@@ -1465,6 +1465,14 @@ issue: global target0/target1 remains below threshold for the positive
 holdouts. Next local work should diagnose the KS014 family-level signal by
 family contribution and recording, rather than spend on a neural training run.
 
+Family-aggregate regularization sensitivity:
+The strongest local near-miss gate was rerun with `l2=1` and `l2=100` around
+the default `l2=10`. The outcome is stable across all three settings: zero
+candidates, `4/7` positive centered-delta holdouts, and mean bidirectional
+recording fraction `0.179`. This means the family near miss is not a simple
+ridge regularization artifact; changing l2 does not create a GPU training
+trigger.
+
 KS014 family near-miss mechanism:
 `scripts/audit_family_near_miss_mechanism.py` performs that decomposition for
 the strongest near miss. It finds no bidirectional family contribution. The

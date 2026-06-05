@@ -393,6 +393,15 @@ target-class gate fails (`KS014` target0 `0.510`, target1 `0.548`; `MFD_06`
 target0 `0.565`, target1 `0.489`). Decision: this suggests a weak family-level
 signal worth diagnosing locally, but not a RunPod training trigger.
 
+Family-aggregate regularization sensitivity:
+`docs/model_free_family_bidirectional_gate_recording_centered_l2_1.md` and
+`docs/model_free_family_bidirectional_gate_recording_centered_l2_100.md` rerun
+the strongest near-miss gate around the default `l2=10`. The decision is
+unchanged at `l2=1`, `10`, and `100`: zero candidates, four positive
+centered-delta holdouts, and mean bidirectional recording fraction `0.179`.
+Decision: the family near miss is not explained by a poor ridge regularization
+choice.
+
 KS014 family near-miss mechanism:
 `docs/model_free_family_ks014_near_miss_mechanism.md` decomposes the strongest
 near miss by family contribution. It finds zero bidirectional family
