@@ -462,6 +462,15 @@ global target0 by `0.010` to `0.016`. Decision: the next no-spend branch should
 try to repair those marginal target0 plus recording-support misses locally, not
 launch training.
 
+Shared broad-anatomy repair sweep:
+`docs/shared_broad_anatomy_repair_sweep.md` reruns those two closest
+broad-anatomy rows across `counts`, `fractions`, `recording_centered`, and
+`unit_residuals` features with `l2` in `{1,10,100}`. It finds zero candidates.
+The best comparable rows remain at `2/3` required bidirectional recordings and
+still miss target0 and/or baseline controls. Decision: this closes the simple
+feature/regularization repair path for shared broad anatomy; do not launch GPU
+training from it.
+
 Recording-centered feature check:
 `docs/model_free_recording_bidirectional_gate_recording_centered.md` subtracts
 each recording's own mean parent-region feature vector before ridge fitting.

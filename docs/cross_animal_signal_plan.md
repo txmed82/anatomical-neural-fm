@@ -1533,6 +1533,16 @@ threshold, and bidirectional support is `2/3` required recordings. Promotion
 requires both global targets >=`0.55` and at least `3/4` same-recording
 bidirectional hits.
 
+Shared broad-anatomy repair sweep:
+`scripts/audit_shared_broad_anatomy_repair_sweep.py` runs that immediate local
+repair branch. It sweeps `counts`, `fractions`, `recording_centered`, and
+`unit_residuals` features plus `l2={1,10,100}` on the NYU-12 feedback and
+SWC_043 choice broad-anatomy rows. It still finds zero candidates. The best
+rows stay at `2/3` required bidirectional recordings and retain target0 and/or
+baseline-control misses. This closes the simple broad-anatomy feature and
+regularization repair path; the next no-spend branch needs a different
+target/control definition or manifest, not paid training.
+
 Recording-centered feature check:
 The gate also supports `--feature-mode recording_centered`, which subtracts
 each recording's mean parent-region feature vector before fitting. This reduces

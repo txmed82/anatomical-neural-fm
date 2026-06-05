@@ -106,6 +106,7 @@ MATCHED_REGION_S3_PRESENT_SUPPORT80_HDF5_ITERATIVE_FILE = (
 MANIFEST_TARGET_ANATOMY_FEASIBILITY_FILE = "docs/manifest_target_anatomy_feasibility.json"
 SHARED_FAMILY_TARGET_CONTROL_GATE_FILE = "docs/shared_family_target_control_gate.json"
 SHARED_FAMILY_CHOICE_FIBER_CSH_NEAR_MISS_FILE = "docs/shared_family_choice_fiber_csh_near_miss.json"
+SHARED_BROAD_ANATOMY_REPAIR_SWEEP_FILE = "docs/shared_broad_anatomy_repair_sweep.json"
 MODEL_FREE_MATCHED_SUPPORT80_PANEL_FILE = "docs/model_free_matched_support80_hdf5_panel.json"
 MODEL_FREE_POSITIVE_HOLDOUTS_MECHANISM_FILE = "docs/model_free_positive_holdouts_mechanism.json"
 MODEL_FREE_RECORDING_BIDIRECTIONAL_GATE_FILE = "docs/model_free_recording_bidirectional_gate.json"
@@ -437,6 +438,7 @@ def render_markdown(
     manifest_target_anatomy_feasibility: dict | None = None,
     shared_family_target_control_gate: dict | None = None,
     shared_family_choice_fiber_csh_near_miss: dict | None = None,
+    shared_broad_anatomy_repair_sweep: dict | None = None,
     model_free_matched_panel: dict | None = None,
     model_free_positive_holdouts: dict | None = None,
     model_free_recording_bidirectional_gate: dict | None = None,
@@ -1060,6 +1062,43 @@ def render_markdown(
                 "recording-local target1 support with target0 clearing in only one "
                 "recording, so a neural run would likely amplify the same one-sided "
                 "artifact rather than demonstrate bidirectional anatomical transfer."
+            ),
+            "",
+        ]
+    if shared_broad_anatomy_repair_sweep is not None:
+        summary = shared_broad_anatomy_repair_sweep["summary"]
+        top = summary["top_rows"][:6]
+        lines += [
+            "## Shared Broad-Anatomy Repair Sweep",
+            "",
+            "`docs/shared_broad_anatomy_repair_sweep.md` reruns the two nearest",
+            "shared broad-anatomy misses across local feature transforms and ridge",
+            "regularization values.",
+            "",
+            f"- rows: `{summary['n_rows']}`",
+            f"- candidates: `{summary['n_candidates']}`",
+            f"- max bidirectional recordings: `{summary['max_bidirectional_recordings']}`",
+            f"- max min target margin: `{summary['max_min_target_margin']:+.3f}`",
+            f"- max centered delta vs shuffle: `{summary['max_centered_delta_vs_shuffle']:+.3f}`",
+            f"- decision: `{summary['decision']}`",
+            "",
+            "| target | holdout | feature | l2 | missing | delta shuffle | delta total | targets | bidir recs |",
+            "|---|---|---|---:|---|---:|---:|---|---:|",
+        ]
+        for row in top:
+            lines.append(
+                f"| {row['target_mode']} | {row['holdout']} | {row['feature_mode']} | {row['l2']:.0f} | "
+                f"{', '.join(row['missing_requirements']) or 'none'} | "
+                f"{row['centered_delta_vs_shuffle']:+.3f} | {row['centered_delta_vs_total']:+.3f} | "
+                f"{row['target0_improved_vs_shuffle']:.3f}/{row['target1_improved_vs_shuffle']:.3f} | "
+                f"{row['n_bidirectional_recordings']}/{row['required_bidirectional_recordings']} |"
+            )
+        lines += [
+            "",
+            (
+                "Decision: this closes the simple shared broad-anatomy repair branch. "
+                "The best comparable rows remain one bidirectional recording short and "
+                "also miss target0 and/or baseline controls, so they are not a GPU trigger."
             ),
             "",
         ]
@@ -1777,6 +1816,7 @@ def main() -> int:
     shared_family_choice_fiber_csh_near_miss = read_mechanism_audit(
         REPO_ROOT / SHARED_FAMILY_CHOICE_FIBER_CSH_NEAR_MISS_FILE
     )
+    shared_broad_anatomy_repair_sweep = read_mechanism_audit(REPO_ROOT / SHARED_BROAD_ANATOMY_REPAIR_SWEEP_FILE)
     model_free_matched_panel = read_mechanism_audit(REPO_ROOT / MODEL_FREE_MATCHED_SUPPORT80_PANEL_FILE)
     model_free_positive_holdouts = read_mechanism_audit(REPO_ROOT / MODEL_FREE_POSITIVE_HOLDOUTS_MECHANISM_FILE)
     model_free_recording_bidirectional_gate = read_mechanism_audit(
@@ -1865,6 +1905,7 @@ def main() -> int:
         manifest_target_anatomy_feasibility,
         shared_family_target_control_gate,
         shared_family_choice_fiber_csh_near_miss,
+        shared_broad_anatomy_repair_sweep,
         model_free_matched_panel,
         model_free_positive_holdouts,
         model_free_recording_bidirectional_gate,
@@ -1946,6 +1987,7 @@ def main() -> int:
         "manifest_target_anatomy_feasibility": manifest_target_anatomy_feasibility,
         "shared_family_target_control_gate": shared_family_target_control_gate,
         "shared_family_choice_fiber_csh_near_miss": shared_family_choice_fiber_csh_near_miss,
+        "shared_broad_anatomy_repair_sweep": shared_broad_anatomy_repair_sweep,
         "model_free_matched_support80_panel": model_free_matched_panel,
         "model_free_positive_holdouts_mechanism": model_free_positive_holdouts,
         "model_free_recording_bidirectional_gate": model_free_recording_bidirectional_gate,

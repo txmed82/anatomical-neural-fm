@@ -300,6 +300,30 @@ by held-out recording.
 
 Decision: this large-delta near miss is not a training trigger. It is recording-local target1 support with target0 clearing in only one recording, so a neural run would likely amplify the same one-sided artifact rather than demonstrate bidirectional anatomical transfer.
 
+## Shared Broad-Anatomy Repair Sweep
+
+`docs/shared_broad_anatomy_repair_sweep.md` reruns the two nearest
+shared broad-anatomy misses across local feature transforms and ridge
+regularization values.
+
+- rows: `24`
+- candidates: `0`
+- max bidirectional recordings: `2`
+- max min target margin: `-0.010`
+- max centered delta vs shuffle: `+0.078`
+- decision: `no_shared_broad_anatomy_repair_candidate`
+
+| target | holdout | feature | l2 | missing | delta shuffle | delta total | targets | bidir recs |
+|---|---|---|---:|---|---:|---:|---|---:|
+| feedback | NYU-12 | recording_centered | 1 | shuffle_delta, total_delta, target0, recording_bidirectionality | -0.002 | -0.008 | 0.540/0.554 | 2/3 |
+| feedback | NYU-12 | recording_centered | 10 | shuffle_delta, total_delta, target0, recording_bidirectionality | -0.002 | -0.008 | 0.540/0.554 | 2/3 |
+| feedback | NYU-12 | recording_centered | 100 | shuffle_delta, total_delta, target0, recording_bidirectionality | -0.002 | -0.008 | 0.540/0.554 | 2/3 |
+| choice | SWC_043 | recording_centered | 1 | total_delta, target0, recording_bidirectionality | +0.008 | -0.160 | 0.534/0.610 | 2/3 |
+| choice | SWC_043 | recording_centered | 10 | total_delta, target0, recording_bidirectionality | +0.008 | -0.160 | 0.534/0.610 | 2/3 |
+| choice | SWC_043 | recording_centered | 100 | total_delta, target0, recording_bidirectionality | +0.008 | -0.160 | 0.534/0.610 | 2/3 |
+
+Decision: this closes the simple shared broad-anatomy repair branch. The best comparable rows remain one bidirectional recording short and also miss target0 and/or baseline controls, so they are not a GPU trigger.
+
 ## Matched-Region Model-Free Panel
 
 `docs/model_free_matched_support80_hdf5_panel.md` runs the closed-form
