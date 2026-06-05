@@ -1290,3 +1290,12 @@ or one/two recordings, not a bidirectional cross-recording effect. The next
 constructive route is to predefine aggregate region families from anatomy
 rather than picking a single post-hoc region, then require the same model-free
 gate before any GPU confirmation.
+
+Region-family scan refinement:
+`docs/csh_model_free_region_family_scan.md` completes that predefined-family
+check. No family passes. The strongest family, `basal_ganglia`, beats shuffle
+and total-spike baselines but is entirely target0-sided; `hippocampal_formation`
+has broader recording support but still fails target0. This closes the current
+CSH parent-region feature branch. The roadmap should now move to either an
+alternative conserved target or a larger matched-region manifest audit before
+any paid training.

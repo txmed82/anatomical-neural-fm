@@ -232,3 +232,13 @@ true-minus-shuffle `+0.300` but target0 improvement is only `0.275` with
 target0 remains around `0.320` and `0.285`. Decision: do not promote any
 single parent region. Next no-spend step is predefined region-family
 aggregates or an alternative conserved behavioral target.
+
+Region-family aggregate scan:
+`docs/csh_model_free_region_family_scan.md` tests predefined aggregate anatomy
+families. It also finds zero candidates. `basal_ganglia` beats shuffle by
+`+0.100` centered AUC and total-spike by `+0.157`, but it is purely
+target0-sided (`target1=0.000`) and positive in only `1/4` recordings.
+`hippocampal_formation` has `2/4` positive recordings but target0 is only
+`0.305`. Decision: the CSH parent-region path is exhausted for now under
+model-free gates. The next branch should test an alternative conserved target
+or audit a larger matched-region manifest before spending.

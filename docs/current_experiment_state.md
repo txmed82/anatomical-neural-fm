@@ -172,3 +172,24 @@ Candidates passing the strict local gate: `0`
 | VENT | reject: target0 | 0.578 | +0.119 | +0.025 | 0.230 | 0.800 | 0/4 | 0.216 |
 
 Interpretation: no individual parent region is strong enough to promote. The best evaluable regions beat shuffle and total-spike baselines only in one target direction or too few recordings. The next no-spend feature step should test predefined aggregate region families or a different conserved target, not a GPU model run.
+
+## Model-Free Region-Family Candidate Scan
+
+`docs/csh_model_free_region_family_scan.md` scans predefined aggregate
+region families as one-feature ridge models against within-recording
+shuffled labels and the total-spike baseline.
+
+Candidates passing the strict local gate: `0`
+
+| family | outcome | centered_AUC | delta_vs_shuffle | delta_vs_total | target0 | target1 | recordings | eval_nonzero |
+|---|---|---:|---:|---:|---:|---:|---:|---:|
+| basal_ganglia | reject: target1 | 0.607 | +0.100 | +0.157 | 1.000 | 0.000 | 1/4 | 0.499 |
+| brainstem_interbrain | reject: target0 | 0.572 | +0.035 | +0.122 | 0.036 | 0.972 | 1/4 | 0.501 |
+| cortical_retrosplenial | reject: target1 | 0.548 | +0.015 | +0.098 | 0.890 | 0.146 | 1/4 | 0.567 |
+| hippocampal_formation | reject: target0 | 0.582 | +0.010 | +0.132 | 0.305 | 0.709 | 2/4 | 0.784 |
+| cortical_sensorimotor | reject: shuffle | 0.587 | +0.008 | +0.137 | 0.701 | 0.282 | 1/4 | 0.433 |
+| broad_named_anatomy | reject: shuffle | 0.451 | +0.003 | +0.001 | 0.698 | 0.362 | 2/4 | 1.000 |
+| fiber_tracts | reject: shuffle | 0.551 | +0.002 | +0.101 | 0.507 | 0.481 | 1/4 | 1.000 |
+| thalamic | reject: shuffle | 0.530 | -0.017 | +0.080 | 0.381 | 0.581 | 0/4 | 1.000 |
+
+Interpretation: predefined region-family aggregates also fail the model-free promotion gate. The evidence now argues against spending on another CSH parent-region model variant. The next branch should be an alternative conserved target or a larger matched-region manifest audit.

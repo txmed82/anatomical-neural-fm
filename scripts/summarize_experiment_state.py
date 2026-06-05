@@ -89,6 +89,7 @@ LOCAL_AUC_SURROGATE_MISMATCH_FILE = "docs/local_csh_auc_surrogate_probe_mismatch
 BATCH_SAMPLING_CONTRAST_AUDIT_FILE = "docs/csh_batch_sampling_contrast_audit.json"
 MODEL_FREE_REGION_SIGNAL_AUDIT_FILE = "docs/csh_model_free_region_signal_audit.json"
 MODEL_FREE_REGION_CANDIDATE_SCAN_FILE = "docs/csh_model_free_region_candidate_scan.json"
+MODEL_FREE_REGION_FAMILY_SCAN_FILE = "docs/csh_model_free_region_family_scan.json"
 LOCAL_PROBE_FILES = (
     (
         "local AUC surrogate",
@@ -298,6 +299,7 @@ def render_markdown(
     batch_sampling_audit: dict | None = None,
     model_free_region_audit: dict | None = None,
     model_free_region_scan: dict | None = None,
+    model_free_family_scan: dict | None = None,
 ) -> str:
     summary = summarize(strict_rows, slice_rows)
     lines = [
@@ -641,6 +643,41 @@ def render_markdown(
             ),
             "",
         ]
+    if model_free_family_scan is not None:
+        lines += [
+            "## Model-Free Region-Family Candidate Scan",
+            "",
+            "`docs/csh_model_free_region_family_scan.md` scans predefined aggregate",
+            "region families as one-feature ridge models against within-recording",
+            "shuffled labels and the total-spike baseline.",
+            "",
+            f"Candidates passing the strict local gate: `{model_free_family_scan.get('n_candidates')}`",
+            "",
+            "| family | outcome | centered_AUC | delta_vs_shuffle | delta_vs_total | target0 | target1 | recordings | eval_nonzero |",
+            "|---|---|---:|---:|---:|---:|---:|---:|---:|",
+        ]
+        for row in model_free_family_scan.get("families", [])[:8]:
+            lines.append(
+                "| "
+                f"{row.get('region')} | {row.get('outcome')} | "
+                f"{fmt_float(row.get('eval_centered_auc'))} | "
+                f"{fmt_signed(row.get('centered_delta_vs_shuffle'))} | "
+                f"{fmt_signed(row.get('centered_delta_vs_total'))} | "
+                f"{fmt_float(row.get('target0_improved_vs_shuffle'))} | "
+                f"{fmt_float(row.get('target1_improved_vs_shuffle'))} | "
+                f"{row.get('positive_recordings_vs_shuffle')}/{row.get('n_recordings')} | "
+                f"{fmt_float(row.get('eval_nonzero_fraction'))} |"
+            )
+        lines += [
+            "",
+            (
+                "Interpretation: predefined region-family aggregates also fail the "
+                "model-free promotion gate. The evidence now argues against spending on "
+                "another CSH parent-region model variant. The next branch should be an "
+                "alternative conserved target or a larger matched-region manifest audit."
+            ),
+            "",
+        ]
     return "\n".join(lines)
 
 
@@ -675,6 +712,7 @@ def main() -> int:
     batch_sampling_audit = read_mechanism_audit(REPO_ROOT / BATCH_SAMPLING_CONTRAST_AUDIT_FILE)
     model_free_region_audit = read_mechanism_audit(REPO_ROOT / MODEL_FREE_REGION_SIGNAL_AUDIT_FILE)
     model_free_region_scan = read_mechanism_audit(REPO_ROOT / MODEL_FREE_REGION_CANDIDATE_SCAN_FILE)
+    model_free_family_scan = read_mechanism_audit(REPO_ROOT / MODEL_FREE_REGION_FAMILY_SCAN_FILE)
     args.out_md.parent.mkdir(parents=True, exist_ok=True)
     args.out_md.write_text(render_markdown(
         strict_rows,
@@ -690,6 +728,7 @@ def main() -> int:
         batch_sampling_audit,
         model_free_region_audit,
         model_free_region_scan,
+        model_free_family_scan,
     ))
     args.out_json.parent.mkdir(parents=True, exist_ok=True)
     args.out_json.write_text(json.dumps({
@@ -714,6 +753,7 @@ def main() -> int:
         "batch_sampling_contrast_audit": batch_sampling_audit,
         "model_free_region_signal_audit": model_free_region_audit,
         "model_free_region_candidate_scan": model_free_region_scan,
+        "model_free_region_family_scan": model_free_family_scan,
     }, indent=2, sort_keys=True) + "\n")
     print(f"wrote {args.out_md}")
     print(f"wrote {args.out_json}")
