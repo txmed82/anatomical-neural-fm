@@ -1444,3 +1444,14 @@ target1-only. This closes the obvious family-level explanation for KS014.
 Next no-spend work should either design a stricter family-specific target that
 can pass both classes locally, or step back to manifest/benchmark redesign;
 there is still no RunPod training trigger.
+
+Family-aggregate alternative target check:
+The final cheap branch from the current cached trial schema was to rerun the
+recording-centered family gate on `prior_side` and `feedback`. Both screens
+also have zero candidates. `prior_side` produces more positive centered deltas
+(`6/7`) but still fails bidirectional target evidence; `feedback` has `4/7`
+positive centered deltas and the same mean bidirectional recording fraction
+(`0.107`). This closes phases 3-5 under the current feature/target choices:
+there is no local model-free gate result that justifies an A100 training run.
+The next roadmap item should be benchmark/control redesign or a new local
+mechanism test that first passes the same recording-bidirectional criterion.

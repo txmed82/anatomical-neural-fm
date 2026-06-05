@@ -378,6 +378,18 @@ strongest family-aggregate near miss by family contribution.
 
 Decision: the KS014 family-level near miss is a mixture of one-sided family movements, not a hidden bidirectional anatomical mechanism.
 
+## Family-Aggregate Alternative Target Gates
+
+`prior_side` and `feedback` were also tested with recording-centered
+family-aggregate features, using the same same-recording bidirectional gate.
+
+| target | candidates | positive deltas | mean bidir rec frac | notable positive holdouts | decision |
+|---|---:|---:|---:|---|---|
+| prior_side | 0/7 | 6/7 | 0.107 | CSH_ZAD_019, KS014, MFD_06, NR_0019, NYU-12, SWC_043 | `no_recording_bidirectional_model_free_signal` |
+| feedback | 0/7 | 4/7 | 0.107 | CSH_ZAD_019, MFD_06, NR_0019, SWC_043 | `no_recording_bidirectional_model_free_signal` |
+
+Decision: family aggregation increases some positive centered deltas on alternative targets, especially `prior_side`, but still produces zero candidate holdouts. The failure remains the same: global or same-recording bidirectional target evidence does not hold.
+
 ## Alternative Target Bidirectional Gates
 
 Two additional trial targets exposed by the cached IBL trials were tested

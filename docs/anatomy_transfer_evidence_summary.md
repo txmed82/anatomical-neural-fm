@@ -373,3 +373,15 @@ target1), `fiber_tracts` is also target0-only (`0.657`, `0.465`), while
 `cortical_retrosplenial` (`0.130`, `0.898`), `thalamic` (`0.122`, `0.874`),
 and `hippocampal_formation` (`0.206`, `0.724`) are target1-only. Decision:
 the KS014 near miss is not hiding a bidirectional anatomical mechanism.
+
+Family-aggregate alternative target check:
+`docs/model_free_family_bidirectional_gate_prior_side_recording_centered.md`
+and `docs/model_free_family_bidirectional_gate_feedback_recording_centered.md`
+rerun the strongest family-aggregate feature path on `prior_side` and
+`feedback`. Both produce zero candidates. `prior_side` has six positive
+centered-delta holdouts and mean bidirectional recording fraction `0.107`, but
+still fails global or same-recording bidirectionality. `feedback` has four
+positive centered-delta holdouts, the same `0.107` mean bidirectional recording
+fraction, and zero candidates. Decision: alternative targets plus family
+aggregation do not create a local promotion signal; do not launch GPU training
+from this branch.
