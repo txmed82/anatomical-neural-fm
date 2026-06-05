@@ -73,8 +73,19 @@ so this is not just a reporting artifact. Before another GPU run, redesign the
 negative control or region vocabulary so shuffled labels cannot create an
 easier target-correlated partition than true labels.
 
-Implemented next control: `within_recording_shuffle` preserves each recording's
-region-label distribution while breaking unit-to-region identity. This is the
-next bounded comparison to try because the previous global shuffle preserved
-only overall marginal label counts. Use it first on a one-seed CSH_ZAD_019 pilot
-before any broader spend.
+Within-recording shuffle pilot result: the one-seed CSH_ZAD_019 pilot also
+failed the anatomy-specific gate. True labels barely beat the within-recording
+shuffle on centered AUC (`+0.0014`), lost badly on full AUC (`-0.0243`), and
+lost the paired true-vs-shuffle comparison (`0.448`). Recording support was
+nominally 3/4 positive, but the sign-flip p-value was `0.25` and the paired
+specificity gap was negative (`-0.103`). Do not broaden this control to more
+seeds.
+
+The control result is useful because it separates two failure modes. The
+recording-centered loss made shuffled labels create a stronger within-recording
+target separation. The within-recording shuffle removes the obvious marginal
+label-count artifact, but it still does not reveal a meaningful true-region
+advantage. The next step should be no-spend analysis of prediction artifacts:
+quantify whether the model is using recording/probe-specific offsets, trial
+count imbalance, or target-correlated region-family coverage before launching
+another GPU run.

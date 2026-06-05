@@ -259,6 +259,37 @@ job was tried twice on RunPod A100 in `CA-MTL-3`.
 - estimated combined spend: about $8.45
 - final resource state: zero pods and zero network volumes
 
+## Completed Probe: CSH Shuffle-Control Redesign
+
+After the two-holdout gate failed, the CSH_ZAD_019 artifacts were used to test
+whether the shuffled-region null was too weak or accidentally target-correlated.
+Three variants were compared in `docs/csh_shuffle_win_mode_audit.md`:
+
+- original centered full-eval run
+- target-balanced training
+- recording-centered BCE
+
+The audit showed that recording-centered BCE should not be repeated: shuffled
+labels beat true labels by `+0.050` centered AUC and created stronger
+within-recording target separation. The more conservative control was therefore
+implemented as `within_recording_shuffle`, which preserves each recording's
+region-label distribution while breaking unit-to-region identity.
+
+Result: the one-seed within-recording shuffle pilot failed. True labels beat
+the within-recording shuffle by only `+0.001` centered AUC, lost full-trial AUC
+by `-0.024`, and lost the paired true-vs-shuffle comparison (`0.448` vs the
+`0.550` threshold). This rules out broadening the current CSH setup as a
+demo-path.
+
+Next decision: do not spend on another same-objective seed sweep. The next
+useful work is analysis-only:
+
+- measure recording/probe offset usage directly from saved predictions
+- compare target balance and region-family support inside each held-out
+  recording, not just per subject
+- define a new objective or benchmark where anatomical identity is tested
+  against recording-matched negative controls from the start
+
 Conclusion: building all 48 public IBL recordings inside a throwaway A100
 container is the wrong next spend. The next attempt should either split the
 candidate manifest into smaller persisted build shards, use a persistent
