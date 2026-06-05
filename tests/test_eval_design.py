@@ -96,3 +96,12 @@ def test_identity_free_single_channel_anatomy_arms():
         "use_cell_type_emb": True,
         "use_waveform_emb": False,
     }
+
+
+def test_fixed_family_auxiliary_arm_is_region_conditioned_and_identity_free():
+    assert arm_flags("region_fixed_broad_family_auxiliary") == {
+        "use_unit_emb": False,
+        "use_region_emb": True,
+        "use_cell_type_emb": False,
+        "use_waveform_emb": False,
+    }

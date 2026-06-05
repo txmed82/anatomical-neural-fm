@@ -30,6 +30,7 @@ sys.path.insert(0, str(REPO_ROOT / "scripts"))
 import numpy as np  # noqa: E402
 import pandas as pd  # noqa: E402
 import torch  # noqa: E402
+import torch.nn as nn  # noqa: E402
 import torch.nn.functional as F  # noqa: E402
 
 from anatomical_poyo_smoke import (  # noqa: E402
@@ -181,7 +182,8 @@ def parse_args():
     p.add_argument("--arm", default="baseline",
                    choices=["baseline", "shared_baseline", "region", "cell_type", "region_ctype",
                             "region_only", "cell_type_only", "pure_anatomy",
-                            "waveform", "waveform_only", "fixed_broad_family_count"])
+                            "waveform", "waveform_only", "fixed_broad_family_count",
+                            "region_fixed_broad_family_auxiliary"])
     p.add_argument("--fixed-family", default="broad_named_anatomy", choices=sorted(FIXED_FAMILIES),
                    help="Region family used by --arm=fixed_broad_family_count.")
     p.add_argument("--fixed-family-feature-mode", default="recording_centered",
@@ -664,7 +666,15 @@ def subject_trial_counts(trials: list[tuple[str, float, float]], subject_by_rid:
     }
 
 
-def build_inputs_for_window(model, sample, rid, t0, args, allowed_region_acronyms: set[str] | None = None):
+def build_inputs_for_window(
+    model,
+    sample,
+    rid,
+    t0,
+    args,
+    allowed_region_acronyms: set[str] | None = None,
+    fixed_family_auxiliary_config: dict | None = None,
+):
     """Build per-window arrays. Returns a dict of np.ndarrays, or None if no spikes."""
     prefix = f"{rid}/"
     sample_unit_ids = [prefix + u for u in sample.units.id.astype(str).tolist()]
@@ -697,7 +707,7 @@ def build_inputs_for_window(model, sample, rid, t0, args, allowed_region_acronym
     output_session_index = np.array([session_idx], dtype=np.int64)
     output_timestamps = np.array([args.window_len * 0.95], dtype=np.float32)
 
-    return {
+    row = {
         "input_unit_index": input_unit_index,
         "input_timestamps": input_timestamps,
         "input_token_type": input_token_type,
@@ -706,6 +716,21 @@ def build_inputs_for_window(model, sample, rid, t0, args, allowed_region_acronym
         "output_session_index": output_session_index,
         "output_timestamps": output_timestamps,
     }
+    if fixed_family_auxiliary_config is not None:
+        fixed_family_member_by_unit = fixed_family_auxiliary_config["member_by_unit"]
+        unit_is_member = np.asarray(
+            [fixed_family_member_by_unit.get(unit_id, False) for unit_id in sample_unit_ids],
+            dtype=bool,
+        )
+        count = float(np.count_nonzero(unit_is_member[spike_unit_index]))
+        center = float(fixed_family_auxiliary_config["recording_center"].get(str(rid), 0.0))
+        mean = float(fixed_family_auxiliary_config["feature_mean"])
+        std = float(fixed_family_auxiliary_config["feature_std"])
+        row["fixed_family_feature"] = np.array(
+            [(count - center - mean) / std],
+            dtype=np.float32,
+        )
+    return row
 
 
 def collate_batch(samples: list[dict], device: torch.device):
@@ -723,6 +748,11 @@ def collate_batch(samples: list[dict], device: torch.device):
     latent_timestamps = np.zeros((B, n_latent), dtype=np.float32)
     output_session_index = np.zeros((B, n_out), dtype=np.int64)
     output_timestamps = np.zeros((B, n_out), dtype=np.float32)
+    fixed_family_feature = (
+        np.zeros((B, 1), dtype=np.float32)
+        if "fixed_family_feature" in samples[0]
+        else None
+    )
     for b, s in enumerate(samples):
         n = s["input_unit_index"].shape[0]
         input_unit_index[b, :n] = s["input_unit_index"]
@@ -733,10 +763,12 @@ def collate_batch(samples: list[dict], device: torch.device):
         latent_timestamps[b] = s["latent_timestamps"]
         output_session_index[b] = s["output_session_index"]
         output_timestamps[b] = s["output_timestamps"]
+        if fixed_family_feature is not None:
+            fixed_family_feature[b] = s["fixed_family_feature"]
     def t(x, d):
         return torch.as_tensor(x, dtype=d, device=device)
 
-    return {
+    batch = {
         "input_unit_index": t(input_unit_index, torch.long),
         "input_timestamps": t(input_timestamps, torch.float32),
         "input_token_type": t(input_token_type, torch.long),
@@ -746,6 +778,9 @@ def collate_batch(samples: list[dict], device: torch.device):
         "output_session_index": t(output_session_index, torch.long),
         "output_timestamps": t(output_timestamps, torch.float32),
     }
+    if fixed_family_feature is not None:
+        batch["fixed_family_feature"] = t(fixed_family_feature, torch.float32)
+    return batch
 
 
 def lr_lambda(step: int, warmup: int, total: int) -> float:
@@ -786,6 +821,7 @@ def draw_batch(
     rng,
     allowed_region_acronyms: set[str] | None = None,
     batch_sampling: str | None = None,
+    fixed_family_auxiliary_config: dict | None = None,
 ) -> tuple[dict | None, torch.Tensor | None, dict | None]:
     """Draw a batch of `batch_size` trial-aligned windows from the precomputed list.
 
@@ -813,7 +849,15 @@ def draw_batch(
         )
         rid, t0, target = trial_list[idx]
         sample = ds[DatasetIndex(recording_id=rid, start=t0, end=t0 + args.window_len)]
-        inputs_np = build_inputs_for_window(model, sample, rid, t0, args, allowed_region_acronyms)
+        inputs_np = build_inputs_for_window(
+            model,
+            sample,
+            rid,
+            t0,
+            args,
+            allowed_region_acronyms,
+            fixed_family_auxiliary_config,
+        )
         if inputs_np is None:
             continue
         samples.append(inputs_np)
@@ -915,7 +959,15 @@ def _auc(scores: np.ndarray, labels: np.ndarray) -> float:
     return float((sum_pos_ranks - n_pos * (n_pos + 1) / 2) / (n_pos * n_neg))
 
 
-def evaluate(model, ds, eval_trial_list, args, allowed_region_acronyms: set[str] | None = None) -> dict:
+def evaluate(
+    model,
+    ds,
+    eval_trial_list,
+    args,
+    allowed_region_acronyms: set[str] | None = None,
+    fixed_family_auxiliary_config: dict | None = None,
+    auxiliary_head: nn.Module | None = None,
+) -> dict:
     model.eval()
     all_logits = []
     all_tgts = []
@@ -930,10 +982,11 @@ def evaluate(model, ds, eval_trial_list, args, allowed_region_acronyms: set[str]
                 rng,
                 allowed_region_acronyms,
                 batch_sampling="uniform",
+                fixed_family_auxiliary_config=fixed_family_auxiliary_config,
             )
             if batch is None:
                 continue
-            out = model(**batch).squeeze(-1)  # (B, 1)
+            out = model_logits_with_optional_auxiliary(model, batch, auxiliary_head)
             all_logits.append(out.detach().float().cpu().numpy())
             all_tgts.append(tgt.detach().float().cpu().numpy())
     if not all_logits:
@@ -989,6 +1042,8 @@ def eval_prediction_rows(
     subject_by_rid: dict[str, str],
     *,
     max_trials: int = 0,
+    fixed_family_auxiliary_config: dict | None = None,
+    auxiliary_head: nn.Module | None = None,
 ) -> list[dict]:
     """Deterministically score held-out trials one by one for diagnostics."""
     model.eval()
@@ -997,11 +1052,26 @@ def eval_prediction_rows(
     with torch.no_grad():
         for rid, t0, target in eval_trial_list:
             sample = ds[DatasetIndex(recording_id=rid, start=t0, end=t0 + args.window_len)]
-            inputs_np = build_inputs_for_window(model, sample, rid, t0, args, allowed_region_acronyms)
+            inputs_np = build_inputs_for_window(
+                model,
+                sample,
+                rid,
+                t0,
+                args,
+                allowed_region_acronyms,
+                fixed_family_auxiliary_config,
+            )
             if inputs_np is None:
                 continue
             batch = collate_batch([inputs_np], device=next(model.parameters()).device)
-            logit = float(model(**batch).squeeze(-1).detach().float().cpu().numpy().ravel()[0])
+            logit = float(
+                model_logits_with_optional_auxiliary(model, batch, auxiliary_head)
+                .detach()
+                .float()
+                .cpu()
+                .numpy()
+                .ravel()[0]
+            )
             prob = float(1 / (1 + math.exp(-logit)))
             rows.append({
                 "recording_id": rid,
@@ -1067,6 +1137,26 @@ def write_eval_prediction_rows(rows: list[dict], path: Path) -> int:
     return len(rows)
 
 
+def split_model_batch(batch: dict) -> tuple[dict, torch.Tensor | None]:
+    model_batch = dict(batch)
+    fixed_family_feature = model_batch.pop("fixed_family_feature", None)
+    return model_batch, fixed_family_feature
+
+
+def model_logits_with_optional_auxiliary(
+    model,
+    batch: dict,
+    auxiliary_head: nn.Module | None,
+) -> torch.Tensor:
+    model_batch, fixed_family_feature = split_model_batch(batch)
+    logits = model(**model_batch).squeeze(-1)
+    if auxiliary_head is not None:
+        if fixed_family_feature is None:
+            raise ValueError("auxiliary fixed-family arm requires fixed_family_feature in the batch")
+        logits = logits + auxiliary_head(fixed_family_feature)
+    return logits
+
+
 def fixed_family_regions(family: str) -> set[str]:
     if family not in FIXED_FAMILIES:
         raise ValueError(f"unknown fixed family {family!r}")
@@ -1106,6 +1196,61 @@ def fixed_family_count_feature_matrix(
         recording_ids.append(str(rid))
         starts.append(float(t0))
     return features, targets, recording_ids, starts
+
+
+def recording_feature_means(features: np.ndarray, recording_ids: list[str]) -> dict[str, float]:
+    means = {}
+    for rid in sorted(set(recording_ids)):
+        mask = np.asarray([value == rid for value in recording_ids], dtype=bool)
+        if np.any(mask):
+            means[str(rid)] = float(features[mask, 0].mean())
+    return means
+
+
+def build_fixed_family_auxiliary_configs(
+    *,
+    ds,
+    vocab: dict,
+    train_trials: list[tuple[str, float, float]],
+    eval_trials: list[tuple[str, float, float]],
+    family: str,
+    window_len: float,
+) -> tuple[dict, dict]:
+    train_x_raw, _train_y, train_recordings, _train_starts = fixed_family_count_feature_matrix(
+        ds,
+        vocab,
+        train_trials,
+        family=family,
+        window_len=window_len,
+    )
+    eval_x_raw, _eval_y, eval_recordings, _eval_starts = fixed_family_count_feature_matrix(
+        ds,
+        vocab,
+        eval_trials,
+        family=family,
+        window_len=window_len,
+    )
+    train_recording_center = recording_feature_means(train_x_raw, train_recordings)
+    eval_recording_center = recording_feature_means(eval_x_raw, eval_recordings)
+    train_centered = train_x_raw.astype(np.float64).copy()
+    for rid, center in train_recording_center.items():
+        mask = np.asarray([value == rid for value in train_recordings], dtype=bool)
+        train_centered[mask, 0] -= center
+    feature_mean = float(train_centered[:, 0].mean()) if len(train_centered) else 0.0
+    feature_std = float(train_centered[:, 0].std()) if len(train_centered) else 1.0
+    if feature_std < 1e-6:
+        feature_std = 1.0
+    base = {
+        "member_by_unit": fixed_family_membership_by_unit(vocab, family),
+        "feature_mean": feature_mean,
+        "feature_std": feature_std,
+        "family": family,
+        "feature_mode": "recording_centered_zscore",
+    }
+    return (
+        {**base, "recording_center": train_recording_center},
+        {**base, "recording_center": eval_recording_center},
+    )
 
 
 def transform_fixed_family_features(
@@ -1411,8 +1556,38 @@ def main():
     n_params = sum(p.numel() for p in model.parameters())
     log({"event": "model", "arm": args.arm, "n_params": n_params, **flags})
     model = model.to(device)
+    auxiliary_head = None
+    train_fixed_family_auxiliary_config = None
+    eval_fixed_family_auxiliary_config = None
+    if args.arm == "region_fixed_broad_family_auxiliary":
+        if args.fixed_family != "broad_named_anatomy":
+            log({"event": "fatal", "msg": "auxiliary fixed-family arm currently supports broad_named_anatomy only"})
+            return 1
+        auxiliary_head = nn.Linear(1, 1).to(device)
+        train_fixed_family_auxiliary_config, eval_fixed_family_auxiliary_config = build_fixed_family_auxiliary_configs(
+            ds=ds,
+            vocab=vocab,
+            train_trials=train_trials,
+            eval_trials=eval_trials,
+            family=args.fixed_family,
+            window_len=args.window_len,
+        )
+        n_params += sum(p.numel() for p in auxiliary_head.parameters())
+        log({
+            "event": "auxiliary_model",
+            "arm": args.arm,
+            "fixed_family": args.fixed_family,
+            "fixed_family_feature_mode": train_fixed_family_auxiliary_config["feature_mode"],
+            "fixed_family_feature_mean": train_fixed_family_auxiliary_config["feature_mean"],
+            "fixed_family_feature_std": train_fixed_family_auxiliary_config["feature_std"],
+            "n_aux_params": sum(p.numel() for p in auxiliary_head.parameters()),
+            "n_params_with_auxiliary": n_params,
+        })
 
-    optimizer = torch.optim.AdamW(model.parameters(), lr=args.lr, weight_decay=args.weight_decay)
+    params = list(model.parameters())
+    if auxiliary_head is not None:
+        params.extend(auxiliary_head.parameters())
+    optimizer = torch.optim.AdamW(params, lr=args.lr, weight_decay=args.weight_decay)
     scheduler = torch.optim.lr_scheduler.LambdaLR(
         optimizer, lambda s: lr_lambda(s, args.warmup_steps, args.max_steps),
     )
@@ -1422,11 +1597,19 @@ def main():
     t_start = time.time()
     model.train()
     for step in range(1, args.max_steps + 1):
-        batch, target, batch_meta = draw_batch(ds, train_trials, args, model, rng, allowed_region_acronyms)
+        batch, target, batch_meta = draw_batch(
+            ds,
+            train_trials,
+            args,
+            model,
+            rng,
+            allowed_region_acronyms,
+            fixed_family_auxiliary_config=train_fixed_family_auxiliary_config,
+        )
         if batch is None:
             log({"event": "skip_step", "step": step, "reason": "no_valid_samples"})
             continue
-        out = model(**batch).squeeze(-1)  # (B, 1)
+        out = model_logits_with_optional_auxiliary(model, batch, auxiliary_head)
         loss = training_loss(out, target, args.loss_mode, batch_meta)
         optimizer.zero_grad()
         loss.backward()
@@ -1445,7 +1628,15 @@ def main():
                  "lr": optimizer.param_groups[0]["lr"]})
 
         if step % args.eval_every == 0 or step == args.max_steps:
-            eval_metrics = evaluate(model, ds, eval_trials, args, allowed_region_acronyms)
+            eval_metrics = evaluate(
+                model,
+                ds,
+                eval_trials,
+                args,
+                allowed_region_acronyms,
+                eval_fixed_family_auxiliary_config,
+                auxiliary_head,
+            )
             log({"event": "eval", "step": step, **eval_metrics})
             prediction_rows = None
             full_eval_metrics = None
@@ -1459,6 +1650,8 @@ def main():
                     allowed_region_acronyms,
                     vocab["subject_by_rid"],
                     max_trials=0,
+                    fixed_family_auxiliary_config=eval_fixed_family_auxiliary_config,
+                    auxiliary_head=auxiliary_head,
                 )
                 full_eval_metrics = metrics_from_prediction_rows(prediction_rows)
                 log({"event": "full_eval", "step": step, **full_eval_metrics})
@@ -1467,6 +1660,7 @@ def main():
             if is_better_metric(args.best_metric, candidate_metric, best_eval):
                 best_eval = candidate_metric
                 ckpt = {"step": step, "args": vars(args), "state_dict": model.state_dict(),
+                        "auxiliary_state_dict": None if auxiliary_head is None else auxiliary_head.state_dict(),
                         "vocab_unit_ids": vocab["all_unit_ids"],
                         "vocab_session_ids": vocab["session_ids"],
                         "eval": eval_metrics}
@@ -1485,6 +1679,8 @@ def main():
                             allowed_region_acronyms,
                             vocab["subject_by_rid"],
                             max_trials=0 if args.full_eval_on_best else args.eval_prediction_max_trials,
+                            fixed_family_auxiliary_config=eval_fixed_family_auxiliary_config,
+                            auxiliary_head=auxiliary_head,
                         )
                 if args.full_eval_on_best and not full_eval_selection:
                     assert prediction_rows is not None
@@ -1507,8 +1703,12 @@ def main():
                          "path": str(args.out_dir / "region_embeddings.jsonl")})
 
     # Save last
-    torch.save({"step": step, "args": vars(args), "state_dict": model.state_dict()},
-               args.out_dir / "last.ckpt")
+    torch.save({
+        "step": step,
+        "args": vars(args),
+        "state_dict": model.state_dict(),
+        "auxiliary_state_dict": None if auxiliary_head is None else auxiliary_head.state_dict(),
+    }, args.out_dir / "last.ckpt")
     done_record = {
         "event": "done",
         "wall_clock_s": time.time() - t_start,

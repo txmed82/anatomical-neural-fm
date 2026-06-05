@@ -14,6 +14,7 @@ SHARED_CHOICE_READOUT_ID = "choice_readout"
 PRIMARY_CROSS_ANIMAL_ARMS = (
     "shared_baseline",
     "region_only",
+    "region_fixed_broad_family_auxiliary",
     "cell_type_only",
     "pure_anatomy",
     "waveform_only",
@@ -47,6 +48,7 @@ def arm_flags(arm: str) -> dict[str, bool]:
             "use_cell_type_emb": True,
         },
         "region_only": {"use_region_emb": True},
+        "region_fixed_broad_family_auxiliary": {"use_region_emb": True},
         "cell_type_only": {"use_cell_type_emb": True},
         "pure_anatomy": {"use_region_emb": True, "use_cell_type_emb": True},
         "waveform": {"use_unit_emb": True, "use_waveform_emb": True},
