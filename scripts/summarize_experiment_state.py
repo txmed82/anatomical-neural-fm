@@ -117,6 +117,7 @@ EXTREME_QUANTILE_SEED_SENSITIVITY_FILE = "docs/extreme_quantile_seed_sensitivity
 EXTREME_QUANTILE_CUTOFF_SENSITIVITY_FILE = "docs/extreme_quantile_cutoff_sensitivity.json"
 EXTREME_QUANTILE_REGION_SPECIFICITY_FILE = "docs/extreme_quantile_region_specificity.json"
 EXTREME_QUANTILE_REGION_SEED_SENSITIVITY_FILE = "docs/extreme_quantile_region_seed_sensitivity.json"
+EXTREME_QUANTILE_INTERPRETABLE_REGION_FILTER_FILE = "docs/extreme_quantile_interpretable_region_filter.json"
 LOCAL_CACHED_MANIFEST_CANDIDATES_FILE = "docs/local_cached_manifest_candidates.json"
 EXTERNAL_MANIFEST_ACQUISITION_GAP_FILE = "docs/external_manifest_acquisition_gap.json"
 BEHAVIOR_CACHE_PREFLIGHT_FILE = "docs/behavior_cache_preflight.json"
@@ -470,6 +471,7 @@ def render_markdown(
     extreme_quantile_cutoff_sensitivity: dict | None = None,
     extreme_quantile_region_specificity: dict | None = None,
     extreme_quantile_region_seed_sensitivity: dict | None = None,
+    extreme_quantile_interpretable_region_filter: dict | None = None,
     local_cached_manifest_candidates: dict | None = None,
     external_manifest_acquisition_gap: dict | None = None,
     behavior_cache_preflight: dict | None = None,
@@ -1680,6 +1682,42 @@ def render_markdown(
             ),
             "",
         ]
+    if extreme_quantile_interpretable_region_filter is not None:
+        summary = extreme_quantile_interpretable_region_filter["summary"]
+        top = summary["top_rows"][:8]
+        lines += [
+            "## Extreme-Quantile Interpretable Region Filter",
+            "",
+            "`docs/extreme_quantile_interpretable_region_filter.md` removes",
+            "non-specific ontology/meta labels from the parent-region specificity",
+            "scan before treating a row as anatomically interpretable.",
+            "",
+            f"- excluded regions: `{', '.join(summary['excluded_regions'])}`",
+            f"- retained regions: `{summary['n_regions']}`",
+            f"- retained candidates: `{summary['n_candidates']}`",
+            f"- excluded candidates: `{summary['n_excluded_candidates']}`",
+            f"- decision: `{summary['decision']}`",
+            "",
+            "| region | holdout | decision | delta shuffle | delta total | targets | bidir recs | eval nonzero |",
+            "|---|---|---|---:|---:|---:|---:|---:|",
+        ]
+        for row in top:
+            lines.append(
+                f"| {row['region']} | {row['holdout']} | {row['decision']} | "
+                f"{row['centered_delta_vs_shuffle']:+.3f} | {row['centered_delta_vs_total']:+.3f} | "
+                f"{row['target0_improved_vs_shuffle']:.3f}/{row['target1_improved_vs_shuffle']:.3f} | "
+                f"{row['n_bidirectional_recordings']}/{row['n_recordings']} | "
+                f"{row['eval_nonzero_fraction']:.3f} |"
+            )
+        lines += [
+            "",
+            (
+                "Decision: the only strict parent-region pass is a non-specific `root` "
+                "label. After removing `root` and `void`, no interpretable parent region "
+                "passes the strict local gate."
+            ),
+            "",
+        ]
     if model_free_matched_panel is not None:
         summary = model_free_matched_panel["summary"]
         lines += [
@@ -2647,6 +2685,9 @@ def main() -> int:
     extreme_quantile_region_seed_sensitivity = read_mechanism_audit(
         REPO_ROOT / EXTREME_QUANTILE_REGION_SEED_SENSITIVITY_FILE
     )
+    extreme_quantile_interpretable_region_filter = read_mechanism_audit(
+        REPO_ROOT / EXTREME_QUANTILE_INTERPRETABLE_REGION_FILTER_FILE
+    )
     local_cached_manifest_candidates = read_mechanism_audit(REPO_ROOT / LOCAL_CACHED_MANIFEST_CANDIDATES_FILE)
     external_manifest_acquisition_gap = read_mechanism_audit(REPO_ROOT / EXTERNAL_MANIFEST_ACQUISITION_GAP_FILE)
     behavior_cache_preflight = read_mechanism_audit(REPO_ROOT / BEHAVIOR_CACHE_PREFLIGHT_FILE)
@@ -2773,6 +2814,7 @@ def main() -> int:
         extreme_quantile_cutoff_sensitivity,
         extreme_quantile_region_specificity,
         extreme_quantile_region_seed_sensitivity,
+        extreme_quantile_interpretable_region_filter,
         local_cached_manifest_candidates,
         external_manifest_acquisition_gap,
         behavior_cache_preflight,
@@ -2876,6 +2918,7 @@ def main() -> int:
         "extreme_quantile_cutoff_sensitivity": extreme_quantile_cutoff_sensitivity,
         "extreme_quantile_region_specificity": extreme_quantile_region_specificity,
         "extreme_quantile_region_seed_sensitivity": extreme_quantile_region_seed_sensitivity,
+        "extreme_quantile_interpretable_region_filter": extreme_quantile_interpretable_region_filter,
         "local_cached_manifest_candidates": local_cached_manifest_candidates,
         "external_manifest_acquisition_gap": external_manifest_acquisition_gap,
         "behavior_cache_preflight": behavior_cache_preflight,

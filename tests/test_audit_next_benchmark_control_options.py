@@ -83,6 +83,7 @@ def test_render_markdown_lists_closed_branches() -> None:
     assert "extreme-quantile behavioral target gate" in markdown
     assert "cutoff sensitivity" in markdown
     assert "region specificity scan" in markdown
+    assert "interpretable-region filter" in markdown
     assert "reaction-dynamics wheel targets" in markdown
     assert "cell-type prior target/control gate" in markdown
     assert "waveform target/control gate" in markdown

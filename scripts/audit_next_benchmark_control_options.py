@@ -23,6 +23,7 @@ ARTIFACTS = {
     "extreme_quantile_cutoff_sensitivity": "docs/extreme_quantile_cutoff_sensitivity.json",
     "extreme_quantile_region_specificity": "docs/extreme_quantile_region_specificity.json",
     "extreme_quantile_region_seed_sensitivity": "docs/extreme_quantile_region_seed_sensitivity.json",
+    "extreme_quantile_interpretable_region_filter": "docs/extreme_quantile_interpretable_region_filter.json",
     "reaction_dynamics_target_family_recording_centered": "docs/reaction_dynamics_target_family_gate.json",
     "reaction_dynamics_target_family_counts": "docs/reaction_dynamics_target_family_gate_counts.json",
     "reaction_dynamics_target_family_fractions": "docs/reaction_dynamics_target_family_gate_fractions.json",
@@ -164,6 +165,10 @@ def build_report() -> dict:
     extreme_region_summary = extreme_region.get("summary", {}) if extreme_region is not None else {}
     extreme_region_seed = artifacts["extreme_quantile_region_seed_sensitivity"]
     extreme_region_seed_summary = extreme_region_seed.get("summary", {}) if extreme_region_seed is not None else {}
+    extreme_interpretable = artifacts["extreme_quantile_interpretable_region_filter"]
+    extreme_interpretable_summary = (
+        extreme_interpretable.get("summary", {}) if extreme_interpretable is not None else {}
+    )
     reaction_feature_modes = reaction_feature_mode_summary(artifacts)
     cell_type_prior = artifacts["cell_type_prior_target_control"]
     cell_type_prior_done = cell_type_prior is not None
@@ -358,6 +363,15 @@ def build_report() -> dict:
                         f"{extreme_region_seed_summary.get('max_positive_shuffle_delta_fraction', 0.0):.3f}"
                     )
                 ),
+                (
+                    "interpretable-region filter has not been run yet"
+                    if extreme_interpretable is None
+                    else (
+                        "interpretable-region filter retained "
+                        f"{extreme_interpretable_summary.get('n_candidates', 'n/a')} candidates and excluded "
+                        f"{extreme_interpretable_summary.get('n_excluded_candidates', 'n/a')} non-specific candidates"
+                    )
+                ),
             ],
             next_action=(
                 "Run scripts/audit_extreme_quantile_seed_sensitivity.py before any GPU training."
@@ -366,6 +380,11 @@ def build_report() -> dict:
                 if extreme_seed is not None and extreme_cutoff is None
                 else "Run scripts/audit_extreme_quantile_region_seed_sensitivity.py before any GPU training."
                 if extreme_region is not None and extreme_region_seed is None
+                else extreme_interpretable_summary.get(
+                    "next_action",
+                    "Do not train: no interpretable parent region passes the strict local gate.",
+                )
+                if extreme_interpretable is not None
                 else extreme_region_seed_summary.get("next_action", "Keep extreme-quantile region redesign local.")
                 if extreme_region_seed is not None
                 else extreme_cutoff_summary.get("next_action", "Keep extreme-quantile cutoff redesign local.")

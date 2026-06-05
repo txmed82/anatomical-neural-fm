@@ -217,6 +217,29 @@ def test_render_markdown_includes_extreme_quantile_seed_veto() -> None:
                 }
             ],
         },
+        extreme_quantile_interpretable_region_filter={
+            "summary": {
+                "excluded_regions": ["root", "void"],
+                "n_regions": 1,
+                "n_candidates": 0,
+                "n_excluded_candidates": 1,
+                "decision": "no_extreme_quantile_interpretable_region_candidate",
+                "top_rows": [
+                    {
+                        "region": "MOp",
+                        "holdout": "SWC_038",
+                        "decision": "reject: shuffle",
+                        "centered_delta_vs_shuffle": -0.02,
+                        "centered_delta_vs_total": -0.05,
+                        "target0_improved_vs_shuffle": 0.87,
+                        "target1_improved_vs_shuffle": 0.30,
+                        "n_bidirectional_recordings": 2,
+                        "n_recordings": 4,
+                        "eval_nonzero_fraction": 0.21,
+                    }
+                ],
+            }
+        },
     )
 
     assert "Extreme-Quantile Target Family Gate" in markdown
@@ -224,6 +247,7 @@ def test_render_markdown_includes_extreme_quantile_seed_veto() -> None:
     assert "Extreme-Quantile Cutoff Sensitivity" in markdown
     assert "Extreme-Quantile Region Specificity" in markdown
     assert "Extreme-Quantile Region Seed Sensitivity" in markdown
+    assert "Extreme-Quantile Interpretable Region Filter" in markdown
     assert "do not train from the extreme-quantile candidate" in markdown
 
 
