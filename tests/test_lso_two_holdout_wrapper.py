@@ -42,6 +42,14 @@ def test_two_holdout_wrapper_can_set_batch_sampling_mode() -> None:
     assert 'batch_sampling: $BATCH_SAMPLING' in script
 
 
+def test_two_holdout_wrapper_can_resume_prediction_only_arms() -> None:
+    script = (REPO_ROOT / "scripts/run_lso_two_holdout_shared_parent_shuffle_a100.sh").read_text()
+
+    assert "arm_complete()" in script
+    assert '[ "$SAVE_DIAGNOSTICS" = "1" ] && [ -f "$out/eval_predictions.jsonl" ]' in script
+    assert 'if arm_complete "$out"; then' in script
+
+
 def test_csh_wrapper_can_enable_diagnostic_exports() -> None:
     script = (REPO_ROOT / "scripts/run_lso_csh_zad_019_shared_parent_shuffle_a100.sh").read_text()
 
@@ -60,3 +68,11 @@ def test_csh_wrapper_can_set_batch_sampling_mode() -> None:
     assert 'BATCH_SAMPLING="${BATCH_SAMPLING:-uniform}"' in script
     assert '--batch-sampling "$BATCH_SAMPLING"' in script
     assert 'batch_sampling: $BATCH_SAMPLING' in script
+
+
+def test_csh_wrapper_can_resume_prediction_only_arms() -> None:
+    script = (REPO_ROOT / "scripts/run_lso_csh_zad_019_shared_parent_shuffle_a100.sh").read_text()
+
+    assert "arm_complete()" in script
+    assert '[ "$SAVE_DIAGNOSTICS" = "1" ] && [ -f "$out/eval_predictions.jsonl" ]' in script
+    assert 'if arm_complete "$out"; then' in script

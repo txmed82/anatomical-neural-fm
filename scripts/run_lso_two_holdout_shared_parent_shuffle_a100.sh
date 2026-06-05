@@ -71,6 +71,17 @@ write_incremental_summary() {
   fi
 }
 
+arm_complete() {
+  local out="$1"
+  if [ -f "$out/log.jsonl" ] && grep -q '"event": "done"' "$out/log.jsonl" 2>/dev/null; then
+    return 0
+  fi
+  if [ "$SAVE_DIAGNOSTICS" = "1" ] && [ -f "$out/eval_predictions.jsonl" ]; then
+    return 0
+  fi
+  return 1
+}
+
 echo "subjects: $SUBJECTS"
 echo "arms: shared_baseline region_only region_shuffle"
 echo "seeds: $SEEDS"
@@ -90,7 +101,7 @@ for holdout in $SUBJECTS; do
   for seed in $SEEDS; do
     for arm in shared_baseline region_only region_shuffle; do
       out="$holdout_dir/cloud_choice_${arm}_seed${seed}"
-      if [ -f "$out/log.jsonl" ] && grep -q '"event": "done"' "$out/log.jsonl" 2>/dev/null; then
+      if arm_complete "$out"; then
         echo "skip (already done): $out"
         continue
       fi
