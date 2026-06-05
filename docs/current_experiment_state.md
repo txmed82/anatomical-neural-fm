@@ -117,3 +117,17 @@ These CPU-only probes are the current promotion gate for objective and sampling 
 | local AUC surrogate target-balanced | False | -0.005 | 0.502 | +0.039 | 0.580 | 0.406 | 2/4 | `paired_metric_not_recording_rank_stable` | reject: centered AUC, target1, recording support, mismatch |
 
 Decision: all current tiny local variants are rejected for cloud promotion. They repeatedly improve target-0 more than target-1, lose centered true-vs-shuffle AUC, or fail recording support. The next no-spend step is to redesign the sampler/objective so both target classes improve within recordings before any paid run.
+
+## Batch Sampling Contrast Audit
+
+`docs/csh_batch_sampling_contrast_audit.md` checks whether samplers create
+same-recording target-0/target-1 pairs before training. This is the minimum
+condition for recording-local ranking losses to be active.
+
+| sampler | target1_fraction | rankable_batch_fraction | mean_rankable_pairs | same_recording_adjacent_pairs |
+|---|---:|---:|---:|---:|
+| uniform | 0.477 | 0.022 | 0.022 | 0.022 |
+| target_balanced | 0.500 | 0.040 | 0.040 | 0.040 |
+| recording_target_balanced | 0.500 | 1.000 | 1.000 | 1.000 |
+
+Interpretation: `recording_target_balanced` makes the recording-local rank loss active in every audited batch, while uniform and target-balanced sampling rarely produce same-recording contrast. Since the local probe matrix still fails under `recording_target_balanced`, the next failure is not pair availability; it is the anatomy/control signal or objective itself.

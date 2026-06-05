@@ -200,3 +200,12 @@ fail bidirectional target-class improvement because target1 remains around
 from this family. The next step is no-spend sampler/objective redesign that
 demonstrably improves both target classes within recordings before any paid
 run.
+
+Batch sampling contrast audit: `docs/csh_batch_sampling_contrast_audit.md`
+confirms that pair availability is not the limiting issue for the current
+recording-local objective. All 24 CSH training recordings have both target
+classes. With batch size 2, uniform sampling creates a rankable same-recording
+target pair in only `0.023` of batches, target-balanced sampling in `0.040`,
+but `recording_target_balanced` creates one in `1.000` of batches. Since the
+local probe matrix still fails under `recording_target_balanced`, the remaining
+failure is the anatomical signal/control/objective, not inactive pairwise loss.

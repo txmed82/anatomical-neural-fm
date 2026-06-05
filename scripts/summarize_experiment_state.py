@@ -86,6 +86,7 @@ CENTERED_BCE_MISMATCH_AUDIT_FILE = "docs/lso_csh_pairwise_rank_centered_bce_pilo
 CENTERED_BCE_MECHANISM_AUDIT_FILE = "docs/lso_csh_pairwise_rank_centered_bce_pilot_mechanism.json"
 LOCAL_AUC_SURROGATE_GATE_FILE = "docs/local_csh_auc_surrogate_probe_anatomy_specific_gate.json"
 LOCAL_AUC_SURROGATE_MISMATCH_FILE = "docs/local_csh_auc_surrogate_probe_mismatch.json"
+BATCH_SAMPLING_CONTRAST_AUDIT_FILE = "docs/csh_batch_sampling_contrast_audit.json"
 LOCAL_PROBE_FILES = (
     (
         "local AUC surrogate",
@@ -292,6 +293,7 @@ def render_markdown(
     local_auc_gate: dict | None = None,
     local_auc_mismatch: dict | None = None,
     local_probes: list[LocalProbeRow] | None = None,
+    batch_sampling_audit: dict | None = None,
 ) -> str:
     summary = summarize(strict_rows, slice_rows)
     lines = [
@@ -525,6 +527,37 @@ def render_markdown(
             ),
             "",
         ]
+    if batch_sampling_audit is not None:
+        lines += [
+            "## Batch Sampling Contrast Audit",
+            "",
+            "`docs/csh_batch_sampling_contrast_audit.md` checks whether samplers create",
+            "same-recording target-0/target-1 pairs before training. This is the minimum",
+            "condition for recording-local ranking losses to be active.",
+            "",
+            "| sampler | target1_fraction | rankable_batch_fraction | mean_rankable_pairs | same_recording_adjacent_pairs |",
+            "|---|---:|---:|---:|---:|",
+        ]
+        for row in batch_sampling_audit.get("samplers", []):
+            lines.append(
+                "| "
+                f"{row.get('batch_sampling')} | "
+                f"{fmt_float(row.get('target1_fraction'))} | "
+                f"{fmt_float(row.get('rankable_batch_fraction'))} | "
+                f"{fmt_float(row.get('mean_rankable_pairs_per_batch'))} | "
+                f"{fmt_float(row.get('same_recording_adjacent_pair_fraction'))} |"
+            )
+        lines += [
+            "",
+            (
+                "Interpretation: `recording_target_balanced` makes the recording-local "
+                "rank loss active in every audited batch, while uniform and target-balanced "
+                "sampling rarely produce same-recording contrast. Since the local probe "
+                "matrix still fails under `recording_target_balanced`, the next failure is "
+                "not pair availability; it is the anatomy/control signal or objective itself."
+            ),
+            "",
+        ]
     return "\n".join(lines)
 
 
@@ -556,6 +589,7 @@ def main() -> int:
         row for label, gate_rel, mismatch_rel in LOCAL_PROBE_FILES
         if (row := read_local_probe_result(label, REPO_ROOT / gate_rel, REPO_ROOT / mismatch_rel)) is not None
     ]
+    batch_sampling_audit = read_mechanism_audit(REPO_ROOT / BATCH_SAMPLING_CONTRAST_AUDIT_FILE)
     args.out_md.parent.mkdir(parents=True, exist_ok=True)
     args.out_md.write_text(render_markdown(
         strict_rows,
@@ -568,6 +602,7 @@ def main() -> int:
         local_auc_gate,
         local_auc_mismatch,
         local_probes,
+        batch_sampling_audit,
     ))
     args.out_json.parent.mkdir(parents=True, exist_ok=True)
     args.out_json.write_text(json.dumps({
@@ -589,6 +624,7 @@ def main() -> int:
             }
             for row in local_probes
         ],
+        "batch_sampling_contrast_audit": batch_sampling_audit,
     }, indent=2, sort_keys=True) + "\n")
     print(f"wrote {args.out_md}")
     print(f"wrote {args.out_json}")

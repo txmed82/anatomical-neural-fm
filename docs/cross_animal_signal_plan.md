@@ -1259,3 +1259,13 @@ improvement, and recording support. The next step is not another RunPod pilot.
 Redesign the sampler/objective locally until target0 and target1 both improve
 within recordings against the shuffled control, then spend only on a bounded
 confirmation run.
+
+Sampler audit refinement: `docs/csh_batch_sampling_contrast_audit.md` shows
+the current `recording_target_balanced` sampler is doing the mechanical job it
+was designed for. All 24 CSH training recordings contain both target classes,
+and batch-size-2 `recording_target_balanced` batches contain a rankable
+same-recording target pair in `1.000` of audited batches. Uniform and
+target-balanced sampling almost never do (`0.023` and `0.040`). Therefore the
+next no-spend work should not be another sampler-only tweak. It should build a
+stronger anatomical/control diagnostic or objective that creates bidirectional
+held-out improvement despite an already-active recording-local rank loss.

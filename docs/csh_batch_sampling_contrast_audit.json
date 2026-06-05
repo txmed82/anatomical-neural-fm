@@ -1,0 +1,502 @@
+{
+  "holdout": [
+    "CSH_ZAD_019"
+  ],
+  "n_eligible_recordings": 24,
+  "n_train_recordings": 24,
+  "n_train_trials": 13015,
+  "region_granularity": "parent",
+  "region_label_control": "none",
+  "samplers": [
+    {
+      "batch_sampling": "uniform",
+      "batch_size": 2,
+      "eligible_recording_fraction": 1.0,
+      "eligible_recordings": {
+        "03063955-2523-47bd-ae57-f7489dd40f15_probe01": {
+          "0": 411,
+          "1": 349
+        },
+        "032ffcdf-7692-40b3-b9ff-8def1fc18b2e_probe00": {
+          "0": 291,
+          "1": 219
+        },
+        "16693458-0801-4d35-a3f1-9115c7e5acfd_probe00": {
+          "0": 227,
+          "1": 243
+        },
+        "16693458-0801-4d35-a3f1-9115c7e5acfd_probe01": {
+          "0": 227,
+          "1": 243
+        },
+        "1e45d992-c356-40e1-9be1-a506d944896f_probe01": {
+          "0": 270,
+          "1": 279
+        },
+        "35eeb752-8f4f-4040-9714-ba0f5b7ccdfe_probe00": {
+          "0": 339,
+          "1": 321
+        },
+        "3f71aa98-08c6-4e79-b4c8-00eae4f03eff_probe00": {
+          "0": 346,
+          "1": 244
+        },
+        "41872d7f-75cb-4445-bb1a-132b354c44f0_probe01": {
+          "0": 213,
+          "1": 241
+        },
+        "4d8c7767-981c-4347-8e5e-5d5fffe38534_probe01": {
+          "0": 358,
+          "1": 315
+        },
+        "4ecb5d24-f5cc-402c-be28-9d0f7cb14b3a_probe00": {
+          "0": 239,
+          "1": 231
+        },
+        "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe00": {
+          "0": 395,
+          "1": 395
+        },
+        "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe01": {
+          "0": 395,
+          "1": 395
+        },
+        "6899a67d-2e53-4215-a52a-c7021b5da5d4_probe00": {
+          "0": 194,
+          "1": 170
+        },
+        "6f09ba7e-e3ce-44b0-932b-c003fb44fb89_probe01": {
+          "0": 273,
+          "1": 212
+        },
+        "6fb1e12c-883b-46d1-a745-473cde3232c8_probe00": {
+          "0": 224,
+          "1": 227
+        },
+        "88d24c31-52e4-49cc-9f32-6adbeb9eba87_probe00": {
+          "0": 248,
+          "1": 234
+        },
+        "a1782f4f-86b0-480c-a7f2-3d8f1ab482ab_probe00": {
+          "0": 342,
+          "1": 309
+        },
+        "a8a8af78-16de-4841-ab07-fde4b5281a03_probe00": {
+          "0": 250,
+          "1": 234
+        },
+        "a8a8af78-16de-4841-ab07-fde4b5281a03_probe01": {
+          "0": 250,
+          "1": 234
+        },
+        "b182b754-3c3e-4942-8144-6ee790926b58_probe01": {
+          "0": 182,
+          "1": 215
+        },
+        "b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe00": {
+          "0": 202,
+          "1": 220
+        },
+        "b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe01": {
+          "0": 202,
+          "1": 220
+        },
+        "b9c205c3-feac-485b-a89d-afc96d9cb280_probe00": {
+          "0": 254,
+          "1": 328
+        },
+        "e1931de1-cf7b-49af-af33-2ade15e8abe7_probe00": {
+          "0": 356,
+          "1": 249
+        }
+      },
+      "mean_rankable_pairs_per_batch": 0.0225,
+      "mean_rankable_recordings_per_batch": 0.0225,
+      "n_batches": 2000,
+      "n_eligible_recordings": 24,
+      "n_recordings": 24,
+      "n_recordings_sampled": 24,
+      "n_trials": 13015,
+      "rankable_batch_fraction": 0.0225,
+      "same_recording_adjacent_pair_fraction": 0.0225,
+      "seed": 0,
+      "target1_fraction": 0.47725,
+      "target_counts": {
+        "0": 2091,
+        "1": 1909
+      },
+      "top_sampled_recordings": [
+        {
+          "recording_id": "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe01",
+          "samples": 234
+        },
+        {
+          "recording_id": "03063955-2523-47bd-ae57-f7489dd40f15_probe01",
+          "samples": 226
+        },
+        {
+          "recording_id": "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe00",
+          "samples": 214
+        },
+        {
+          "recording_id": "4d8c7767-981c-4347-8e5e-5d5fffe38534_probe01",
+          "samples": 210
+        },
+        {
+          "recording_id": "35eeb752-8f4f-4040-9714-ba0f5b7ccdfe_probe00",
+          "samples": 209
+        },
+        {
+          "recording_id": "b9c205c3-feac-485b-a89d-afc96d9cb280_probe00",
+          "samples": 206
+        },
+        {
+          "recording_id": "a1782f4f-86b0-480c-a7f2-3d8f1ab482ab_probe00",
+          "samples": 190
+        },
+        {
+          "recording_id": "e1931de1-cf7b-49af-af33-2ade15e8abe7_probe00",
+          "samples": 185
+        },
+        {
+          "recording_id": "3f71aa98-08c6-4e79-b4c8-00eae4f03eff_probe00",
+          "samples": 171
+        },
+        {
+          "recording_id": "032ffcdf-7692-40b3-b9ff-8def1fc18b2e_probe00",
+          "samples": 162
+        }
+      ]
+    },
+    {
+      "batch_sampling": "target_balanced",
+      "batch_size": 2,
+      "eligible_recording_fraction": 1.0,
+      "eligible_recordings": {
+        "03063955-2523-47bd-ae57-f7489dd40f15_probe01": {
+          "0": 411,
+          "1": 349
+        },
+        "032ffcdf-7692-40b3-b9ff-8def1fc18b2e_probe00": {
+          "0": 291,
+          "1": 219
+        },
+        "16693458-0801-4d35-a3f1-9115c7e5acfd_probe00": {
+          "0": 227,
+          "1": 243
+        },
+        "16693458-0801-4d35-a3f1-9115c7e5acfd_probe01": {
+          "0": 227,
+          "1": 243
+        },
+        "1e45d992-c356-40e1-9be1-a506d944896f_probe01": {
+          "0": 270,
+          "1": 279
+        },
+        "35eeb752-8f4f-4040-9714-ba0f5b7ccdfe_probe00": {
+          "0": 339,
+          "1": 321
+        },
+        "3f71aa98-08c6-4e79-b4c8-00eae4f03eff_probe00": {
+          "0": 346,
+          "1": 244
+        },
+        "41872d7f-75cb-4445-bb1a-132b354c44f0_probe01": {
+          "0": 213,
+          "1": 241
+        },
+        "4d8c7767-981c-4347-8e5e-5d5fffe38534_probe01": {
+          "0": 358,
+          "1": 315
+        },
+        "4ecb5d24-f5cc-402c-be28-9d0f7cb14b3a_probe00": {
+          "0": 239,
+          "1": 231
+        },
+        "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe00": {
+          "0": 395,
+          "1": 395
+        },
+        "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe01": {
+          "0": 395,
+          "1": 395
+        },
+        "6899a67d-2e53-4215-a52a-c7021b5da5d4_probe00": {
+          "0": 194,
+          "1": 170
+        },
+        "6f09ba7e-e3ce-44b0-932b-c003fb44fb89_probe01": {
+          "0": 273,
+          "1": 212
+        },
+        "6fb1e12c-883b-46d1-a745-473cde3232c8_probe00": {
+          "0": 224,
+          "1": 227
+        },
+        "88d24c31-52e4-49cc-9f32-6adbeb9eba87_probe00": {
+          "0": 248,
+          "1": 234
+        },
+        "a1782f4f-86b0-480c-a7f2-3d8f1ab482ab_probe00": {
+          "0": 342,
+          "1": 309
+        },
+        "a8a8af78-16de-4841-ab07-fde4b5281a03_probe00": {
+          "0": 250,
+          "1": 234
+        },
+        "a8a8af78-16de-4841-ab07-fde4b5281a03_probe01": {
+          "0": 250,
+          "1": 234
+        },
+        "b182b754-3c3e-4942-8144-6ee790926b58_probe01": {
+          "0": 182,
+          "1": 215
+        },
+        "b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe00": {
+          "0": 202,
+          "1": 220
+        },
+        "b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe01": {
+          "0": 202,
+          "1": 220
+        },
+        "b9c205c3-feac-485b-a89d-afc96d9cb280_probe00": {
+          "0": 254,
+          "1": 328
+        },
+        "e1931de1-cf7b-49af-af33-2ade15e8abe7_probe00": {
+          "0": 356,
+          "1": 249
+        }
+      },
+      "mean_rankable_pairs_per_batch": 0.0395,
+      "mean_rankable_recordings_per_batch": 0.0395,
+      "n_batches": 2000,
+      "n_eligible_recordings": 24,
+      "n_recordings": 24,
+      "n_recordings_sampled": 24,
+      "n_trials": 13015,
+      "rankable_batch_fraction": 0.0395,
+      "same_recording_adjacent_pair_fraction": 0.0395,
+      "seed": 0,
+      "target1_fraction": 0.5,
+      "target_counts": {
+        "0": 2000,
+        "1": 2000
+      },
+      "top_sampled_recordings": [
+        {
+          "recording_id": "03063955-2523-47bd-ae57-f7489dd40f15_probe01",
+          "samples": 229
+        },
+        {
+          "recording_id": "4d8c7767-981c-4347-8e5e-5d5fffe38534_probe01",
+          "samples": 223
+        },
+        {
+          "recording_id": "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe01",
+          "samples": 216
+        },
+        {
+          "recording_id": "35eeb752-8f4f-4040-9714-ba0f5b7ccdfe_probe00",
+          "samples": 212
+        },
+        {
+          "recording_id": "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe00",
+          "samples": 209
+        },
+        {
+          "recording_id": "a1782f4f-86b0-480c-a7f2-3d8f1ab482ab_probe00",
+          "samples": 207
+        },
+        {
+          "recording_id": "b9c205c3-feac-485b-a89d-afc96d9cb280_probe00",
+          "samples": 193
+        },
+        {
+          "recording_id": "3f71aa98-08c6-4e79-b4c8-00eae4f03eff_probe00",
+          "samples": 182
+        },
+        {
+          "recording_id": "e1931de1-cf7b-49af-af33-2ade15e8abe7_probe00",
+          "samples": 180
+        },
+        {
+          "recording_id": "a8a8af78-16de-4841-ab07-fde4b5281a03_probe00",
+          "samples": 162
+        }
+      ]
+    },
+    {
+      "batch_sampling": "recording_target_balanced",
+      "batch_size": 2,
+      "eligible_recording_fraction": 1.0,
+      "eligible_recordings": {
+        "03063955-2523-47bd-ae57-f7489dd40f15_probe01": {
+          "0": 411,
+          "1": 349
+        },
+        "032ffcdf-7692-40b3-b9ff-8def1fc18b2e_probe00": {
+          "0": 291,
+          "1": 219
+        },
+        "16693458-0801-4d35-a3f1-9115c7e5acfd_probe00": {
+          "0": 227,
+          "1": 243
+        },
+        "16693458-0801-4d35-a3f1-9115c7e5acfd_probe01": {
+          "0": 227,
+          "1": 243
+        },
+        "1e45d992-c356-40e1-9be1-a506d944896f_probe01": {
+          "0": 270,
+          "1": 279
+        },
+        "35eeb752-8f4f-4040-9714-ba0f5b7ccdfe_probe00": {
+          "0": 339,
+          "1": 321
+        },
+        "3f71aa98-08c6-4e79-b4c8-00eae4f03eff_probe00": {
+          "0": 346,
+          "1": 244
+        },
+        "41872d7f-75cb-4445-bb1a-132b354c44f0_probe01": {
+          "0": 213,
+          "1": 241
+        },
+        "4d8c7767-981c-4347-8e5e-5d5fffe38534_probe01": {
+          "0": 358,
+          "1": 315
+        },
+        "4ecb5d24-f5cc-402c-be28-9d0f7cb14b3a_probe00": {
+          "0": 239,
+          "1": 231
+        },
+        "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe00": {
+          "0": 395,
+          "1": 395
+        },
+        "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe01": {
+          "0": 395,
+          "1": 395
+        },
+        "6899a67d-2e53-4215-a52a-c7021b5da5d4_probe00": {
+          "0": 194,
+          "1": 170
+        },
+        "6f09ba7e-e3ce-44b0-932b-c003fb44fb89_probe01": {
+          "0": 273,
+          "1": 212
+        },
+        "6fb1e12c-883b-46d1-a745-473cde3232c8_probe00": {
+          "0": 224,
+          "1": 227
+        },
+        "88d24c31-52e4-49cc-9f32-6adbeb9eba87_probe00": {
+          "0": 248,
+          "1": 234
+        },
+        "a1782f4f-86b0-480c-a7f2-3d8f1ab482ab_probe00": {
+          "0": 342,
+          "1": 309
+        },
+        "a8a8af78-16de-4841-ab07-fde4b5281a03_probe00": {
+          "0": 250,
+          "1": 234
+        },
+        "a8a8af78-16de-4841-ab07-fde4b5281a03_probe01": {
+          "0": 250,
+          "1": 234
+        },
+        "b182b754-3c3e-4942-8144-6ee790926b58_probe01": {
+          "0": 182,
+          "1": 215
+        },
+        "b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe00": {
+          "0": 202,
+          "1": 220
+        },
+        "b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe01": {
+          "0": 202,
+          "1": 220
+        },
+        "b9c205c3-feac-485b-a89d-afc96d9cb280_probe00": {
+          "0": 254,
+          "1": 328
+        },
+        "e1931de1-cf7b-49af-af33-2ade15e8abe7_probe00": {
+          "0": 356,
+          "1": 249
+        }
+      },
+      "mean_rankable_pairs_per_batch": 1.0,
+      "mean_rankable_recordings_per_batch": 1.0,
+      "n_batches": 2000,
+      "n_eligible_recordings": 24,
+      "n_recordings": 24,
+      "n_recordings_sampled": 24,
+      "n_trials": 13015,
+      "rankable_batch_fraction": 1.0,
+      "same_recording_adjacent_pair_fraction": 1.0,
+      "seed": 0,
+      "target1_fraction": 0.5,
+      "target_counts": {
+        "0": 2000,
+        "1": 2000
+      },
+      "top_sampled_recordings": [
+        {
+          "recording_id": "b887df2c-bb9c-44c9-a9c0-538da87b2cab_probe00",
+          "samples": 208
+        },
+        {
+          "recording_id": "6f09ba7e-e3ce-44b0-932b-c003fb44fb89_probe01",
+          "samples": 194
+        },
+        {
+          "recording_id": "16693458-0801-4d35-a3f1-9115c7e5acfd_probe00",
+          "samples": 188
+        },
+        {
+          "recording_id": "63c70ae8-4dfb-418b-b21b-f0b1e5fba6c9_probe00",
+          "samples": 188
+        },
+        {
+          "recording_id": "a8a8af78-16de-4841-ab07-fde4b5281a03_probe01",
+          "samples": 182
+        },
+        {
+          "recording_id": "4d8c7767-981c-4347-8e5e-5d5fffe38534_probe01",
+          "samples": 182
+        },
+        {
+          "recording_id": "1e45d992-c356-40e1-9be1-a506d944896f_probe01",
+          "samples": 182
+        },
+        {
+          "recording_id": "032ffcdf-7692-40b3-b9ff-8def1fc18b2e_probe00",
+          "samples": 182
+        },
+        {
+          "recording_id": "a1782f4f-86b0-480c-a7f2-3d8f1ab482ab_probe00",
+          "samples": 176
+        },
+        {
+          "recording_id": "03063955-2523-47bd-ae57-f7489dd40f15_probe01",
+          "samples": 172
+        }
+      ]
+    }
+  ],
+  "target_mode": "stimulus_side",
+  "train_subjects": [
+    "KS014",
+    "MFD_06",
+    "NR_0019",
+    "NYU-12",
+    "SWC_038",
+    "SWC_043"
+  ],
+  "window_len": 1.0
+}
